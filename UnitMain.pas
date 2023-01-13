@@ -20,10 +20,6 @@ type
     OpenTextFileDialog1: TOpenTextFileDialog;
     Button3: TButton;
     actParseModuleFile: TAction;
-    bbOpenTextFile: TBitBtn;
-    ImageList1: TImageList;
-    SpeedButton1: TSpeedButton;
-    Image1: TImage;
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
     /// <summary>Open Module text file</summary>
