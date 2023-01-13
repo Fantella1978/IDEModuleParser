@@ -20,11 +20,17 @@ type
     OpenTextFileDialog1: TOpenTextFileDialog;
     Button3: TButton;
     actParseModuleFile: TAction;
+    Button4: TButton;
+    actOpenReportZipFile: TAction;
+    procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
-    /// <summary>Open Module text file</summary>
+    /// <summary>Open Module text file (ModuleList.txt)</summary>
     procedure actOpenModuleFileExecute(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
+    /// <summary>Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip)</summary>
+    procedure actOpenReportZipFileExecute(Sender: TObject);
+    /// <summary>Parse Module file</summary>
+    procedure actParseModuleFileExecute(Sender: TObject);
   private
     { Private declarations }
   public
@@ -45,14 +51,26 @@ end;
 
 procedure TForm1.actOpenModuleFileExecute(Sender: TObject);
 begin
-  //
+  // Open Module file (ModuleList.txt)
+
+end;
+
+procedure TForm1.actOpenReportZipFileExecute(Sender: TObject);
+begin
+  // Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip)
+
+end;
+
+procedure TForm1.actParseModuleFileExecute(Sender: TObject);
+begin
+  // Parse Module file
 
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   //
-  ImageList1.GetBitmap(0, Image1.Picture.Bitmap);
+  // ImageList1.GetBitmap(0, Image1.Picture.Bitmap);
 
 end;
 

@@ -1,0 +1,47 @@
+[505D6539]{rtl280.bpl  } System.Win.Notification.TNotificationCenterWinRT.DoCancelNotification (Line 281, "System.Win.Notification.pas" + 4) + $8
+[50069F20]{rtl280.bpl  } System.@CheckAutoResult (Line 39861, "System.pas" + 4) + $6
+[505D6539]{rtl280.bpl  } System.Win.Notification.TNotificationCenterWinRT.DoCancelNotification (Line 281, "System.Win.Notification.pas" + 4) + $8
+[505DC314]{rtl280.bpl  } System.Notification.TCustomNotificationCenter.Destroy (Line 462, "System.Notification.pas" + 4) + $9
+[505DC42E]{rtl280.bpl  } System.Notification.TCustomNotificationCenter.DoPlatformInitialize (Line 524, "System.Notification.pas" + 1) + $7
+[004895C6]{bds.exe     } SubscriptionNotification.TSubscriptionNotification.DoCheckLicenseExpiration (Line 152, "SubscriptionNotification.pas" + 60) + $6
+[00489269]{bds.exe     } SubscriptionNotification.TSubscriptionNotification.CheckLicenseExpiration (Line 76, "SubscriptionNotification.pas" + 19) + $5
+[004B0889]{bds.exe     } AppMain.TAppBuilder.PersonalityChanged (Line 8500, "AppMain.pas" + 49) + $0
+[20F0AE5D]{designide280.bpl} Events.TEvent.Send (Line 154, "Events.pas" + 2) + $11
+[207A20AA]{coreide280.bpl} IDEServices.TPersonalityServices.SetCurrentPersonality (Line 6099, "IDEServices.pas" + 9) + $7
+[0049F937]{bds.exe     } AppMain.PostCreateInit (Line 2526, "AppMain.pas" + 68) + $1F
+[0049FDF2]{bds.exe     } AppMain.TAppBuilder.CMPostCreateInit (Line 2624, "AppMain.pas" + 4) + $1
+[50CC7CCA]{vcl280.bpl  } Vcl.Controls.TControl.WndProc (Line 7544, "Vcl.Controls.pas" + 91) + $6
+[5006076C]{rtl280.bpl  } System.TMonitor.Destroy (Line 19558, "System.pas" + 0) + $0
+[50064774]{rtl280.bpl  } System.@FinalizeRecord (Line 32815, "System.pas" + 76) + $2
+[50DCDE65]{vcl280.bpl  } Vcl.Themes.TStyleManager.GetStyle (Line 5789, "Vcl.Themes.pas" + 7) + $D
+[50061544]{rtl280.bpl  } System.@TryFinallyExit (Line 23404, "System.pas" + 8) + $0
+[50DCDF53]{vcl280.bpl  } Vcl.Themes.TStyleManager.GetStyle (Line 5800, "Vcl.Themes.pas" + 18) + $1E
+[50EF133E]{vcl280.bpl  } Vcl.Styles.TStyleEngine.HandleMessage (Line 3603, "Vcl.Styles.pas" + 22) + $7
+[500602C7]{rtl280.bpl  } System.TObject.Dispatch (Line 18874, "System.pas" + 11) + $0
+[50DD1DCD]{vcl280.bpl  } Vcl.Themes.TStyleHook.WndProc (Line 7684, "Vcl.Themes.pas" + 38) + $6
+[50DD1FAE]{vcl280.bpl  } Vcl.Themes.TMouseTrackControlStyleHook.WndProc (Line 7783, "Vcl.Themes.pas" + 1) + $4
+[50E1B28D]{vcl280.bpl  } Vcl.Forms.TFormStyleHook.WndProc (Line 18217, "Vcl.Forms.pas" + 7) + $4
+[50DD15F2]{vcl280.bpl  } Vcl.Themes.TStyleHook.HandleMessage (Line 7389, "Vcl.Themes.pas" + 20) + $6
+[50E17213]{vcl280.bpl  } Vcl.Forms.TFormStyleHook.IsStyleBorder (Line 16434, "Vcl.Forms.pas" + 1) + $C
+[50E17254]{vcl280.bpl  } Vcl.Forms.TFormStyleHook.HandleMessage (Line 16441, "Vcl.Forms.pas" + 2) + $6
+[50EF133E]{vcl280.bpl  } Vcl.Styles.TStyleEngine.HandleMessage (Line 3603, "Vcl.Styles.pas" + 22) + $7
+[50DCE084]{vcl280.bpl  } Vcl.Themes.TStyleManager.HandleMessage (Line 5858, "Vcl.Themes.pas" + 11) + $11
+[50CCAE2F]{vcl280.bpl  } Vcl.Controls.TWinControl.DoHandleStyleMessage (Line 9408, "Vcl.Controls.pas" + 0) + $F
+[50CCCDBD]{vcl280.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10579, "Vcl.Controls.pas" + 170) + $6
+[50CC7900]{vcl280.bpl  } Vcl.Controls.TControl.Perform (Line 7322, "Vcl.Controls.pas" + 10) + $8
+[50E02FA0]{vcl280.bpl  } Vcl.Forms.TCustomForm.WndProc (Line 4768, "Vcl.Forms.pas" + 1) + $37
+[50E03658]{vcl280.bpl  } Vcl.Forms.TCustomForm.WndProc (Line 4989, "Vcl.Forms.pas" + 222) + $5
+[50E03670]{vcl280.bpl  } Vcl.Forms.TCustomForm.WndProc (Line 4990, "Vcl.Forms.pas" + 223) + $13
+[50CCC338]{vcl280.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 10267, "Vcl.Controls.pas" + 3) + $6
+[50174218]{rtl280.bpl  } System.Classes.StdWndProc (Line 18318, "System.Classes.pas" + 8) + $0
+[50E0D743]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 11320, "Vcl.Forms.pas" + 23) + $1
+[50E0D76E]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessages (Line 11342, "Vcl.Forms.pas" + 1) + $4
+[004A0567]{bds.exe     } AppMain.TAppBuilder.ApplicationActivated (Line 2730, "AppMain.pas" + 0) + $7
+[50E65CA3]{vcl280.bpl  } Vcl.AppEvnts.TCustomApplicationEvents.DoActivate (Line 210, "Vcl.AppEvnts.pas" + 1) + $12
+[50E66345]{vcl280.bpl  } Vcl.AppEvnts.TMultiCaster.DoActivate (Line 438, "Vcl.AppEvnts.pas" + 5) + $C
+[50E0CBF3]{vcl280.bpl  } Vcl.Forms.TApplication.WndProc (Line 10895, "Vcl.Forms.pas" + 140) + $C
+[50174218]{rtl280.bpl  } System.Classes.StdWndProc (Line 18318, "System.Classes.pas" + 8) + $0
+[23033898]{dcl31w280.bpl} .dcl31w. + $D350
+[50E0D743]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 11320, "Vcl.Forms.pas" + 23) + $1
+[50E0D76E]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessages (Line 11342, "Vcl.Forms.pas" + 1) + $4
+[004F6F70]{bds.exe     } bds.bds (Line 224, "" + 13) + $2
