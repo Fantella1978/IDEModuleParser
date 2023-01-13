@@ -6,14 +6,15 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
   Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ExtDlgs, Vcl.Buttons,
-  System.ImageList, Vcl.ImgList;
+  System.ImageList, Vcl.ImgList
+  , System.IOUtils, Vcl.Mask
+  ;
 
 type
   TForm1 = class(TForm)
     Button1: TButton;
     Button2: TButton;
     Panel1: TPanel;
-    TabControl1: TTabControl;
     ActionList1: TActionList;
     actExit: TAction;
     actOpenModuleFile: TAction;
@@ -22,6 +23,18 @@ type
     actParseModuleFile: TAction;
     Button4: TButton;
     actOpenReportZipFile: TAction;
+    LabeledEdit1: TLabeledEdit;
+    Panel2: TPanel;
+    MemoTxtModuleFile: TMemo;
+    Panel3: TPanel;
+    PageControl1: TPageControl;
+    TabModuleListFile: TTabSheet;
+    TabSheet2: TTabSheet;
+    TabSheet3: TTabSheet;
+    TabSheet4: TTabSheet;
+    tbFontSize: TTrackBar;
+    lblFontSize: TLabel;
+    edtFontSize: TEdit;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -31,6 +44,15 @@ type
     procedure actOpenReportZipFileExecute(Sender: TObject);
     /// <summary>Parse Module file</summary>
     procedure actParseModuleFileExecute(Sender: TObject);
+    /// <summary>Module file changed, update display FileName</summary>
+    procedure UpdateDisplayFileName();
+    /// <summary>Load new Text Module file</summary>
+    procedure LoadTxtModuleFile();
+    procedure tbFontSizeChange(Sender: TObject);
+    /// <summary>Enable Font Size Change</summary>
+    procedure EnableFontSizeChange();
+    /// <summary>Disable Font Size Change</summary>
+    procedure DisableFontSizeChange();
   private
     { Private declarations }
   public
@@ -39,6 +61,9 @@ type
 
 var
   Form1: TForm1;
+
+  mtfFileName : TFileName;  // ModuleList.txt filename
+  mzfFileName : TFileName;  // QPInfo-XXXXXXXX-XXXX.zip filename
 
 implementation
 
@@ -52,6 +77,19 @@ end;
 procedure TForm1.actOpenModuleFileExecute(Sender: TObject);
 begin
   // Open Module file (ModuleList.txt)
+  if (MemoTxtModuleFile.Lines.Text <> '') AND
+    (MessageDlg('ModuleFile is opened. Open another file?', TMsgDlgType.mtConfirmation, mbYesNo, 0) = mrNo)
+    then Exit;
+
+  if OpenTextFileDialog1.InitialDir = '' then
+    OpenTextFileDialog1.InitialDir := TPath.GetDirectoryName(Application.ExeName);
+
+  if OpenTextFileDialog1.Execute then
+    mtfFileName := OpenTextFileDialog1.FileName;
+
+  UpdateDisplayFileName();
+
+  LoadTxtModuleFile();
 
 end;
 
@@ -67,10 +105,59 @@ begin
 
 end;
 
+procedure TForm1.DisableFontSizeChange;
+begin
+  // Disable Font Size Change
+  lblFontSize.Enabled := false;
+  tbFontSize.Enabled := false;
+  edtFontSize.Enabled := false;
+end;
+
+procedure TForm1.EnableFontSizeChange;
+begin
+  // Enable Font Size Change
+  lblFontSize.Enabled := true;
+  tbFontSize.Enabled := true;
+  edtFontSize.Enabled := true;
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   //
   // ImageList1.GetBitmap(0, Image1.Picture.Bitmap);
+  MemoTxtModuleFile.Clear;
+
+  TabSheet2.TabVisible := false;
+  TabSheet3.TabVisible := false;
+  TabSheet4.TabVisible := false;
+
+  // Disable Font Size Change
+  EnableFontSizeChange();
+
+end;
+
+procedure TForm1.LoadTxtModuleFile;
+begin
+  // Load new Text Module file
+  MemoTxtModuleFile.Lines.LoadFromFile(mtfFileName);
+  // Enable Parse Action
+  actParseModuleFile.Enabled := true;
+  // Enable Font Size Change
+  EnableFontSizeChange();
+
+end;
+
+procedure TForm1.tbFontSizeChange(Sender: TObject);
+begin
+  // Change Font Size
+  edtFontSize.Text := IntToStr(tbFontSize.Position);
+  MemoTxtModuleFile.Font.Size := tbFontSize.Position;
+end;
+
+procedure TForm1.UpdateDisplayFileName;
+begin
+  //
+  LabeledEdit1.Text := mtfFileName;
 
 end;
 
