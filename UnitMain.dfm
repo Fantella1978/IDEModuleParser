@@ -2,8 +2,8 @@ object Form1: TForm1
   Left = 525
   Top = 186
   Caption = 'IDE Module Parser'
-  ClientHeight = 467
-  ClientWidth = 1003
+  ClientHeight = 480
+  ClientWidth = 1021
   Color = clBtnFace
   Constraints.MinHeight = 480
   Constraints.MinWidth = 640
@@ -19,8 +19,8 @@ object Form1: TForm1
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
-    Top = 430
-    Width = 1003
+    Top = 443
+    Width = 1021
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
@@ -28,10 +28,10 @@ object Form1: TForm1
     ExplicitTop = 426
     ExplicitWidth = 1001
     DesignSize = (
-      1003
+      1021
       37)
     object Button1: TButton
-      Left = 781
+      Left = 799
       Top = 6
       Width = 135
       Height = 25
@@ -43,7 +43,7 @@ object Form1: TForm1
       ExplicitLeft = 779
     end
     object Button2: TButton
-      Left = 922
+      Left = 940
       Top = 6
       Width = 75
       Height = 25
@@ -55,7 +55,7 @@ object Form1: TForm1
       ExplicitLeft = 920
     end
     object Button3: TButton
-      Left = 568
+      Left = 586
       Top = 6
       Width = 75
       Height = 25
@@ -65,7 +65,7 @@ object Form1: TForm1
       ExplicitLeft = 566
     end
     object Button4: TButton
-      Left = 649
+      Left = 667
       Top = 6
       Width = 126
       Height = 25
@@ -79,33 +79,34 @@ object Form1: TForm1
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 1003
-    Height = 430
-    ActivePage = TabModulesList
+    Width = 1021
+    Height = 443
+    ActivePage = TabLog
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
-    ExplicitWidth = 1001
-    ExplicitHeight = 426
+    ExplicitWidth = 1003
+    ExplicitHeight = 430
     object TabModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       object Panel2: TPanel
         Left = 0
         Top = 0
-        Width = 995
+        Width = 1013
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         Color = clBackground
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 995
         DesignSize = (
-          995
+          1013
           41)
         object LabeledEdit1: TLabeledEdit
           Left = 96
           Top = 10
-          Width = 894
+          Width = 912
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -117,14 +118,15 @@ object Form1: TForm1
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
+          ExplicitWidth = 894
         end
       end
       object MemoTxtModuleFile: TMemo
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 985
-        Height = 285
+        Width = 1003
+        Height = 298
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -1893,15 +1895,19 @@ object Form1: TForm1
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
+        ExplicitWidth = 985
+        ExplicitHeight = 285
       end
       object Panel3: TPanel
         Left = 0
-        Top = 336
-        Width = 995
+        Top = 349
+        Width = 1013
         Height = 61
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
+        ExplicitTop = 336
+        ExplicitWidth = 995
         object lblFontSize: TLabel
           Left = 13
           Top = 3
@@ -1941,17 +1947,17 @@ object Form1: TForm1
       Enabled = False
       ImageIndex = 1
       DesignSize = (
-        995
-        397)
+        1013
+        410)
       object ledtBDSBuild: TLabeledEdit
         Left = 98
         Top = 39
-        Width = 191
-        Height = 27
+        Width = 209
+        Height = 40
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight, akBottom]
         EditLabel.Width = 70
-        EditLabel.Height = 27
+        EditLabel.Height = 40
         EditLabel.Caption = 'BDS build '#8470':'
         LabelPosition = lpLeft
         ReadOnly = True
@@ -1964,12 +1970,12 @@ object Form1: TForm1
       object ledtBDSPath: TLabeledEdit
         Left = 98
         Top = 10
-        Width = 894
-        Height = 27
+        Width = 912
+        Height = 40
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight, akBottom]
         EditLabel.Width = 51
-        EditLabel.Height = 27
+        EditLabel.Height = 40
         EditLabel.Caption = 'BDS Path:'
         LabelPosition = lpLeft
         ReadOnly = True
@@ -1982,12 +1988,12 @@ object Form1: TForm1
       object ledtBDSInstDate: TLabeledEdit
         Left = 98
         Top = 68
-        Width = 191
-        Height = 27
+        Width = 209
+        Height = 40
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight, akBottom]
         EditLabel.Width = 85
-        EditLabel.Height = 27
+        EditLabel.Height = 40
         EditLabel.Caption = 'BDS install Date:'
         LabelPosition = lpLeft
         ReadOnly = True
@@ -2003,29 +2009,80 @@ object Form1: TForm1
       Enabled = False
       ImageIndex = 2
       DesignSize = (
-        995
-        397)
+        1013
+        410)
       object LabeledEdit2: TLabeledEdit
         Left = 101
         Top = 218
-        Width = 894
-        Height = 23
+        Width = 912
+        Height = 36
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight, akBottom]
         EditLabel.Width = 81
-        EditLabel.Height = 23
+        EditLabel.Height = 36
         EditLabel.Caption = 'ModuleList file:'
         LabelPosition = lpLeft
         ReadOnly = True
         TabOrder = 0
         Text = ''
         OnClick = actOpenModuleFileExecute
+        ExplicitWidth = 894
+        ExplicitHeight = 23
       end
     end
-    object TabSheet4: TTabSheet
-      Caption = 'TabSheet4'
-      Enabled = False
+    object TabLog: TTabSheet
+      Caption = 'Log'
       ImageIndex = 3
+      object memoLog: TMemo
+        AlignWithMargins = True
+        Left = 5
+        Top = 5
+        Width = 1003
+        Height = 367
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Align = alClient
+        Lines.Strings = (
+          'memoLog')
+        TabOrder = 0
+        ExplicitLeft = 112
+        ExplicitTop = 128
+        ExplicitWidth = 185
+        ExplicitHeight = 89
+      end
+      object Panel4: TPanel
+        Left = 0
+        Top = 377
+        Width = 1013
+        Height = 33
+        Align = alBottom
+        BevelOuter = bvNone
+        Color = clBackground
+        ParentBackground = False
+        TabOrder = 1
+        DesignSize = (
+          1013
+          33)
+        object lbedLogPath: TLabeledEdit
+          Left = 56
+          Top = 3
+          Width = 952
+          Height = 23
+          Cursor = crHandPoint
+          Anchors = [akLeft, akTop, akRight]
+          EditLabel.Width = 42
+          EditLabel.Height = 23
+          EditLabel.Caption = 'Log file:'
+          LabelPosition = lpLeft
+          ReadOnly = True
+          TabOrder = 0
+          Text = ''
+          OnClick = actOpenModuleFileExecute
+          ExplicitWidth = 934
+        end
+      end
     end
   end
   object ActionList1: TActionList

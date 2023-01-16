@@ -5,7 +5,8 @@ uses
   UnitMain in 'UnitMain.pas' {Form1},
   Vcl.Themes,
   Vcl.Styles,
-  UnitDB in 'UnitDB.pas' {DataModule1: TDataModule};
+  UnitDB in 'UnitDB.pas' {DataModule1: TDataModule},
+  UnitLogger in 'UnitLogger.pas';
 
 {$R *.res}
 
