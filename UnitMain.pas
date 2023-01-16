@@ -193,6 +193,7 @@ begin
   TFormatSettings.Create;
   Logger := TMyLogger.Create;
   Logger.LogMemo := Form1.memoLog;
+
   Logger.AddToLog('Application started');
 end;
 
@@ -244,26 +245,46 @@ begin
         FileNameLength := DragQueryFile(DropH, 0, nil , 0);
         SetLength(FileName, FileNameLength);
         DragQueryFile(DropH, 0, PChar(FileName), FileNameLength + 1);
-        // ShowMessage(FileName);
         FileExtension := LowerCase(TPath.GetExtension(FileName));
-        if (FileExtension = 'txt') OR
-           (FileExtension = 'zip')
+        if (FileExtension = '.txt') OR
+           (FileExtension = '.zip')
         then DropError := false
         else DropError := true;
       end
     else
       DropError := true;
-    if DropError then ShowMessage('Please drag and drop only one TXT or ZIP file.')
+    if DropError
+    then
+      begin
+        Logger.AddToLog('Drag and drop error. Only one TXT or ZIP file accepted.');
+        ShowMessage('Please drag and drop only one TXT or ZIP file.');
+      end;
   finally
     DragFinish(DropH);
   end;
   Msg.Result := 0;
+  if DropError then Exit;
 
-  if not ConfirmNewTxtModuleFileLoad then Exit;
+  if not ConfirmNewTxtModuleFileLoad
+  then
+    begin
+      Logger.AddToLog('The opening of a new text ModuleFile has not been confirmed.');
+      Exit;
+    end;
 
-  if (FileExtension = 'txt') then OpenTextModuleFile(Form1);
+  if (FileExtension = '.txt')
+  then
+    begin
+      mtfFileName := FileName;
+      OpenTextModuleFile(Form1);
+    end;
 
-  if (FileExtension = 'zip') then OpenZipReportFile(Form1);
+  if (FileExtension = '.zip')
+  then
+    begin
+      mzfFileName := FileName;
+      OpenZipReportFile(Form1);
+    end;
 
   {
   if parse then
