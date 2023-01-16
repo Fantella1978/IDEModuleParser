@@ -14,6 +14,7 @@ object Form1: TForm1
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poDesigned
+  OnClose = FormClose
   OnCreate = FormCreate
   TextHeight = 15
   object Panel1: TPanel
@@ -24,8 +25,8 @@ object Form1: TForm1
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 407
-    ExplicitWidth = 628
+    ExplicitTop = 426
+    ExplicitWidth = 1001
     DesignSize = (
       1003
       37)
@@ -39,7 +40,7 @@ object Form1: TForm1
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 406
+      ExplicitLeft = 779
     end
     object Button2: TButton
       Left = 922
@@ -51,7 +52,7 @@ object Form1: TForm1
       Cancel = True
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 547
+      ExplicitLeft = 920
     end
     object Button3: TButton
       Left = 568
@@ -61,7 +62,7 @@ object Form1: TForm1
       Action = actParseModuleFile
       Anchors = [akRight, akBottom]
       TabOrder = 2
-      ExplicitLeft = 193
+      ExplicitLeft = 566
     end
     object Button4: TButton
       Left = 649
@@ -72,7 +73,7 @@ object Form1: TForm1
       Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
       TabOrder = 3
-      ExplicitLeft = 274
+      ExplicitLeft = 647
     end
   end
   object PageControl1: TPageControl
@@ -80,10 +81,12 @@ object Form1: TForm1
     Top = 0
     Width = 1003
     Height = 430
-    ActivePage = TabModuleListFile
+    ActivePage = TabModulesList
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
+    ExplicitWidth = 1001
+    ExplicitHeight = 426
     object TabModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       object Panel2: TPanel
@@ -96,7 +99,6 @@ object Form1: TForm1
         Color = clBackground
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 620
         DesignSize = (
           995
           41)
@@ -115,7 +117,6 @@ object Form1: TForm1
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 519
         end
       end
       object MemoTxtModuleFile: TMemo
@@ -1892,8 +1893,6 @@ object Form1: TForm1
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 610
-        ExplicitHeight = 282
       end
       object Panel3: TPanel
         Left = 0
@@ -1937,15 +1936,91 @@ object Form1: TForm1
         end
       end
     end
-    object TabSheet2: TTabSheet
-      Caption = 'TabSheet2'
+    object TabModulesList: TTabSheet
+      Caption = 'Modules'
       Enabled = False
       ImageIndex = 1
+      DesignSize = (
+        995
+        397)
+      object ledtBDSBuild: TLabeledEdit
+        Left = 98
+        Top = 39
+        Width = 191
+        Height = 27
+        Cursor = crHandPoint
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        EditLabel.Width = 70
+        EditLabel.Height = 27
+        EditLabel.Caption = 'BDS build '#8470':'
+        LabelPosition = lpLeft
+        ReadOnly = True
+        TabOrder = 0
+        Text = ''
+        OnClick = actOpenModuleFileExecute
+        ExplicitWidth = 189
+        ExplicitHeight = 23
+      end
+      object ledtBDSPath: TLabeledEdit
+        Left = 98
+        Top = 10
+        Width = 894
+        Height = 27
+        Cursor = crHandPoint
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        EditLabel.Width = 51
+        EditLabel.Height = 27
+        EditLabel.Caption = 'BDS Path:'
+        LabelPosition = lpLeft
+        ReadOnly = True
+        TabOrder = 1
+        Text = ''
+        OnClick = actOpenModuleFileExecute
+        ExplicitWidth = 892
+        ExplicitHeight = 23
+      end
+      object ledtBDSInstDate: TLabeledEdit
+        Left = 98
+        Top = 68
+        Width = 191
+        Height = 27
+        Cursor = crHandPoint
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        EditLabel.Width = 85
+        EditLabel.Height = 27
+        EditLabel.Caption = 'BDS install Date:'
+        LabelPosition = lpLeft
+        ReadOnly = True
+        TabOrder = 2
+        Text = ''
+        OnClick = actOpenModuleFileExecute
+        ExplicitWidth = 189
+        ExplicitHeight = 23
+      end
     end
     object TabSheet3: TTabSheet
       Caption = 'TabSheet3'
       Enabled = False
       ImageIndex = 2
+      DesignSize = (
+        995
+        397)
+      object LabeledEdit2: TLabeledEdit
+        Left = 101
+        Top = 218
+        Width = 894
+        Height = 23
+        Cursor = crHandPoint
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        EditLabel.Width = 81
+        EditLabel.Height = 23
+        EditLabel.Caption = 'ModuleList file:'
+        LabelPosition = lpLeft
+        ReadOnly = True
+        TabOrder = 0
+        Text = ''
+        OnClick = actOpenModuleFileExecute
+      end
     end
     object TabSheet4: TTabSheet
       Caption = 'TabSheet4'

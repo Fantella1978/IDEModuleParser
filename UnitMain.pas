@@ -5,9 +5,12 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
-  Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ExtDlgs, Vcl.Buttons,
-  System.ImageList, Vcl.ImgList
-  , System.IOUtils, Vcl.Mask
+  Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ExtDlgs, Vcl.Buttons
+  , System.ImageList
+  , Vcl.ImgList
+  , System.IOUtils
+  , Vcl.Mask
+  , Winapi.ShellAPI
   ;
 
 type
@@ -29,12 +32,16 @@ type
     Panel3: TPanel;
     PageControl1: TPageControl;
     TabModuleListFile: TTabSheet;
-    TabSheet2: TTabSheet;
+    TabModulesList: TTabSheet;
     TabSheet3: TTabSheet;
     TabSheet4: TTabSheet;
     tbFontSize: TTrackBar;
     lblFontSize: TLabel;
     edtFontSize: TEdit;
+    LabeledEdit2: TLabeledEdit;
+    ledtBDSBuild: TLabeledEdit;
+    ledtBDSPath: TLabeledEdit;
+    ledtBDSInstDate: TLabeledEdit;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -53,6 +60,10 @@ type
     procedure EnableFontSizeChange();
     /// <summary>Disable Font Size Change</summary>
     procedure DisableFontSizeChange();
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+
+    procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
+
   private
     { Private declarations }
   public
@@ -103,6 +114,11 @@ procedure TForm1.actParseModuleFileExecute(Sender: TObject);
 begin
   // Parse Module file
 
+  ledtBDSPath.Text := '';
+  ledtBDSBuild.Text := '';
+  ledtBDSInstDate.Text := '';
+
+  TabModulesList.TabVisible := true;
 end;
 
 procedure TForm1.DisableFontSizeChange;
@@ -121,19 +137,26 @@ begin
   edtFontSize.Enabled := true;
 end;
 
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  // Close the Application
+  DragAcceptFiles(Self.Handle, False);
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   //
   // ImageList1.GetBitmap(0, Image1.Picture.Bitmap);
   MemoTxtModuleFile.Clear;
 
-  TabSheet2.TabVisible := false;
+  TabModulesList.TabVisible := false;
   TabSheet3.TabVisible := false;
   TabSheet4.TabVisible := false;
 
   // Disable Font Size Change
   EnableFontSizeChange();
 
+  DragAcceptFiles(Self.Handle, True);
 end;
 
 procedure TForm1.LoadTxtModuleFile;
@@ -159,6 +182,43 @@ begin
   //
   LabeledEdit1.Text := mtfFileName;
 
+end;
+
+procedure TForm1.WMDropFiles(var Msg: TWMDropFiles);
+var
+  DropH: HDROP;
+  DroppedFileCount : integer;
+  FileNameLength: Integer;
+  FileName: string;
+  Parse: boolean;
+begin
+  DroppedFileCount := -1;
+  // Parse := false;
+  DropH := Msg.Drop;
+  try
+    DroppedFileCount  := DragQueryFile(DropH, $FFFFFFFF, nil, 0);
+    if DroppedFileCount = 1 then begin
+      Application.BringToFront;
+      FileNameLength := DragQueryFile(DropH, 0, nil , 0);
+      SetLength(FileName, FileNameLength);
+      DragQueryFile(DropH, 0, PChar(FileName), FileNameLength + 1);
+      // Parse := True;
+      ShowMessage(FileName);
+    end
+    else
+      ShowMessage('Please drag and drop only one TXT or ZIP file.')
+  finally
+    DragFinish(DropH);
+  end;
+  Msg.Result := 0;
+
+  {
+  if parse then
+  begin
+    btnLogFile.Text := FileName;
+    btnParse.Click;
+  end;
+  }
 end;
 
 end.
