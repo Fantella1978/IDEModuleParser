@@ -13,6 +13,7 @@ uses
   , Winapi.ShellAPI
   , UnitLogger
   , UnitParser
+  , System.UITypes
   ;
 
 type
@@ -104,7 +105,7 @@ function TForm1.ConfirmNewTxtModuleFileLoad : boolean;
 begin
   Result := false;
   if (MemoTxtModuleFile.Lines.Text <> '') AND
-    (MessageDlg('The ModuleFile is opened. Open another file?', TMsgDlgType.mtConfirmation, mbYesNo, 0) = mrNo)
+    (MessageDlg('The ModuleFile is opened. Open another file?', mtConfirmation, mbYesNo, 0) = mrNo)
     then
       begin
         Logger.AddToLog('The opening of a new text ModuleFile has not been confirmed.');
@@ -166,7 +167,7 @@ end;
 procedure TForm1.actParseCancelExecute(Sender: TObject);
 begin
   // Cancel Parsing
-  if MessageDlg('Cancel parsing?', TMsgDlgType.mtConfirmation, [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], 0) = mrYes
+  if MessageDlg('Cancel parsing?', mtConfirmation, [mbYes, mbNo], 0) = mrYes
   then
     begin
       frmParse.parseCanceled := true;
@@ -274,11 +275,11 @@ var
   FileExtension: string;
   DropError: boolean;
 begin
-  DroppedFileCount := -1;
+  // DroppedFileCount := -1;
   DropError := true;
   DropH := Msg.Drop;
   try
-    DroppedFileCount  := DragQueryFile(DropH, $FFFFFFFF, nil, 0);
+    DroppedFileCount := DragQueryFile(DropH, $FFFFFFFF, nil, 0);
     if DroppedFileCount = 1
     then
       begin
@@ -289,22 +290,19 @@ begin
         FileExtension := LowerCase(TPath.GetExtension(FileName));
         if (FileExtension = '.txt') OR
            (FileExtension = '.zip')
-        then DropError := false
-        else DropError := true;
-      end
-    else
-      DropError := true;
-    if DropError
-    then
-      begin
-        Logger.AddToLog('Drag and drop error. Only one TXT or ZIP file accepted.');
-        ShowMessage('Please drag and drop only one TXT or ZIP file.');
+          then DropError := false;
       end;
   finally
     DragFinish(DropH);
   end;
   Msg.Result := 0;
-  if DropError then Exit;
+  if DropError
+  then
+    begin
+      Logger.AddToLog('Drag and drop error. Only one TXT or ZIP file accepted.');
+      ShowMessage('Please drag and drop only one TXT or ZIP file.');
+      Exit;
+    end;
 
   if not ConfirmNewTxtModuleFileLoad then Exit;
 

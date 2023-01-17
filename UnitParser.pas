@@ -11,19 +11,25 @@ uses
 type
   TfrmParse = class(TForm)
     Panel1: TPanel;
-    ProgressBar1: TProgressBar;
-    Button1: TButton;
+    pBarOverall: TProgressBar;
+    btnStop: TButton;
+    lblOverall: TLabel;
+    pBarCurrentTask: TProgressBar;
+    lblCurrentTask: TLabel;
     procedure ParseModuleListFile();
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
-    function parseGetBDSdata(): boolean;
+    function parseTaskModuleFileParse(): boolean;
     function GetModuleLineRegExp(): string;
   private
     { Private declarations }
+    function GetOverallTaskPosition(): Integer;
   public
     { Public declarations }
     parseCanceled: boolean;
     parseSuccess: boolean;
+    Tasks: Integer;
+    currentTask: Integer;
   end;
 
 var
@@ -58,7 +64,10 @@ end;
 
 procedure TfrmParse.FormShow(Sender: TObject);
 begin
-  ProgressBar1.Position := 0;
+  pBarCurrentTask.Position := 0;
+  pBarOverall.Position := 0;
+  if Tasks < 1 then Tasks := 1;
+  if currentTask < 1 then Tasks := 1;
 end;
 
 function TfrmParse.GetModuleLineRegExp: string;
@@ -76,27 +85,43 @@ begin
 
 end;
 
+function TfrmParse.GetOverallTaskPosition: Integer;
+begin
+  //
+  Result := Round(100 / Tasks) * (currentTask - 1) +
+          Round(100 / Tasks * pBarCurrentTask.Position / pBarCurrentTask.Max) ;
+end;
+
 procedure TfrmParse.ParseModuleListFile;
 begin
   //
   frmMain.actParseCancel.Enabled := true;
   parseCanceled := not frmMain.actParseCancel.Enabled;
 
-  parseGetBDSdata();
+  pBarOverall.Max := 100;
+  pBarOverall.Position := 0;
+  Tasks := 2;
+  currentTask := 1;
+  parseTaskModuleFileParse();
 
   frmMain.actParseCancel.Enabled := false;
   parseSuccess := true;
   frmParse.Close;
 end;
 
-function TfrmParse.parseGetBDSdata: boolean;
+function TfrmParse.parseTaskModuleFileParse: boolean;
 var
   i: Integer;
   cl : Integer;
+  err : Integer;
+  s: string;
 begin
+  Logger.AddToLog('Module file parsing started.');
   Result := false;
+  err := 0;
   cl := frmMain.MemoTxtModuleFile.Lines.Count;
-  ProgressBar1.Max := cl;
+  pBarCurrentTask.Position := 0;
+  pBarCurrentTask.Max := cl;
   if regexp = nil
     then regexp := TPerlRegEx.Create;
 
@@ -104,7 +129,8 @@ begin
     RegEx := GetModuleLineRegExp();
     for i := 0 to cl - 1 do
       begin
-        ProgressBar1.Position := i;
+        pBarCurrentTask.Position := i;
+        pBarOverall.Position := GetOverallTaskPosition();
         Application.ProcessMessages;
         Subject := frmMain.MemoTxtModuleFile.Lines[i];
         if Match
@@ -126,17 +152,30 @@ begin
             Logger.AddToLog('Parse line #' + IntToStr(i) + '. Found module: ' + Groups[1] );
           end
         else
-          Logger.AddToLog('Parse line #' + IntToStr(i) + '. Module not found in line: ' + Subject );
+          begin
+            inc(err);
+            Logger.AddToLog('Parse line #' + IntToStr(i) + '. Module not found in line: ' + Subject );
+          end;
 
         if parseCanceled
-          then
+        then
           begin
             Logger.AddToLog('Module file parsing canceled at line #' + IntToStr(i));
             Break;
           end;
-        sleep(2); // Sleep
+        // sleep(1); // Sleep
       end;
   end;
+  if err = 0
+  then Logger.AddToLog('Module file parsing success.')
+  else
+    begin
+      s := 'Module file parsing success. Can''t parse ' + IntToStr(err) + ' line';
+      if err > 1 then s := s + 's';
+      s := s + '.';
+      Logger.AddToLog(s);
+      ShowMessage(s);
+    end;
 end;
 
 end.
