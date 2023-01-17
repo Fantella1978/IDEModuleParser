@@ -2096,6 +2096,10 @@ object Form1: TForm1
       Hint = 'Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip)'
       OnExecute = actOpenReportZipFileExecute
     end
+    object actParseCancel: TAction
+      Caption = 'Stop'
+      OnExecute = actParseCancelExecute
+    end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
     DefaultExt = '.txt'

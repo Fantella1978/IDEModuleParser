@@ -12,6 +12,7 @@ uses
   , Vcl.Mask
   , Winapi.ShellAPI
   , UnitLogger
+  , UnitParser
   ;
 
 type
@@ -46,6 +47,7 @@ type
     memoLog: TMemo;
     Panel4: TPanel;
     lbedLogPath: TLabeledEdit;
+    actParseCancel: TAction;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -73,6 +75,7 @@ type
 
     procedure OpenTextModuleFile(Sender: TObject);
     procedure OpenZipReportFile(Sender: TObject);
+    procedure actParseCancelExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -150,12 +153,28 @@ begin
 
 end;
 
+procedure TForm1.actParseCancelExecute(Sender: TObject);
+begin
+  // Cancel Parsing
+  if MessageDlg('Cancel parsing?', TMsgDlgType.mtConfirmation, [TMsgDlgBtn.mbYes, TMsgDlgBtn.mbNo], 0) = mrYes
+  then
+    begin
+      frmParse.parseCanceled := true;
+      Application.ProcessMessages;
+      frmParse.Close;
+    end
+end;
+
 procedure TForm1.actParseModuleFileExecute(Sender: TObject);
 begin
   // Parse Module file
   ledtBDSPath.Text := '';
   ledtBDSBuild.Text := '';
   ledtBDSInstDate.Text := '';
+
+  frmParse.parseSuccess := false;
+  frmParse.Show;
+  frmParse.ParseModuleListFile();
 
   TabModulesList.TabVisible := true;
 end;
