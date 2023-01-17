@@ -81,7 +81,7 @@ object Form1: TForm1
     Top = 0
     Width = 1021
     Height = 443
-    ActivePage = TabModuleListFile
+    ActivePage = tsStackTrace
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
@@ -99,7 +99,7 @@ object Form1: TForm1
         Color = clBackground
         ParentBackground = False
         TabOrder = 0
-        ExplicitTop = 3
+        ExplicitWidth = 1011
         DesignSize = (
           1013
           41)
@@ -1942,6 +1942,10 @@ object Form1: TForm1
         end
       end
     end
+    object tsStackTrace: TTabSheet
+      Caption = 'StackTrace file'
+      ImageIndex = 4
+    end
     object TabModulesList: TTabSheet
       Caption = 'Modules'
       Enabled = False
@@ -2107,6 +2111,13 @@ object Form1: TForm1
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     ShowEncodingList = False
     Left = 510
+    Top = 5
+  end
+  object OpenDialog1: TOpenDialog
+    DefaultExt = '.zip'
+    Filter = 'Zip file|*.zip'
+    Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
+    Left = 609
     Top = 5
   end
 end

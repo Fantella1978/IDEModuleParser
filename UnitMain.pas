@@ -48,6 +48,8 @@ type
     Panel4: TPanel;
     lbedLogPath: TLabeledEdit;
     actParseCancel: TAction;
+    tsStackTrace: TTabSheet;
+    OpenDialog1: TOpenDialog;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -67,9 +69,8 @@ type
     /// <summary>Disable Font Size Change</summary>
     procedure DisableFontSizeChange();
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-
+    /// <summary>Drag and Drop TXT or ZIP files in App</summary>
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
-
     /// <summary>Confirm new Txt Module file load</summary>
     function ConfirmNewTxtModuleFileLoad : boolean;
 
@@ -85,11 +86,9 @@ type
 
 var
   frmMain: TForm1;
-
   mtfFileName : TFileName;  // ModuleList.txt filename
   mzfFileName : TFileName;  // QPInfo-XXXXXXXX-XXXX.zip filename
-
-  Logger : TMyLogger;
+  Logger : TMyLogger;       // Logger
 
 implementation
 
@@ -131,6 +130,13 @@ end;
 procedure TForm1.OpenZipReportFile(Sender: TObject);
 begin
   // Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip)
+  if not FileExists(mzfFileName) then Exit;
+
+  // Unpack ZIP in temp folder
+
+  mtfFileName := '';
+
+  OpenTextModuleFile(Sender);
 
 end;
 
@@ -143,7 +149,6 @@ begin
   if OpenTextFileDialog1.Execute then
     mtfFileName := OpenTextFileDialog1.FileName;
   OpenTextModuleFile(Sender);
-
 end;
 
 procedure TForm1.actOpenReportZipFileExecute(Sender: TObject);
@@ -151,6 +156,11 @@ begin
   // Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip) via Open File Dialog
   if not ConfirmNewTxtModuleFileLoad then Exit;
 
+  if OpenDialog1.InitialDir = '' then
+    OpenDialog1.InitialDir := TPath.GetDirectoryName(Application.ExeName);
+  if OpenDialog1.Execute then
+    mzfFileName := OpenDialog1.FileName;
+  OpenZipReportFile(Sender);
 end;
 
 procedure TForm1.actParseCancelExecute(Sender: TObject);
@@ -160,7 +170,6 @@ begin
   then
     begin
       frmParse.parseCanceled := true;
-      Application.ProcessMessages;
       frmParse.Close;
     end
 end;
@@ -176,7 +185,8 @@ begin
   frmParse.Show;
   frmParse.ParseModuleListFile();
 
-  TabModulesList.TabVisible := true;
+  if frmParse.parseSuccess
+    then TabModulesList.TabVisible := true;
 end;
 
 procedure TForm1.DisableFontSizeChange;
@@ -209,6 +219,7 @@ begin
 
   TabModulesList.TabVisible := false;
   TabSheet3.TabVisible := false;
+  tsStackTrace.TabVisible := false;
   PageControl1.ActivePage := TabModuleListFile;
 
   // Disable Font Size Change
@@ -236,6 +247,7 @@ begin
   EnableFontSizeChange();
 
   Logger.AddToLog('New Text Module file opened: ' + mtfFileName);
+  frmParse.parseSuccess := false;
 end;
 
 procedure TForm1.tbFontSizeChange(Sender: TObject);
@@ -309,14 +321,6 @@ begin
       mzfFileName := FileName;
       OpenZipReportFile(frmMain);
     end;
-
-  {
-  if parse then
-  begin
-    btnLogFile.Text := FileName;
-    btnParse.Click;
-  end;
-  }
 end;
 
 end.
