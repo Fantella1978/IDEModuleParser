@@ -112,7 +112,7 @@ begin
   LogString := dts + ' - ' + s;
   Add(LogString);
   if FLogFileName <> '' then AddLineToLogFile(LogString);
-  if FLogMemo <> nil then FLogMemo.Lines := (Self as TStringList);
+  if FLogMemo <> nil then FLogMemo.Lines.Add(LogString);
 end;
 
 constructor TMyLogger.Create;

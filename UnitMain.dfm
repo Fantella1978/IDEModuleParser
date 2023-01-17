@@ -99,7 +99,7 @@ object Form1: TForm1
         Color = clBackground
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 1011
+        ExplicitTop = 3
         DesignSize = (
           1013
           41)
