@@ -32,21 +32,62 @@ implementation
 
 function TMyLogger.AddTextToFile(const aFileName, aText: string; AddCRLF: Boolean): Boolean;
 var
-  lF: Integer;
-  lS: string;
+    fs: TFileStream;
+    preamble:TBytes;
+    tempString: RawByteString;
+    amode: Integer;
 begin
   Result := False;
-  if FileExists(aFileName) then lF := FileOpen(aFileName, fmOpenWrite + fmShareDenyNone)
-                           else lF := FileCreate(aFileName);
-  if (lF = 0) then
+  if not FileExists(aFileName)
+    then amode := fmCreate
+    else amode := fmOpenReadWrite;
+  fs := TFileStream.Create(aFileName, { mode } amode, fmShareDenyWrite);
+  { sharing mode allows read during our writes }
+  try
+
+    {internal Char (UTF16) codepoint, to UTF8 encoding conversion:}
+    tempString := Utf8Encode(aText); // this converts UnicodeString to WideString, sadly.
+
+    if amode = fmCreate
+    then
+      begin
+        preamble := TEncoding.UTF8.GetPreamble;
+        fs.WriteBuffer( PAnsiChar(preamble)^, Length(preamble));
+      end
+    else
+      begin
+        fs.Seek(fs.Size, 0); { go to the end, append }
+      end;
+
+    if AddCRLF // Add CRLF line end
+      then tempString := tempString + AnsiChar(#13) + AnsiChar(#10);
+
+    fs.WriteBuffer(PAnsiChar(tempString)^, Length(tempString));
+  finally
+    fs.Free;
+  end;
+  Result := true;
+
+{
+var
+  FileHandle: Integer;
+  iFileLength: Integer;
+  tempString: string;
+begin
+  Result := False;
+  if FileExists(aFileName)
+    then FileHandle := FileOpen(aFileName, fmOpenWrite + fmShareDenyNone)
+    else FileHandle := FileCreate(aFileName);
+  if FileHandle > 0 then
     try
-      FileSeek(lF, 0, 2);
-      if AddCRLF then lS := aText + #13#10
-                 else lS := aText;
-      FileWrite(lF, lS[1], Length(lS));
+      iFileLength := FileSeek(FileHandle, 0, 2);
+      if AddCRLF then tempString := aText + #13#10
+                 else tempString := aText;
+      FileWrite(FileHandle, tempString, Length(tempString));
     finally
-      FileClose(lF);
+      FileClose(FileHandle);
     end;
+    }
 end;
 
 procedure TMyLogger.AddLineToLogFile(s: string);

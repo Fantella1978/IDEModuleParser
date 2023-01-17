@@ -81,7 +81,7 @@ object Form1: TForm1
     Top = 0
     Width = 1021
     Height = 443
-    ActivePage = TabLog
+    ActivePage = TabModuleListFile
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
@@ -99,6 +99,7 @@ object Form1: TForm1
         Color = clBackground
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 1011
         DesignSize = (
           1013
           41)
@@ -117,6 +118,7 @@ object Form1: TForm1
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
+          ExplicitWidth = 910
         end
       end
       object MemoTxtModuleFile: TMemo
@@ -1893,6 +1895,8 @@ object Form1: TForm1
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
+        ExplicitWidth = 1001
+        ExplicitHeight = 294
       end
       object Panel3: TPanel
         Left = 0
@@ -1902,6 +1906,8 @@ object Form1: TForm1
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
+        ExplicitTop = 345
+        ExplicitWidth = 1011
         object lblFontSize: TLabel
           Left = 13
           Top = 3
@@ -2046,8 +2052,6 @@ object Form1: TForm1
         Color = clBackground
         ParentBackground = False
         TabOrder = 1
-        ExplicitTop = 373
-        ExplicitWidth = 1011
         DesignSize = (
           1013
           33)
@@ -2056,7 +2060,6 @@ object Form1: TForm1
           Top = 3
           Width = 952
           Height = 23
-          Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight]
           EditLabel.Width = 42
           EditLabel.Height = 23
@@ -2065,7 +2068,6 @@ object Form1: TForm1
           ReadOnly = True
           TabOrder = 0
           Text = ''
-          ExplicitWidth = 950
         end
       end
     end

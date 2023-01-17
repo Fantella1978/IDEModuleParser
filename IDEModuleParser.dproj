@@ -144,6 +144,10 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="UnitLogger.pas"/>
+        <DCCReference Include="UnitParser.pas">
+            <Form>frmParse</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

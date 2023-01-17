@@ -81,7 +81,7 @@ type
   end;
 
 var
-  Form1: TForm1;
+  frmMain: TForm1;
 
   mtfFileName : TFileName;  // ModuleList.txt filename
   mzfFileName : TFileName;  // QPInfo-XXXXXXXX-XXXX.zip filename
@@ -103,7 +103,11 @@ begin
   Result := false;
   if (MemoTxtModuleFile.Lines.Text <> '') AND
     (MessageDlg('The ModuleFile is opened. Open another file?', TMsgDlgType.mtConfirmation, mbYesNo, 0) = mrNo)
-    then Exit;
+    then
+      begin
+        Logger.AddToLog('The opening of a new text ModuleFile has not been confirmed.');
+        Exit;
+      end;
   Result := true;
 end;
 
@@ -115,6 +119,9 @@ begin
 
   UpdateDisplayFileName();
   LoadTxtModuleFile();
+
+  if PageControl1.ActivePage <> TabModuleListFile
+    then PageControl1.ActivePage := TabModuleListFile;
 
 end;
 
@@ -133,6 +140,7 @@ begin
   if OpenTextFileDialog1.Execute then
     mtfFileName := OpenTextFileDialog1.FileName;
   OpenTextModuleFile(Sender);
+
 end;
 
 procedure TForm1.actOpenReportZipFileExecute(Sender: TObject);
@@ -189,11 +197,13 @@ begin
 
   DragAcceptFiles(Self.Handle, True);
 
-
   TFormatSettings.Create;
   Logger := TMyLogger.Create;
-  Logger.LogMemo := Form1.memoLog;
-
+  Logger.LogMemo := frmMain.memoLog;
+  Logger.LogFile := TPath.GetDirectoryName(Application.ExeName) +
+    TPath.DirectorySeparatorChar +
+    TPath.GetFileNameWithoutExtension(Application.ExeName) + '.log';
+  lbedLogPath.Text := Logger.LogFile;
   Logger.AddToLog('Application started');
 end;
 
@@ -265,25 +275,20 @@ begin
   Msg.Result := 0;
   if DropError then Exit;
 
-  if not ConfirmNewTxtModuleFileLoad
-  then
-    begin
-      Logger.AddToLog('The opening of a new text ModuleFile has not been confirmed.');
-      Exit;
-    end;
+  if not ConfirmNewTxtModuleFileLoad then Exit;
 
   if (FileExtension = '.txt')
   then
     begin
       mtfFileName := FileName;
-      OpenTextModuleFile(Form1);
+      OpenTextModuleFile(frmMain);
     end;
 
   if (FileExtension = '.zip')
   then
     begin
       mzfFileName := FileName;
-      OpenZipReportFile(Form1);
+      OpenZipReportFile(frmMain);
     end;
 
   {
