@@ -47,20 +47,20 @@ object frmParse: TfrmParse
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 35
-    ExplicitWidth = 520
+    ExplicitTop = 104
+    ExplicitWidth = 484
     DesignSize = (
       486
       37)
     object btnStop: TButton
-      Left = 403
+      Left = 413
       Top = 8
       Width = 75
       Height = 25
-      Action = Form1.actParseCancel
+      Action = frmMain.actParseCancel
       Anchors = [akRight, akBottom]
       TabOrder = 0
-      ExplicitLeft = 472
+      ExplicitLeft = 411
     end
   end
   object pBarOverall: TProgressBar
@@ -70,7 +70,7 @@ object frmParse: TfrmParse
     Height = 17
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
-    ExplicitWidth = 564
+    ExplicitWidth = 468
   end
   object pBarCurrentTask: TProgressBar
     Left = 8
@@ -79,6 +79,6 @@ object frmParse: TfrmParse
     Height = 17
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 2
-    ExplicitWidth = 564
+    ExplicitWidth = 468
   end
 end

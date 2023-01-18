@@ -1,9 +1,9 @@
-object Form1: TForm1
+object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'IDE Module Parser'
-  ClientHeight = 480
-  ClientWidth = 1021
+  ClientHeight = 503
+  ClientWidth = 885
   Color = clBtnFace
   Constraints.MinHeight = 480
   Constraints.MinWidth = 640
@@ -19,19 +19,19 @@ object Form1: TForm1
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
-    Top = 443
-    Width = 1021
+    Top = 466
+    Width = 885
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 439
-    ExplicitWidth = 1019
+    ExplicitTop = 462
+    ExplicitWidth = 883
     DesignSize = (
-      1021
+      885
       37)
     object Button1: TButton
-      Left = 799
+      Left = 661
       Top = 6
       Width = 135
       Height = 25
@@ -40,10 +40,10 @@ object Form1: TForm1
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 797
+      ExplicitLeft = 659
     end
     object Button2: TButton
-      Left = 940
+      Left = 802
       Top = 6
       Width = 75
       Height = 25
@@ -52,20 +52,20 @@ object Form1: TForm1
       Cancel = True
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 938
+      ExplicitLeft = 800
     end
     object Button3: TButton
-      Left = 586
+      Left = 448
       Top = 6
       Width = 75
       Height = 25
       Action = actParseModuleFile
       Anchors = [akRight, akBottom]
       TabOrder = 2
-      ExplicitLeft = 584
+      ExplicitLeft = 446
     end
     object Button4: TButton
-      Left = 667
+      Left = 529
       Top = 6
       Width = 126
       Height = 25
@@ -73,40 +73,39 @@ object Form1: TForm1
       Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
       TabOrder = 3
-      ExplicitLeft = 665
+      ExplicitLeft = 527
     end
   end
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 1021
-    Height = 443
-    ActivePage = tsStackTrace
+    Width = 885
+    Height = 466
+    ActivePage = TabModulesList
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
-    ExplicitWidth = 1019
-    ExplicitHeight = 439
+    ExplicitWidth = 883
+    ExplicitHeight = 462
     object TabModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       object Panel2: TPanel
         Left = 0
         Top = 0
-        Width = 1013
+        Width = 877
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         Color = clBackground
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 1011
         DesignSize = (
-          1013
+          877
           41)
         object LabeledEdit1: TLabeledEdit
           Left = 96
           Top = 10
-          Width = 912
+          Width = 774
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -118,15 +117,14 @@ object Form1: TForm1
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 910
         end
       end
       object MemoTxtModuleFile: TMemo
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 1003
-        Height = 298
+        Width = 867
+        Height = 321
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -1895,19 +1893,15 @@ object Form1: TForm1
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 1001
-        ExplicitHeight = 294
       end
       object Panel3: TPanel
         Left = 0
-        Top = 349
-        Width = 1013
+        Top = 372
+        Width = 877
         Height = 61
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
-        ExplicitTop = 345
-        ExplicitWidth = 1011
         object lblFontSize: TLabel
           Left = 13
           Top = 3
@@ -1951,15 +1945,14 @@ object Form1: TForm1
       Enabled = False
       ImageIndex = 1
       DesignSize = (
-        1013
-        410)
+        877
+        433)
       object ledtBDSBuild: TLabeledEdit
-        Left = 98
+        Left = 80
         Top = 39
-        Width = 209
+        Width = 192
         Height = 23
         Cursor = crHandPoint
-        Anchors = [akLeft, akTop, akRight, akBottom]
         EditLabel.Width = 70
         EditLabel.Height = 23
         EditLabel.Caption = 'BDS build '#8470':'
@@ -1970,12 +1963,12 @@ object Form1: TForm1
         OnClick = actOpenModuleFileExecute
       end
       object ledtBDSPath: TLabeledEdit
-        Left = 98
+        Left = 80
         Top = 10
-        Width = 912
+        Width = 792
         Height = 23
         Cursor = crHandPoint
-        Anchors = [akLeft, akTop, akRight, akBottom]
+        Anchors = [akLeft, akTop, akRight]
         EditLabel.Width = 51
         EditLabel.Height = 23
         EditLabel.Caption = 'BDS Path:'
@@ -1984,14 +1977,14 @@ object Form1: TForm1
         TabOrder = 1
         Text = ''
         OnClick = actOpenModuleFileExecute
+        ExplicitWidth = 790
       end
       object ledtBDSInstDate: TLabeledEdit
-        Left = 98
-        Top = 68
-        Width = 209
+        Left = 370
+        Top = 39
+        Width = 174
         Height = 23
         Cursor = crHandPoint
-        Anchors = [akLeft, akTop, akRight, akBottom]
         EditLabel.Width = 85
         EditLabel.Height = 23
         EditLabel.Caption = 'BDS install Date:'
@@ -2001,18 +1994,39 @@ object Form1: TForm1
         Text = ''
         OnClick = actOpenModuleFileExecute
       end
+      object sgModules: TStringGrid
+        Left = 0
+        Top = 68
+        Width = 877
+        Height = 365
+        Align = alBottom
+        Anchors = [akLeft, akTop, akRight, akBottom]
+        ColCount = 6
+        FixedCols = 0
+        RowCount = 6
+        TabOrder = 3
+        ExplicitWidth = 875
+        ExplicitHeight = 361
+        ColWidths = (
+          64
+          64
+          64
+          64
+          299
+          64)
+      end
     end
     object TabSheet3: TTabSheet
       Caption = 'TabSheet3'
       Enabled = False
       ImageIndex = 2
       DesignSize = (
-        1013
-        410)
+        877
+        433)
       object LabeledEdit2: TLabeledEdit
         Left = 101
         Top = 218
-        Width = 912
+        Width = 774
         Height = 23
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2033,8 +2047,8 @@ object Form1: TForm1
         AlignWithMargins = True
         Left = 5
         Top = 5
-        Width = 1003
-        Height = 367
+        Width = 867
+        Height = 390
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2048,8 +2062,8 @@ object Form1: TForm1
       end
       object Panel4: TPanel
         Left = 0
-        Top = 377
-        Width = 1013
+        Top = 400
+        Width = 877
         Height = 33
         Align = alBottom
         BevelOuter = bvNone
@@ -2057,12 +2071,12 @@ object Form1: TForm1
         ParentBackground = False
         TabOrder = 1
         DesignSize = (
-          1013
+          877
           33)
         object lbedLogPath: TLabeledEdit
           Left = 56
           Top = 3
-          Width = 952
+          Width = 814
           Height = 23
           Anchors = [akLeft, akTop, akRight]
           EditLabel.Width = 42

@@ -6,6 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls
   , System.RegularExpressionsCore
+  , UnitIDEModule
   ;
 
 type
@@ -34,7 +35,6 @@ type
 
 var
   frmParse: TfrmParse;
-  regexp : TPerlRegEx;
 
 implementation
 
@@ -75,13 +75,13 @@ begin
 
   // (.*)\t\(\d{1}x[0-9A-F]{8}\)\t([^\t]*)\t(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\s*(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[AP]M)?)\t([\dA-F]{40})
 
-  Result := '(.*)\t' +                                // file name
+  Result := '(.*)\t' +                                // file name Groups[1]
     '\(\d{1}x[0-9A-F]{8}\)\t' +                       //
-    '([^\t]*)\t' +                                    // path
-    '(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?' +   // version
-    '(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\s*' +    // date
-    '(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[AP]M)?)\t' +      // time
-    '([\dA-F]{40})';                                  // hash
+    '([^\t]*)\t' +                                    // path Groups[2]
+    '(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?' +   // version Groups[3]
+    '(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\s*' +    // date Groups[4]
+    '(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[AP]M)?)\t' +      // time Groups[5]
+    '([\dA-F]{40})';                                  // hash Groups[6]
 
 end;
 
@@ -100,7 +100,19 @@ begin
 
   pBarOverall.Max := 100;
   pBarOverall.Position := 0;
-  Tasks := 2;
+
+  // 50 Tasks
+  {
+  Tasks := 50;
+  for var i:integer := 1 to Tasks do
+  begin
+    currentTask := i;
+    parseTaskModuleFileParse();
+  end;
+  }
+
+  // One Task
+  Tasks := 1;
   currentTask := 1;
   parseTaskModuleFileParse();
 
@@ -111,10 +123,12 @@ end;
 
 function TfrmParse.parseTaskModuleFileParse: boolean;
 var
-  i: Integer;
+  i : Integer;
   cl : Integer;
   err : Integer;
-  s: string;
+  s : string;
+  tempIDEModule : TIDEModule;
+  regexp : TPerlRegEx;
 begin
   Logger.AddToLog('Module file parsing started.');
   Result := false;
@@ -122,50 +136,58 @@ begin
   cl := frmMain.MemoTxtModuleFile.Lines.Count;
   pBarCurrentTask.Position := 0;
   pBarCurrentTask.Max := cl;
-  if regexp = nil
-    then regexp := TPerlRegEx.Create;
+  frmMain.ModulesArrayClear;
+  regexp := TPerlRegEx.Create;
+  try
 
-  with regexp do begin
-    RegEx := GetModuleLineRegExp();
-    for i := 0 to cl - 1 do
-      begin
-        pBarCurrentTask.Position := i;
-        pBarOverall.Position := GetOverallTaskPosition();
-        Application.ProcessMessages;
-        Subject := frmMain.MemoTxtModuleFile.Lines[i];
-        if Match
-        then
-          begin
-            {
-            for k := 0 to GroupCount do
-              begin
-                // Groups
-              end;
-              Groups[1] - file name
-              Groups[2] -
-              Groups[3] - path
-              Groups[4] - version
-              Groups[5] - date
-              Groups[6] - time
-              Groups[7] - hash
-            }
-            Logger.AddToLog('Parse line #' + IntToStr(i) + '. Found module: ' + Groups[1] );
-          end
-        else
-          begin
-            inc(err);
-            Logger.AddToLog('Parse line #' + IntToStr(i) + '. Module not found in line: ' + Subject );
-          end;
+    with regexp do begin
+      RegEx := GetModuleLineRegExp();
+      for i := 0 to cl - 1 do
+        begin
+          pBarCurrentTask.Position := i;
+          pBarOverall.Position := GetOverallTaskPosition();
+          Application.ProcessMessages;
+          Subject := frmMain.MemoTxtModuleFile.Lines[i];
+          if Match
+          then
+            begin
+              {
+              for k := 0 to GroupCount do
+                begin
+                  // Groups
+                end;
+                Groups[1] - file name
+                Groups[2] - path
+                Groups[3] - version
+                Groups[4] - date
+                Groups[5] - time
+                Groups[6] - hash
+              }
+              tempIDEModule := TIDEModule.Create;
+              tempIDEModule.AssignFromRegExpGroups(regexp);
+              SetLength(ModulesArray, Length(ModulesArray) + 1);
+              ModulesArray[Length(ModulesArray) - 1] := Pointer(tempIDEModule);
+              Logger.AddToLog('Parse line #' + IntToStr(i) + '. Found module: ' + tempIDEModule.FileName );
+            end
+          else
+            begin
+              inc(err);
+              Logger.AddToLog('Parse line #' + IntToStr(i) + '. Module not found in line: ' + Subject );
+            end;
 
-        if parseCanceled
-        then
-          begin
-            Logger.AddToLog('Module file parsing canceled at line #' + IntToStr(i));
-            Break;
-          end;
-        // sleep(1); // Sleep
-      end;
+          if parseCanceled
+          then
+            begin
+              Logger.AddToLog('Module file parsing canceled at line #' + IntToStr(i));
+              Break;
+            end;
+          // sleep(1); // Sleep
+        end;
+    end;
+  finally
+    regexp.Free;
   end;
+
   if err = 0
   then Logger.AddToLog('Module file parsing success.')
   else
@@ -176,6 +198,7 @@ begin
       Logger.AddToLog(s);
       ShowMessage(s);
     end;
+  // Logger.Clear; // Temporary the Log clearing to avoid raising memory usage
 end;
 
 end.

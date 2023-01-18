@@ -23,6 +23,7 @@ type
     property LogMemo : TMemo read GetLogMemo write SetLogMemo;
     property LogFile : string read GetLogFileName write SetLogFileName;
     function AddToLog(s: string): boolean;
+    procedure Clear; override;
     constructor Create;
   end;
 
@@ -37,7 +38,7 @@ var
     tempString: RawByteString;
     amode: Integer;
 begin
-  Result := False;
+  Result := true;
   if not FileExists(aFileName)
     then amode := fmCreate
     else amode := fmOpenReadWrite;
@@ -52,7 +53,11 @@ begin
     then
       begin
         preamble := TEncoding.UTF8.GetPreamble;
-        fs.WriteBuffer( PAnsiChar(preamble)^, Length(preamble));
+        try
+          fs.WriteBuffer( PAnsiChar(preamble)^, Length(preamble));
+        except
+          Result := False;
+        end;
       end
     else
       begin
@@ -62,32 +67,14 @@ begin
     if AddCRLF // Add CRLF line end
       then tempString := tempString + AnsiChar(#13) + AnsiChar(#10);
 
-    fs.WriteBuffer(PAnsiChar(tempString)^, Length(tempString));
+    try
+      fs.WriteBuffer(PAnsiChar(tempString)^, Length(tempString));
+    except
+      Result := False;
+    end;
   finally
     fs.Free;
   end;
-  Result := true;
-
-{
-var
-  FileHandle: Integer;
-  iFileLength: Integer;
-  tempString: string;
-begin
-  Result := False;
-  if FileExists(aFileName)
-    then FileHandle := FileOpen(aFileName, fmOpenWrite + fmShareDenyNone)
-    else FileHandle := FileCreate(aFileName);
-  if FileHandle > 0 then
-    try
-      iFileLength := FileSeek(FileHandle, 0, 2);
-      if AddCRLF then tempString := aText + #13#10
-                 else tempString := aText;
-      FileWrite(FileHandle, tempString, Length(tempString));
-    finally
-      FileClose(FileHandle);
-    end;
-    }
 end;
 
 procedure TMyLogger.AddLineToLogFile(s: string);
@@ -107,12 +94,20 @@ var
   LogString: string;
 begin
   // Add line to log
+  Result := true;
   dt := Now();
   DateTimeToString(dts, 'dd-mm-yyyy hh:nn:ss', dt);
   LogString := dts + ' - ' + s;
+
   Add(LogString);
   if FLogFileName <> '' then AddLineToLogFile(LogString);
   if FLogMemo <> nil then FLogMemo.Lines.Add(LogString);
+end;
+
+procedure TMyLogger.Clear;
+begin
+  inherited;
+  if FLogMemo <> nil then FLogMemo.Clear;
 end;
 
 constructor TMyLogger.Create;

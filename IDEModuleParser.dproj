@@ -148,6 +148,7 @@
             <Form>frmParse</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UnitIDEModule.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

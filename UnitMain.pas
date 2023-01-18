@@ -3,21 +3,21 @@ unit UnitMain;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
   Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ExtDlgs, Vcl.Buttons
-  , System.ImageList
-  , Vcl.ImgList
-  , System.IOUtils
-  , Vcl.Mask
+  , System.ImageList, System.UITypes, Vcl.Grids, Vcl.ImgList, Vcl.Graphics
+  , Vcl.Mask, System.IOUtils
   , Winapi.ShellAPI
   , UnitLogger
   , UnitParser
-  , System.UITypes
+  , UnitIDEModule
   ;
 
 type
-  TForm1 = class(TForm)
+  TModulesArray = array of PIDEModule;
+
+  TfrmMain = class(TForm)
     Button1: TButton;
     Button2: TButton;
     Panel1: TPanel;
@@ -51,6 +51,7 @@ type
     actParseCancel: TAction;
     tsStackTrace: TTabSheet;
     OpenDialog1: TOpenDialog;
+    sgModules: TStringGrid;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -75,9 +76,16 @@ type
     /// <summary>Confirm new Txt Module file load</summary>
     function ConfirmNewTxtModuleFileLoad : boolean;
 
+    function AddAllModulesToStringGrid : boolean;
+
     procedure OpenTextModuleFile(Sender: TObject);
     procedure OpenZipReportFile(Sender: TObject);
     procedure actParseCancelExecute(Sender: TObject);
+
+    /// <summary>Clear the ModulesArray</summary>
+    procedure ModulesArrayClear();
+    /// <summary>Find BDS.exe IDE Module</summary>
+    function FindBDSIDEModule(var Module: TIDEModule): boolean;
 
   private
     { Private declarations }
@@ -86,22 +94,24 @@ type
   end;
 
 var
-  frmMain: TForm1;
+  frmMain : TfrmMain;
   mtfFileName : TFileName;  // ModuleList.txt filename
   mzfFileName : TFileName;  // QPInfo-XXXXXXXX-XXXX.zip filename
   Logger : TMyLogger;       // Logger
+  ModulesArray : TModulesArray;   // IDE Modules Array
+  BDSIDEModule : TIDEModule;      // BDS IDE Module
 
 implementation
 
 {$R *.dfm}
 
-procedure TForm1.actExitExecute(Sender: TObject);
+procedure TfrmMain.actExitExecute(Sender: TObject);
 begin
   Close;
 end;
 
 
-function TForm1.ConfirmNewTxtModuleFileLoad : boolean;
+function TfrmMain.ConfirmNewTxtModuleFileLoad : boolean;
 begin
   Result := false;
   if (MemoTxtModuleFile.Lines.Text <> '') AND
@@ -115,7 +125,7 @@ begin
 end;
 
 
-procedure TForm1.OpenTextModuleFile(Sender: TObject);
+procedure TfrmMain.OpenTextModuleFile(Sender: TObject);
 begin
   // Open new text ModuleFile.txt file
   if not FileExists(mtfFileName) then Exit;
@@ -128,7 +138,7 @@ begin
 
 end;
 
-procedure TForm1.OpenZipReportFile(Sender: TObject);
+procedure TfrmMain.OpenZipReportFile(Sender: TObject);
 begin
   // Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip)
   if not FileExists(mzfFileName) then Exit;
@@ -141,7 +151,7 @@ begin
 
 end;
 
-procedure TForm1.actOpenModuleFileExecute(Sender: TObject);
+procedure TfrmMain.actOpenModuleFileExecute(Sender: TObject);
 begin
   // Open Module file (ModuleList.txt)
   if not ConfirmNewTxtModuleFileLoad then Exit;
@@ -152,7 +162,7 @@ begin
   OpenTextModuleFile(Sender);
 end;
 
-procedure TForm1.actOpenReportZipFileExecute(Sender: TObject);
+procedure TfrmMain.actOpenReportZipFileExecute(Sender: TObject);
 begin
   // Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip) via Open File Dialog
   if not ConfirmNewTxtModuleFileLoad then Exit;
@@ -164,7 +174,7 @@ begin
   OpenZipReportFile(Sender);
 end;
 
-procedure TForm1.actParseCancelExecute(Sender: TObject);
+procedure TfrmMain.actParseCancelExecute(Sender: TObject);
 begin
   // Cancel Parsing
   if MessageDlg('Cancel parsing?', mtConfirmation, [mbYes, mbNo], 0) = mrYes
@@ -175,7 +185,7 @@ begin
     end
 end;
 
-procedure TForm1.actParseModuleFileExecute(Sender: TObject);
+procedure TfrmMain.actParseModuleFileExecute(Sender: TObject);
 begin
   // Parse Module file
   ledtBDSPath.Text := '';
@@ -187,10 +197,34 @@ begin
   frmParse.ParseModuleListFile();
 
   if frmParse.parseSuccess
-    then TabModulesList.TabVisible := true;
+  then
+    begin
+      TabModulesList.TabVisible := true;
+
+      if FindBDSIDEModule(BDSIDEModule) = true
+      then
+        begin
+          ledtBDSPath.Text := BDSIDEModule.Path;
+          ledtBDSBuild.Text := BDSIDEModule.Version;
+          ledtBDSInstDate.Text := DateTimeToStr(BDSIDEModule.DateTime);
+        end
+      else BDSIDEModule := nil;
+      {
+      for var i := 0 to Length(ModulesArray) - 1 do
+        begin
+
+        end;
+      }
+    end;
 end;
 
-procedure TForm1.DisableFontSizeChange;
+function TfrmMain.AddAllModulesToStringGrid: boolean;
+begin
+  //
+  Result := true;
+end;
+
+procedure TfrmMain.DisableFontSizeChange;
 begin
   // Disable Font Size Change
   lblFontSize.Enabled := false;
@@ -198,7 +232,7 @@ begin
   edtFontSize.Enabled := false;
 end;
 
-procedure TForm1.EnableFontSizeChange;
+procedure TfrmMain.EnableFontSizeChange;
 begin
   // Enable Font Size Change
   lblFontSize.Enabled := true;
@@ -206,13 +240,34 @@ begin
   edtFontSize.Enabled := true;
 end;
 
-procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+function TfrmMain.FindBDSIDEModule(var Module: TIDEModule): boolean;
+var
+  i : Integer;
+  tempIDEModule : TIDEModule;
+begin
+  // Find BDS.exe IDE Module
+  for I := 0 to Length(ModulesArray) - 1 do
+  begin
+    tempIDEModule := @ModulesArray[i]^;
+    if LowerCase(tempIDEModule.FileName) = 'bds.exe'
+    then
+      begin
+        Module := tempIDEModule;
+        Result := true;
+        Exit;
+      end;
+  end;
+  Result := false;
+end;
+
+procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   // Close the Application
   DragAcceptFiles(Self.Handle, False);
+  ModulesArrayClear;
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   //
   // ImageList1.GetBitmap(0, Image1.Picture.Bitmap);
@@ -235,10 +290,11 @@ begin
     TPath.DirectorySeparatorChar +
     TPath.GetFileNameWithoutExtension(Application.ExeName) + '.log';
   lbedLogPath.Text := Logger.LogFile;
+  Logger.Clear;
   Logger.AddToLog('Application started');
 end;
 
-procedure TForm1.LoadTxtModuleFile;
+procedure TfrmMain.LoadTxtModuleFile;
 begin
   // Load new Text Module file
   MemoTxtModuleFile.Lines.LoadFromFile(mtfFileName);
@@ -251,7 +307,22 @@ begin
   frmParse.parseSuccess := false;
 end;
 
-procedure TForm1.tbFontSizeChange(Sender: TObject);
+procedure TfrmMain.ModulesArrayClear;
+var
+  i : Integer;
+  tempIDEModule : TIDEModule;
+begin
+  //
+  for I := 0 to Length(ModulesArray) - 1 do
+  begin
+    tempIDEModule := @ModulesArray[i]^;
+    FreeAndNil(tempIDEModule);
+    // ModulesArray[i] := nil;
+  end;
+  SetLength(ModulesArray, 0);
+end;
+
+procedure TfrmMain.tbFontSizeChange(Sender: TObject);
 begin
   // Change Font Size
   edtFontSize.Text := IntToStr(tbFontSize.Position);
@@ -259,14 +330,14 @@ begin
   memoLog.Font.Size := tbFontSize.Position;
 end;
 
-procedure TForm1.UpdateDisplayFileName;
+procedure TfrmMain.UpdateDisplayFileName;
 begin
   //
   LabeledEdit1.Text := mtfFileName;
 
 end;
 
-procedure TForm1.WMDropFiles(var Msg: TWMDropFiles);
+procedure TfrmMain.WMDropFiles(var Msg: TWMDropFiles);
 var
   DropH: HDROP;
   DroppedFileCount : integer;
@@ -320,5 +391,6 @@ begin
       OpenZipReportFile(frmMain);
     end;
 end;
+
 
 end.
