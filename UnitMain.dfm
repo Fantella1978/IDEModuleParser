@@ -25,11 +25,13 @@ object frmMain: TfrmMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 458
+    ExplicitWidth = 881
     DesignSize = (
       883
       37)
     object Button1: TButton
-      Left = 657
+      Left = 653
       Top = 6
       Width = 135
       Height = 25
@@ -38,9 +40,10 @@ object frmMain: TfrmMain
       Default = True
       ModalResult = 1
       TabOrder = 0
+      ExplicitLeft = 651
     end
     object Button2: TButton
-      Left = 798
+      Left = 794
       Top = 6
       Width = 75
       Height = 25
@@ -49,18 +52,20 @@ object frmMain: TfrmMain
       Cancel = True
       ModalResult = 2
       TabOrder = 1
+      ExplicitLeft = 792
     end
     object Button3: TButton
-      Left = 444
+      Left = 440
       Top = 6
       Width = 75
       Height = 25
       Action = actParseModuleFile
       Anchors = [akRight, akBottom]
       TabOrder = 2
+      ExplicitLeft = 438
     end
     object Button4: TButton
-      Left = 525
+      Left = 521
       Top = 6
       Width = 126
       Height = 25
@@ -68,6 +73,7 @@ object frmMain: TfrmMain
       Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
       TabOrder = 3
+      ExplicitLeft = 519
     end
   end
   object PageControl1: TPageControl
@@ -75,10 +81,12 @@ object frmMain: TfrmMain
     Top = 0
     Width = 883
     Height = 462
-    ActivePage = TabModuleListFile
+    ActivePage = tsStackTrace
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
+    ExplicitWidth = 881
+    ExplicitHeight = 458
     object TabModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       object Panel2: TPanel
@@ -96,7 +104,7 @@ object frmMain: TfrmMain
         object lbedModuleFile: TLabeledEdit
           Left = 96
           Top = 10
-          Width = 770
+          Width = 766
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -1939,6 +1947,7 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 873
         DesignSize = (
           875
           41)
@@ -1957,6 +1966,7 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
+          ExplicitWidth = 770
         end
       end
       object memoStackTrace: TMemo
@@ -1980,6 +1990,8 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
+        ExplicitWidth = 863
+        ExplicitHeight = 374
       end
     end
     object TabModulesList: TTabSheet
@@ -2007,7 +2019,7 @@ object frmMain: TfrmMain
       object ledtBDSPath: TLabeledEdit
         Left = 80
         Top = 10
-        Width = 788
+        Width = 784
         Height = 23
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight]
@@ -2065,7 +2077,7 @@ object frmMain: TfrmMain
       object LabeledEdit2: TLabeledEdit
         Left = 101
         Top = 218
-        Width = 770
+        Width = 766
         Height = 23
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2114,7 +2126,7 @@ object frmMain: TfrmMain
         object lbedLogPath: TLabeledEdit
           Left = 56
           Top = 9
-          Width = 810
+          Width = 806
           Height = 23
           Anchors = [akLeft, akTop, akRight]
           EditLabel.Width = 42

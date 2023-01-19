@@ -12,6 +12,7 @@ uses
   , UnitLogger
   , UnitParser
   , UnitIDEModule
+  , System.Zip
   ;
 
 type
@@ -90,6 +91,9 @@ type
     /// <summary>Find BDS.exe IDE Module</summary>
     function FindBDSIDEModule(var Module: TIDEModule): boolean;
 
+    /// <summary>Delete temp Report folder</summary>
+    function DeleteTempReportFolder(): boolean;
+
   private
     { Private declarations }
   public
@@ -103,6 +107,7 @@ var
   Logger : TMyLogger;       // Logger
   ModulesArray : TModulesArray;   // IDE Modules Array
   BDSIDEModule : TIDEModule;      // BDS IDE Module
+  ReportFolder : string;
 
 implementation
 
@@ -142,11 +147,35 @@ begin
 end;
 
 procedure TfrmMain.OpenZipReportFile(Sender: TObject);
+var
+  zip : TZipFile;
 begin
   // Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip)
   if not FileExists(mzfFileName) then Exit;
 
   // Unpack ZIP in temp folder
+  zip := TZipFile.Create;
+  try
+    zip.Open(mzfFileName, zmRead);
+
+    // Delete old temp Report folder
+    DeleteTempReportFolder();
+    // Create a new temp Report folder
+    ReportFolder := TPath.GetTempPath() + TPath.DirectorySeparatorChar +
+       TPath.GetFileNameWithoutExtension(mzfFileName) + '_' +
+       TPath.GetGUIDFileName(false);
+    if not TDirectory.Exists(ReportFolder, true)
+    then
+      begin
+        TDirectory.CreateDirectory(ReportFolder);
+        Logger.AddToLog('Create temp Report folder: ' + ReportFolder);
+      end
+    else
+      Logger.AddToLog('Temp Report folder already exists: ' + ReportFolder);
+
+  finally
+    zip.Free;
+  end;
 
   mtfFileName := '';
 
@@ -227,6 +256,24 @@ begin
   Result := true;
 end;
 
+function TfrmMain.DeleteTempReportFolder: boolean;
+begin
+  // Delete temp Report folder
+  if (ReportFolder <> '') and TDirectory.Exists(ReportFolder, true)
+  then
+    begin
+      try
+        TDirectory.Delete(ReportFolder, true);
+        Logger.AddToLog('Temp Report folder deleted: ' + ReportFolder);
+      except
+        Logger.AddToLog('[Error] Can''t delete temp Report folder: ' + ReportFolder);
+        Result := false;
+        Exit;
+      end;
+    end;
+  Result := true;
+end;
+
 procedure TfrmMain.DisableFontSizeChange;
 begin
   // Disable Font Size Change
@@ -267,7 +314,8 @@ procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   // Close the Application
   DragAcceptFiles(Self.Handle, False);
-  ModulesArrayClear;
+  ModulesArrayClear();
+  DeleteTempReportFolder();
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
