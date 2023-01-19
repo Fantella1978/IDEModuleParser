@@ -85,6 +85,8 @@ object frmMain: TfrmMain
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
+    ExplicitWidth = 881
+    ExplicitHeight = 458
     object TabModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       object Panel2: TPanel
@@ -1945,7 +1947,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 873
         DesignSize = (
           875
           41)
@@ -1964,7 +1965,6 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 770
         end
       end
       object memoStackTrace: TMemo
@@ -1988,8 +1988,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 863
-        ExplicitHeight = 374
       end
     end
     object TabModulesList: TTabSheet
@@ -2078,7 +2076,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitTop = 8
         DesignSize = (
           875
           41)
@@ -2120,8 +2117,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitLeft = 10
-        ExplicitTop = 51
       end
     end
     object tsDescription: TTabSheet

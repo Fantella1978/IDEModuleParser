@@ -111,7 +111,7 @@ var
   Logger : TMyLogger;       // Logger
   ModulesArray : TModulesArray;   // IDE Modules Array
   BDSIDEModule : TIDEModule;      // BDS IDE Module
-  ReportFolder : string;
+  ReportFolder : string;          // Report folder for unpack Report Zip
 
 implementation
 
@@ -165,9 +165,10 @@ begin
     // Delete old temp Report folder
     DeleteTempReportFolder();
     // Create a new temp Report folder
-    ReportFolder := TPath.GetTempPath() + TPath.DirectorySeparatorChar +
-       TPath.GetFileNameWithoutExtension(mzfFileName) + '_' +
-       TPath.GetGUIDFileName(false);
+    ReportFolder := TPath.GetTempPath() +
+      // TPath.DirectorySeparatorChar +
+      TPath.GetFileNameWithoutExtension(mzfFileName) + '_' +
+      TPath.GetGUIDFileName(false);
     if not TDirectory.Exists(ReportFolder, true)
     then
       begin
