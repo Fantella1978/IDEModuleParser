@@ -29,7 +29,7 @@ type
     actParseModuleFile: TAction;
     Button4: TButton;
     actOpenReportZipFile: TAction;
-    LabeledEdit1: TLabeledEdit;
+    lbedModuleFile: TLabeledEdit;
     Panel2: TPanel;
     MemoTxtModuleFile: TMemo;
     Panel3: TPanel;
@@ -52,6 +52,9 @@ type
     tsStackTrace: TTabSheet;
     OpenDialog1: TOpenDialog;
     sgModules: TStringGrid;
+    Panel5: TPanel;
+    LabeledEdit3: TLabeledEdit;
+    memoStackTrace: TMemo;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -333,7 +336,7 @@ end;
 procedure TfrmMain.UpdateDisplayFileName;
 begin
   //
-  LabeledEdit1.Text := mtfFileName;
+  lbedModuleFile.Text := mtfFileName;
 
 end;
 
