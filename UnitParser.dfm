@@ -2,7 +2,7 @@ object frmParse: TfrmParse
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Parsing'
+  Caption = 'Stop'
   ClientHeight = 145
   ClientWidth = 486
   Color = clBtnFace
@@ -17,6 +17,7 @@ object frmParse: TfrmParse
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poDesktopCenter
+  Visible = True
   OnCloseQuery = FormCloseQuery
   OnShow = FormShow
   DesignSize = (
@@ -53,14 +54,13 @@ object frmParse: TfrmParse
       486
       37)
     object btnStop: TButton
-      Left = 413
+      Left = 403
       Top = 8
       Width = 75
       Height = 25
       Action = frmMain.actParseCancel
       Anchors = [akRight, akBottom]
       TabOrder = 0
-      ExplicitLeft = 411
     end
   end
   object pBarOverall: TProgressBar

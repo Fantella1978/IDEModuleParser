@@ -136,8 +136,11 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="UnitMain.pas">
-            <Form>Form1</Form>
+            <Form>frmMain</Form>
             <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="UnitParser.pas">
+            <Form>frmParse</Form>
         </DCCReference>
         <DCCReference Include="UnitDB.pas">
             <Form>DataModule1</Form>
@@ -145,10 +148,6 @@
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="UnitLogger.pas"/>
-        <DCCReference Include="UnitParser.pas">
-            <Form>frmParse</Form>
-            <FormType>dfm</FormType>
-        </DCCReference>
         <DCCReference Include="UnitIDEModule.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>

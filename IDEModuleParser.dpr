@@ -2,12 +2,12 @@ program IDEModuleParser;
 
 uses
   Vcl.Forms,
-  UnitMain in 'UnitMain.pas' {Form1},
   Vcl.Themes,
   Vcl.Styles,
+  UnitMain in 'UnitMain.pas' {frmMain},
+  UnitParser in 'UnitParser.pas' {frmParse},
   UnitDB in 'UnitDB.pas' {DataModule1: TDataModule},
   UnitLogger in 'UnitLogger.pas',
-  UnitParser in 'UnitParser.pas' {frmParse},
   UnitIDEModule in 'UnitIDEModule.pas';
 
 {$R *.res}
@@ -17,7 +17,7 @@ begin
   Application.MainFormOnTaskbar := True;
   TStyleManager.TrySetStyle('Glow');
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TDataModule1, DataModule1);
   Application.CreateForm(TfrmParse, frmParse);
+  Application.CreateForm(TDataModule1, DataModule1);
   Application.Run;
 end.

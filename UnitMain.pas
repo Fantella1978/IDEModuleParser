@@ -37,12 +37,11 @@ type
     PageControl1: TPageControl;
     TabModuleListFile: TTabSheet;
     TabModulesList: TTabSheet;
-    TabSheet3: TTabSheet;
+    tsDXDiagLog: TTabSheet;
     TabLog: TTabSheet;
     tbFontSize: TTrackBar;
     lblFontSize: TLabel;
     edtFontSize: TEdit;
-    LabeledEdit2: TLabeledEdit;
     ledtBDSBuild: TLabeledEdit;
     ledtBDSPath: TLabeledEdit;
     ledtBDSInstDate: TLabeledEdit;
@@ -56,6 +55,11 @@ type
     Panel5: TPanel;
     LabeledEdit3: TLabeledEdit;
     memoStackTrace: TMemo;
+    Panel6: TPanel;
+    LabeledEdit1: TLabeledEdit;
+    Memo1: TMemo;
+    tsDescription: TTabSheet;
+    tsSteps: TTabSheet;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -296,6 +300,7 @@ var
   tempIDEModule : TIDEModule;
 begin
   // Find BDS.exe IDE Module
+  Result := false;
   for I := 0 to Length(ModulesArray) - 1 do
   begin
     tempIDEModule := @ModulesArray[i]^;
@@ -304,10 +309,9 @@ begin
       begin
         Module := tempIDEModule;
         Result := true;
-        Exit;
+        Break;
       end;
   end;
-  Result := false;
 end;
 
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
@@ -325,8 +329,10 @@ begin
   MemoTxtModuleFile.Clear;
 
   TabModulesList.TabVisible := false;
-  TabSheet3.TabVisible := false;
+  tsDXDiagLog.TabVisible := false;
   tsStackTrace.TabVisible := false;
+  tsSteps.TabVisible := false;
+  tsDescription.TabVisible := false;
   PageControl1.ActivePage := TabModuleListFile;
 
   // Disable Font Size Change

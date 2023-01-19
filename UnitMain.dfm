@@ -31,7 +31,7 @@ object frmMain: TfrmMain
       883
       37)
     object Button1: TButton
-      Left = 653
+      Left = 645
       Top = 6
       Width = 135
       Height = 25
@@ -40,10 +40,10 @@ object frmMain: TfrmMain
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 651
+      ExplicitLeft = 643
     end
     object Button2: TButton
-      Left = 794
+      Left = 786
       Top = 6
       Width = 75
       Height = 25
@@ -52,20 +52,20 @@ object frmMain: TfrmMain
       Cancel = True
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 792
+      ExplicitLeft = 784
     end
     object Button3: TButton
-      Left = 440
+      Left = 432
       Top = 6
       Width = 75
       Height = 25
       Action = actParseModuleFile
       Anchors = [akRight, akBottom]
       TabOrder = 2
-      ExplicitLeft = 438
+      ExplicitLeft = 430
     end
     object Button4: TButton
-      Left = 521
+      Left = 513
       Top = 6
       Width = 126
       Height = 25
@@ -73,7 +73,7 @@ object frmMain: TfrmMain
       Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
       TabOrder = 3
-      ExplicitLeft = 519
+      ExplicitLeft = 511
     end
   end
   object PageControl1: TPageControl
@@ -81,12 +81,10 @@ object frmMain: TfrmMain
     Top = 0
     Width = 883
     Height = 462
-    ActivePage = tsStackTrace
+    ActivePage = tsSteps
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
-    ExplicitWidth = 881
-    ExplicitHeight = 458
     object TabModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       object Panel2: TPanel
@@ -104,7 +102,7 @@ object frmMain: TfrmMain
         object lbedModuleFile: TLabeledEdit
           Left = 96
           Top = 10
-          Width = 766
+          Width = 758
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2019,7 +2017,7 @@ object frmMain: TfrmMain
       object ledtBDSPath: TLabeledEdit
         Left = 80
         Top = 10
-        Width = 784
+        Width = 776
         Height = 23
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight]
@@ -2067,29 +2065,72 @@ object frmMain: TfrmMain
           64)
       end
     end
-    object TabSheet3: TTabSheet
-      Caption = 'TabSheet3'
+    object tsDXDiagLog: TTabSheet
+      Caption = 'DXDiag Log'
       Enabled = False
       ImageIndex = 2
-      DesignSize = (
-        875
-        429)
-      object LabeledEdit2: TLabeledEdit
-        Left = 101
-        Top = 218
-        Width = 766
-        Height = 23
-        Cursor = crHandPoint
-        Anchors = [akLeft, akTop, akRight, akBottom]
-        EditLabel.Width = 81
-        EditLabel.Height = 23
-        EditLabel.Caption = 'ModuleList file:'
-        LabelPosition = lpLeft
-        ReadOnly = True
+      object Panel6: TPanel
+        Left = 0
+        Top = 0
+        Width = 875
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        ParentBackground = False
         TabOrder = 0
-        Text = ''
-        OnClick = actOpenModuleFileExecute
+        ExplicitTop = 8
+        DesignSize = (
+          875
+          41)
+        object LabeledEdit1: TLabeledEdit
+          Left = 96
+          Top = 10
+          Width = 772
+          Height = 23
+          Cursor = crHandPoint
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          EditLabel.Width = 77
+          EditLabel.Height = 23
+          EditLabel.Caption = 'StackTrace file:'
+          LabelPosition = lpLeft
+          ReadOnly = True
+          TabOrder = 0
+          Text = ''
+          OnClick = actOpenModuleFileExecute
+        end
       end
+      object Memo1: TMemo
+        AlignWithMargins = True
+        Left = 5
+        Top = 46
+        Width = 865
+        Height = 378
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Monoid'
+        Font.Pitch = fpFixed
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 1
+        ExplicitLeft = 10
+        ExplicitTop = 51
+      end
+    end
+    object tsDescription: TTabSheet
+      Caption = 'Description file'
+      ImageIndex = 5
+    end
+    object tsSteps: TTabSheet
+      Caption = 'Steps file'
+      ImageIndex = 6
     end
     object TabLog: TTabSheet
       Caption = 'Log'
@@ -2126,7 +2167,7 @@ object frmMain: TfrmMain
         object lbedLogPath: TLabeledEdit
           Left = 56
           Top = 9
-          Width = 806
+          Width = 798
           Height = 23
           Anchors = [akLeft, akTop, akRight]
           EditLabel.Width = 42
@@ -2141,8 +2182,8 @@ object frmMain: TfrmMain
     end
   end
   object ActionList1: TActionList
-    Left = 416
-    Top = 5
+    Left = 456
+    Top = 77
     object actExit: TAction
       Caption = 'Exit'
       Hint = 'Close the program'
@@ -2174,14 +2215,14 @@ object frmMain: TfrmMain
     Filter = 'ModuleList Text file|*.txt'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     ShowEncodingList = False
-    Left = 510
-    Top = 5
+    Left = 550
+    Top = 77
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = '.zip'
     Filter = 'Zip file|*.zip'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    Left = 609
-    Top = 5
+    Left = 649
+    Top = 77
   end
 end

@@ -1,0 +1,57 @@
+[5DC22084]{rtl280.bpl  } System.@UStrClr (Line 25844, "System.pas" + 14) + $0
+[5DC1A5C2]{rtl280.bpl  } System.ErrorAt (Line 5884, "System.pas" + 3) + $4
+[5DC1A606]{rtl280.bpl  } System.Error (Line 5895, "System.pas" + 1) + $7
+[5DC22084]{rtl280.bpl  } System.@UStrClr (Line 25844, "System.pas" + 14) + $0
+[5DC2477A]{rtl280.bpl  } System.@FinalizeRecord (Line 32799, "System.pas" + 72) + $2
+[5DC1FEC8]{rtl280.bpl  } System.TObject.CleanupInstance (Line 18225, "System.pas" + 16) + $0
+[5DC1FCF5]{rtl280.bpl  } System.TObject.FreeInstance (Line 17927, "System.pas" + 1) + $2
+[5DC204CA]{rtl280.bpl  } System.@ClassDestroy (Line 19296, "System.pas" + 0) + $2
+[58EE1B18]{bcbide280.bpl} CppUsesEntry..TTasmUsesEntry + $110
+[5DC1FDF4]{rtl280.bpl  } System.TObject.Free (Line 17991, "System.pas" + 1) + $4
+[58F3F16D]{bcbide280.bpl} CppContainers.TCPPLeafContainer.CommandHandler (Line 516, "CppContainers.pas" + 10) + $4
+[58F3EC63]{bcbide280.bpl} CppContainers.CppProjectCommonCreateChildNode (Line 432, "CppContainers.pas" + 26) + $8E
+[58F3EBEE]{bcbide280.bpl} CppContainers.CppProjectCommonCreateChildNode (Line 432, "CppContainers.pas" + 26) + $19
+[5EA7E25E]{coreide280.bpl} ProjectFrm.TProjectManagerForm.ProjectTree2InitNode (Line 1845, "ProjectFrm.pas" + 21) + $5
+[5FFB7D13]{vclide280.bpl} IDEVirtualTrees.TBaseVirtualTree.DoInitNode (Line 19421, "IDEVirtualTrees.pas" + 2) + $11
+[5FFBB6B9]{vclide280.bpl} IDEVirtualTrees.TBaseVirtualTree.InitNode (Line 21580, "IDEVirtualTrees.pas" + 8) + $9
+[5FFC1911]{vclide280.bpl} IDEVirtualTrees.TBaseVirtualTree.GetNext (Line 25937, "IDEVirtualTrees.pas" + 42) + $6
+[5EA7E47A]{coreide280.bpl} ProjectFrm.TProjectManagerForm.GetNodeFromLocation (Line 1920, "ProjectFrm.pas" + 32) + $C
+[5EA802A4]{coreide280.bpl} ProjectFrm.TProjectManagerForm.SetSelectedGraphLocation (Line 2732, "ProjectFrm.pas" + 1) + $4
+[5EA7D92A]{coreide280.bpl} ProjectFrm.TProjectManagerForm.ModuleActivated (Line 1588, "ProjectFrm.pas" + 37) + $5
+[6044AF1D]{designide280.bpl} Events.TEvent.Send (Line 154, "Events.pas" + 2) + $11
+[5EC707CC]{coreide280.bpl} DocModul.TDocModule.Activate (Line 953, "DocModul.pas" + 11) + $7
+[5EC7318B]{coreide280.bpl} DocModul.TCodeIDocModule.SourceActivated (Line 2213, "DocModul.pas" + 0) + $7
+[5EB6237B]{coreide280.bpl} EditorBuffer.TEditBuffer.ActivateSource (Line 1484, "EditorBuffer.pas" + 8) + $8
+[5EB68AEB]{coreide280.bpl} EditorBuffer.TEditView.ActivateModule (Line 4869, "EditorBuffer.pas" + 9) + $2
+[5EBA046C]{coreide280.bpl} EditorForm.TEditWindow.ActivateModule (Line 2583, "EditorForm.pas" + 8) + $12
+[5EBA6668]{coreide280.bpl} EditorForm.TEditWindow.ViewSelect (Line 4721, "EditorForm.pas" + 11) + $3
+[5EB9F8FA]{coreide280.bpl} EditorForm.TEditWindow.UpdateViewInfo (Line 2312, "EditorForm.pas" + 32) + $9
+[5EB9F055]{coreide280.bpl} EditorForm.TEditWindow.SelectBuffer (Line 2038, "EditorForm.pas" + 41) + $5
+[5EBA5217]{coreide280.bpl} EditorForm.TEditWindow.TabControlMouseDown (Line 4043, "EditorForm.pas" + 36) + $7
+[5F3F84F4]{vcl280.bpl  } Vcl.Controls.TControl.MouseDown (Line 7711, "Vcl.Controls.pas" + 1) + $23
+[5FFD66F1]{vclide280.bpl} GDIPlus.GradientTabs.TGradientTabSet.MouseDown (Line 1081, "GDIPlus.GradientTabs.pas" + 2) + $C
+[5DC20236]{rtl280.bpl  } System.@CallDynaInst (Line 18664, "System.pas" + 4) + $0
+[5F3F8588]{vcl280.bpl  } Vcl.Controls.TControl.DoMouseDown (Line 7723, "Vcl.Controls.pas" + 7) + $29
+[5F3F6933]{vcl280.bpl  } Vcl.Controls.TControl.SetMouseCapture (Line 6647, "Vcl.Controls.pas" + 2) + $6
+[5F3F85D7]{vcl280.bpl  } Vcl.Controls.TControl.WMLButtonDown (Line 7734, "Vcl.Controls.pas" + 7) + $E
+[5F3F7F46]{vcl280.bpl  } Vcl.Controls.TControl.WndProc (Line 7584, "Vcl.Controls.pas" + 91) + $6
+[5F3FB0CF]{vcl280.bpl  } Vcl.Controls.TWinControl.DoHandleStyleMessage (Line 9449, "Vcl.Controls.pas" + 0) + $F
+[5F3FD0F1]{vcl280.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10631, "Vcl.Controls.pas" + 170) + $6
+[5DC20D8C]{rtl280.bpl  } System.TMonitor.TryEnter (Line 19933, "System.pas" + 10) + $0
+[5F629283]{vcl280.bpl  } Vcl.Styles.TCustomStyle.SourceLoaded (Line 3313, "Vcl.Styles.pas" + 1) + $F
+[5F6291C0]{vcl280.bpl  } Vcl.Styles.TCustomStyle.GetEnabled (Line 3293, "Vcl.Styles.pas" + 0) + $0
+[5F50259B]{vcl280.bpl  } Vcl.Themes.TStyleManager.GetIsCustomStyleActive (Line 5836, "Vcl.Themes.pas" + 0) + $7
+[5F506881]{vcl280.bpl  } Vcl.Themes.TCustomStyleEngine.HookCBProc (Line 7864, "Vcl.Themes.pas" + 3) + $0
+[5F506A5B]{vcl280.bpl  } Vcl.Themes.TCustomStyleEngine.HookCBProc (Line 7929, "Vcl.Themes.pas" + 68) + $18
+[5F3FC611]{vcl280.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 10311, "Vcl.Controls.pas" + 6) + $0
+[5F3F9A2A]{vcl280.bpl  } Vcl.Controls.TControl.GetStyleName (Line 8618, "Vcl.Controls.pas" + 5) + $7
+[5F3FC7F4]{vcl280.bpl  } Vcl.Controls.TWinControl.ControlAtPos (Line 10363, "Vcl.Controls.pas" + 1) + $4
+[5F3FC8B0]{vcl280.bpl  } Vcl.Controls.TWinControl.IsControlMouseMsg (Line 10382, "Vcl.Controls.pas" + 12) + $2A
+[5F3FD0F1]{vcl280.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10631, "Vcl.Controls.pas" + 170) + $6
+[5F3FC5FC]{vcl280.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 10308, "Vcl.Controls.pas" + 3) + $6
+[5DD3580C]{rtl280.bpl  } System.Classes.StdWndProc (Line 18490, "System.Classes.pas" + 8) + $0
+[5DC1A36C]{rtl280.bpl  } System.@GetMem (Line 4937, "System.pas" + 20) + $0
+[5F54428F]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 11460, "Vcl.Forms.pas" + 23) + $1
+[5F5442D2]{vcl280.bpl  } Vcl.Forms.TApplication.HandleMessage (Line 11490, "Vcl.Forms.pas" + 1) + $4
+[5F544611]{vcl280.bpl  } Vcl.Forms.TApplication.Run (Line 11629, "Vcl.Forms.pas" + 27) + $3
+[00F98082]{bds.exe     } bds.bds (Line 227, "" + 16) + $2
