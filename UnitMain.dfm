@@ -25,8 +25,6 @@ object frmMain: TfrmMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 458
-    ExplicitWidth = 881
     DesignSize = (
       883
       37)
@@ -81,7 +79,7 @@ object frmMain: TfrmMain
     Top = 0
     Width = 883
     Height = 462
-    ActivePage = tsSteps
+    ActivePage = TabModuleListFile
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1

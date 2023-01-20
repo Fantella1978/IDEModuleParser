@@ -13,6 +13,7 @@ uses
   , UnitParser
   , UnitIDEModule
   , System.Zip
+  , System.StrUtils
   ;
 
 type
@@ -88,6 +89,8 @@ type
 
     procedure OpenTextModuleFile(Sender: TObject);
     procedure OpenZipReportFile(Sender: TObject);
+    /// <summary>Check Zip Report file before extract</summary>
+    function CheckZipReportFile(Sender: TObject): boolean;
     procedure actParseCancelExecute(Sender: TObject);
 
     /// <summary>Clear the ModulesArray</summary>
@@ -97,6 +100,17 @@ type
 
     /// <summary>Delete temp Report folder</summary>
     function DeleteTempReportFolder(): boolean;
+
+    function GetKnownReportFiles: TArray<string>;
+
+    function TryOpenDescFileInReport(): boolean;
+    function TryOpenDXDiagFileInReport(): boolean;
+    function TryOpenModuleListFileInReport(): boolean;
+    function TryOpenReportDataFileInReport(): boolean;
+    function TryOpenStackTraceFileInReport(): boolean;
+    function TryOpenStepFileInReport(): boolean;
+
+    function FileExistsInReport(var FileName: string): boolean;
 
   private
     { Private declarations }
@@ -112,6 +126,7 @@ var
   ModulesArray : TModulesArray;   // IDE Modules Array
   BDSIDEModule : TIDEModule;      // BDS IDE Module
   ReportFolder : string;          // Report folder for unpack Report Zip
+  ReportFilesInZip: TArray<string>;
 
 implementation
 
@@ -122,6 +137,40 @@ begin
   Close;
 end;
 
+
+function TfrmMain.CheckZipReportFile(Sender: TObject): boolean;
+var
+  zip : TZipFile;
+  i : integer;
+begin
+  // Check ZIP file
+  Result := false;
+  if not FileExists(mzfFileName) then Exit;
+  zip := TZipFile.Create;
+  try
+    zip.Open(mzfFileName, zmRead);
+    var knowReportFiles := GetKnownReportFiles();
+    ReportFilesInZip := TArray<string>.Create();
+    for i := 0 to zip.FileCount - 1 do
+    begin
+      if MatchStr(LowerCase(zip.FileName[i]), knowReportFiles)
+      then
+        begin
+          SetLength(ReportFilesInZip, Length(ReportFilesInZip) + 1);
+          ReportFilesInZip[Length(ReportFilesInZip) - 1] := zip.FileName[i];
+        end;
+    end;
+    if Length(ReportFilesInZip) = 0
+    then
+      begin
+        Logger.AddToLog('[Error] Can''t find the necessary files inside the Zip archive.');
+        Exit;
+      end;
+  finally
+    zip.Free;
+  end;
+  Result := true;
+end;
 
 function TfrmMain.ConfirmNewTxtModuleFileLoad : boolean;
 begin
@@ -154,10 +203,12 @@ procedure TfrmMain.OpenZipReportFile(Sender: TObject);
 var
   zip : TZipFile;
 begin
-  // Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip)
+  // Open Report Zip file (QPInfo-XXXXXXXX-XXXX.zip)
   if not FileExists(mzfFileName) then Exit;
 
-  // Unpack ZIP in temp folder
+  if not CheckZipReportFile(Sender) then Exit;
+
+  // Unpack Report Zip file in temp folder
   zip := TZipFile.Create;
   try
     zip.Open(mzfFileName, zmRead);
@@ -177,14 +228,21 @@ begin
       end
     else
       Logger.AddToLog('Temp Report folder already exists: ' + ReportFolder);
-
+    for var i:integer := 0 to Length(ReportFilesInZip) - 1 do
+      begin
+        zip.Extract(ReportFilesInZip[i], ReportFolder);
+        Logger.AddToLog('The ' + ReportFilesInZip[i] + ' file unpacked form Zip.');
+      end;
   finally
     zip.Free;
   end;
 
-  mtfFileName := '';
-
-  OpenTextModuleFile(Sender);
+  TryOpenDescFileInReport();
+  TryOpenDXDiagFileInReport();
+  TryOpenModuleListFileInReport();
+  TryOpenReportDataFileInReport();
+  TryOpenStackTraceFileInReport();
+  TryOpenStepFileInReport();
 
 end;
 
@@ -295,6 +353,25 @@ begin
   edtFontSize.Enabled := true;
 end;
 
+function TfrmMain.FileExistsInReport(var FileName: string): boolean;
+begin
+  //
+  Result := false;
+  for var I := 0 to Length(ReportFilesInZip) - 1 do
+    if LowerCase(ReportFilesInZip[i]) = LowerCase(FileName)
+      then
+        begin
+          var tempFileName := ReportFolder + TPath.DirectorySeparatorChar + ReportFilesInZip[i];
+          if FileExists(tempFileName)
+          then
+            begin
+              FileName := tempFileName;
+              Result := true;
+            end;
+          Break;
+        end;
+end;
+
 function TfrmMain.FindBDSIDEModule(var Module: TIDEModule): boolean;
 var
   i : Integer;
@@ -352,6 +429,15 @@ begin
   Logger.AddToLog('Application started');
 end;
 
+function TfrmMain.GetKnownReportFiles: TArray<string>;
+begin
+  Result := TArray<string>.Create('desc.txt',
+        'dxdiag_log.txt', 'modulelist.txt',
+        'reportdata.xml', 'stacktrace.txt',
+        'step.txt'
+        );
+end;
+
 procedure TfrmMain.LoadTxtModuleFile;
 begin
   // Load new Text Module file
@@ -386,6 +472,85 @@ begin
   edtFontSize.Text := IntToStr(tbFontSize.Position);
   MemoTxtModuleFile.Font.Size := tbFontSize.Position;
   memoLog.Font.Size := tbFontSize.Position;
+end;
+
+function TfrmMain.TryOpenDescFileInReport: boolean;
+begin
+  //
+  var tempFileName := 'desc.txt';
+  if FileExistsInReport(tempFileName)
+  then
+    begin
+      // Open desc.txt
+      Result := true;
+    end
+  else Result := false;
+end;
+
+function TfrmMain.TryOpenDXDiagFileInReport: boolean;
+begin
+  //
+  var tempFileName := 'dxdiag_log.txt';
+  if FileExistsInReport(tempFileName)
+  then
+    begin
+      // Open dxdiag_log.txt
+      Result := true;
+    end
+  else Result := false;
+end;
+
+function TfrmMain.TryOpenModuleListFileInReport: boolean;
+begin
+  //
+  var tempFileName := 'modulelist.txt';
+  if FileExistsInReport(tempFileName)
+  then
+    begin
+      mtfFileName := tempFileName;
+      OpenTextModuleFile(frmMain);
+      Result := true;
+    end
+  else Result := false;
+end;
+
+function TfrmMain.TryOpenReportDataFileInReport: boolean;
+begin
+  //
+  var tempFileName := 'reportdata.xml';
+  if FileExistsInReport(tempFileName)
+  then
+    begin
+      // Open reportdata.xml
+      Result := true;
+    end
+  else Result := false;
+end;
+
+function TfrmMain.TryOpenStackTraceFileInReport: boolean;
+begin
+  //
+  var tempFileName := 'stacktrace.txt';
+  if FileExistsInReport(tempFileName)
+  then
+    begin
+      // Open stacktrace.txt
+      Result := true;
+    end
+  else Result := false;
+end;
+
+function TfrmMain.TryOpenStepFileInReport: boolean;
+begin
+  //
+  var tempFileName := 'step.txt';
+  if FileExistsInReport(tempFileName)
+  then
+    begin
+      // Open step.txt
+      Result := true;
+    end
+  else Result := false;
 end;
 
 procedure TfrmMain.UpdateDisplayFileName;
