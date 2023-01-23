@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ReportData>
+	<Status>40</Status>
+	<Data_type>A</Data_type>
+	<Severity>0</Severity>
+	<Project>270</Project>
+	<Version>26.0</Version>
+	<Area>30001</Area>
+	<Shortdescription>Automatisierter Problemreport</Shortdescription>
+	<Description>Ungültiger URL: &amp;quot;git@edvsrv01:Embarcadero-Projekte/Test.git&amp;quot;.
+
+try to commit</Description>
+	<Build>26.0.32429.4364</Build>
+	<Steps/>
+	<Platform_>430</Platform_>
+	<Workaround/>
+	<Locale>1031;1031</Locale>
+	<Architecture>1</Architecture>
+	<OperativeSystem>Windows 10 (Version 10.0, Build 19041, 64-Bit-Edition)</OperativeSystem>
+	<OSMemory>16.619.680 Kb</OSMemory>
+	<ProcessMemoryUsage>446.588 Kb</ProcessMemoryUsage>
+	<MemoryLargeAddress>true</MemoryLargeAddress>
+	<Date>2022-01-25T11:44:14.286Z</Date>
+</ReportData>

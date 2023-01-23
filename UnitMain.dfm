@@ -25,6 +25,8 @@ object frmMain: TfrmMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 458
+    ExplicitWidth = 881
     DesignSize = (
       883
       37)
@@ -79,12 +81,10 @@ object frmMain: TfrmMain
     Top = 0
     Width = 883
     Height = 462
-    ActivePage = TabModuleListFile
+    ActivePage = tsSteps
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
-    ExplicitWidth = 881
-    ExplicitHeight = 458
     object TabModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       object Panel2: TPanel
@@ -96,6 +96,7 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 873
         DesignSize = (
           875
           41)
@@ -114,6 +115,7 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
+          ExplicitWidth = 756
         end
       end
       object MemoTxtModuleFile: TMemo
@@ -1890,6 +1892,8 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
+        ExplicitLeft = 53
+        ExplicitTop = 43
       end
       object Panel3: TPanel
         Left = 0
@@ -1899,6 +1903,8 @@ object frmMain: TfrmMain
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
+        ExplicitTop = 364
+        ExplicitWidth = 873
         object lblFontSize: TLabel
           Left = 13
           Top = 3
@@ -1931,61 +1937,6 @@ object frmMain: TfrmMain
           TabOrder = 1
           Text = '10'
         end
-      end
-    end
-    object tsStackTrace: TTabSheet
-      Caption = 'StackTrace file'
-      ImageIndex = 4
-      object Panel5: TPanel
-        Left = 0
-        Top = 0
-        Width = 875
-        Height = 41
-        Align = alTop
-        BevelOuter = bvNone
-        ParentBackground = False
-        TabOrder = 0
-        DesignSize = (
-          875
-          41)
-        object LabeledEdit3: TLabeledEdit
-          Left = 96
-          Top = 10
-          Width = 772
-          Height = 23
-          Cursor = crHandPoint
-          Anchors = [akLeft, akTop, akRight, akBottom]
-          EditLabel.Width = 77
-          EditLabel.Height = 23
-          EditLabel.Caption = 'StackTrace file:'
-          LabelPosition = lpLeft
-          ReadOnly = True
-          TabOrder = 0
-          Text = ''
-          OnClick = actOpenModuleFileExecute
-        end
-      end
-      object memoStackTrace: TMemo
-        AlignWithMargins = True
-        Left = 5
-        Top = 46
-        Width = 865
-        Height = 378
-        Margins.Left = 5
-        Margins.Top = 5
-        Margins.Right = 5
-        Margins.Bottom = 5
-        Align = alClient
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Monoid'
-        Font.Pitch = fpFixed
-        Font.Style = []
-        ParentFont = False
-        ReadOnly = True
-        ScrollBars = ssBoth
-        TabOrder = 1
       end
     end
     object TabModulesList: TTabSheet
@@ -2061,11 +2012,10 @@ object frmMain: TfrmMain
           64)
       end
     end
-    object tsDXDiagLog: TTabSheet
-      Caption = 'DXDiag Log'
-      Enabled = False
-      ImageIndex = 2
-      object Panel6: TPanel
+    object tsStackTrace: TTabSheet
+      Caption = 'StackTrace file'
+      ImageIndex = 4
+      object Panel5: TPanel
         Left = 0
         Top = 0
         Width = 875
@@ -2077,10 +2027,10 @@ object frmMain: TfrmMain
         DesignSize = (
           875
           41)
-        object LabeledEdit1: TLabeledEdit
-          Left = 96
+        object lbedStackTraceFile: TLabeledEdit
+          Left = 88
           Top = 10
-          Width = 772
+          Width = 780
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2094,7 +2044,64 @@ object frmMain: TfrmMain
           OnClick = actOpenModuleFileExecute
         end
       end
-      object Memo1: TMemo
+      object memoStackTrace: TMemo
+        AlignWithMargins = True
+        Left = 5
+        Top = 46
+        Width = 865
+        Height = 378
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Monoid'
+        Font.Pitch = fpFixed
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 1
+      end
+    end
+    object tsDXDiagLog: TTabSheet
+      Caption = 'DXDiag Log'
+      Enabled = False
+      ImageIndex = 2
+      object Panel6: TPanel
+        Left = 0
+        Top = 0
+        Width = 875
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        ParentBackground = False
+        TabOrder = 0
+        ExplicitTop = -3
+        DesignSize = (
+          875
+          41)
+        object lbedDXDiagFile: TLabeledEdit
+          Left = 72
+          Top = 10
+          Width = 796
+          Height = 23
+          Cursor = crHandPoint
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          EditLabel.Width = 61
+          EditLabel.Height = 23
+          EditLabel.Caption = 'DXDiag file:'
+          LabelPosition = lpLeft
+          ReadOnly = True
+          TabOrder = 0
+          Text = ''
+          OnClick = actOpenModuleFileExecute
+        end
+      end
+      object memoDXDiag: TMemo
         AlignWithMargins = True
         Left = 5
         Top = 46
@@ -2120,10 +2127,117 @@ object frmMain: TfrmMain
     object tsDescription: TTabSheet
       Caption = 'Description file'
       ImageIndex = 5
+      object Panel8: TPanel
+        Left = 0
+        Top = 0
+        Width = 875
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        ParentBackground = False
+        TabOrder = 0
+        ExplicitTop = 8
+        DesignSize = (
+          875
+          41)
+        object LabeledEdit1: TLabeledEdit
+          Left = 96
+          Top = 10
+          Width = 772
+          Height = 23
+          Cursor = crHandPoint
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          EditLabel.Width = 82
+          EditLabel.Height = 23
+          EditLabel.Caption = 'Description file:'
+          LabelPosition = lpLeft
+          ReadOnly = True
+          TabOrder = 0
+          Text = ''
+          OnClick = actOpenModuleFileExecute
+        end
+      end
+      object memoDescription: TMemo
+        AlignWithMargins = True
+        Left = 5
+        Top = 46
+        Width = 865
+        Height = 378
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Monoid'
+        Font.Pitch = fpFixed
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 1
+        ExplicitLeft = 10
+        ExplicitTop = 51
+      end
     end
     object tsSteps: TTabSheet
       Caption = 'Steps file'
       ImageIndex = 6
+      object Panel7: TPanel
+        Left = 0
+        Top = 0
+        Width = 875
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        ParentBackground = False
+        TabOrder = 0
+        DesignSize = (
+          875
+          41)
+        object lbedStepFile: TLabeledEdit
+          Left = 56
+          Top = 10
+          Width = 812
+          Height = 23
+          Cursor = crHandPoint
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          EditLabel.Width = 50
+          EditLabel.Height = 23
+          EditLabel.Caption = 'Steps file:'
+          LabelPosition = lpLeft
+          ReadOnly = True
+          TabOrder = 0
+          Text = ''
+          OnClick = actOpenModuleFileExecute
+        end
+      end
+      object memoSteps: TMemo
+        AlignWithMargins = True
+        Left = 5
+        Top = 46
+        Width = 865
+        Height = 378
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Monoid'
+        Font.Pitch = fpFixed
+        Font.Style = []
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 1
+        ExplicitLeft = 10
+        ExplicitTop = 51
+      end
     end
     object TabLog: TTabSheet
       Caption = 'Log'

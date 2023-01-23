@@ -1,0 +1,22 @@
+[50328461]{rtl260.bpl  } System.JSON.Serializers..{System.Generics.Defaults}TDelegatedComparer<System.Generics.Collections.TPair<System.Rtti.TRttiObject,System.TClass>> (Line 4763, "System.Generics.Collections.pas" + 0) + $AE8
+[1F55FC6A]{gitide260.bpl} GitClient.TGitClient.LoadRemoteInfo (Line 1683, "GitClient.pas" + 12) + $32
+[50327A13]{rtl260.bpl  } System.JSON.Serializers..{System.Generics.Collections}@TList`1.Pack[1]$ActRec<System.Generics.Collections.TPair<System.string,System.Pointer>> (Line 4763, "System.Generics.Collections.pas" + 0) + $9A
+[1F55F31A]{gitide260.bpl} GitClient.TGitClient.EnsureUserAuthentication (Line 1544, "GitClient.pas" + 7) + $6
+[1F55FF55]{gitide260.bpl} GitClient.TGitClient.Push (Line 1731, "GitClient.pas" + 3) + $7
+[1F5B3BFA]{gitide260.bpl} GitIDEPush.DoPush (Line 139, "GitIDEPush.pas" + 7) + $12
+[1F5B3A97]{gitide260.bpl} GitIDEPush.TBasePushGitMenu.Execute (Line 122, "GitIDEPush.pas" + 22) + $12
+[2051CE9E]{coreide260.bpl} ContainerIntf.TProjectManagerMenuItem.Click (Line 1110, "ContainerIntf.pas" + 18) + $22
+[50E233B7]{vcl260.bpl  } Vcl.Menus.TMenu.DispatchCommand (Line 3505, "Vcl.Menus.pas" + 5) + $2
+[50E24642]{vcl260.bpl  } Vcl.Menus.TPopupList.WndProc (Line 4678, "Vcl.Menus.pas" + 4) + $E
+[500602C0]{rtl260.bpl  } System.TMonitor.CheckOwningThread (Line 19028, "System.pas" + 2) + $0
+[500605E2]{rtl260.bpl  } System.TMonitor.Exit (Line 19218, "System.pas" + 1) + $2
+[5006063E]{rtl260.bpl  } System.TMonitor.Exit (Line 19240, "System.pas" + 2) + $7
+[50CC656B]{vcl260.bpl  } Vcl.Graphics.FreeMemoryContexts (Line 7130, "Vcl.Graphics.pas" + 12) + $8
+[50CE9178]{vcl260.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 9944, "Vcl.Controls.pas" + 3) + $6
+[50E24591]{vcl260.bpl  } Vcl.Menus.TPopupList.MainWndProc (Line 4653, "Vcl.Menus.pas" + 2) + $5
+[50174370]{rtl260.bpl  } System.Classes.CalcJmpOffset (Line 17554, "System.Classes.pas" + 0) + $0
+[212A15F3]{vclide260.bpl} IDEVirtualTrees.TVirtualTreeHintWindow.IsHintMsg (Line 7082, "IDEVirtualTrees.pas" + 7) + $13
+[50E3E7A7]{vcl260.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 10724, "Vcl.Forms.pas" + 23) + $1
+[50E3E7EA]{vcl260.bpl  } Vcl.Forms.TApplication.HandleMessage (Line 10754, "Vcl.Forms.pas" + 1) + $4
+[50E3EB1D]{vcl260.bpl  } Vcl.Forms.TApplication.Run (Line 10892, "Vcl.Forms.pas" + 26) + $3
+[00517FFA]{bds.exe     } bds.bds (Line 214, "" + 7) + $7

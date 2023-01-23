@@ -54,13 +54,19 @@ type
     OpenDialog1: TOpenDialog;
     sgModules: TStringGrid;
     Panel5: TPanel;
-    LabeledEdit3: TLabeledEdit;
+    lbedStackTraceFile: TLabeledEdit;
     memoStackTrace: TMemo;
     Panel6: TPanel;
-    LabeledEdit1: TLabeledEdit;
-    Memo1: TMemo;
+    lbedDXDiagFile: TLabeledEdit;
+    memoDXDiag: TMemo;
     tsDescription: TTabSheet;
     tsSteps: TTabSheet;
+    Panel7: TPanel;
+    lbedStepFile: TLabeledEdit;
+    Panel8: TPanel;
+    LabeledEdit1: TLabeledEdit;
+    memoDescription: TMemo;
+    memoSteps: TMemo;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
