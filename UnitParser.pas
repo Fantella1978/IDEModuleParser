@@ -1,6 +1,8 @@
-unit UnitParser;
+﻿unit UnitParser;
 
 interface
+
+{comment to UTF-8 convert: конвертирование}
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
@@ -73,14 +75,14 @@ end;
 function TfrmParse.GetModuleLineRegExp: string;
 begin
 
-  // (.*)\t\(\d{1}x[0-9A-F]{8}\)\t([^\t]*)\t(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\s*(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[AP]M)?)\t([\dA-F]{40})
+  // (.*)\t\(\d{1}x[0-9A-F]{8}\)\t([^\t]*)\t(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\s*(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[\S]{2})?)\t([\dA-F]{40})
 
   Result := '(.*)\t' +                                // file name Groups[1]
     '\(\d{1}x[0-9A-F]{8}\)\t' +                       //
     '([^\t]*)\t' +                                    // path Groups[2]
     '(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?' +   // version Groups[3]
     '(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\s*' +    // date Groups[4]
-    '(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[AP]M)?)\t' +      // time Groups[5]
+    '(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[\S]{2})?)\t' +    // time Groups[5]
     '([\dA-F]{40})';                                  // hash Groups[6]
 
 end;

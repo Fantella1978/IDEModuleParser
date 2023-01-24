@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ReportData>
+	<Status>40</Status>
+	<Data_type>A</Data_type>
+	<Severity>0</Severity>
+	<Project>270</Project>
+	<Version>28.0</Version>
+	<Area>30001</Area>
+	<Shortdescription>Automated Incident Report</Shortdescription>
+	<Description>Access violation at address 180CE883 in module 'ParnassusDebugger_Alexandria.dll'. Read of address 00000000.
+
+Was trying to debug FMX app (https://github.com/zoomicon/READCOM_App) on MacOS-X Intel 64-bit (iMac mini on the cloud) and pressing Pause probably a 2nd time (while it was saying Stopping on the Delphi titlebar) caused exception</Description>
+	<Build>28.0.44500.8973</Build>
+	<Steps/>
+	<Platform_>430</Platform_>
+	<Workaround/>
+	<Locale>1032;1032</Locale>
+	<Architecture>1</Architecture>
+	<OperativeSystem>Windows 11 (Version 21H2, OS Build 22000.778, 64-bit Edition)</OperativeSystem>
+	<OSMemory>16.119.976 Kb</OSMemory>
+	<ProcessMemoryUsage>1.494.768 Kb</ProcessMemoryUsage>
+	<MemoryLargeAddress>true</MemoryLargeAddress>
+	<Date>2022-07-07T05:53:38.855Z</Date>
+</ReportData>

@@ -447,7 +447,7 @@ end;
 procedure TfrmMain.LoadTxtModuleFile;
 begin
   // Load new Text Module file
-  MemoTxtModuleFile.Lines.LoadFromFile(mtfFileName);
+  MemoTxtModuleFile.Lines.LoadFromFile(mtfFileName, TEncoding.UTF8);
   // Enable Parse Action
   actParseModuleFile.Enabled := true;
   // Enable Font Size Change
@@ -462,12 +462,11 @@ var
   i : Integer;
   tempIDEModule : TIDEModule;
 begin
-  //
+  // Clear the Modules Array
   for I := 0 to Length(ModulesArray) - 1 do
   begin
     tempIDEModule := @ModulesArray[i]^;
     FreeAndNil(tempIDEModule);
-    // ModulesArray[i] := nil;
   end;
   SetLength(ModulesArray, 0);
 end;
@@ -508,7 +507,7 @@ end;
 
 function TfrmMain.TryOpenModuleListFileInReport: boolean;
 begin
-  //
+  // Try open ModuleList file in Report folder
   var tempFileName := 'modulelist.txt';
   if FileExistsInReport(tempFileName)
   then

@@ -3,13 +3,17 @@ unit UnitIDEModule;
 interface
 
 uses
-  System.RegularExpressionsCore;
+  System.RegularExpressionsCore
+  , System.DateUtils
+  , UnitLogger
+  ;
 
 
 type
   PIDEModule = ^TIDEModule;
   TIDEModule = class(TObject)
   private
+    function DateAndTimeStrToDateTime(str : string): TDateTime;
   public
     FileName : string;
     Path : string;
@@ -24,6 +28,7 @@ implementation
 
 uses
     System.SysUtils
+  , UnitMain
   ;
 
 { TIDEModule }
@@ -38,14 +43,64 @@ begin
 end;
 
 
+function TIDEModule.DateAndTimeStrToDateTime(str : string): TDateTime;
+var
+  DateTimeRegexp : TPerlRegEx;
+  AYear, AMonth, ADay : word;
+  AHour, AMinute, ASecond, AMilliSecond : word;
+begin
+  //
+  // \d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}    // date Groups[4]
+  // \d{1,2}:\d{1,2}:\d{1,2}(?:\s*[AP]M)?     // time Groups[5]
+  //
+  DateTimeRegexp := TPerlRegEx.Create;
+  try
+    with DateTimeRegexp do begin
+      RegEx := '(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4}) (\d{1,2}):(\d{1,2}):(\d{1,2})(?:\s*([AP]M))?';
+      Subject := str;
+      if Match
+      then
+        begin
+          AYear := StrToInt(Groups[3]);
+          AMonth := StrToInt(Groups[2]);
+          ADay := StrToInt(Groups[1]);
+          AHour := StrToInt(Groups[4]);
+          AMinute := StrToInt(Groups[5]);
+          ASecond := StrToInt(Groups[6]);
+          if Groups[7] = 'PM' then AHour := AHour + 12;
+          AMilliSecond := 0;
+        end
+      else
+        begin
+          Logger.AddToLog('[Error] Can''t convert string to DateTime: ' + str);
+          AYear := 0;
+          AMonth := 0;
+          ADay := 0;
+          AHour := 0;
+          AMinute := 0;
+          ASecond := 0;
+          AMilliSecond := 0;
+        end;
+    end;
+  finally
+    DateTimeRegexp.Free;
+  end;
+  Result := EncodeDateTime(AYear, AMonth, ADay, AHour, AMinute, ASecond, AMilliSecond);
+end;
+
 procedure TIDEModule.AssignFromRegExpGroups(regexp : TPerlRegEx);
+var
+  str: string;
 begin
   with regexp do
   begin
     FileName := Groups[1];
     Path := Groups[2];
     Version := Groups[3];
-    DateTime := StrToDateTime(Groups[4] + ' ' + Groups[5]);
+    str := Groups[4] + ' ' + Groups[5];
+    if TryStrToDateTime(str, DateTime) = false
+    then
+      DateTime := DateAndTimeStrToDateTime(str);
     Hash := Groups[6];
   end;
 end;
