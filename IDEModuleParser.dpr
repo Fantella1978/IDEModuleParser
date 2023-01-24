@@ -6,7 +6,7 @@ uses
   Vcl.Styles,
   UnitMain in 'UnitMain.pas' {frmMain},
   UnitParser in 'UnitParser.pas' {frmParse},
-  UnitDB in 'UnitDB.pas' {DataModule1: TDataModule},
+  UnitDB in 'UnitDB.pas' {DM1: TDataModule},
   UnitLogger in 'UnitLogger.pas',
   UnitIDEModule in 'UnitIDEModule.pas';
 
@@ -18,6 +18,6 @@ begin
   TStyleManager.TrySetStyle('Glow');
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TfrmParse, frmParse);
-  Application.CreateForm(TDataModule1, DataModule1);
+  Application.CreateForm(TDM1, DM1);
   Application.Run;
 end.

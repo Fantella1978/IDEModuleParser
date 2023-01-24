@@ -143,7 +143,7 @@
             <Form>frmParse</Form>
         </DCCReference>
         <DCCReference Include="UnitDB.pas">
-            <Form>DataModule1</Form>
+            <Form>DM1</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>

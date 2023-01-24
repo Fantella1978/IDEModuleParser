@@ -13,7 +13,8 @@ uses
   , UnitParser
   , UnitIDEModule
   , System.Zip
-  , System.StrUtils
+  , System.StrUtils, Data.DB, Vcl.DBGrids
+  , UnitDB
   ;
 
 type
@@ -52,7 +53,6 @@ type
     actParseCancel: TAction;
     tsStackTrace: TTabSheet;
     OpenDialog1: TOpenDialog;
-    sgModules: TStringGrid;
     Panel5: TPanel;
     lbedStackTraceFile: TLabeledEdit;
     memoStackTrace: TMemo;
@@ -67,6 +67,7 @@ type
     LabeledEdit1: TLabeledEdit;
     memoDescription: TMemo;
     memoSteps: TMemo;
+    DBGrid1: TDBGrid;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -287,6 +288,8 @@ begin
 end;
 
 procedure TfrmMain.actParseModuleFileExecute(Sender: TObject);
+var
+  tempIDEModule : TIDEModule;
 begin
   // Parse Module file
   ledtBDSPath.Text := '';
@@ -310,12 +313,19 @@ begin
           ledtBDSInstDate.Text := DateTimeToStr(BDSIDEModule.DateTime);
         end
       else BDSIDEModule := nil;
-      {
+
       for var i := 0 to Length(ModulesArray) - 1 do
         begin
-
+          tempIDEModule := @ModulesArray[i]^;
+          DM1.cdsModules.Append;
+          DM1.cdsModules.FieldByName('Num').AsInteger := i;
+          DM1.cdsModules.FieldByName('Name').AsString := tempIDEModule.FileName;
+          DM1.cdsModules.Post;
         end;
-      }
+      DM1.cdsModules.First;
+      TabModulesList.Enabled := true;
+      PageControl1.ActivePage := TabModulesList;
+
     end;
 end;
 
