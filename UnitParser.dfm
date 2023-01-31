@@ -16,7 +16,7 @@ object frmParse: TfrmParse
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
-  Position = poDesktopCenter
+  Position = poMainFormCenter
   OnCloseQuery = FormCloseQuery
   OnShow = FormShow
   DesignSize = (
@@ -53,32 +53,32 @@ object frmParse: TfrmParse
       486
       37)
     object btnStop: TButton
-      Left = 403
+      Left = 405
       Top = 8
       Width = 75
       Height = 25
       Action = frmMain.actParseCancel
       Anchors = [akRight, akBottom]
       TabOrder = 0
-      ExplicitLeft = 401
+      ExplicitLeft = 403
     end
   end
   object pBarOverall: TProgressBar
     Left = 8
     Top = 78
-    Width = 470
+    Width = 472
     Height = 17
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
-    ExplicitWidth = 468
+    ExplicitWidth = 470
   end
   object pBarCurrentTask: TProgressBar
     Left = 8
     Top = 34
-    Width = 470
+    Width = 472
     Height = 17
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 2
-    ExplicitWidth = 468
+    ExplicitWidth = 470
   end
 end

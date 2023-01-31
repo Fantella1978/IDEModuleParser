@@ -25,13 +25,13 @@ object frmMain: TfrmMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 458
-    ExplicitWidth = 881
+    ExplicitTop = 480
+    ExplicitWidth = 872
     DesignSize = (
       874
       37)
     object Button1: TButton
-      Left = 636
+      Left = 634
       Top = 6
       Width = 135
       Height = 25
@@ -40,10 +40,10 @@ object frmMain: TfrmMain
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 643
+      ExplicitLeft = 632
     end
     object Button2: TButton
-      Left = 777
+      Left = 775
       Top = 6
       Width = 75
       Height = 25
@@ -52,20 +52,20 @@ object frmMain: TfrmMain
       Cancel = True
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 784
+      ExplicitLeft = 773
     end
     object Button3: TButton
-      Left = 423
+      Left = 421
       Top = 6
       Width = 75
       Height = 25
       Action = actParseModuleFile
       Anchors = [akRight, akBottom]
       TabOrder = 2
-      ExplicitLeft = 430
+      ExplicitLeft = 419
     end
     object Button4: TButton
-      Left = 504
+      Left = 502
       Top = 6
       Width = 126
       Height = 25
@@ -73,7 +73,7 @@ object frmMain: TfrmMain
       Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
       TabOrder = 3
-      ExplicitLeft = 511
+      ExplicitLeft = 500
     end
   end
   object PageControl1: TPageControl
@@ -81,13 +81,13 @@ object frmMain: TfrmMain
     Top = 0
     Width = 874
     Height = 484
-    ActivePage = TabModulesList
+    ActivePage = tsModuleListFile
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
-    ExplicitWidth = 881
-    ExplicitHeight = 458
-    object TabModuleListFile: TTabSheet
+    ExplicitWidth = 872
+    ExplicitHeight = 480
+    object tsModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       object Panel2: TPanel
         Left = 0
@@ -98,14 +98,13 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 875
         DesignSize = (
           866
           41)
         object lbedModuleFile: TLabeledEdit
           Left = 96
           Top = 10
-          Width = 749
+          Width = 747
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -117,7 +116,6 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 758
         end
       end
       object MemoTxtModuleFile: TMemo
@@ -1894,8 +1892,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 865
-        ExplicitHeight = 317
       end
       object Panel3: TPanel
         Left = 0
@@ -1905,8 +1901,6 @@ object frmMain: TfrmMain
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
-        ExplicitTop = 368
-        ExplicitWidth = 875
         object lblFontSize: TLabel
           Left = 13
           Top = 3
@@ -1967,7 +1961,7 @@ object frmMain: TfrmMain
       object ledtBDSPath: TLabeledEdit
         Left = 80
         Top = 10
-        Width = 767
+        Width = 765
         Height = 23
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight]
@@ -1987,7 +1981,6 @@ object frmMain: TfrmMain
         TabOrder = 1
         Text = ''
         OnClick = actOpenModuleFileExecute
-        ExplicitWidth = 774
       end
       object ledtBDSInstDate: TLabeledEdit
         Left = 370
@@ -2034,7 +2027,7 @@ object frmMain: TfrmMain
           end>
       end
     end
-    object tsStackTrace: TTabSheet
+    object tsStackTraceFile: TTabSheet
       Caption = 'StackTrace file'
       ImageIndex = 4
       object Panel5: TPanel
@@ -2046,7 +2039,7 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 875
+        ExplicitWidth = 864
         DesignSize = (
           866
           41)
@@ -2065,7 +2058,7 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 780
+          ExplicitWidth = 769
         end
       end
       object memoStackTrace: TMemo
@@ -2089,8 +2082,8 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 865
-        ExplicitHeight = 378
+        ExplicitWidth = 854
+        ExplicitHeight = 396
       end
     end
     object tsDXDiagLog: TTabSheet
@@ -2106,7 +2099,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 875
         DesignSize = (
           866
           41)
@@ -2125,7 +2117,6 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 796
         end
       end
       object memoDXDiag: TMemo
@@ -2149,8 +2140,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 865
-        ExplicitHeight = 378
       end
     end
     object tsDescription: TTabSheet
@@ -2165,7 +2154,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 875
         DesignSize = (
           866
           41)
@@ -2184,7 +2172,6 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 772
         end
       end
       object memoDescription: TMemo
@@ -2208,8 +2195,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 865
-        ExplicitHeight = 378
       end
     end
     object tsSteps: TTabSheet
@@ -2224,7 +2209,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 875
         DesignSize = (
           866
           41)
@@ -2243,7 +2227,6 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 804
         end
       end
       object memoSteps: TMemo
@@ -2267,8 +2250,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 865
-        ExplicitHeight = 378
       end
     end
     object TabLog: TTabSheet
@@ -2290,8 +2271,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 0
-        ExplicitWidth = 865
-        ExplicitHeight = 378
       end
       object Panel4: TPanel
         Left = 0
@@ -2302,15 +2281,13 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 1
-        ExplicitTop = 388
-        ExplicitWidth = 875
         DesignSize = (
           866
           41)
         object lbedLogPath: TLabeledEdit
           Left = 56
           Top = 9
-          Width = 789
+          Width = 787
           Height = 23
           Anchors = [akLeft, akTop, akRight]
           EditLabel.Width = 42
@@ -2320,7 +2297,6 @@ object frmMain: TfrmMain
           ReadOnly = True
           TabOrder = 0
           Text = ''
-          ExplicitWidth = 798
         end
       end
     end

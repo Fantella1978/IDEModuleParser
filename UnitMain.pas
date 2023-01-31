@@ -37,7 +37,7 @@ type
     MemoTxtModuleFile: TMemo;
     Panel3: TPanel;
     PageControl1: TPageControl;
-    TabModuleListFile: TTabSheet;
+    tsModuleListFile: TTabSheet;
     TabModulesList: TTabSheet;
     tsDXDiagLog: TTabSheet;
     TabLog: TTabSheet;
@@ -51,7 +51,7 @@ type
     Panel4: TPanel;
     lbedLogPath: TLabeledEdit;
     actParseCancel: TAction;
-    tsStackTrace: TTabSheet;
+    tsStackTraceFile: TTabSheet;
     OpenDialog1: TOpenDialog;
     Panel5: TPanel;
     lbedStackTraceFile: TLabeledEdit;
@@ -77,10 +77,10 @@ type
     procedure actOpenReportZipFileExecute(Sender: TObject);
     /// <summary>Parse Module file</summary>
     procedure actParseModuleFileExecute(Sender: TObject);
-    /// <summary>Module file changed, update display FileName</summary>
-    procedure UpdateDisplayFileName();
-    /// <summary>Load new Text Module file</summary>
-    procedure LoadTxtModuleFile();
+    /// <summary>ModuleList file changed, update display FileName</summary>
+    procedure UpdateDisplayModuleListFileName();
+    /// <summary>StackTrace file changed, update display FileName</summary>
+    procedure UpdateDisplayStackTraceFileName();
     procedure tbFontSizeChange(Sender: TObject);
     /// <summary>Enable Font Size Change</summary>
     procedure EnableFontSizeChange();
@@ -89,13 +89,21 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     /// <summary>Drag and Drop TXT or ZIP files in App</summary>
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
+
     /// <summary>Confirm new Txt Module file load</summary>
-    function ConfirmNewTxtModuleFileLoad : boolean;
+    function ConfirmNewModuleListFileLoad(AskForAll: boolean) : boolean;
+    /// <summary>Confirm new Txt Module file load</summary>
+    function ConfirmNewStackTraceFileLoad(AskForAll: boolean): boolean;
 
     function AddAllModulesToStringGrid : boolean;
 
-    procedure OpenTextModuleFile(Sender: TObject);
+    procedure OpenTextStackTraceFile(FileName: string);
+    procedure OpenTextModuleListFile(FileName: string);
     procedure OpenZipReportFile(Sender: TObject);
+    /// <summary>Load new Text Module file</summary>
+    procedure LoadTxtModuleFile();
+    /// <summary>Load new Text Module file</summary>
+    procedure LoadTxtStackTraceFile();
     /// <summary>Check Zip Report file before extract</summary>
     function CheckZipReportFile(Sender: TObject): boolean;
     procedure actParseCancelExecute(Sender: TObject);
@@ -104,7 +112,6 @@ type
     procedure ModulesArrayClear();
     /// <summary>Find BDS.exe IDE Module</summary>
     function FindBDSIDEModule(var Module: TIDEModule): boolean;
-
     /// <summary>Delete temp Report folder</summary>
     function DeleteTempReportFolder(): boolean;
 
@@ -128,12 +135,15 @@ type
 var
   frmMain : TfrmMain;
   mtfFileName : TFileName;  // ModuleList.txt filename
+  stfFileName : TFileName;  // StackTrace.txt filename
   mzfFileName : TFileName;  // QPInfo-XXXXXXXX-XXXX.zip filename
   Logger : TMyLogger;       // Logger
   ModulesArray : TModulesArray;   // IDE Modules Array
   BDSIDEModule : TIDEModule;      // BDS IDE Module
   ReportFolder : string;          // Report folder for unpack Report Zip
   ReportFilesInZip: TArray<string>;
+  ConfirmOpenForAll: TModalResult;   // Confirm Open for All files
+  AskConfirmOpenForAll: boolean;     // Ask confirm Open for All files
 
 implementation
 
@@ -179,31 +189,100 @@ begin
   Result := true;
 end;
 
-function TfrmMain.ConfirmNewTxtModuleFileLoad : boolean;
+function TfrmMain.ConfirmNewStackTraceFileLoad(AskForAll: boolean): boolean;
+var
+  res: TModalResult;
 begin
-  Result := false;
-  if (MemoTxtModuleFile.Lines.Text <> '') AND
-    (MessageDlg('The ModuleFile is opened. Open another file?', mtConfirmation, mbYesNo, 0) = mrNo)
-    then
-      begin
-        Logger.AddToLog('The opening of a new text ModuleFile has not been confirmed.');
-        Exit;
-      end;
   Result := true;
+  if (memoStackTrace.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
+  if ConfirmOpenForAll in [mrNo, mrNoToAll]
+  then
+    begin
+      Result := false;
+      Exit;
+    end;
+
+  if PageControl1.ActivePage <> tsStackTraceFile then PageControl1.ActivePage := tsStackTraceFile;
+  if (not AskForAll)
+  then
+    res := MessageDlg('The StackTrace is opened. Open another file?', mtConfirmation, mbYesNo, 0)
+  else
+    begin
+      res := MessageDlg('The StackTrace is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+      if res in [mrYesToAll, mrNoToAll]
+      then
+        begin
+          ConfirmOpenForAll := res;
+          AskConfirmOpenForAll := false;
+        end;
+    end;
+
+  if res in [mrNo, mrNoToAll, mrCancel]
+  then
+    begin
+      Result := false;
+      Logger.AddToLog('The opening of a new StackTrace has not been confirmed.');
+      Exit;
+    end;
+end;
+
+function TfrmMain.ConfirmNewModuleListFileLoad(AskForAll: boolean) : boolean;
+var
+  res: TModalResult;
+begin
+  Result := true;
+  if (MemoTxtModuleFile.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
+  if ConfirmOpenForAll in [mrNo, mrNoToAll]
+  then
+    begin
+      Result := false;
+      Exit;
+    end;
+
+  if PageControl1.ActivePage <> tsModuleListFile then PageControl1.ActivePage := tsModuleListFile;
+  if (not AskForAll)
+  then
+    res := MessageDlg('The ModuleFile is opened. Open another file?', mtConfirmation, mbYesNo, 0)
+  else
+    begin
+      res := MessageDlg('The ModuleFile is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+      if res in [mrYesToAll, mrNoToAll]
+      then
+        begin
+          ConfirmOpenForAll := res;
+          AskConfirmOpenForAll := false;
+        end;
+    end;
+
+  if res in [mrNo, mrNoToAll, mrCancel]
+  then
+    begin
+      Result := false;
+      Logger.AddToLog('The opening of a new text ModuleFile has not been confirmed.');
+      Exit;
+    end;
 end;
 
 
-procedure TfrmMain.OpenTextModuleFile(Sender: TObject);
+procedure TfrmMain.OpenTextModuleListFile(FileName: string);
 begin
   // Open new text ModuleFile.txt file
-  if not FileExists(mtfFileName) then Exit;
-
-  UpdateDisplayFileName();
+  if not FileExists(FileName) OR not ConfirmNewModuleListFileLoad(AskConfirmOpenForAll) then Exit;
+  mtfFileName := FileName;
+  if PageControl1.ActivePage <> tsModuleListFile then PageControl1.ActivePage := tsModuleListFile;
+  UpdateDisplayModuleListFileName();
   LoadTxtModuleFile();
+end;
 
-  if PageControl1.ActivePage <> TabModuleListFile
-    then PageControl1.ActivePage := TabModuleListFile;
-
+procedure TfrmMain.OpenTextStackTraceFile(FileName: string);
+begin
+  // Open new text StackTrace.txt file
+  if not FileExists(FileName) OR not ConfirmNewStackTraceFileLoad(AskConfirmOpenForAll) then Exit;
+  stfFileName := FileName;
+  if PageControl1.ActivePage <> tsStackTraceFile then PageControl1.ActivePage := tsStackTraceFile;
+  // UpdateDisplayFileName();
+  UpdateDisplayStackTraceFileName();
+  LoadTxtStackTraceFile();
 end;
 
 procedure TfrmMain.OpenZipReportFile(Sender: TObject);
@@ -244,31 +323,35 @@ begin
     zip.Free;
   end;
 
+  ConfirmOpenForAll := -1;
+  AskConfirmOpenForAll := true;
   TryOpenDescFileInReport();
   TryOpenDXDiagFileInReport();
   TryOpenModuleListFileInReport();
   TryOpenReportDataFileInReport();
   TryOpenStackTraceFileInReport();
   TryOpenStepFileInReport();
+  ConfirmOpenForAll := -1;
 
 end;
 
 procedure TfrmMain.actOpenModuleFileExecute(Sender: TObject);
 begin
   // Open Module file (ModuleList.txt)
-  if not ConfirmNewTxtModuleFileLoad then Exit;
-  if OpenTextFileDialog1.InitialDir = '' then
-    OpenTextFileDialog1.InitialDir := TPath.GetDirectoryName(Application.ExeName);
-  if OpenTextFileDialog1.Execute then
-    mtfFileName := OpenTextFileDialog1.FileName;
-  OpenTextModuleFile(Sender);
+  if OpenTextFileDialog1.InitialDir = ''
+    then OpenTextFileDialog1.InitialDir := TPath.GetDirectoryName(Application.ExeName);
+  if OpenTextFileDialog1.Execute AND ConfirmNewModuleListFileLoad(false)
+    then
+      begin
+        OpenTextModuleListFile(OpenTextFileDialog1.FileName);
+        if PageControl1.ActivePage <> tsModuleListFile
+          then PageControl1.ActivePage := tsModuleListFile;
+      end;
 end;
 
 procedure TfrmMain.actOpenReportZipFileExecute(Sender: TObject);
 begin
   // Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip) via Open File Dialog
-  if not ConfirmNewTxtModuleFileLoad then Exit;
-
   if OpenDialog1.InitialDir = '' then
     OpenDialog1.InitialDir := TPath.GetDirectoryName(Application.ExeName);
   if OpenDialog1.Execute then
@@ -424,15 +507,16 @@ begin
 
   TabModulesList.TabVisible := false;
   tsDXDiagLog.TabVisible := false;
-  tsStackTrace.TabVisible := false;
+  tsStackTraceFile.TabVisible := false;
   tsSteps.TabVisible := false;
   tsDescription.TabVisible := false;
-  PageControl1.ActivePage := TabModuleListFile;
+  PageControl1.ActivePage := tsModuleListFile;
 
   // Disable Font Size Change
   EnableFontSizeChange();
 
   DragAcceptFiles(Self.Handle, True);
+  AskConfirmOpenForAll := false;
 
   TFormatSettings.Create;
   Logger := TMyLogger.Create;
@@ -463,8 +547,22 @@ begin
   // Enable Font Size Change
   EnableFontSizeChange();
 
+  TabModulesList.TabVisible := false;
+  TabModulesList.Enabled := false;
+  PageControl1.ActivePage := tsModuleListFile;
+
   Logger.AddToLog('New Text Module file opened: ' + mtfFileName);
   frmParse.parseSuccess := false;
+end;
+
+procedure TfrmMain.LoadTxtStackTraceFile;
+begin
+  // Load new Text StackTrace file
+  memoStackTrace.Lines.LoadFromFile(stfFileName, TEncoding.UTF8);
+  // Enable Font Size Change
+  EnableFontSizeChange();
+  tsStackTraceFile.TabVisible := true;
+  Logger.AddToLog('New StackTrace file opened: ' + stfFileName);
 end;
 
 procedure TfrmMain.ModulesArrayClear;
@@ -522,8 +620,7 @@ begin
   if FileExistsInReport(tempFileName)
   then
     begin
-      mtfFileName := tempFileName;
-      OpenTextModuleFile(frmMain);
+      OpenTextModuleListFile(tempFileName);
       Result := true;
     end
   else Result := false;
@@ -550,6 +647,7 @@ begin
   then
     begin
       // Open stacktrace.txt
+      OpenTextStackTraceFile(tempFileName);
       Result := true;
     end
   else Result := false;
@@ -568,11 +666,16 @@ begin
   else Result := false;
 end;
 
-procedure TfrmMain.UpdateDisplayFileName;
+procedure TfrmMain.UpdateDisplayModuleListFileName;
 begin
   //
   lbedModuleFile.Text := mtfFileName;
+end;
 
+procedure TfrmMain.UpdateDisplayStackTraceFileName;
+begin
+  //
+  lbedStackTraceFile.Text := stfFileName;
 end;
 
 procedure TfrmMain.WMDropFiles(var Msg: TWMDropFiles);
@@ -584,7 +687,6 @@ var
   FileExtension: string;
   DropError: boolean;
 begin
-  // DroppedFileCount := -1;
   DropError := true;
   DropH := Msg.Drop;
   try
@@ -613,13 +715,36 @@ begin
       Exit;
     end;
 
-  if not ConfirmNewTxtModuleFileLoad then Exit;
-
   if (FileExtension = '.txt')
   then
     begin
-      mtfFileName := FileName;
-      OpenTextModuleFile(frmMain);
+      var fn:= Lowercase(TPath.GetFileNameWithoutExtension(FileName));
+
+      if (fn = 'modulelist')
+        then
+          begin
+            OpenTextModuleListFile(FileName);
+            Exit;
+          end;
+      if (fn = 'stacktrace')
+        then
+          begin
+            OpenTextStackTraceFile(FileName);
+            Exit;
+          end;
+
+      if (PageControl1.ActivePage = tsModuleListFile)
+        then
+          begin
+            OpenTextModuleListFile(FileName);
+            exit;
+          end;
+      if (PageControl1.ActivePage = tsStackTraceFile)
+        then
+          begin
+            OpenTextStackTraceFile(FileName);
+            Exit;
+          end;
     end;
 
   if (FileExtension = '.zip')
