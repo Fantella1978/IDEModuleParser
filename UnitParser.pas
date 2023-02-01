@@ -22,8 +22,14 @@ type
     procedure ParseModuleListFile();
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
-    function parseTaskModuleFileParse(): boolean;
+    function TaskModuleFileParse(): boolean;
+    function TaskModuleFileCreateDB(): boolean;
     function GetModuleLineRegExp(): string;
+    procedure ShowCurrentTaskName(name: string);
+    procedure StartTasks(Count: integer);
+    procedure StartTask(name: string);
+    procedure SetCurrentTaskPosition(Position: integer);
+    procedure SetCurrentTaskPositionsMinMax(PosMin, PosMax : integer);
   private
     { Private declarations }
     function GetOverallTaskPosition(): Integer;
@@ -43,7 +49,9 @@ implementation
 {$R *.dfm}
 
 uses
-  UnitMain;
+  UnitMain
+  , UnitDB
+  ;
 
 { TfrmParse }
 
@@ -78,7 +86,7 @@ begin
   // (.*)\t\(\d{1}x[0-9A-F]{8}\)\t([^\t]*)\t(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\s*(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[\S]{2})?)\t([\dA-F]{40})
 
   Result := '(.*)\t' +                                // file name Groups[1]
-    '\(\d{1}x[0-9A-F]{8}\)\t' +                       //
+    '\(\d{1}x[0-9A-F]{8}\)\t' +                        //
     '([^\t]*)\t' +                                    // path Groups[2]
     '(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?' +   // version Groups[3]
     '(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\s*' +    // date Groups[4]
@@ -100,30 +108,70 @@ begin
   frmMain.actParseCancel.Enabled := true;
   parseCanceled := not frmMain.actParseCancel.Enabled;
 
-  pBarOverall.Max := 100;
-  pBarOverall.Position := 0;
-
-  // 50 Tasks
-  {
-  Tasks := 50;
-  for var i:integer := 1 to Tasks do
-  begin
-    currentTask := i;
-    parseTaskModuleFileParse();
-  end;
-  }
-
-  // One Task
-  Tasks := 1;
-  currentTask := 1;
-  parseTaskModuleFileParse();
+  StartTasks(2); // Start 2 Tasks
+  TaskModuleFileParse();
+  TaskModuleFileCreateDB();
 
   frmMain.actParseCancel.Enabled := false;
   parseSuccess := true;
   frmParse.Close;
 end;
 
-function TfrmParse.parseTaskModuleFileParse: boolean;
+procedure TfrmParse.SetCurrentTaskPosition(Position: integer);
+begin
+  pBarCurrentTask.Position := Position;
+  pBarOverall.Position := GetOverallTaskPosition();
+  Application.ProcessMessages;
+  // sleep(1); // Sleep
+end;
+
+procedure TfrmParse.SetCurrentTaskPositionsMinMax(PosMin, PosMax: integer);
+begin
+  pBarCurrentTask.Position := PosMin;
+  pBarCurrentTask.Max := PosMax;
+end;
+
+procedure TfrmParse.ShowCurrentTaskName(name: string);
+begin
+  lblCurrentTask.Caption := name;
+end;
+
+procedure TfrmParse.StartTask(name: string);
+begin
+  inc(currentTask);
+  ShowCurrentTaskName(name);
+  SetCurrentTaskPosition(0);
+end;
+
+procedure TfrmParse.StartTasks(Count: integer);
+begin
+  pBarOverall.Max := 100;
+  pBarOverall.Position := 0;
+  Tasks := Count;
+  currentTask := 0;
+end;
+
+function TfrmParse.TaskModuleFileCreateDB: boolean;
+var
+  tempIDEModule : TIDEModule;
+begin
+  StartTask('Copy modules to DB...');
+  SetCurrentTaskPositionsMinMax(0, Length(ModulesArray) - 1);
+  DM1.cdsModules.DisableControls;
+  for var i := 0 to Length(ModulesArray) - 1 do
+    begin
+      // sleep(1); // Sleep
+      tempIDEModule := @ModulesArray[i]^;
+      DM1.cdsModules.Append;
+      DM1.cdsModules.FieldByName('Num').AsInteger := i;
+      DM1.cdsModules.FieldByName('Name').AsString := tempIDEModule.FileName;
+      DM1.cdsModules.Post;
+      SetCurrentTaskPosition(i);
+    end;
+  DM1.cdsModules.EnableControls;
+end;
+
+function TfrmParse.TaskModuleFileParse: boolean;
 var
   i : Integer;
   cl : Integer;
@@ -132,23 +180,21 @@ var
   tempIDEModule : TIDEModule;
   regexp : TPerlRegEx;
 begin
+  StartTask('Module file parsing...');
   Logger.AddToLog('Module file parsing started.');
   Result := false;
   err := 0;
   cl := frmMain.MemoTxtModuleFile.Lines.Count;
-  pBarCurrentTask.Position := 0;
-  pBarCurrentTask.Max := cl;
+  SetCurrentTaskPositionsMinMax(0, cl);
   frmMain.ModulesArrayClear;
   regexp := TPerlRegEx.Create;
   try
-
     with regexp do begin
       RegEx := GetModuleLineRegExp();
       for i := 0 to cl - 1 do
         begin
-          pBarCurrentTask.Position := i;
-          pBarOverall.Position := GetOverallTaskPosition();
-          Application.ProcessMessages;
+          // sleep(1); // Sleep
+          SetCurrentTaskPosition(i);
           Subject := frmMain.MemoTxtModuleFile.Lines[i];
           if Match
           then
@@ -183,7 +229,6 @@ begin
               Logger.AddToLog('Module file parsing canceled at line #' + IntToStr(i));
               Break;
             end;
-          // sleep(1); // Sleep
         end;
     end;
   finally

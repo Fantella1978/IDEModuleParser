@@ -13,15 +13,19 @@ type
   private
     FLogMemo: TMemo;
     FLogFileName: string;
+    FLogEnabled: boolean;
     function GetLogMemo: TMemo;
     procedure SetLogMemo(const Value: TMemo);
-    procedure AddLineToLogFile(s: string);
+    procedure AddLineToLogFile(line: string);
     function AddTextToFile(const aFileName, aText: string; AddCRLF: Boolean): Boolean;
     function GetLogFileName(): string;
     procedure SetLogFileName(const Value: string);
+    procedure SetLogEnabled(Value: boolean);
+    function GetLogEnabled: boolean;
   public
     property LogMemo : TMemo read GetLogMemo write SetLogMemo;
     property LogFile : string read GetLogFileName write SetLogFileName;
+    property LogEnabled : boolean read GetLogEnabled write SetLogEnabled;
     function AddToLog(s: string): boolean;
     procedure Clear; override;
     constructor Create;
@@ -36,25 +40,23 @@ var
     fs: TFileStream;
     preamble:TBytes;
     tempString: RawByteString;
-    amode: Integer;
+    aMode: Integer;
 begin
   Result := true;
   if not FileExists(aFileName)
-    then amode := fmCreate
-    else amode := fmOpenReadWrite;
-  fs := TFileStream.Create(aFileName, { mode } amode, fmShareDenyWrite);
+    then aMode := fmCreate
+    else aMode := fmOpenWrite;
+  fs := TFileStream.Create(aFileName, { mode } aMode, fmShareDenyWrite);
   { sharing mode allows read during our writes }
   try
-
     {internal Char (UTF16) codepoint, to UTF8 encoding conversion:}
     tempString := Utf8Encode(aText); // this converts UnicodeString to WideString, sadly.
-
-    if amode = fmCreate
+    if aMode = fmCreate
     then
       begin
         preamble := TEncoding.UTF8.GetPreamble;
         try
-          fs.WriteBuffer( PAnsiChar(preamble)^, Length(preamble));
+          fs.WriteBuffer(PAnsiChar(preamble)^, Length(preamble));
         except
           Result := False;
         end;
@@ -63,10 +65,8 @@ begin
       begin
         fs.Seek(fs.Size, 0); { go to the end, append }
       end;
-
     if AddCRLF // Add CRLF line end
       then tempString := tempString + AnsiChar(#13) + AnsiChar(#10);
-
     try
       fs.WriteBuffer(PAnsiChar(tempString)^, Length(tempString));
     except
@@ -77,10 +77,10 @@ begin
   end;
 end;
 
-procedure TMyLogger.AddLineToLogFile(s: string);
+procedure TMyLogger.AddLineToLogFile(line: string);
 begin
   // Add line to log file
-  if not AddTextToFile(FLogFileName, s, true)
+  if not AddTextToFile(FLogFileName, line, true)
   then
     begin
       FLogFileName := '';
@@ -95,6 +95,7 @@ var
 begin
   // Add line to log
   Result := true;
+  if not FLogEnabled then Exit;
   dt := Now();
   DateTimeToString(dts, 'dd-mm-yyyy hh:nn:ss', dt);
   LogString := dts + ' - ' + s;
@@ -107,6 +108,7 @@ end;
 procedure TMyLogger.Clear;
 begin
   inherited;
+  if not FLogEnabled then Exit;
   if FLogMemo <> nil then FLogMemo.Clear;
 end;
 
@@ -115,6 +117,12 @@ begin
   //
   FLogFileName := '';
   FLogMemo := nil;
+  FLogEnabled := true;
+end;
+
+function TMyLogger.GetLogEnabled: boolean;
+begin
+  Result := FLogEnabled;
 end;
 
 function TMyLogger.GetLogFileName: string;
@@ -127,6 +135,11 @@ function TMyLogger.GetLogMemo: TMemo;
 begin
   //
   Result := FLogMemo;
+end;
+
+procedure TMyLogger.SetLogEnabled(Value: boolean);
+begin
+  FLogEnabled := Value;
 end;
 
 procedure TMyLogger.SetLogFileName(const Value: string);

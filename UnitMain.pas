@@ -40,7 +40,7 @@ type
     tsModuleListFile: TTabSheet;
     TabModulesList: TTabSheet;
     tsDXDiagLog: TTabSheet;
-    TabLog: TTabSheet;
+    tsLog: TTabSheet;
     tbFontSize: TTrackBar;
     lblFontSize: TLabel;
     edtFontSize: TEdit;
@@ -68,6 +68,7 @@ type
     memoDescription: TMemo;
     memoSteps: TMemo;
     DBGrid1: TDBGrid;
+    cbCreateLog: TCheckBox;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -125,6 +126,7 @@ type
     function TryOpenStepFileInReport(): boolean;
 
     function FileExistsInReport(var FileName: string): boolean;
+    procedure cbCreateLogClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -205,10 +207,10 @@ begin
   if PageControl1.ActivePage <> tsStackTraceFile then PageControl1.ActivePage := tsStackTraceFile;
   if (not AskForAll)
   then
-    res := MessageDlg('The StackTrace is opened. Open another file?', mtConfirmation, mbYesNo, 0)
+    res := MessageDlg('The StackTrace file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
   else
     begin
-      res := MessageDlg('The StackTrace is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+      res := MessageDlg('The StackTrace file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
       if res in [mrYesToAll, mrNoToAll]
       then
         begin
@@ -221,7 +223,7 @@ begin
   then
     begin
       Result := false;
-      Logger.AddToLog('The opening of a new StackTrace has not been confirmed.');
+      Logger.AddToLog('The opening of a new StackTrace file has not been confirmed.');
       Exit;
     end;
 end;
@@ -242,10 +244,10 @@ begin
   if PageControl1.ActivePage <> tsModuleListFile then PageControl1.ActivePage := tsModuleListFile;
   if (not AskForAll)
   then
-    res := MessageDlg('The ModuleFile is opened. Open another file?', mtConfirmation, mbYesNo, 0)
+    res := MessageDlg('The ModuleList file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
   else
     begin
-      res := MessageDlg('The ModuleFile is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+      res := MessageDlg('The ModuleList file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
       if res in [mrYesToAll, mrNoToAll]
       then
         begin
@@ -258,7 +260,7 @@ begin
   then
     begin
       Result := false;
-      Logger.AddToLog('The opening of a new text ModuleFile has not been confirmed.');
+      Logger.AddToLog('The opening of a new ModuleList file has not been confirmed.');
       Exit;
     end;
 end;
@@ -379,6 +381,9 @@ begin
   ledtBDSBuild.Text := '';
   ledtBDSInstDate.Text := '';
 
+  if PageControl1.ActivePage <> tsModuleListFile
+    then PageControl1.ActivePage := tsModuleListFile;
+
   frmParse.parseSuccess := false;
   frmParse.Show;
   frmParse.ParseModuleListFile();
@@ -386,7 +391,11 @@ begin
   if frmParse.parseSuccess
   then
     begin
+      DM1.cdsModules.First;
+
       TabModulesList.TabVisible := true;
+      TabModulesList.Enabled := true;
+      PageControl1.ActivePage := TabModulesList;
 
       if FindBDSIDEModule(BDSIDEModule) = true
       then
@@ -397,18 +406,6 @@ begin
         end
       else BDSIDEModule := nil;
 
-      for var i := 0 to Length(ModulesArray) - 1 do
-        begin
-          tempIDEModule := @ModulesArray[i]^;
-          DM1.cdsModules.Append;
-          DM1.cdsModules.FieldByName('Num').AsInteger := i;
-          DM1.cdsModules.FieldByName('Name').AsString := tempIDEModule.FileName;
-          DM1.cdsModules.Post;
-        end;
-      DM1.cdsModules.First;
-      TabModulesList.Enabled := true;
-      PageControl1.ActivePage := TabModulesList;
-
     end;
 end;
 
@@ -416,6 +413,27 @@ function TfrmMain.AddAllModulesToStringGrid: boolean;
 begin
   //
   Result := true;
+end;
+
+procedure TfrmMain.cbCreateLogClick(Sender: TObject);
+begin
+  if cbCreateLog.Checked
+  then
+    begin
+      tsLog.TabVisible := true;
+      Logger.LogEnabled := cbCreateLog.Checked;
+      Logger.AddToLog('Logging enabled.');
+      // tsLog.Visible := true;
+      // tsLog.Enabled := true;
+    end
+  else
+    begin
+      tsLog.TabVisible := false;
+      Logger.AddToLog('Logging disabled.');
+      Logger.LogEnabled := cbCreateLog.Checked;
+      // tsLog.Visible := false;
+      // tsLog.Enabled := false;
+    end;
 end;
 
 function TfrmMain.DeleteTempReportFolder: boolean;
@@ -519,6 +537,8 @@ begin
   AskConfirmOpenForAll := false;
 
   TFormatSettings.Create;
+  // Logger
+  cbCreateLog.Checked := true;
   Logger := TMyLogger.Create;
   Logger.LogMemo := frmMain.memoLog;
   Logger.LogFile := TPath.GetDirectoryName(Application.ExeName) +
@@ -551,7 +571,7 @@ begin
   TabModulesList.Enabled := false;
   PageControl1.ActivePage := tsModuleListFile;
 
-  Logger.AddToLog('New Text Module file opened: ' + mtfFileName);
+  Logger.AddToLog('New ModuleList file opened: ' + mtfFileName);
   frmParse.parseSuccess := false;
 end;
 
@@ -710,7 +730,7 @@ begin
   if DropError
   then
     begin
-      Logger.AddToLog('Drag and drop error. Only one TXT or ZIP file accepted.');
+      Logger.AddToLog('Drag and drop error. Only one TXT or ZIP files accepted.');
       ShowMessage('Please drag and drop only one TXT or ZIP file.');
       Exit;
     end;

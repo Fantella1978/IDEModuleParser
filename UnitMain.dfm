@@ -2,8 +2,8 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'IDE Module Parser'
-  ClientHeight = 521
-  ClientWidth = 874
+  ClientHeight = 528
+  ClientWidth = 875
   Color = clBtnFace
   Constraints.MinHeight = 480
   Constraints.MinWidth = 640
@@ -19,8 +19,8 @@ object frmMain: TfrmMain
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
-    Top = 484
-    Width = 874
+    Top = 491
+    Width = 875
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
@@ -28,10 +28,10 @@ object frmMain: TfrmMain
     ExplicitTop = 480
     ExplicitWidth = 872
     DesignSize = (
-      874
+      875
       37)
     object Button1: TButton
-      Left = 634
+      Left = 659
       Top = 6
       Width = 135
       Height = 25
@@ -40,10 +40,9 @@ object frmMain: TfrmMain
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 632
     end
     object Button2: TButton
-      Left = 775
+      Left = 800
       Top = 6
       Width = 75
       Height = 25
@@ -52,20 +51,18 @@ object frmMain: TfrmMain
       Cancel = True
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 773
     end
     object Button3: TButton
-      Left = 421
+      Left = 446
       Top = 6
       Width = 75
       Height = 25
       Action = actParseModuleFile
       Anchors = [akRight, akBottom]
       TabOrder = 2
-      ExplicitLeft = 419
     end
     object Button4: TButton
-      Left = 502
+      Left = 527
       Top = 6
       Width = 126
       Height = 25
@@ -73,14 +70,13 @@ object frmMain: TfrmMain
       Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
       TabOrder = 3
-      ExplicitLeft = 500
     end
   end
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 874
-    Height = 484
+    Width = 875
+    Height = 491
     ActivePage = tsModuleListFile
     Align = alClient
     Style = tsFlatButtons
@@ -92,19 +88,20 @@ object frmMain: TfrmMain
       object Panel2: TPanel
         Left = 0
         Top = 0
-        Width = 866
+        Width = 867
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 864
         DesignSize = (
-          866
+          867
           41)
         object lbedModuleFile: TLabeledEdit
           Left = 96
           Top = 10
-          Width = 747
+          Width = 748
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -116,14 +113,15 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
+          ExplicitWidth = 745
         end
       end
       object MemoTxtModuleFile: TMemo
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 856
-        Height = 339
+        Width = 857
+        Height = 346
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -1892,15 +1890,19 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
+        ExplicitWidth = 854
+        ExplicitHeight = 335
       end
       object Panel3: TPanel
         Left = 0
-        Top = 390
-        Width = 866
+        Top = 397
+        Width = 867
         Height = 61
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
+        ExplicitTop = 386
+        ExplicitWidth = 864
         object lblFontSize: TLabel
           Left = 13
           Top = 3
@@ -1933,6 +1935,17 @@ object frmMain: TfrmMain
           TabOrder = 1
           Text = '10'
         end
+        object cbCreateLog: TCheckBox
+          Left = 225
+          Top = 3
+          Width = 88
+          Height = 17
+          Caption = 'Create Log'
+          Checked = True
+          State = cbChecked
+          TabOrder = 2
+          OnClick = cbCreateLogClick
+        end
       end
     end
     object TabModulesList: TTabSheet
@@ -1940,8 +1953,8 @@ object frmMain: TfrmMain
       Enabled = False
       ImageIndex = 1
       DesignSize = (
-        866
-        451)
+        867
+        458)
       object ledtBDSBuild: TLabeledEdit
         Left = 80
         Top = 39
@@ -1961,7 +1974,7 @@ object frmMain: TfrmMain
       object ledtBDSPath: TLabeledEdit
         Left = 80
         Top = 10
-        Width = 765
+        Width = 766
         Height = 23
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight]
@@ -2001,8 +2014,8 @@ object frmMain: TfrmMain
       object DBGrid1: TDBGrid
         Left = 0
         Top = 75
-        Width = 866
-        Height = 376
+        Width = 867
+        Height = 383
         Align = alBottom
         Anchors = [akLeft, akTop, akRight, akBottom]
         DataSource = DM1.DataSource1
@@ -2033,20 +2046,19 @@ object frmMain: TfrmMain
       object Panel5: TPanel
         Left = 0
         Top = 0
-        Width = 866
+        Width = 867
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 864
         DesignSize = (
-          866
+          867
           41)
         object lbedStackTraceFile: TLabeledEdit
           Left = 88
           Top = 10
-          Width = 771
+          Width = 772
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2058,15 +2070,14 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 769
         end
       end
       object memoStackTrace: TMemo
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 856
-        Height = 400
+        Width = 857
+        Height = 407
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2082,8 +2093,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 854
-        ExplicitHeight = 396
       end
     end
     object tsDXDiagLog: TTabSheet
@@ -2093,19 +2102,19 @@ object frmMain: TfrmMain
       object Panel6: TPanel
         Left = 0
         Top = 0
-        Width = 866
+        Width = 867
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
         DesignSize = (
-          866
+          867
           41)
         object lbedDXDiagFile: TLabeledEdit
           Left = 72
           Top = 10
-          Width = 787
+          Width = 788
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2123,8 +2132,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 856
-        Height = 400
+        Width = 857
+        Height = 407
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2148,19 +2157,19 @@ object frmMain: TfrmMain
       object Panel8: TPanel
         Left = 0
         Top = 0
-        Width = 866
+        Width = 867
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
         DesignSize = (
-          866
+          867
           41)
         object LabeledEdit1: TLabeledEdit
           Left = 96
           Top = 10
-          Width = 763
+          Width = 764
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2178,8 +2187,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 856
-        Height = 400
+        Width = 857
+        Height = 407
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2203,19 +2212,19 @@ object frmMain: TfrmMain
       object Panel7: TPanel
         Left = 0
         Top = 0
-        Width = 866
+        Width = 867
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
         DesignSize = (
-          866
+          867
           41)
         object lbedStepFile: TLabeledEdit
           Left = 64
           Top = 10
-          Width = 795
+          Width = 796
           Height = 23
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2233,8 +2242,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 856
-        Height = 400
+        Width = 857
+        Height = 407
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2252,15 +2261,15 @@ object frmMain: TfrmMain
         TabOrder = 1
       end
     end
-    object TabLog: TTabSheet
+    object tsLog: TTabSheet
       Caption = 'Log'
       ImageIndex = 3
       object memoLog: TMemo
         AlignWithMargins = True
         Left = 5
         Top = 5
-        Width = 856
-        Height = 400
+        Width = 857
+        Height = 407
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2274,20 +2283,20 @@ object frmMain: TfrmMain
       end
       object Panel4: TPanel
         Left = 0
-        Top = 410
-        Width = 866
+        Top = 417
+        Width = 867
         Height = 41
         Align = alBottom
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 1
         DesignSize = (
-          866
+          867
           41)
         object lbedLogPath: TLabeledEdit
           Left = 56
           Top = 9
-          Width = 787
+          Width = 788
           Height = 23
           Anchors = [akLeft, akTop, akRight]
           EditLabel.Width = 42

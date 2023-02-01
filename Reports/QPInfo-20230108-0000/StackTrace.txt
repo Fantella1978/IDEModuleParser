@@ -1,0 +1,73 @@
+[7482A45A]{vcl280.bpl  } Vcl.ExtCtrls.PlaceInCell (Line 4823, "Vcl.ExtCtrls.pas" + 59) + $1C
+[7482A56A]{vcl280.bpl  } Vcl.ExtCtrls.TControlCollection.AddControl (Line 4836, "Vcl.ExtCtrls.pas" + 5) + $9
+[74828829]{vcl280.bpl  } Vcl.ExtCtrls.TCustomGridPanel.CMControlChange (Line 4088, "Vcl.ExtCtrls.pas" + 11) + $11
+[74758022]{vcl280.bpl  } Vcl.Controls.TControl.WndProc (Line 7591, "Vcl.Controls.pas" + 91) + $6
+[74767A5F]{vcl280.bpl  } Vcl.Controls.TMargins.SetControlBounds (Line 17293, "Vcl.Controls.pas" + 12) + $14
+[7475A58D]{vcl280.bpl  } Vcl.Controls.TWinControl.ArrangeControl (Line 9016, "Vcl.Controls.pas" + 78) + $16
+[7475A5B4]{vcl280.bpl  } Vcl.Controls.TWinControl.ArrangeControl (Line 9018, "Vcl.Controls.pas" + 80) + $22
+[7482802F]{vcl280.bpl  } Vcl.ExtCtrls.ArrangeControlInCell (Line 3891, "Vcl.ExtCtrls.pas" + 2) + $28
+[74DBA398]{rtl280.bpl  } System.@FreeMem (Line 4987, "System.pas" + 20) + $0
+[74DC6BEF]{rtl280.bpl  } System.@DynArrayClear (Line 37010, "System.pas" + 49) + $0
+[74759AF6]{vcl280.bpl  } Vcl.Controls.TControl.GetStyleName (Line 8627, "Vcl.Controls.pas" + 1) + $8
+[74759B22]{vcl280.bpl  } Vcl.Controls.TControl.GetStyleName (Line 8631, "Vcl.Controls.pas" + 5) + $7
+[74E36312]{rtl280.bpl  } System.Generics.Defaults.Equals_Class (Line 1138, "System.Generics.Defaults.pas" + 1) + $6
+[74990E17]{vcl280.bpl  } Vcl.Styles.{System.Generics.Collections}TDictionary<System.Classes.TComponent,Vcl.Themes.TStyleHook>.GetBucketIndex (Line 7098, "System.Generics.Collections.pas" + 16) + $15
+[74838FC5]{vcl280.bpl  } Vcl.ExtCtrls.TPanelStyleHook.AcceptMessage (Line 12489, "Vcl.ExtCtrls.pas" + 1) + $2
+[74866793]{vcl280.bpl  } Vcl.Themes.TStyleHook.HandleMessage (Line 7401, "Vcl.Themes.pas" + 3) + $6
+[7498AD36]{vcl280.bpl  } Vcl.Styles.TStyleEngine.HandleMessage (Line 3610, "Vcl.Styles.pas" + 22) + $7
+[74863218]{vcl280.bpl  } Vcl.Themes.TStyleManager.HandleMessage (Line 5872, "Vcl.Themes.pas" + 11) + $11
+[7475B1C7]{vcl280.bpl  } Vcl.Controls.TWinControl.DoHandleStyleMessage (Line 9462, "Vcl.Controls.pas" + 0) + $F
+[7475D1E9]{vcl280.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10644, "Vcl.Controls.pas" + 170) + $6
+[74828472]{vcl280.bpl  } Vcl.ExtCtrls.TCustomGridPanel.AlignControls (Line 3974, "Vcl.ExtCtrls.pas" + 5) + $1
+[74757C58]{vcl280.bpl  } Vcl.Controls.TControl.Perform (Line 7369, "Vcl.Controls.pas" + 10) + $8
+[7475B4FE]{vcl280.bpl  } Vcl.Controls.TWinControl.InsertControl (Line 9574, "Vcl.Controls.pas" + 33) + $B
+[7475658E]{vcl280.bpl  } Vcl.Controls.TControl.SetParent (Line 6371, "Vcl.Controls.pas" + 9) + $4
+[74762BE1]{vcl280.bpl  } Vcl.Controls.TWinControl.SetParent (Line 14251, "Vcl.Controls.pas" + 5) + $5
+[74898B60]{vcl280.bpl  } Vcl.Forms.TCustomFrame.SetParent (Line 3897, "Vcl.Forms.pas" + 7) + $5
+[6BEC82EF]{WelcomePageIDE280.bpl} WelcomePage.ListView.TWPPluginListView.ViewShow (Line 460, "WelcomePage.ListView.pas" + 4) + $6
+[6BEDB3B4]{WelcomePageIDE280.bpl} WelcomePage.View.TWelcomePageFrameUI.OnLoadItemEvent (Line 298, "WelcomePage.View.pas" + 14) + $B
+[6BED138A]{WelcomePageIDE280.bpl} WelcomePage.LayoutDesigner.TLayoutDesigner.LoadLayout (Line 583, "WelcomePage.LayoutDesigner.pas" + 72) + $1C
+[6BED0A74]{WelcomePageIDE280.bpl} WelcomePage.LayoutDesigner.TLayoutDesigner.DesignLayout (Line 305, "WelcomePage.LayoutDesigner.pas" + 1) + $2
+[6BEDB598]{WelcomePageIDE280.bpl} WelcomePage.View.TWelcomePageFrameUI.InitContentPlugins (Line 329, "WelcomePage.View.pas" + 8) + $5
+[6BEDB810]{WelcomePageIDE280.bpl} WelcomePage.View.TWelcomePageFrameUI.InitPlugins (Line 353, "WelcomePage.View.pas" + 2) + $2
+[6BEDB9C3]{WelcomePageIDE280.bpl} WelcomePage.View.TWelcomePageFrameUI.Initialize$ActRec.$0$Body (Line 387, "WelcomePage.View.pas" + 0) + $3
+[6BECA9B5]{WelcomePageIDE280.bpl} WelcomePage.Services.TWPPluginService.RegisterPluginCreator (Line 236, "WelcomePage.Services.pas" + 7) + $5
+[6BE97E52]{WelcomePage.Plugin.GetItFeed280.bpl} WPPlugin.GetItFeed.Creator.TWPNewInGetItFeedCreator.ProductStartup (Line 192, "WPPlugin.GetItFeed.Creator.pas" + 0) + $1E
+[740BAFB5]{designide280.bpl} Events.TEvent.Send (Line 154, "Events.pas" + 2) + $11
+[00746C30]{bds.exe     } AppMain.PostCreateInit (Line 2555, "AppMain.pas" + 80) + $B
+[0074708A]{bds.exe     } AppMain.TAppBuilder.CMPostCreateInit (Line 2644, "AppMain.pas" + 4) + $1
+[74758022]{vcl280.bpl  } Vcl.Controls.TControl.WndProc (Line 7591, "Vcl.Controls.pas" + 91) + $6
+[74DC0AFC]{rtl280.bpl  } System.TMonitor.Destroy (Line 19905, "System.pas" + 0) + $0
+[74DC4A7F]{rtl280.bpl  } System.@FinalizeRecord (Line 33148, "System.pas" + 72) + $2
+[74862FF9]{vcl280.bpl  } Vcl.Themes.TStyleManager.GetStyle (Line 5803, "Vcl.Themes.pas" + 7) + $D
+[74DC18D4]{rtl280.bpl  } System.@TryFinallyExit (Line 23751, "System.pas" + 8) + $0
+[748630E7]{vcl280.bpl  } Vcl.Themes.TStyleManager.GetStyle (Line 5814, "Vcl.Themes.pas" + 18) + $1E
+[7498AD36]{vcl280.bpl  } Vcl.Styles.TStyleEngine.HandleMessage (Line 3610, "Vcl.Styles.pas" + 22) + $7
+[74DC065B]{rtl280.bpl  } System.TObject.Dispatch (Line 19222, "System.pas" + 11) + $0
+[74866FC5]{vcl280.bpl  } Vcl.Themes.TStyleHook.WndProc (Line 7713, "Vcl.Themes.pas" + 38) + $6
+[748671A6]{vcl280.bpl  } Vcl.Themes.TMouseTrackControlStyleHook.WndProc (Line 7812, "Vcl.Themes.pas" + 1) + $4
+[748B2D24]{vcl280.bpl  } Vcl.Forms.TFormStyleHook.WndProc (Line 18427, "Vcl.Forms.pas" + 16) + $5
+[7498A483]{vcl280.bpl  } Vcl.Styles.TCustomStyle.SourceLoaded (Line 3313, "Vcl.Styles.pas" + 1) + $F
+[748667EA]{vcl280.bpl  } Vcl.Themes.TStyleHook.HandleMessage (Line 7418, "Vcl.Themes.pas" + 20) + $6
+[748AE783]{vcl280.bpl  } Vcl.Forms.TFormStyleHook.IsStyleBorder (Line 16547, "Vcl.Forms.pas" + 1) + $C
+[748AE7C4]{vcl280.bpl  } Vcl.Forms.TFormStyleHook.HandleMessage (Line 16554, "Vcl.Forms.pas" + 2) + $6
+[7498AD36]{vcl280.bpl  } Vcl.Styles.TStyleEngine.HandleMessage (Line 3610, "Vcl.Styles.pas" + 22) + $7
+[74863218]{vcl280.bpl  } Vcl.Themes.TStyleManager.HandleMessage (Line 5872, "Vcl.Themes.pas" + 11) + $11
+[7475B1C7]{vcl280.bpl  } Vcl.Controls.TWinControl.DoHandleStyleMessage (Line 9462, "Vcl.Controls.pas" + 0) + $F
+[7475D1E9]{vcl280.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10644, "Vcl.Controls.pas" + 170) + $6
+[74757C58]{vcl280.bpl  } Vcl.Controls.TControl.Perform (Line 7369, "Vcl.Controls.pas" + 10) + $8
+[7489A68C]{vcl280.bpl  } Vcl.Forms.TCustomForm.WndProc (Line 4796, "Vcl.Forms.pas" + 1) + $37
+[7489AD44]{vcl280.bpl  } Vcl.Forms.TCustomForm.WndProc (Line 5017, "Vcl.Forms.pas" + 222) + $5
+[7489AD5C]{vcl280.bpl  } Vcl.Forms.TCustomForm.WndProc (Line 5018, "Vcl.Forms.pas" + 223) + $13
+[7475C6F4]{vcl280.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 10321, "Vcl.Controls.pas" + 3) + $6
+[74ED5B70]{rtl280.bpl  } System.Classes.StdWndProc (Line 18515, "System.Classes.pas" + 8) + $0
+[748A5143]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 11488, "Vcl.Forms.pas" + 23) + $1
+[748A516E]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessages (Line 11510, "Vcl.Forms.pas" + 1) + $4
+[007477FF]{bds.exe     } AppMain.TAppBuilder.ApplicationActivated (Line 2750, "AppMain.pas" + 0) + $7
+[748FEF8F]{vcl280.bpl  } Vcl.AppEvnts.TCustomApplicationEvents.DoActivate (Line 210, "Vcl.AppEvnts.pas" + 1) + $12
+[748FF631]{vcl280.bpl  } Vcl.AppEvnts.TMultiCaster.DoActivate (Line 438, "Vcl.AppEvnts.pas" + 5) + $C
+[748A45F3]{vcl280.bpl  } Vcl.Forms.TApplication.WndProc (Line 11063, "Vcl.Forms.pas" + 140) + $C
+[74ED5B70]{rtl280.bpl  } System.Classes.StdWndProc (Line 18515, "System.Classes.pas" + 8) + $0
+[748A5143]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 11488, "Vcl.Forms.pas" + 23) + $1
+[748A516E]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessages (Line 11510, "Vcl.Forms.pas" + 1) + $4
+[00798090]{bds.exe     } bds.bds (Line 224, "" + 13) + $2

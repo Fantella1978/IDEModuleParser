@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ReportData>
+	<Status>40</Status>
+	<Data_type>A</Data_type>
+	<Severity>0</Severity>
+	<Project>270</Project>
+	<Version>28.0</Version>
+	<Area>30001</Area>
+	<Shortdescription>Automated Incident Report</Shortdescription>
+	<Description>Cannot add columns or rows while expand style is fixed size.
+
+Try to open the IDE after import my Delphi11.1 settings</Description>
+	<Build>28.0.47441.2274</Build>
+	<Steps/>
+	<Platform_>430</Platform_>
+	<Workaround/>
+	<Locale>1037;1037</Locale>
+	<Architecture>1</Architecture>
+	<OperativeSystem>Windows 10 (Version 22H2, OS Build 19045.2364, 64-bit Edition)</OperativeSystem>
+	<OSMemory>4,193,336 Kb</OSMemory>
+	<ProcessMemoryUsage>513,292 Kb</ProcessMemoryUsage>
+	<MemoryLargeAddress>true</MemoryLargeAddress>
+	<Date>2023-01-08T13:22:19.635Z</Date>
+</ReportData>
