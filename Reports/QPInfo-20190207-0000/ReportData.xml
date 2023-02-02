@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ReportData>
+	<Status>40</Status>
+	<Data_type>A</Data_type>
+	<Severity>0</Severity>
+	<Project>270</Project>
+	<Version>26.0</Version>
+	<Area>30001</Area>
+	<Shortdescription>Automated Incident Report</Shortdescription>
+	<Description>List index out of bounds (1).
+
+Copy objects from one form to another using clipboard</Description>
+	<Build>26.0.32429.4364</Build>
+	<Steps/>
+	<Platform_>430</Platform_>
+	<Workaround/>
+	<Locale>1030;1030</Locale>
+	<Architecture>1</Architecture>
+	<OperativeSystem>Windows 10 (Version 10.0, Build 17134, 64-bit Edition)</OperativeSystem>
+	<OSMemory>16.656.488 Kb</OSMemory>
+	<ProcessMemoryUsage>1.142.360 Kb</ProcessMemoryUsage>
+	<MemoryLargeAddress>true</MemoryLargeAddress>
+	<Date>2019-02-07T09:23:33.404Z</Date>
+</ReportData>

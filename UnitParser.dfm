@@ -2,7 +2,7 @@ object frmParse: TfrmParse
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Stop'
+  Caption = 'Parsing'
   ClientHeight = 145
   ClientWidth = 486
   Color = clBtnFace

@@ -1,0 +1,75 @@
+[50157BDF]{rtl260.bpl  } System.Classes.TList.Get (Line 4709, "System.Classes.pas" + 4) + $1
+[31B0E81D]{ipstudiowin260.bpl} Vcl.Wwdbigrd.TwwCustomDBGrid.DrawLines + $241
+[31B0A83D]{ipstudiowin260.bpl} Vcl.Wwdbigrd.TwwCustomDBGrid.InitCacheColInfo + $BE1
+[50E56111]{vcl260.bpl  } Vcl.Grids.CalcAxis (Line 2647, "Vcl.Grids.pas" + 9) + $5
+[31B0AD0F]{ipstudiowin260.bpl} Vcl.Wwdbigrd.TwwCustomDBGrid.Paint + $287
+[50063F41]{rtl260.bpl  } System.HasRecordConstructor (Line 32392, "System.pas" + 26) + $2
+[50065C32]{rtl260.bpl  } System.DynArraySetLength (Line 35950, "System.pas" + 100) + $9
+[5015C13B]{rtl260.bpl  } System.Classes.TStringList.AddObject (Line 7044, "System.Classes.pas" + 10) + $6
+[5015C0E1]{rtl260.bpl  } System.Classes.TStringList.AddObject (Line 7034, "System.Classes.pas" + 0) + $5
+[31B7EEDF]{ipstudiowin260.bpl} Vcl.Wwdbgrid.TwwDBGrid.RefreshBookmarkList + $10F
+[31B7B950]{ipstudiowin260.bpl} Vcl.Wwdbgrid.TwwDBGrid.Paint + $110
+[50CE1AED]{vcl260.bpl  } Vcl.Controls.TControlCanvas.UpdateTextFlags (Line 5188, "Vcl.Controls.pas" + 2) + $2
+[50CF004B]{vcl260.bpl  } Vcl.Controls.TCustomControl.PaintWindow (Line 14208, "Vcl.Controls.pas" + 6) + $5
+[50CE9D75]{vcl260.bpl  } Vcl.Controls.TWinControl.PaintHandler (Line 10329, "Vcl.Controls.pas" + 4) + $14
+[50CEA55C]{vcl260.bpl  } Vcl.Controls.TWinControl.WMPaint (Line 10530, "Vcl.Controls.pas" + 6) + $5
+[5005FD56]{rtl260.bpl  } System.@CallDynaInst (Line 18118, "System.pas" + 4) + $0
+[50CEFFE5]{vcl260.bpl  } Vcl.Controls.TCustomControl.WMPaint (Line 14197, "Vcl.Controls.pas" + 2) + $4
+[31B10578]{ipstudiowin260.bpl} Vcl.Wwdbigrd.TwwCustomDBGrid.WMPaint + $4C
+[5005FA50]{rtl260.bpl  } System.TObject.GetInterface (Line 17840, "System.pas" + 8) + $A
+[5005FA99]{rtl260.bpl  } System.TObject.GetInterface (Line 17847, "System.pas" + 15) + $10
+[5005FA50]{rtl260.bpl  } System.TObject.GetInterface (Line 17840, "System.pas" + 8) + $A
+[5005FA99]{rtl260.bpl  } System.TObject.GetInterface (Line 17847, "System.pas" + 15) + $10
+[500692D3]{rtl260.bpl  } System.TInterfacedObject.QueryInterface (Line 39286, "System.pas" + 1) + $8
+[50067ECE]{rtl260.bpl  } System.@IntfCast (Line 38272, "System.pas" + 12) + $0
+[50067E88]{rtl260.bpl  } System.@IntfClear (Line 38150, "System.pas" + 10) + $0
+[2102A1FE]{designide260.bpl} ComponentDesigner.TSelections.GetPersistents (Line 6561, "ComponentDesigner.pas" + 2) + $18
+[31B81EAD]{ipstudiowin260.bpl} Vcl.Wwdbgrid.TwwDBGrid.WMPaint + $5
+[528206B5]{vcldesigner260.bpl} VCLSurface.PaintEvent (Line 3500, "VCLSurface.pas" + 10) + $7
+[5006063E]{rtl260.bpl  } System.TMonitor.Exit (Line 19240, "System.pas" + 2) + $7
+[52820D6D]{vcldesigner260.bpl} VCLSurface.TVclDesignSurface.IsDesignMsg (Line 3641, "VCLSurface.pas" + 100) + $6
+[5005FC0A]{rtl260.bpl  } System.@IsClass (Line 17950, "System.pas" + 1) + $8
+[50CE4D2F]{vcl260.bpl  } Vcl.Controls.TControl.WndProc (Line 7300, "Vcl.Controls.pas" + 4) + $21
+[50CEBD6E]{vcl260.bpl  } Vcl.Controls.TWinControl.CMVisibleChanged (Line 11693, "Vcl.Controls.pas" + 3) + $2
+[50CE4FAA]{vcl260.bpl  } Vcl.Controls.TControl.WndProc (Line 7387, "Vcl.Controls.pas" + 91) + $6
+[50CE4BE4]{vcl260.bpl  } Vcl.Controls.TControl.Perform (Line 7165, "Vcl.Controls.pas" + 10) + $8
+[50060330]{rtl260.bpl  } System.TMonitor.Destroy (Line 19050, "System.pas" + 0) + $0
+[5005F9B5]{rtl260.bpl  } System.TObject.CleanupInstance (Line 17688, "System.pas" + 37) + $0
+[5005A264]{rtl260.bpl  } System.@FreeMem (Line 4847, "System.pas" + 20) + $0
+[50060330]{rtl260.bpl  } System.TMonitor.Destroy (Line 19050, "System.pas" + 0) + $0
+[5005F9B5]{rtl260.bpl  } System.TObject.CleanupInstance (Line 17688, "System.pas" + 37) + $0
+[50067E88]{rtl260.bpl  } System.@IntfClear (Line 38150, "System.pas" + 10) + $0
+[500640D8]{rtl260.bpl  } System.@FinalizeArray (Line 32811, "System.pas" + 144) + $0
+[07E71AB2]{themeloader260.bpl} Idetheme.Stylemanager.TIDEThemeStyleEngine.UnRegisterSysStyleHook + $106
+[50CE9620]{vcl260.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10089, "Vcl.Controls.pas" + 10) + $48
+[50CE9BAB]{vcl260.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10245, "Vcl.Controls.pas" + 166) + $6
+[50CE4BE4]{vcl260.bpl  } Vcl.Controls.TControl.Perform (Line 7165, "Vcl.Controls.pas" + 10) + $8
+[50CEA494]{vcl260.bpl  } Vcl.Controls.TWinControl.PaintTo (Line 10506, "Vcl.Controls.pas" + 43) + $D
+[50CEA1D9]{vcl260.bpl  } Vcl.Controls.TWinControl.PaintTo (Line 10435, "Vcl.Controls.pas" + 3) + $12
+[5281B345]{vcldesigner260.bpl} VCLSurface.PrintWindow (Line 1052, "VCLSurface.pas" + 33) + $F
+[52824310]{vcldesigner260.bpl} VCLSurface.TDragImage.Create (Line 5159, "VCLSurface.pas" + 8) + $8
+[5281B430]{vcldesigner260.bpl} VCLSurface.TControlItem.GetDragImage (Line 1121, "VCLSurface.pas" + 1) + $E
+[20FE493D]{designide260.bpl} Designer.TDesigner.DragBoxesOn (Line 953, "Designer.pas" + 24) + $F
+[528257D4]{vcldesigner260.bpl} VCLSurface.TGuidelinePainter.EndUpdate (Line 5631, "VCLSurface.pas" + 7) + $C
+[50067E88]{rtl260.bpl  } System.@IntfClear (Line 38150, "System.pas" + 10) + $0
+[20FE4679]{designide260.bpl} Designer.TDesigner.DragBegin (Line 897, "Designer.pas" + 38) + $2
+[20FE70B3]{designide260.bpl} Designer.TDesigner.MouseDown (Line 1760, "Designer.pas" + 86) + $9
+[5281FEDA]{vcldesigner260.bpl} VCLSurface.MouseEvent (Line 3319, "VCLSurface.pas" + 36) + $2B
+[5006063E]{rtl260.bpl  } System.TMonitor.Exit (Line 19240, "System.pas" + 2) + $7
+[52820B27]{vcldesigner260.bpl} VCLSurface.TVclDesignSurface.IsDesignMsg (Line 3589, "VCLSurface.pas" + 48) + $6
+[5005FC0A]{rtl260.bpl  } System.@IsClass (Line 17950, "System.pas" + 1) + $8
+[50CE4D2F]{vcl260.bpl  } Vcl.Controls.TControl.WndProc (Line 7300, "Vcl.Controls.pas" + 4) + $21
+[50067E88]{rtl260.bpl  } System.@IntfClear (Line 38150, "System.pas" + 10) + $0
+[500640D8]{rtl260.bpl  } System.@FinalizeArray (Line 32811, "System.pas" + 144) + $0
+[07E7157E]{themeloader260.bpl} Idetheme.Stylemanager.TIDEThemeStyleEngine.HookCBProc + $232
+[50CE918D]{vcl260.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 9947, "Vcl.Controls.pas" + 6) + $0
+[50067E88]{rtl260.bpl  } System.@IntfClear (Line 38150, "System.pas" + 10) + $0
+[50CE93B9]{vcl260.bpl  } Vcl.Controls.TWinControl.IsControlMouseMsg (Line 10008, "Vcl.Controls.pas" + 9) + $2A
+[07E71AB2]{themeloader260.bpl} Idetheme.Stylemanager.TIDEThemeStyleEngine.UnRegisterSysStyleHook + $106
+[50CE9BAB]{vcl260.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10245, "Vcl.Controls.pas" + 166) + $6
+[50CE9178]{vcl260.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 9944, "Vcl.Controls.pas" + 3) + $6
+[50174370]{rtl260.bpl  } System.Classes.CalcJmpOffset (Line 17554, "System.Classes.pas" + 0) + $0
+[50E3E7A7]{vcl260.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 10724, "Vcl.Forms.pas" + 23) + $1
+[50E3E7EA]{vcl260.bpl  } Vcl.Forms.TApplication.HandleMessage (Line 10754, "Vcl.Forms.pas" + 1) + $4
+[50E3EB1D]{vcl260.bpl  } Vcl.Forms.TApplication.Run (Line 10892, "Vcl.Forms.pas" + 26) + $3
+[00517FFA]{bds.exe     } bds.bds (Line 214, "" + 7) + $7

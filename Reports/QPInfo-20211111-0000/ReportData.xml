@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ReportData>
+	<Status>40</Status>
+	<Data_type>A</Data_type>
+	<Severity>0</Severity>
+	<Project>270</Project>
+	<Version>28.0</Version>
+	<Area>30001</Area>
+	<Shortdescription>Automated Incident Report</Shortdescription>
+	<Description>Access violation at address 2056B885 in module 'coreide280.bpl'. Read of address 000003D0.
+
+Create a multi-device application. Add  a TButton to the main form. Select the button and press CTRL+C. In my case I experience and exception.</Description>
+	<Build>28.0.42600.6491</Build>
+	<Steps/>
+	<Platform_>430</Platform_>
+	<Workaround/>
+	<Locale>1033;2057</Locale>
+	<Architecture>1</Architecture>
+	<OperativeSystem>Windows 10 (Version 10.0, Build 19042, 64-bit Edition)</OperativeSystem>
+	<OSMemory>8 335 576 Kb</OSMemory>
+	<ProcessMemoryUsage>1 019 708 Kb</ProcessMemoryUsage>
+	<MemoryLargeAddress>true</MemoryLargeAddress>
+	<Date>2021-11-11T15:39:27.706Z</Date>
+</ReportData>

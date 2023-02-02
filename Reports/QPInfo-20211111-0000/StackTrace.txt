@@ -1,0 +1,33 @@
+[2056B885]{coreide280.bpl} EditorActions.TEditorActionLists.EditCopyItemExecute (Line 787, "EditorActions.pas" + 1) + $A
+[217C5B1F]{vclactnband280.bpl} Vcl.ActnMenus.CallWindowHook (Line 762, "Vcl.ActnMenus.pas" + 20) + $F
+[50E6621A]{vcl280.bpl  } Vcl.AppEvnts.TMultiCaster.DoActionExecute (Line 406, "Vcl.AppEvnts.pas" + 5) + $E
+[50E6623E]{vcl280.bpl  } Vcl.AppEvnts.TMultiCaster.DoActionExecute (Line 410, "Vcl.AppEvnts.pas" + 9) + $3
+[2056B87D]{coreide280.bpl} EditorActions.TEditorActionLists.EditCopyItemExecute (Line 787, "EditorActions.pas" + 1) + $2
+[501733E7]{rtl280.bpl  } System.Classes.TBasicAction.Execute (Line 17813, "System.Classes.pas" + 3) + $7
+[50CAF9B2]{vcl280.bpl  } Vcl.ActnList.TCustomAction.Execute (Line 284, "Vcl.ActnList.pas" + 19) + $35
+[5017323B]{rtl280.bpl  } System.Classes.TBasicActionLink.Execute (Line 17724, "System.Classes.pas" + 2) + $7
+[50DEEF93]{vcl280.bpl  } Vcl.Menus.TMenuItem.Click (Line 2617, "Vcl.Menus.pas" + 17) + $7
+[50DF0C9B]{vcl280.bpl  } Vcl.Menus.DoClick (Line 3843, "Vcl.Menus.pas" + 41) + $4
+[50DF0D87]{vcl280.bpl  } Vcl.Menus.TMenu.IsShortCut (Line 3896, "Vcl.Menus.pas" + 38) + $6
+[50CCF374]{vcl280.bpl  } Vcl.Controls.TWinControl.IsMenuKey (Line 12247, "Vcl.Controls.pas" + 8) + $12
+[50CCF3E9]{vcl280.bpl  } Vcl.Controls.TWinControl.CNKeyDown (Line 12267, "Vcl.Controls.pas" + 5) + $4
+[50CC7CCA]{vcl280.bpl  } Vcl.Controls.TControl.WndProc (Line 7544, "Vcl.Controls.pas" + 91) + $6
+[50CC9782]{vcl280.bpl  } Vcl.Controls.TControl.GetStyleName (Line 8574, "Vcl.Controls.pas" + 1) + $8
+[50CC97AE]{vcl280.bpl  } Vcl.Controls.TControl.GetStyleName (Line 8578, "Vcl.Controls.pas" + 5) + $7
+[500D55DA]{rtl280.bpl  } System.Generics.Defaults.Equals_Class (Line 1138, "System.Generics.Defaults.pas" + 1) + $6
+[50EF5D6F]{vcl280.bpl  } Vcl.Styles.{System.Generics.Collections}TDictionary<System.Classes.TComponent,Vcl.Themes.TStyleHook>.GetBucketIndex (Line 7090, "System.Generics.Collections.pas" + 16) + $15
+[50DA3F4D]{vcl280.bpl  } Vcl.ExtCtrls.TPanelStyleHook.AcceptMessage (Line 12424, "Vcl.ExtCtrls.pas" + 1) + $2
+[50DD159B]{vcl280.bpl  } Vcl.Themes.TStyleHook.HandleMessage (Line 7372, "Vcl.Themes.pas" + 3) + $6
+[50EF1306]{vcl280.bpl  } Vcl.Styles.TStyleEngine.HandleMessage (Line 3603, "Vcl.Styles.pas" + 22) + $7
+[50DCE084]{vcl280.bpl  } Vcl.Themes.TStyleManager.HandleMessage (Line 5858, "Vcl.Themes.pas" + 11) + $11
+[50CCAE2F]{vcl280.bpl  } Vcl.Controls.TWinControl.DoHandleStyleMessage (Line 9408, "Vcl.Controls.pas" + 0) + $F
+[50CCCDBD]{vcl280.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10579, "Vcl.Controls.pas" + 170) + $6
+[50CCC338]{vcl280.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 10267, "Vcl.Controls.pas" + 3) + $6
+[50174218]{rtl280.bpl  } System.Classes.StdWndProc (Line 18318, "System.Classes.pas" + 8) + $0
+[217C5B1F]{vclactnband280.bpl} Vcl.ActnMenus.CallWindowHook (Line 762, "Vcl.ActnMenus.pas" + 20) + $F
+[50E0D43C]{vcl280.bpl  } Vcl.Forms.TApplication.IsKeyMsg (Line 11222, "Vcl.Forms.pas" + 25) + $12
+[50E0D4D6]{vcl280.bpl  } Vcl.Forms.TApplication.IsHintMsg (Line 11243, "Vcl.Forms.pas" + 3) + $2
+[50E0D6E7]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 11308, "Vcl.Forms.pas" + 17) + $31
+[50E0D74E]{vcl280.bpl  } Vcl.Forms.TApplication.HandleMessage (Line 11344, "Vcl.Forms.pas" + 1) + $4
+[50E0DA8D]{vcl280.bpl  } Vcl.Forms.TApplication.Run (Line 11483, "Vcl.Forms.pas" + 27) + $3
+[004F6F82]{bds.exe     } bds.bds (Line 227, "" + 16) + $2

@@ -1,0 +1,1 @@
+Create a multi-device application. Add  a TButton to the main form. Select the button and press CTRL+C. In my case I experience and exception.
