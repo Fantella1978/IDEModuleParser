@@ -3,9 +3,12 @@ object DM1: TDM1
   Width = 640
   object cdsModules: TClientDataSet
     PersistDataPacket.Data = {
-      3F0000009619E0BD0100000018000000020000000000030000003F00034E756D
-      0400010004000000044E616D6501004900000001000557494454480200020014
-      000000}
+      A10000009619E0BD010000001800000006000000000003000000A100034E756D
+      0400010004000000044E616D650100490000000100055749445448020002007F
+      000450617468020049000000010005574944544802000200FF00075665727369
+      6F6E0100490000000100055749445448020002001B000B44617465416E645469
+      6D65080008000000000004486173680100490000000100055749445448020002
+      0028000000}
     Active = True
     Aggregates = <>
     FieldDefs = <
@@ -17,12 +20,65 @@ object DM1: TDM1
       item
         Name = 'Name'
         DataType = ftString
-        Size = 20
+        Size = 127
+      end
+      item
+        Name = 'Path'
+        DataType = ftString
+        Size = 255
+      end
+      item
+        Name = 'Version'
+        DataType = ftString
+        Size = 27
+      end
+      item
+        Name = 'DateAndTime'
+        DataType = ftDateTime
+      end
+      item
+        Name = 'Hash'
+        DataType = ftString
+        Size = 40
       end>
     IndexDefs = <
       item
+        Name = 'cdsModulesNameIndexASC'
+        Fields = 'Name;Path'
+        Options = [ixCaseInsensitive]
+      end
+      item
         Name = 'cdsModulesNameIndex'
-        Fields = 'Name'
+        Fields = 'Name;Path'
+        Options = [ixDescending, ixCaseInsensitive]
+      end
+      item
+        Name = 'cdsModulesPathIndexASC'
+        Fields = 'Path;Name'
+        Options = [ixCaseInsensitive]
+      end
+      item
+        Name = 'cdsModulesPathIndex'
+        Fields = 'Path;Name'
+        Options = [ixDescending, ixCaseInsensitive]
+      end
+      item
+        Name = 'cdsModulesDateAndTimeIndexASC'
+        Fields = 'DateAndTime;Path;Name'
+      end
+      item
+        Name = 'cdsModulesDateAndTimeIndex'
+        Fields = 'DateAndTime;Path;Name'
+        Options = [ixDescending]
+      end
+      item
+        Name = 'cdsModulesVersionIndexASC'
+        Fields = 'Version;Name'
+      end
+      item
+        Name = 'cdsModulesVersionIndex'
+        Fields = 'Version;Name'
+        Options = [ixDescending]
       end>
     Params = <>
     StoreDefs = True
@@ -35,6 +91,22 @@ object DM1: TDM1
     end
     object cdsModulesName: TStringField
       FieldName = 'Name'
+      Size = 127
+    end
+    object cdsModulesPath: TStringField
+      FieldName = 'Path'
+      Size = 255
+    end
+    object cdsModulesVersion: TStringField
+      FieldName = 'Version'
+      Size = 27
+    end
+    object cdsModulesDateAndTime: TDateTimeField
+      FieldName = 'DateAndTime'
+    end
+    object cdsModulesHash: TStringField
+      FieldName = 'Hash'
+      Size = 40
     end
   end
   object DataSource1: TDataSource

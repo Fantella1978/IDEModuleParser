@@ -16,8 +16,8 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   TStyleManager.TrySetStyle('Glow');
+  Application.CreateForm(TDM1, DM1);
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TfrmParse, frmParse);
-  Application.CreateForm(TDM1, DM1);
   Application.Run;
 end.

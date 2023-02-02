@@ -51,6 +51,7 @@ implementation
 uses
   UnitMain
   , UnitDB
+  , System.IOUtils
   ;
 
 { TfrmParse }
@@ -164,7 +165,16 @@ begin
       tempIDEModule := @ModulesArray[i]^;
       DM1.cdsModules.Append;
       DM1.cdsModules.FieldByName('Num').AsInteger := i;
-      DM1.cdsModules.FieldByName('Name').AsString := tempIDEModule.FileName;
+      DM1.cdsModules.FieldByName('Name').AsString :=
+        UpperCase(TPath.GetFileNameWithoutExtension(tempIDEModule.FileName)) +
+        LowerCase(TPath.GetExtension(tempIDEModule.FileName));
+      if Length(tempIDEModule.Path) < 255
+        then DM1.cdsModules.FieldByName('Path').AsString := LowerCase(tempIDEModule.Path)
+        else DM1.cdsModules.FieldByName('Path').AsString := LowerCase(copy(tempIDEModule.Path, 1, 255));
+      DM1.cdsModules.FieldByName('Version').AsString := tempIDEModule.Version;
+      DM1.cdsModules.FieldByName('DateAndTime').AsDateTime := tempIDEModule.DateTime;
+      DM1.cdsModules.FieldByName('Hash').AsString := tempIDEModule.Hash;
+
       DM1.cdsModules.Post;
       SetCurrentTaskPosition(i);
     end;

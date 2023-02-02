@@ -1,4 +1,4 @@
-unit UnitMain;
+﻿unit UnitMain;
 
 interface
 
@@ -127,9 +127,13 @@ type
 
     function FileExistsInReport(var FileName: string): boolean;
     procedure cbCreateLogClick(Sender: TObject);
+    procedure DBGrid1TitleClick(Column: TColumn);
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
 
   private
     { Private declarations }
+    DBGrid1_PrevCol : Integer;
   public
     { Public declarations }
   end;
@@ -436,6 +440,78 @@ begin
     end;
 end;
 
+procedure TfrmMain.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+  DataCol: Integer; Column: TColumn; State: TGridDrawState);
+Var
+  wi, sw, i : Integer;
+begin
+  // Rize Column with if text is long
+  wi := 5 + DBGrid1.Canvas.TextExtent(Column.Field.DisplayText).cx;
+  if wi > column.Width
+  then
+    begin
+      sw := 0;
+      for i := 0 to DBGrid1.Columns.Count - 1 do
+        if DBGrid1.Columns[i].Visible AND (DBGrid1.Columns[i] <> Column)
+          then sw := sw + DBGrid1.Columns[i].Width;
+      if DBGrid1.Width > sw + wi then Column.Width := wi;
+    end;
+end;
+
+procedure TfrmMain.DBGrid1TitleClick(Column: TColumn);
+var
+  ci : integer;
+begin
+  if column.FieldName = 'Hash' then Exit;
+  
+  with DM1.cdsModules do
+    try
+      ci:= column.Index;
+      if ci <> DBGrid1_PrevCol
+      then
+        begin
+          DBGrid1.Columns[DBGrid1_PrevCol].Title.Font.Style :=
+            DBGrid1.Columns[DBGrid1_PrevCol].Title.Font.Style - [fsBold];
+          DBGrid1.Columns[DBGrid1_PrevCol].Title.Caption := DBGrid1.Columns[DBGrid1_PrevCol].FieldName;
+        end;
+      Column.Title.Font.Style := Column.Title.Font.Style + [fsBold];
+      DBGrid1_PrevCol := ci;
+      if Column.Title.Caption = Column.FieldName + ' ˅'
+        then Column.Title.Caption := Column.FieldName + ' ˄'
+        else Column.Title.Caption := Column.FieldName + ' ˅';
+      DisableControls;
+
+      if IndexName = 'cdsModules' + Column.FieldName + 'Index'
+        then IndexName := 'cdsModules' + Column.FieldName + 'IndexASC'
+        else IndexName := 'cdsModules' + Column.FieldName + 'Index';
+      {
+      if Column.FieldName = 'Name'
+        then
+          if IndexName = 'cdsModulesNameIndex'
+            then IndexName := 'cdsModulesNameIndexASC'
+            else IndexName := 'cdsModulesNameIndex';
+      if Column.FieldName = 'Path'
+        then
+          if IndexName = 'cdsModulesPathIndex'
+            then IndexName := 'cdsModulesPathIndexASC'
+            else IndexName := 'cdsModulesPathIndex';
+      if Column.FieldName = 'Version'
+        then
+          if IndexName = 'cdsModulesVersionIndex'
+            then IndexName := 'cdsModulesVersionIndexASC'
+            else IndexName := 'cdsModulesVersionIndex';
+      if Column.FieldName = 'DateAndTime'
+        then
+          if IndexName = 'cdsModulesDateAndTimeIndex'
+            then IndexName := 'cdsModulesDateAndTimeIndexASC'
+            else IndexName := 'cdsModulesDateAndTimeIndex';
+      }
+    finally
+      First;
+      EnableControls
+    end;
+end;
+
 function TfrmMain.DeleteTempReportFolder: boolean;
 begin
   // Delete temp Report folder
@@ -520,6 +596,8 @@ end;
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   //
+  if not DM1.cdsModules.Active then DM1.cdsModules.Open;
+
   // ImageList1.GetBitmap(0, Image1.Picture.Bitmap);
   MemoTxtModuleFile.Clear;
 

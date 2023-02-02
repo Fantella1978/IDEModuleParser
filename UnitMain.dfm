@@ -25,8 +25,8 @@ object frmMain: TfrmMain
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 480
-    ExplicitWidth = 872
+    ExplicitTop = 487
+    ExplicitWidth = 873
     DesignSize = (
       875
       37)
@@ -40,6 +40,7 @@ object frmMain: TfrmMain
       Default = True
       ModalResult = 1
       TabOrder = 0
+      ExplicitLeft = 657
     end
     object Button2: TButton
       Left = 800
@@ -51,6 +52,7 @@ object frmMain: TfrmMain
       Cancel = True
       ModalResult = 2
       TabOrder = 1
+      ExplicitLeft = 798
     end
     object Button3: TButton
       Left = 446
@@ -60,6 +62,7 @@ object frmMain: TfrmMain
       Action = actParseModuleFile
       Anchors = [akRight, akBottom]
       TabOrder = 2
+      ExplicitLeft = 444
     end
     object Button4: TButton
       Left = 527
@@ -70,6 +73,7 @@ object frmMain: TfrmMain
       Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
       TabOrder = 3
+      ExplicitLeft = 525
     end
   end
   object PageControl1: TPageControl
@@ -77,12 +81,12 @@ object frmMain: TfrmMain
     Top = 0
     Width = 875
     Height = 491
-    ActivePage = tsModuleListFile
+    ActivePage = TabModulesList
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
-    ExplicitWidth = 872
-    ExplicitHeight = 480
+    ExplicitWidth = 873
+    ExplicitHeight = 487
     object tsModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       object Panel2: TPanel
@@ -94,7 +98,7 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 864
+        ExplicitWidth = 865
         DesignSize = (
           867
           41)
@@ -113,7 +117,7 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 745
+          ExplicitWidth = 746
         end
       end
       object MemoTxtModuleFile: TMemo
@@ -1890,8 +1894,8 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 854
-        ExplicitHeight = 335
+        ExplicitWidth = 855
+        ExplicitHeight = 342
       end
       object Panel3: TPanel
         Left = 0
@@ -1901,8 +1905,8 @@ object frmMain: TfrmMain
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
-        ExplicitTop = 386
-        ExplicitWidth = 864
+        ExplicitTop = 393
+        ExplicitWidth = 865
         object lblFontSize: TLabel
           Left = 13
           Top = 3
@@ -2019,23 +2023,59 @@ object frmMain: TfrmMain
         Align = alBottom
         Anchors = [akLeft, akTop, akRight, akBottom]
         DataSource = DM1.DataSource1
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
         TabOrder = 3
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
         TitleFont.Height = -12
         TitleFont.Name = 'Segoe UI'
         TitleFont.Style = []
+        OnDrawColumnCell = DBGrid1DrawColumnCell
+        OnTitleClick = DBGrid1TitleClick
         Columns = <
           item
+            Color = clGrayText
             Expanded = False
             FieldName = 'Num'
-            Width = 40
+            Width = -1
+            Visible = False
+          end
+          item
+            Color = clWindowText
+            Expanded = False
+            FieldName = 'Name'
+            Title.Color = clGrayText
+            Title.Font.Charset = DEFAULT_CHARSET
+            Title.Font.Color = clWindowText
+            Title.Font.Height = -12
+            Title.Font.Name = 'Segoe UI'
+            Title.Font.Style = []
+            Width = 150
             Visible = True
           end
           item
             Expanded = False
-            FieldName = 'Name'
+            FieldName = 'Version'
+            Width = 100
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'DateAndTime'
+            Width = 140
+            Visible = True
+          end
+          item
+            Color = clWindowFrame
+            Expanded = False
+            FieldName = 'Path'
             Width = 300
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'Hash'
+            Width = 250
             Visible = True
           end>
       end
