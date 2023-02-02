@@ -8,7 +8,8 @@ uses
   UnitParser in 'UnitParser.pas' {frmParse},
   UnitDB in 'UnitDB.pas' {DM1: TDataModule},
   UnitLogger in 'UnitLogger.pas',
-  UnitIDEModule in 'UnitIDEModule.pas';
+  UnitIDEModule in 'UnitIDEModule.pas',
+  UnitStaticFunctions in 'UnitStaticFunctions.pas';
 
 {$R *.res}
 

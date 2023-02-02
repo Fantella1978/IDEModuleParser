@@ -98,7 +98,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 865
         DesignSize = (
           867
           41)
@@ -117,7 +116,6 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 746
         end
       end
       object MemoTxtModuleFile: TMemo
@@ -1894,8 +1892,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitWidth = 855
-        ExplicitHeight = 342
       end
       object Panel3: TPanel
         Left = 0
@@ -1905,8 +1901,6 @@ object frmMain: TfrmMain
         Align = alBottom
         BevelOuter = bvNone
         TabOrder = 2
-        ExplicitTop = 393
-        ExplicitWidth = 865
         object lblFontSize: TLabel
           Left = 13
           Top = 3
@@ -1998,6 +1992,7 @@ object frmMain: TfrmMain
         TabOrder = 1
         Text = ''
         OnClick = actOpenModuleFileExecute
+        ExplicitWidth = 764
       end
       object ledtBDSInstDate: TLabeledEdit
         Left = 370
@@ -2037,7 +2032,6 @@ object frmMain: TfrmMain
             Color = clGrayText
             Expanded = False
             FieldName = 'Num'
-            Width = -1
             Visible = False
           end
           item
@@ -2045,11 +2039,6 @@ object frmMain: TfrmMain
             Expanded = False
             FieldName = 'Name'
             Title.Color = clGrayText
-            Title.Font.Charset = DEFAULT_CHARSET
-            Title.Font.Color = clWindowText
-            Title.Font.Height = -12
-            Title.Font.Name = 'Segoe UI'
-            Title.Font.Style = []
             Width = 150
             Visible = True
           end

@@ -15,6 +15,7 @@ uses
   , System.Zip
   , System.StrUtils, Data.DB, Vcl.DBGrids
   , UnitDB
+  , UnitStaticFunctions
   ;
 
 type
@@ -134,6 +135,7 @@ type
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
+      LinfoSize: DWORD;
   public
     { Public declarations }
   end;
@@ -597,7 +599,7 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   //
   if not DM1.cdsModules.Active then DM1.cdsModules.Open;
-
+  Caption := 'IDE Module Parser' + ' ' + GetFileVersionStr(Application.ExeName);
   // ImageList1.GetBitmap(0, Image1.Picture.Bitmap);
   MemoTxtModuleFile.Clear;
 
