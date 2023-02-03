@@ -40,7 +40,7 @@ type
     PageControl1: TPageControl;
     tsModuleListFile: TTabSheet;
     TabModulesList: TTabSheet;
-    tsDXDiagLog: TTabSheet;
+    tsDXDiagLogFile: TTabSheet;
     tsLog: TTabSheet;
     ledtBDSBuild: TLabeledEdit;
     ledtBDSPath: TLabeledEdit;
@@ -55,8 +55,8 @@ type
     lbedStackTraceFile: TLabeledEdit;
     memoStackTrace: TMemo;
     Panel6: TPanel;
-    lbedDXDiagFile: TLabeledEdit;
-    memoDXDiag: TMemo;
+    lbedDXDiagLogFile: TLabeledEdit;
+    memoDXDiagLog: TMemo;
     tsDescription: TTabSheet;
     tsSteps: TTabSheet;
     Panel7: TPanel;
@@ -75,6 +75,8 @@ type
     tbFontSize: TTrackBar;
     edtFontSize: TEdit;
     cbCreateLog: TCheckBox;
+    GroupBox1: TGroupBox;
+    GroupBox2: TGroupBox;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -88,6 +90,8 @@ type
     procedure UpdateDisplayModuleListFileName();
     /// <summary>StackTrace file changed, update display FileName</summary>
     procedure UpdateDisplayStackTraceFileName();
+    /// <summary>DxDiag_Log file changed, update display FileName</summary>
+    procedure UpdateDisplayDxDiagLogFileName();
     procedure tbFontSizeChange(Sender: TObject);
     /// <summary>Enable Font Size Change</summary>
     procedure EnableFontSizeChange();
@@ -98,20 +102,25 @@ type
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
     procedure HideStartMessage;
 
-    /// <summary>Confirm new Txt Module file load</summary>
+    /// <summary>Confirm new text ModuleList file load</summary>
     function ConfirmNewModuleListFileLoad(AskForAll: boolean) : boolean;
-    /// <summary>Confirm new Txt Module file load</summary>
+    /// <summary>Confirm new text StackTrace file load</summary>
     function ConfirmNewStackTraceFileLoad(AskForAll: boolean): boolean;
+    /// <summary>Confirm new text DxDiag_Log file load</summary>
+    function ConfirmNewDxDiagLogFileLoad(AskForAll: boolean): boolean;
 
     function AddAllModulesToStringGrid : boolean;
 
     procedure OpenTextStackTraceFile(FileName: string);
     procedure OpenTextModuleListFile(FileName: string);
+    procedure OpenTextDxDiagLogFile(FileName: string);
     procedure OpenZipReportFile(Sender: TObject);
-    /// <summary>Load new Text Module file</summary>
+    /// <summary>Load new text ModuleList file</summary>
     procedure LoadTxtModuleFile();
-    /// <summary>Load new Text Module file</summary>
+    /// <summary>Load new text StackTrace file</summary>
     procedure LoadTxtStackTraceFile();
+    /// <summary>Load new text DxDiag_Log file</summary>
+    procedure LoadTxtDxDiagLogFile();
     /// <summary>Check Zip Report file before extract</summary>
     function CheckZipReportFile(Sender: TObject): boolean;
     procedure actParseCancelExecute(Sender: TObject);
@@ -150,6 +159,7 @@ var
   frmMain : TfrmMain;
   mtfFileName : TFileName;  // ModuleList.txt filename
   stfFileName : TFileName;  // StackTrace.txt filename
+  ddfFileName : TFileName;  // DxDiag_Log.txt filename
   mzfFileName : TFileName;  // QPInfo-XXXXXXXX-XXXX.zip filename
   Logger : TMyLogger;       // Logger
   ModulesArray : TModulesArray;   // IDE Modules Array
@@ -240,6 +250,43 @@ begin
     end;
 end;
 
+function TfrmMain.ConfirmNewDxDiagLogFileLoad(AskForAll: boolean): boolean;
+var
+  res: TModalResult;
+begin
+  Result := true;
+  if (memoDxDiagLog.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
+  if ConfirmOpenForAll in [mrNo, mrNoToAll]
+  then
+    begin
+      Result := false;
+      Exit;
+    end;
+
+  if PageControl1.ActivePage <> tsDxDiagLogFile then PageControl1.ActivePage := tsDxDiagLogFile;
+  if (not AskForAll)
+  then
+    res := MessageDlg('The DxDiag_Log file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
+  else
+    begin
+      res := MessageDlg('The DxDiag_Log file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+      if res in [mrYesToAll, mrNoToAll]
+      then
+        begin
+          ConfirmOpenForAll := res;
+          AskConfirmOpenForAll := false;
+        end;
+    end;
+
+  if res in [mrNo, mrNoToAll, mrCancel]
+  then
+    begin
+      Result := false;
+      Logger.AddToLog('The opening of a new DxDiag_Log file has not been confirmed.');
+      Exit;
+    end;
+end;
+
 function TfrmMain.ConfirmNewModuleListFileLoad(AskForAll: boolean) : boolean;
 var
   res: TModalResult;
@@ -278,6 +325,17 @@ begin
 end;
 
 
+procedure TfrmMain.OpenTextDxDiagLogFile(FileName: string);
+begin
+  // Open new text DxDiag_Log.txt file
+  if not FileExists(FileName) OR not ConfirmNewDxDiagLogFileLoad(AskConfirmOpenForAll) then Exit;
+  HideStartMessage;
+  ddfFileName := FileName;
+  PageControl1.ActivePage := tsStackTraceFile;
+  UpdateDisplayDxDiagLogFileName();
+  LoadTxtDxDiagLogFile();
+end;
+
 procedure TfrmMain.OpenTextModuleListFile(FileName: string);
 begin
   // Open new text ModuleFile.txt file
@@ -296,8 +354,7 @@ begin
   if not FileExists(FileName) OR not ConfirmNewStackTraceFileLoad(AskConfirmOpenForAll) then Exit;
   HideStartMessage;
   stfFileName := FileName;
-  if PageControl1.ActivePage <> tsStackTraceFile then PageControl1.ActivePage := tsStackTraceFile;
-  // UpdateDisplayFileName();
+  PageControl1.ActivePage := tsStackTraceFile;
   UpdateDisplayStackTraceFileName();
   LoadTxtStackTraceFile();
 end;
@@ -361,8 +418,7 @@ begin
     then
       begin
         OpenTextModuleListFile(OpenTextFileDialog1.FileName);
-        if PageControl1.ActivePage <> tsModuleListFile
-          then PageControl1.ActivePage := tsModuleListFile;
+        PageControl1.ActivePage := tsModuleListFile;
       end;
 end;
 
@@ -392,12 +448,15 @@ var
   tempIDEModule : TIDEModule;
 begin
   // Parse Module file
+
+  if (DM1.cdsModules.RecordCount > 0) AND
+    (MessageDlg('Modules list not empty. Clear modules list and parse ModulesList file?',
+       mtConfirmation, [mbYes, mbNo], 0) in [mrNo, mrCancel])
+    then Exit;
+
   ledtBDSPath.Text := '';
   ledtBDSBuild.Text := '';
   ledtBDSInstDate.Text := '';
-
-  if PageControl1.ActivePage <> tsModuleListFile
-    then PageControl1.ActivePage := tsModuleListFile;
 
   frmParse.parseSuccess := false;
   frmParse.Show;
@@ -420,8 +479,8 @@ begin
           ledtBDSInstDate.Text := DateTimeToStr(BDSIDEModule.DateTime);
         end
       else BDSIDEModule := nil;
-
     end;
+  actParseModuleFile.Enabled := false;
 end;
 
 function TfrmMain.AddAllModulesToStringGrid: boolean;
@@ -618,7 +677,7 @@ begin
     'Desc.txt, Step.txt, ReportData.xml files.';
 
   TabModulesList.TabVisible := false;
-  tsDXDiagLog.TabVisible := false;
+  tsDXDiagLogFile.TabVisible := false;
   tsStackTraceFile.TabVisible := false;
   tsSteps.TabVisible := false;
   tsDescription.TabVisible := false;
@@ -657,12 +716,25 @@ begin
   pnlStartMessage.Visible := false;
 end;
 
+procedure TfrmMain.LoadTxtDxDiagLogFile;
+begin
+  // Load new Text StackTrace file
+  memoDxDiagLog.Lines.LoadFromFile(ddfFileName, TEncoding.UTF8);
+  // Enable Font Size Change
+  EnableFontSizeChange();
+  tsDxDiagLogFile.TabVisible := true;
+  PageControl1.ActivePage := tsDxDiagLogFile;
+  Logger.AddToLog('New DxDiag_Log file opened: ' + ddfFileName);
+end;
+
 procedure TfrmMain.LoadTxtModuleFile;
 begin
   // Load new Text Module file
   MemoTxtModuleFile.Lines.LoadFromFile(mtfFileName, TEncoding.UTF8);
+  Logger.AddToLog('New ModuleList file opened: ' + mtfFileName);
   // Enable Parse Action
   actParseModuleFile.Enabled := true;
+  frmParse.parseSuccess := false;
   // Enable Font Size Change
   EnableFontSizeChange();
 
@@ -670,8 +742,8 @@ begin
   TabModulesList.Enabled := false;
   PageControl1.ActivePage := tsModuleListFile;
 
-  Logger.AddToLog('New ModuleList file opened: ' + mtfFileName);
-  frmParse.parseSuccess := false;
+  DM1.ClearModulesDB;
+  Logger.AddToLog('Module List DB cleared.');
 end;
 
 procedure TfrmMain.LoadTxtStackTraceFile;
@@ -728,6 +800,7 @@ begin
   then
     begin
       // Open dxdiag_log.txt
+      OpenTextDxDiagLogFile(tempFileName);
       Result := true;
     end
   else Result := false;
@@ -784,6 +857,12 @@ begin
       Result := true;
     end
   else Result := false;
+end;
+
+procedure TfrmMain.UpdateDisplayDxDiagLogFileName;
+begin
+  //
+  lbedDxDiagLogFile.Text := ddfFileName;
 end;
 
 procedure TfrmMain.UpdateDisplayModuleListFileName;
@@ -852,6 +931,12 @@ begin
             OpenTextStackTraceFile(FileName);
             Exit;
           end;
+      if (fn = 'dxdiag_log')
+        then
+          begin
+            OpenTextDxDiagLogFile(FileName);
+            Exit;
+          end;
 
       if (PageControl1.ActivePage = tsModuleListFile)
         then
@@ -863,6 +948,12 @@ begin
         then
           begin
             OpenTextStackTraceFile(FileName);
+            Exit;
+          end;
+      if (PageControl1.ActivePage = tsDxDiagLogFile)
+        then
+          begin
+            OpenTextDxDiagLogFile(FileName);
             Exit;
           end;
     end;

@@ -1,0 +1,11 @@
+[006F00B6]{bds.exe     } SanctuaryChecker..{System.Generics.Collections}TDictionary<System.NativeUInt,SanctuaryChecker.TModuleMemoryStream>.TKeyEnumerator (Line 3934, "SanctuaryChecker.pas" + 0) + $DB1
+[6BC7477A]{rtl280.bpl  } System.@FinalizeRecord (Line 32799, "System.pas" + 72) + $2
+[67E06D86]{IDELSP280.bpl} BaseLSPServer.TLSPServer.LSPServerCharEncoding (Line 677, "BaseLSPServer.pas" + 6) + $7C5
+[6BD811E7]{rtl280.bpl  } System.Classes.CheckSynchronize (Line 15766, "System.Classes.pas" + 34) + $A
+[688B2647]{fmx280.bpl  } FMX.Platform.Win.TPlatformWin.ThreadSync (Line 3486, "FMX.Platform.Win.pas" + 3) + $2
+[6BD8580C]{rtl280.bpl  } System.Classes.StdWndProc (Line 18490, "System.Classes.pas" + 8) + $0
+[6BC747BB]{rtl280.bpl  } System.@FinalizeRecord (Line 32808, "System.pas" + 81) + $2
+[6DC1428F]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 11460, "Vcl.Forms.pas" + 23) + $1
+[6DC142D2]{vcl280.bpl  } Vcl.Forms.TApplication.HandleMessage (Line 11490, "Vcl.Forms.pas" + 1) + $4
+[6DC14611]{vcl280.bpl  } Vcl.Forms.TApplication.Run (Line 11629, "Vcl.Forms.pas" + 27) + $3
+[00708082]{bds.exe     } bds.bds (Line 227, "" + 16) + $2

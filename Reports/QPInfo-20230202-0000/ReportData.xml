@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ReportData>
+	<Status>40</Status>
+	<Data_type>A</Data_type>
+	<Severity>0</Severity>
+	<Project>270</Project>
+	<Version>28.0</Version>
+	<Area>30001</Area>
+	<Shortdescription>Automated Incident Report</Shortdescription>
+	<Description>Privileged instruction.
+
+closing a project</Description>
+	<Build>28.0.46141.937</Build>
+	<Steps/>
+	<Platform_>430</Platform_>
+	<Workaround/>
+	<Locale>1045;1045</Locale>
+	<Architecture>1</Architecture>
+	<OperativeSystem>Windows 10 (Version 22H2, OS Build 19045.2486, 64-bit Edition)</OperativeSystem>
+	<OSMemory>33 252 840 Kb</OSMemory>
+	<ProcessMemoryUsage>1 063 116 Kb</ProcessMemoryUsage>
+	<MemoryLargeAddress>true</MemoryLargeAddress>
+	<Date>2023-02-02T11:03:17.777Z</Date>
+</ReportData>

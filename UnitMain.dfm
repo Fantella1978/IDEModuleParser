@@ -31,7 +31,7 @@ object frmMain: TfrmMain
       875
       37)
     object Button1: TButton
-      Left = 659
+      Left = 653
       Top = 6
       Width = 135
       Height = 25
@@ -40,10 +40,10 @@ object frmMain: TfrmMain
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 657
+      ExplicitLeft = 651
     end
     object Button2: TButton
-      Left = 800
+      Left = 794
       Top = 6
       Width = 75
       Height = 25
@@ -52,20 +52,20 @@ object frmMain: TfrmMain
       Cancel = True
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 798
+      ExplicitLeft = 792
     end
     object Button3: TButton
-      Left = 446
+      Left = 440
       Top = 6
       Width = 75
       Height = 25
       Action = actParseModuleFile
       Anchors = [akRight, akBottom]
       TabOrder = 2
-      ExplicitLeft = 444
+      ExplicitLeft = 438
     end
     object Button4: TButton
-      Left = 527
+      Left = 521
       Top = 6
       Width = 126
       Height = 25
@@ -73,7 +73,7 @@ object frmMain: TfrmMain
       Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
       TabOrder = 3
-      ExplicitLeft = 525
+      ExplicitLeft = 519
     end
   end
   object PageControl1: TPageControl
@@ -81,7 +81,7 @@ object frmMain: TfrmMain
     Top = 0
     Width = 875
     Height = 491
-    ActivePage = tsModuleListFile
+    ActivePage = tsDXDiagLogFile
     Align = alClient
     Style = tsFlatButtons
     TabOrder = 1
@@ -99,7 +99,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 865
         DesignSize = (
           867
           41)
@@ -2338,10 +2337,10 @@ object frmMain: TfrmMain
             'A795'
           
             'CodeSiteExpressPkg280.bpl'#9'(0x259C0000)'#9'C:\Program Files (x86)\Ra' +
-            'ize\CS5\Deploy\Win32\'#9
+            'ize\CS5\Deploy'
           
-            '5.0.0.0'#9'9/8/2021 5:00:00 AM'#9'0729703DFFE404847B3A9789826EDD4D9A58' +
-            'EA0C'
+            '\Win32\'#9'5.0.0.0'#9'9/8/2021 5:00:00 AM'#9'0729703DFFE404847B3A9789826E' +
+            'DD4D9A58EA0C'
           
             'msimg32.dll'#9'(0x6E580000)'#9'C:\WINDOWS\SYSTEM32\'#9'10.0.19041.1466'#9'1/' +
             '8/2022 4:04:59 AM'#9
@@ -2354,20 +2353,20 @@ object frmMain: TfrmMain
             '4FE8BDF955719320'
           
             'AbbreviaVCLD280.bpl'#9'(0x25BA0000)'#9'C:\Users\Public\Documents\Embar' +
-            'cadero\Studio\22.0\Bpl\'#9
+            'cadero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 8:27:08 AM'#9'890BB7A225CE76A6050E2E346E3FBD66788' +
-            'D80CA'
+            '\22.0\Bpl\'#9'1.0.0.0'#9'1/31/2022 8:27:08 AM'#9'890BB7A225CE76A6050E2E34' +
+            '6E3FBD66788D80CA'
           
             'AbbreviaD280.bpl'#9'(0x25BF0000)'#9'C:\Users\Public\Documents\Embarcad' +
-            'ero\Studio\22.0\Bpl\'#9
+            'ero\Studio'
           
-            '5.1.0.0'#9'1/31/2022 8:27:06 AM'#9'B467D444ABD7919AED993BBFAA651125DD1' +
-            '0A14E'
+            '\22.0\Bpl\'#9'5.1.0.0'#9'1/31/2022 8:27:06 AM'#9'B467D444ABD7919AED993BBF' +
+            'AA651125DD10A14E'
           
             'RaizeComponentsVcl_Design280.bpl'#9'(0x25CB0000)'#9'C:\Users\Public\Do' +
-            'cuments\Embarcadero'
-          '\Studio\22.0\bpl\'#9'6.2.2.0'#9'10/6/2021 10:42:34 AM'#9
+            'cuments'
+          '\Embarcadero\Studio\22.0\bpl\'#9'6.2.2.0'#9'10/6/2021 10:42:34 AM'#9
           '2DF41B19F93C399599AE9A2AE79D36B5D023681D'
           
             'RaizeComponentsVcl280.bpl'#9'(0x25EA0000)'#9'C:\Users\Public\Documents' +
@@ -2377,8 +2376,8 @@ object frmMain: TfrmMain
             '75CC24EDEC23F4C2C'
           
             'RaizeComponentsVclDb_Design280.bpl'#9'(0x26290000)'#9'C:\Users\Public\' +
-            'Documents\Embarcadero'
-          '\Studio\22.0\bpl\'#9'6.2.2.0'#9'10/6/2021 10:42:36 AM'#9
+            'Documents'
+          '\Embarcadero\Studio\22.0\bpl\'#9'6.2.2.0'#9'10/6/2021 10:42:36 AM'#9
           '7DCF6C11BCA23C7289C75FD62D6435C206B04560'
           
             'RaizeComponentsVclDb280.bpl'#9'(0x262C0000)'#9'C:\Users\Public\Documen' +
@@ -2440,56 +2439,58 @@ object frmMain: TfrmMain
           '457D67119D82F006756212D12FC1BD54FDC05160'
           
             'LockBox3VCLDD280.bpl'#9'(0x26B90000)'#9'C:\Users\Public\Documents\Emba' +
-            'rcadero\Studio\22.0\bpl\'#9
+            'rcadero\Studio'
           
-            '3.4.0.0'#9'1/31/2022 9:01:32 AM'#9'0E62E24449A320C977BC8390BC89F1181CC' +
-            '8F995'
+            '\22.0\bpl\'#9'3.4.0.0'#9'1/31/2022 9:01:32 AM'#9'0E62E24449A320C977BC8390' +
+            'BC89F1181CC8F995'
           
             'LockBox3DR280.bpl'#9'(0x26BD0000)'#9'C:\Users\Public\Documents\Embarca' +
-            'dero\Studio\22.0\Bpl\'#9
+            'dero\Studio'
           
-            '3.4.1.0'#9'1/31/2022 9:01:30 AM'#9'5AC3EEFC9C09AF089D34E60409A49B51E73' +
-            '6D992'
+            '\22.0\Bpl\'#9'3.4.1.0'#9'1/31/2022 9:01:30 AM'#9'5AC3EEFC9C09AF089D34E604' +
+            '09A49B51E736D992'
           
             'SysToolsDD280.bpl'#9'(0x26C40000)'#9'C:\Users\Public\Documents\Embarca' +
-            'dero\Studio\22.0\bpl\'#9
+            'dero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:05:07 AM'#9'6BFAE57C361CE0A75919A6BCFA0DF975065' +
-            '693E1'
+            '\22.0\bpl\'#9'1.0.0.0'#9'1/31/2022 9:05:07 AM'#9'6BFAE57C361CE0A75919A6BC' +
+            'FA0DF975065693E1'
           
             'SysToolsDR280.bpl'#9'(0x26C60000)'#9'C:\Users\Public\Documents\Embarca' +
-            'dero\Studio\22.0\Bpl\'#9
+            'dero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:05:06 AM'#9'6E2AFED01691151922825DFDE748D00B239' +
-            '9187D'
+            '\22.0\Bpl\'#9'1.0.0.0'#9'1/31/2022 9:05:06 AM'#9'6E2AFED01691151922825DFD' +
+            'E748D00B2399187D'
           
             'SysToolsDBDD280.bpl'#9'(0x25B60000)'#9'C:\Users\Public\Documents\Embar' +
-            'cadero\Studio\22.0\bpl\'#9
+            'cadero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:05:11 AM'#9'DECD0C1BF4151414DDFE045134D390EB344' +
-            'C7919'
+            '\22.0\bpl\'#9'1.0.0.0'#9'1/31/2022 9:05:11 AM'#9'DECD0C1BF4151414DDFE0451' +
+            '34D390EB344C7919'
           
             'SysToolsDBDR280.bpl'#9'(0x26DB0000)'#9'C:\Users\Public\Documents\Embar' +
-            'cadero\Studio\22.0\Bpl\'#9
+            'cadero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:05:09 AM'#9'0B73FA828B24B7E7788F1D63D828950D7AE' +
-            '70B5B'
+            '\22.0\Bpl\'#9'1.0.0.0'#9'1/31/2022 9:05:09 AM'#9'0B73FA828B24B7E7788F1D63' +
+            'D828950D7AE70B5B'
           
             'IcsVclD110Design.bpl'#9'(0x26DD0000)'#9'C:\Users\Public\Documents\Emba' +
-            'rcadero\Studio\22.0\bpl\'#9
-          '1/31/2022 9:19:37 AM'#9'C40E0A263E81B99C9278508D14BC3B825B56B3A9'
+            'rcadero\Studio'
+          
+            '\22.0\bpl\'#9'1/31/2022 9:19:37 AM'#9'C40E0A263E81B99C9278508D14BC3B82' +
+            '5B56B3A9'
           
             'IcsCommonD110Run.bpl'#9'(0x270B0000)'#9'C:\Users\Public\Documents\Emba' +
-            'rcadero\Studio\22.0\Bpl\'#9
+            'rcadero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:19:04 AM'#9'F277225F0989F6F5723B909C051C1E8C334' +
-            '6FFF3'
+            '\22.0\Bpl\'#9'1.0.0.0'#9'1/31/2022 9:19:04 AM'#9'F277225F0989F6F5723B909C' +
+            '051C1E8C3346FFF3'
           
             'IcsVclD110Run.bpl'#9'(0x274F0000)'#9'C:\Users\Public\Documents\Embarca' +
-            'dero\Studio\22.0\Bpl\'#9
+            'dero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:19:26 AM'#9'090BA99BE548601CE35ECFB0D6FBE4E5D17' +
-            'ED160'
+            '\22.0\Bpl\'#9'1.0.0.0'#9'1/31/2022 9:19:26 AM'#9'090BA99BE548601CE35ECFB0' +
+            'D6FBE4E5D17ED160'
           
             'Cryptui.dll'#9'(0x585F0000)'#9'C:\WINDOWS\SYSTEM32\'#9'10.0.19041.2311'#9'12' +
             '/20/2022 5:48:17 AM'#9
@@ -2504,54 +2505,58 @@ object frmMain: TfrmMain
           '3739BAECE09B2253DE0A57E06043149A69C4D629'
           
             'IcsFmxD110Design.bpl'#9'(0x27F70000)'#9'C:\Users\Public\Documents\Emba' +
-            'rcadero\Studio\22.0\bpl\'#9
+            'rcadero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:19:39 AM'#9'0B2F8B98060B2248781E1F80D0E48329596' +
-            'EC762'
+            '\22.0\bpl\'#9'1.0.0.0'#9'1/31/2022 9:19:39 AM'#9'0B2F8B98060B2248781E1F80' +
+            'D0E48329596EC762'
           
             'IcsFmxD110Run.bpl'#9'(0x282A0000)'#9'C:\Users\Public\Documents\Embarca' +
-            'dero\Studio\22.0\Bpl\'#9
+            'dero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:19:36 AM'#9'F3D8DA2E86611489D8FDCAC8BD059FEC306' +
-            '6B3BD'
+            '\22.0\Bpl\'#9'1.0.0.0'#9'1/31/2022 9:19:36 AM'#9'F3D8DA2E86611489D8FDCAC8' +
+            'BD059FEC3066B3BD'
           
             'IcsCommonD110Design.bpl'#9'(0x28B20000)'#9'C:\Users\Public\Documents\E' +
-            'mbarcadero\Studio\22.0\bpl\'#9
+            'mbarcadero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:19:41 AM'#9'A5DB2A482838CBD1DF8040D8F017034FE8B' +
-            'A1731'
+            '\22.0\bpl\'#9'1.0.0.0'#9'1/31/2022 9:19:41 AM'#9'A5DB2A482838CBD1DF8040D8' +
+            'F017034FE8BA1731'
           
             'PowerPDFDD280.bpl'#9'(0x26990000)'#9'C:\Users\Public\Documents\Embarca' +
-            'dero\Studio\22.0\bpl\'#9
+            'dero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:24:22 AM'#9'18A9853A519372649023293CAECA48CBF90' +
-            'A54DF'
+            '\22.0\bpl\'#9'1.0.0.0'#9'1/31/2022 9:24:22 AM'#9'18A9853A519372649023293C' +
+            'AECA48CBF90A54DF'
           
             'PowerPDFDR280.bpl'#9'(0x269A0000)'#9'C:\Users\Public\Documents\Embarca' +
-            'dero\Studio\22.0\Bpl\'#9
+            'dero\Studio'
           
-            '1.0.0.0'#9'1/31/2022 9:24:21 AM'#9'41DC19479D852F1506B6FD729EACEA4E780' +
-            '22DE7'
+            '\22.0\Bpl\'#9'1.0.0.0'#9'1/31/2022 9:24:21 AM'#9'41DC19479D852F1506B6FD72' +
+            '9EACEA4E78022DE7'
           
             'VirtualTreesDD280.bpl'#9'(0x269F0000)'#9'C:\Users\Public\Documents\Emb' +
-            'arcadero\Studio\22.0\bpl\'#9
-          '1/31/2022 9:55:41 AM'#9'80B40A93C0251672DC0BA9833647F2AF5E08EB73'
+            'arcadero\Studio'
+          
+            '\22.0\bpl\'#9'1/31/2022 9:55:41 AM'#9'80B40A93C0251672DC0BA9833647F2AF' +
+            '5E08EB73'
           
             'VirtualTreesDR280.bpl'#9'(0x28D80000)'#9'C:\Users\Public\Documents\Emb' +
-            'arcadero\Studio\22.0\Bpl\'#9
-          '1/31/2022 9:55:39 AM'#9'938FF45D917E22B901F0991BA54B05A3A6DA1CDC'
+            'arcadero\Studio'
+          
+            '\22.0\Bpl\'#9'1/31/2022 9:55:39 AM'#9'938FF45D917E22B901F0991BA54B05A3' +
+            'A6DA1CDC'
           
             'AsyncProDD280.bpl'#9'(0x26A10000)'#9'C:\Users\Public\Documents\Embarca' +
-            'dero\Studio\22.0\bpl\'#9
+            'dero\Studio'
           
-            '1.0.0.0'#9'2/3/2022 12:02:40 PM'#9'5833A511172B3E67F28F8856852C9A30340' +
-            '2F22C'
+            '\22.0\bpl\'#9'1.0.0.0'#9'2/3/2022 12:02:40 PM'#9'5833A511172B3E67F28F8856' +
+            '852C9A303402F22C'
           
             'AsyncProDR280.bpl'#9'(0x28E40000)'#9'C:\Users\Public\Documents\Embarca' +
-            'dero\Studio\22.0\Bpl\'#9
+            'dero\Studio'
           
-            '1.0.0.0'#9'2/3/2022 12:02:36 PM'#9'8C1E84D943E6D487655E0CD54B9CFF14CE4' +
-            'B9A56'
+            '\22.0\Bpl\'#9'1.0.0.0'#9'2/3/2022 12:02:36 PM'#9'8C1E84D943E6D487655E0CD5' +
+            '4B9CFF14CE4B9A56'
           
             'HexEditor.bpl'#9'(0x29560000)'#9'C:\Users\Public\Documents\Embarcadero' +
             '\Studio\22.0\Bpl\'#9
@@ -2592,7 +2597,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         TabOrder = 1
         Visible = False
-        ExplicitTop = 16
       end
       object pnlStartMessage: TPanel
         Left = 167
@@ -2638,7 +2642,7 @@ object frmMain: TfrmMain
           Caption = 'lblStartMessageSecondary'
           Color = clWindow
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clInactiveCaption
+          Font.Color = clMedGray
           Font.Height = -19
           Font.Name = 'Segoe UI'
           Font.Style = []
@@ -2698,6 +2702,7 @@ object frmMain: TfrmMain
         TabOrder = 1
         Text = ''
         OnClick = actOpenModuleFileExecute
+        ExplicitWidth = 783
       end
       object ledtBDSInstDate: TLabeledEdit
         Left = 370
@@ -2723,7 +2728,7 @@ object frmMain: TfrmMain
         Align = alBottom
         Anchors = [akLeft, akTop, akRight, akBottom]
         DataSource = DM1.DataSource1
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
         TabOrder = 3
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -2740,7 +2745,7 @@ object frmMain: TfrmMain
             Visible = False
           end
           item
-            Color = clWindowText
+            Color = clWindow
             Expanded = False
             FieldName = 'Name'
             Title.Color = clGrayText
@@ -2760,7 +2765,7 @@ object frmMain: TfrmMain
             Visible = True
           end
           item
-            Color = clWindowFrame
+            Color = clWindow
             Expanded = False
             FieldName = 'Path'
             Width = 300
@@ -2829,7 +2834,7 @@ object frmMain: TfrmMain
         TabOrder = 1
       end
     end
-    object tsDXDiagLog: TTabSheet
+    object tsDXDiagLogFile: TTabSheet
       Caption = 'DXDiag Log'
       Enabled = False
       ImageIndex = 2
@@ -2845,7 +2850,7 @@ object frmMain: TfrmMain
         DesignSize = (
           867
           41)
-        object lbedDXDiagFile: TLabeledEdit
+        object lbedDXDiagLogFile: TLabeledEdit
           Left = 72
           Top = 10
           Width = 788
@@ -2862,7 +2867,7 @@ object frmMain: TfrmMain
           OnClick = actOpenModuleFileExecute
         end
       end
-      object memoDXDiag: TMemo
+      object memoDXDiagLog: TMemo
         AlignWithMargins = True
         Left = 5
         Top = 46
@@ -3054,17 +3059,36 @@ object frmMain: TfrmMain
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
+      end
+      object GroupBox1: TGroupBox
+        Left = 3
+        Top = 3
+        Width = 225
+        Height = 94
+        Caption = 'Font'
+        TabOrder = 1
         object lblFontSize: TLabel
           Left = 13
-          Top = 3
+          Top = 27
           Width = 50
           Height = 15
           Caption = 'Font Size:'
           Enabled = False
         end
+        object edtFontSize: TEdit
+          Left = 13
+          Top = 56
+          Width = 50
+          Height = 23
+          TabStop = False
+          Enabled = False
+          ReadOnly = True
+          TabOrder = 0
+          Text = '10'
+        end
         object tbFontSize: TTrackBar
           Left = 69
-          Top = 3
+          Top = 19
           Width = 150
           Height = 46
           Hint = 'Font Size'
@@ -3072,29 +3096,26 @@ object frmMain: TfrmMain
           Max = 24
           Min = 8
           Position = 10
-          TabOrder = 0
+          TabOrder = 1
           OnChange = tbFontSizeChange
         end
-        object edtFontSize: TEdit
-          Left = 13
-          Top = 24
-          Width = 50
-          Height = 23
-          TabStop = False
-          Enabled = False
-          ReadOnly = True
-          TabOrder = 1
-          Text = '10'
-        end
+      end
+      object GroupBox2: TGroupBox
+        Left = 234
+        Top = 3
+        Width = 225
+        Height = 94
+        Caption = 'Logging'
+        TabOrder = 2
         object cbCreateLog: TCheckBox
-          Left = 225
-          Top = 3
+          Left = 17
+          Top = 27
           Width = 88
           Height = 17
           Caption = 'Create Log'
           Checked = True
           State = cbChecked
-          TabOrder = 2
+          TabOrder = 0
           OnClick = cbCreateLogClick
         end
       end

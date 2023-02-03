@@ -20,6 +20,7 @@ type
     { Private declarations }
   public
     { Public declarations }
+    procedure ClearModulesDB;
   end;
 
 var
@@ -30,5 +31,19 @@ implementation
 {%CLASSGROUP 'Vcl.Controls.TControl'}
 
 {$R *.dfm}
+
+{ TDM1 }
+
+procedure TDM1.ClearModulesDB;
+var
+  i : integer;
+begin
+  if cdsModules.RecordCount = 0 then Exit;
+  cdsModules.First;
+  for i := 0 to cdsModules.RecordCount - 1 do
+    begin
+      cdsModules.Delete;
+    end;
+end;
 
 end.

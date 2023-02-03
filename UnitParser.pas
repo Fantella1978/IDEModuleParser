@@ -159,6 +159,7 @@ begin
   StartTask('Copy modules to DB...');
   SetCurrentTaskPositionsMinMax(0, Length(ModulesArray) - 1);
   DM1.cdsModules.DisableControls;
+  DM1.ClearModulesDB;
   for var i := 0 to Length(ModulesArray) - 1 do
     begin
       // sleep(1); // Sleep

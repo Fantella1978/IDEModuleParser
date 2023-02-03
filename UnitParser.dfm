@@ -3,8 +3,8 @@ object frmParse: TfrmParse
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Parsing'
-  ClientHeight = 145
-  ClientWidth = 486
+  ClientHeight = 141
+  ClientWidth = 484
   Color = clBtnFace
   Constraints.MaxHeight = 180
   Constraints.MaxWidth = 500
@@ -20,8 +20,8 @@ object frmParse: TfrmParse
   OnCloseQuery = FormCloseQuery
   OnShow = FormShow
   DesignSize = (
-    486
-    145)
+    484
+    141)
   TextHeight = 15
   object lblOverall: TLabel
     Left = 8
@@ -41,44 +41,42 @@ object frmParse: TfrmParse
   end
   object Panel1: TPanel
     Left = 0
-    Top = 108
-    Width = 486
+    Top = 104
+    Width = 484
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 104
-    ExplicitWidth = 484
     DesignSize = (
-      486
+      484
       37)
     object btnStop: TButton
-      Left = 407
+      Left = 409
       Top = 8
       Width = 75
       Height = 25
       Action = frmMain.actParseCancel
       Anchors = [akRight, akBottom]
       TabOrder = 0
-      ExplicitLeft = 405
+      ExplicitLeft = 407
     end
   end
   object pBarOverall: TProgressBar
     Left = 8
     Top = 78
-    Width = 474
+    Width = 476
     Height = 17
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
-    ExplicitWidth = 472
+    ExplicitWidth = 474
   end
   object pBarCurrentTask: TProgressBar
     Left = 8
     Top = 34
-    Width = 474
+    Width = 476
     Height = 17
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 2
-    ExplicitWidth = 472
+    ExplicitWidth = 474
   end
 end
