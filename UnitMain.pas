@@ -16,6 +16,7 @@ uses
   , System.StrUtils, Data.DB, Vcl.DBGrids
   , UnitDB
   , UnitStaticFunctions
+  , Vcl.Themes
   ;
 
 type
@@ -36,15 +37,11 @@ type
     lbedModuleFile: TLabeledEdit;
     Panel2: TPanel;
     MemoTxtModuleFile: TMemo;
-    Panel3: TPanel;
     PageControl1: TPageControl;
     tsModuleListFile: TTabSheet;
     TabModulesList: TTabSheet;
     tsDXDiagLog: TTabSheet;
     tsLog: TTabSheet;
-    tbFontSize: TTrackBar;
-    lblFontSize: TLabel;
-    edtFontSize: TEdit;
     ledtBDSBuild: TLabeledEdit;
     ledtBDSPath: TLabeledEdit;
     ledtBDSInstDate: TLabeledEdit;
@@ -69,6 +66,14 @@ type
     memoDescription: TMemo;
     memoSteps: TMemo;
     DBGrid1: TDBGrid;
+    pnlStartMessage: TPanel;
+    lblStartMessageMain: TLabel;
+    lblStartMessageSecondary: TLabel;
+    tsSettings: TTabSheet;
+    Panel3: TPanel;
+    lblFontSize: TLabel;
+    tbFontSize: TTrackBar;
+    edtFontSize: TEdit;
     cbCreateLog: TCheckBox;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
@@ -91,6 +96,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     /// <summary>Drag and Drop TXT or ZIP files in App</summary>
     procedure WMDropFiles(var Msg: TWMDropFiles); message WM_DROPFILES;
+    procedure HideStartMessage;
 
     /// <summary>Confirm new Txt Module file load</summary>
     function ConfirmNewModuleListFileLoad(AskForAll: boolean) : boolean;
@@ -277,7 +283,9 @@ begin
   // Open new text ModuleFile.txt file
   if not FileExists(FileName) OR not ConfirmNewModuleListFileLoad(AskConfirmOpenForAll) then Exit;
   mtfFileName := FileName;
-  if PageControl1.ActivePage <> tsModuleListFile then PageControl1.ActivePage := tsModuleListFile;
+  HideStartMessage;
+  MemoTxtModuleFile.Visible := true;
+  MemoTxtModuleFile.ScrollBars := ssBoth;
   UpdateDisplayModuleListFileName();
   LoadTxtModuleFile();
 end;
@@ -286,6 +294,7 @@ procedure TfrmMain.OpenTextStackTraceFile(FileName: string);
 begin
   // Open new text StackTrace.txt file
   if not FileExists(FileName) OR not ConfirmNewStackTraceFileLoad(AskConfirmOpenForAll) then Exit;
+  HideStartMessage;
   stfFileName := FileName;
   if PageControl1.ActivePage <> tsStackTraceFile then PageControl1.ActivePage := tsStackTraceFile;
   // UpdateDisplayFileName();
@@ -603,6 +612,11 @@ begin
   // ImageList1.GetBitmap(0, Image1.Picture.Bitmap);
   MemoTxtModuleFile.Clear;
 
+  lblStartMessageSecondary.Caption := 'QPInfo Report QPInfo-ХХХХХХХХ-0000.zip file' + #13 +
+    'or separately' + #13 +
+    'ModuleList.txt, StackTrace.txt, DXDiag_log.txt,' +#13 +
+    'Desc.txt, Step.txt, ReportData.xml files.';
+
   TabModulesList.TabVisible := false;
   tsDXDiagLog.TabVisible := false;
   tsStackTraceFile.TabVisible := false;
@@ -638,6 +652,11 @@ begin
         );
 end;
 
+procedure TfrmMain.HideStartMessage;
+begin
+  pnlStartMessage.Visible := false;
+end;
+
 procedure TfrmMain.LoadTxtModuleFile;
 begin
   // Load new Text Module file
@@ -662,6 +681,7 @@ begin
   // Enable Font Size Change
   EnableFontSizeChange();
   tsStackTraceFile.TabVisible := true;
+  PageControl1.ActivePage := tsStackTraceFile;
   Logger.AddToLog('New StackTrace file opened: ' + stfFileName);
 end;
 
