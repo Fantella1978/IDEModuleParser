@@ -57,12 +57,12 @@ type
     Panel6: TPanel;
     lbedDXDiagLogFile: TLabeledEdit;
     memoDXDiagLog: TMemo;
-    tsDescription: TTabSheet;
-    tsSteps: TTabSheet;
+    tsDescriptionFile: TTabSheet;
+    tsStepsFile: TTabSheet;
     Panel7: TPanel;
-    lbedStepFile: TLabeledEdit;
+    lbedStepsFile: TLabeledEdit;
     Panel8: TPanel;
-    LabeledEdit1: TLabeledEdit;
+    lbedDescriptionFile: TLabeledEdit;
     memoDescription: TMemo;
     memoSteps: TMemo;
     DBGrid1: TDBGrid;
@@ -92,6 +92,10 @@ type
     procedure UpdateDisplayStackTraceFileName();
     /// <summary>DxDiag_Log file changed, update display FileName</summary>
     procedure UpdateDisplayDxDiagLogFileName();
+    /// <summary>Description file changed, update display FileName</summary>
+    procedure UpdateDisplayDescriptionFileName();
+    /// <summary>Steps file changed, update display FileName</summary>
+    procedure UpdateDisplayStepsFileName();
     procedure tbFontSizeChange(Sender: TObject);
     /// <summary>Enable Font Size Change</summary>
     procedure EnableFontSizeChange();
@@ -108,12 +112,16 @@ type
     function ConfirmNewStackTraceFileLoad(AskForAll: boolean): boolean;
     /// <summary>Confirm new text DxDiag_Log file load</summary>
     function ConfirmNewDxDiagLogFileLoad(AskForAll: boolean): boolean;
-
-    function AddAllModulesToStringGrid : boolean;
+    /// <summary>Confirm new text Description file load</summary>
+    function ConfirmNewDescriptionFileLoad(AskForAll: boolean): boolean;
+    /// <summary>Confirm new text Steps file load</summary>
+    function ConfirmNewStepsFileLoad(AskForAll: boolean): boolean;
 
     procedure OpenTextStackTraceFile(FileName: string);
     procedure OpenTextModuleListFile(FileName: string);
     procedure OpenTextDxDiagLogFile(FileName: string);
+    procedure OpenTextDescriptionFile(FileName: string);
+    procedure OpenTextStepsFile(FileName: string);
     procedure OpenZipReportFile(Sender: TObject);
     /// <summary>Load new text ModuleList file</summary>
     procedure LoadTxtModuleFile();
@@ -121,6 +129,10 @@ type
     procedure LoadTxtStackTraceFile();
     /// <summary>Load new text DxDiag_Log file</summary>
     procedure LoadTxtDxDiagLogFile();
+    /// <summary>Load new text Description file</summary>
+    procedure LoadTxtDescriptionFile();
+    /// <summary>Load new text Steps file</summary>
+    procedure LoadTxtStepsFile();
     /// <summary>Check Zip Report file before extract</summary>
     function CheckZipReportFile(Sender: TObject): boolean;
     procedure actParseCancelExecute(Sender: TObject);
@@ -139,7 +151,7 @@ type
     function TryOpenModuleListFileInReport(): boolean;
     function TryOpenReportDataFileInReport(): boolean;
     function TryOpenStackTraceFileInReport(): boolean;
-    function TryOpenStepFileInReport(): boolean;
+    function TryOpenStepsFileInReport(): boolean;
 
     function FileExistsInReport(var FileName: string): boolean;
     procedure cbCreateLogClick(Sender: TObject);
@@ -160,6 +172,8 @@ var
   mtfFileName : TFileName;  // ModuleList.txt filename
   stfFileName : TFileName;  // StackTrace.txt filename
   ddfFileName : TFileName;  // DxDiag_Log.txt filename
+  spfFileName : TFileName;  // Step.txt filename
+  defFileName : TFileName;  // Desc.txt filename
   mzfFileName : TFileName;  // QPInfo-XXXXXXXX-XXXX.zip filename
   Logger : TMyLogger;       // Logger
   ModulesArray : TModulesArray;   // IDE Modules Array
@@ -250,6 +264,43 @@ begin
     end;
 end;
 
+function TfrmMain.ConfirmNewStepsFileLoad(AskForAll: boolean): boolean;
+var
+  res: TModalResult;
+begin
+  Result := true;
+  if (memoSteps.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
+  if ConfirmOpenForAll in [mrNo, mrNoToAll]
+  then
+    begin
+      Result := false;
+      Exit;
+    end;
+
+  if PageControl1.ActivePage <> tsStepsFile then PageControl1.ActivePage := tsStepsFile;
+  if (not AskForAll)
+  then
+    res := MessageDlg('The Steps file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
+  else
+    begin
+      res := MessageDlg('The Steps file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+      if res in [mrYesToAll, mrNoToAll]
+      then
+        begin
+          ConfirmOpenForAll := res;
+          AskConfirmOpenForAll := false;
+        end;
+    end;
+
+  if res in [mrNo, mrNoToAll, mrCancel]
+  then
+    begin
+      Result := false;
+      Logger.AddToLog('The opening of a new Steps file has not been confirmed.');
+      Exit;
+    end;
+end;
+
 function TfrmMain.ConfirmNewDxDiagLogFileLoad(AskForAll: boolean): boolean;
 var
   res: TModalResult;
@@ -283,6 +334,43 @@ begin
     begin
       Result := false;
       Logger.AddToLog('The opening of a new DxDiag_Log file has not been confirmed.');
+      Exit;
+    end;
+end;
+
+function TfrmMain.ConfirmNewDescriptionFileLoad(AskForAll: boolean): boolean;
+var
+  res: TModalResult;
+begin
+  Result := true;
+  if (memoDescription.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
+  if ConfirmOpenForAll in [mrNo, mrNoToAll]
+  then
+    begin
+      Result := false;
+      Exit;
+    end;
+
+  if PageControl1.ActivePage <> tsDescriptionFile then PageControl1.ActivePage := tsDescriptionFile;
+  if (not AskForAll)
+  then
+    res := MessageDlg('The Description file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
+  else
+    begin
+      res := MessageDlg('The Description file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+      if res in [mrYesToAll, mrNoToAll]
+      then
+        begin
+          ConfirmOpenForAll := res;
+          AskConfirmOpenForAll := false;
+        end;
+    end;
+
+  if res in [mrNo, mrNoToAll, mrCancel]
+  then
+    begin
+      Result := false;
+      Logger.AddToLog('The opening of a new Description file has not been confirmed.');
       Exit;
     end;
 end;
@@ -325,6 +413,17 @@ begin
 end;
 
 
+procedure TfrmMain.OpenTextDescriptionFile(FileName: string);
+begin
+  // Open new text DxDiag_Log.txt file
+  if not FileExists(FileName) OR not ConfirmNewDescriptionFileLoad(AskConfirmOpenForAll) then Exit;
+  HideStartMessage;
+  defFileName := FileName;
+  PageControl1.ActivePage := tsDescriptionFile;
+  UpdateDisplayDescriptionFileName();
+  LoadTxtDescriptionFile();
+end;
+
 procedure TfrmMain.OpenTextDxDiagLogFile(FileName: string);
 begin
   // Open new text DxDiag_Log.txt file
@@ -357,6 +456,17 @@ begin
   PageControl1.ActivePage := tsStackTraceFile;
   UpdateDisplayStackTraceFileName();
   LoadTxtStackTraceFile();
+end;
+
+procedure TfrmMain.OpenTextStepsFile(FileName: string);
+begin
+  // Open new text StackTrace.txt file
+  if not FileExists(FileName) OR not ConfirmNewStepsFileLoad(AskConfirmOpenForAll) then Exit;
+  HideStartMessage;
+  spfFileName := FileName;
+  PageControl1.ActivePage := tsStepsFile;
+  UpdateDisplayStepsFileName();
+  LoadTxtStepsFile();
 end;
 
 procedure TfrmMain.OpenZipReportFile(Sender: TObject);
@@ -399,12 +509,12 @@ begin
 
   ConfirmOpenForAll := -1;
   AskConfirmOpenForAll := true;
-  TryOpenDescFileInReport();
-  TryOpenDXDiagFileInReport();
-  TryOpenModuleListFileInReport();
   TryOpenReportDataFileInReport();
+  TryOpenDescFileInReport();
+  TryOpenStepsFileInReport();
+  TryOpenDXDiagFileInReport();
   TryOpenStackTraceFileInReport();
-  TryOpenStepFileInReport();
+  TryOpenModuleListFileInReport();
   ConfirmOpenForAll := -1;
 
 end;
@@ -481,12 +591,6 @@ begin
       else BDSIDEModule := nil;
     end;
   actParseModuleFile.Enabled := false;
-end;
-
-function TfrmMain.AddAllModulesToStringGrid: boolean;
-begin
-  //
-  Result := true;
 end;
 
 procedure TfrmMain.cbCreateLogClick(Sender: TObject);
@@ -679,8 +783,8 @@ begin
   TabModulesList.TabVisible := false;
   tsDXDiagLogFile.TabVisible := false;
   tsStackTraceFile.TabVisible := false;
-  tsSteps.TabVisible := false;
-  tsDescription.TabVisible := false;
+  tsStepsFile.TabVisible := false;
+  tsDescriptionFile.TabVisible := false;
   PageControl1.ActivePage := tsModuleListFile;
 
   // Disable Font Size Change
@@ -716,9 +820,20 @@ begin
   pnlStartMessage.Visible := false;
 end;
 
+procedure TfrmMain.LoadTxtDescriptionFile;
+begin
+  // Load new text Description file
+  memoDescription.Lines.LoadFromFile(defFileName, TEncoding.UTF8);
+  // Enable Font Size Change
+  EnableFontSizeChange();
+  tsDescriptionFile.TabVisible := true;
+  PageControl1.ActivePage := tsDescriptionFile;
+  Logger.AddToLog('New Description file opened: ' + defFileName);
+end;
+
 procedure TfrmMain.LoadTxtDxDiagLogFile;
 begin
-  // Load new Text StackTrace file
+  // Load new text DxDiag_Log file
   memoDxDiagLog.Lines.LoadFromFile(ddfFileName, TEncoding.UTF8);
   // Enable Font Size Change
   EnableFontSizeChange();
@@ -729,7 +844,7 @@ end;
 
 procedure TfrmMain.LoadTxtModuleFile;
 begin
-  // Load new Text Module file
+  // Load new text ModuleList file
   MemoTxtModuleFile.Lines.LoadFromFile(mtfFileName, TEncoding.UTF8);
   Logger.AddToLog('New ModuleList file opened: ' + mtfFileName);
   // Enable Parse Action
@@ -748,13 +863,24 @@ end;
 
 procedure TfrmMain.LoadTxtStackTraceFile;
 begin
-  // Load new Text StackTrace file
+  // Load new text StackTrace file
   memoStackTrace.Lines.LoadFromFile(stfFileName, TEncoding.UTF8);
   // Enable Font Size Change
   EnableFontSizeChange();
   tsStackTraceFile.TabVisible := true;
   PageControl1.ActivePage := tsStackTraceFile;
   Logger.AddToLog('New StackTrace file opened: ' + stfFileName);
+end;
+
+procedure TfrmMain.LoadTxtStepsFile;
+begin
+  // Load new text Steps file
+  memoSteps.Lines.LoadFromFile(spfFileName, TEncoding.UTF8);
+  // Enable Font Size Change
+  EnableFontSizeChange();
+  tsStepsFile.TabVisible := true;
+  PageControl1.ActivePage := tsStepsFile;
+  Logger.AddToLog('New Steps file opened: ' + spfFileName);
 end;
 
 procedure TfrmMain.ModulesArrayClear;
@@ -776,7 +902,12 @@ begin
   // Change Font Size
   edtFontSize.Text := IntToStr(tbFontSize.Position);
   MemoTxtModuleFile.Font.Size := tbFontSize.Position;
+  memoStackTrace.Font.Size := tbFontSize.Position;
+  memoDescription.Font.Size := tbFontSize.Position;
+  memoDXDiagLog.Font.Size := tbFontSize.Position;
+  memoSteps.Font.Size := tbFontSize.Position;
   memoLog.Font.Size := tbFontSize.Position;
+  DBGrid1.Font.Size := tbFontSize.Position;
 end;
 
 function TfrmMain.TryOpenDescFileInReport: boolean;
@@ -787,6 +918,7 @@ begin
   then
     begin
       // Open desc.txt
+      OpenTextDescriptionFile(tempFileName);
       Result := true;
     end
   else Result := false;
@@ -846,7 +978,7 @@ begin
   else Result := false;
 end;
 
-function TfrmMain.TryOpenStepFileInReport: boolean;
+function TfrmMain.TryOpenStepsFileInReport: boolean;
 begin
   //
   var tempFileName := 'step.txt';
@@ -854,9 +986,16 @@ begin
   then
     begin
       // Open step.txt
+      OpenTextStepsFile(tempFileName);
       Result := true;
     end
   else Result := false;
+end;
+
+procedure TfrmMain.UpdateDisplayDescriptionFileName;
+begin
+  //
+  lbedDescriptionFile.Text := defFileName;
 end;
 
 procedure TfrmMain.UpdateDisplayDxDiagLogFileName;
@@ -875,6 +1014,12 @@ procedure TfrmMain.UpdateDisplayStackTraceFileName;
 begin
   //
   lbedStackTraceFile.Text := stfFileName;
+end;
+
+procedure TfrmMain.UpdateDisplayStepsFileName;
+begin
+  //
+  lbedStepsFile.Text := spfFileName;
 end;
 
 procedure TfrmMain.WMDropFiles(var Msg: TWMDropFiles);
@@ -937,6 +1082,18 @@ begin
             OpenTextDxDiagLogFile(FileName);
             Exit;
           end;
+      if (fn = 'desc')
+        then
+          begin
+            OpenTextDescriptionFile(FileName);
+            Exit;
+          end;
+      if (fn = 'step')
+        then
+          begin
+            OpenTextStepsFile(FileName);
+            Exit;
+          end;
 
       if (PageControl1.ActivePage = tsModuleListFile)
         then
@@ -954,6 +1111,18 @@ begin
         then
           begin
             OpenTextDxDiagLogFile(FileName);
+            Exit;
+          end;
+      if (PageControl1.ActivePage = tsDescriptionFile)
+        then
+          begin
+            OpenTextDescriptionFile(FileName);
+            Exit;
+          end;
+      if (PageControl1.ActivePage = tsStepsFile)
+        then
+          begin
+            OpenTextStepsFile(FileName);
             Exit;
           end;
     end;

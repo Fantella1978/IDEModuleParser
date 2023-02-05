@@ -81,15 +81,21 @@ object frmMain: TfrmMain
     Top = 0
     Width = 875
     Height = 491
-    ActivePage = tsDXDiagLogFile
+    ActivePage = tsModuleListFile
     Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Segoe UI'
+    Font.Style = []
+    ParentFont = False
     Style = tsFlatButtons
     TabOrder = 1
     object tsModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       DesignSize = (
         867
-        458)
+        456)
       object Panel2: TPanel
         Left = 0
         Top = 0
@@ -99,6 +105,7 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
+        ExplicitWidth = 865
         DesignSize = (
           867
           41)
@@ -106,11 +113,11 @@ object frmMain: TfrmMain
           Left = 96
           Top = 10
           Width = 766
-          Height = 23
+          Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
-          EditLabel.Width = 81
-          EditLabel.Height = 23
+          EditLabel.Width = 88
+          EditLabel.Height = 25
           EditLabel.Caption = 'ModuleList file:'
           LabelPosition = lpLeft
           ReadOnly = True
@@ -124,7 +131,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 857
-        Height = 407
+        Height = 405
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2597,10 +2604,11 @@ object frmMain: TfrmMain
         ReadOnly = True
         TabOrder = 1
         Visible = False
+        ExplicitTop = 47
       end
       object pnlStartMessage: TPanel
         Left = 167
-        Top = 159
+        Top = 158
         Width = 532
         Height = 180
         Anchors = []
@@ -2610,6 +2618,8 @@ object frmMain: TfrmMain
         ParentColor = True
         ParentCtl3D = False
         TabOrder = 2
+        ExplicitLeft = 166
+        ExplicitTop = 157
         object lblStartMessageMain: TLabel
           AlignWithMargins = True
           Left = 3
@@ -2662,16 +2672,16 @@ object frmMain: TfrmMain
       ImageIndex = 1
       DesignSize = (
         867
-        458)
+        456)
       object ledtBDSBuild: TLabeledEdit
         Left = 80
         Top = 39
         Width = 192
-        Height = 23
+        Height = 25
         Cursor = crHandPoint
         Alignment = taCenter
-        EditLabel.Width = 70
-        EditLabel.Height = 23
+        EditLabel.Width = 78
+        EditLabel.Height = 25
         EditLabel.Caption = 'BDS build '#8470':'
         LabelPosition = lpLeft
         ReadOnly = True
@@ -2683,11 +2693,11 @@ object frmMain: TfrmMain
         Left = 80
         Top = 10
         Width = 785
-        Height = 23
+        Height = 25
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight]
         EditLabel.Width = 51
-        EditLabel.Height = 23
+        EditLabel.Height = 25
         EditLabel.Caption = 'BDS Path:'
         EditLabel.Color = clBtnFace
         EditLabel.Font.Charset = DEFAULT_CHARSET
@@ -2702,17 +2712,16 @@ object frmMain: TfrmMain
         TabOrder = 1
         Text = ''
         OnClick = actOpenModuleFileExecute
-        ExplicitWidth = 783
       end
       object ledtBDSInstDate: TLabeledEdit
         Left = 370
         Top = 39
         Width = 174
-        Height = 23
+        Height = 25
         Cursor = crHandPoint
         Alignment = taCenter
-        EditLabel.Width = 85
-        EditLabel.Height = 23
+        EditLabel.Width = 94
+        EditLabel.Height = 25
         EditLabel.Caption = 'BDS install Date:'
         LabelPosition = lpLeft
         ReadOnly = True
@@ -2724,7 +2733,7 @@ object frmMain: TfrmMain
         Left = 0
         Top = 75
         Width = 867
-        Height = 383
+        Height = 381
         Align = alBottom
         Anchors = [akLeft, akTop, akRight, akBottom]
         DataSource = DM1.DataSource1
@@ -2732,7 +2741,7 @@ object frmMain: TfrmMain
         TabOrder = 3
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
-        TitleFont.Height = -12
+        TitleFont.Height = -13
         TitleFont.Name = 'Segoe UI'
         TitleFont.Style = []
         OnDrawColumnCell = DBGrid1DrawColumnCell
@@ -2745,7 +2754,6 @@ object frmMain: TfrmMain
             Visible = False
           end
           item
-            Color = clWindow
             Expanded = False
             FieldName = 'Name'
             Title.Color = clGrayText
@@ -2765,7 +2773,6 @@ object frmMain: TfrmMain
             Visible = True
           end
           item
-            Color = clWindow
             Expanded = False
             FieldName = 'Path'
             Width = 300
@@ -2798,11 +2805,11 @@ object frmMain: TfrmMain
           Left = 88
           Top = 10
           Width = 772
-          Height = 23
+          Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
-          EditLabel.Width = 77
-          EditLabel.Height = 23
+          EditLabel.Width = 85
+          EditLabel.Height = 25
           EditLabel.Caption = 'StackTrace file:'
           LabelPosition = lpLeft
           ReadOnly = True
@@ -2816,7 +2823,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 857
-        Height = 407
+        Height = 405
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2832,6 +2839,7 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
+        ExplicitHeight = 407
       end
     end
     object tsDXDiagLogFile: TTabSheet
@@ -2854,11 +2862,11 @@ object frmMain: TfrmMain
           Left = 72
           Top = 10
           Width = 788
-          Height = 23
+          Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
-          EditLabel.Width = 61
-          EditLabel.Height = 23
+          EditLabel.Width = 68
+          EditLabel.Height = 25
           EditLabel.Caption = 'DXDiag file:'
           LabelPosition = lpLeft
           ReadOnly = True
@@ -2872,7 +2880,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 857
-        Height = 407
+        Height = 405
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2888,9 +2896,10 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
+        ExplicitHeight = 407
       end
     end
-    object tsDescription: TTabSheet
+    object tsDescriptionFile: TTabSheet
       Caption = 'Description file'
       ImageIndex = 5
       object Panel8: TPanel
@@ -2905,15 +2914,15 @@ object frmMain: TfrmMain
         DesignSize = (
           867
           41)
-        object LabeledEdit1: TLabeledEdit
+        object lbedDescriptionFile: TLabeledEdit
           Left = 96
           Top = 10
           Width = 764
-          Height = 23
+          Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
-          EditLabel.Width = 82
-          EditLabel.Height = 23
+          EditLabel.Width = 90
+          EditLabel.Height = 25
           EditLabel.Caption = 'Description file:'
           LabelPosition = lpLeft
           ReadOnly = True
@@ -2927,7 +2936,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 857
-        Height = 407
+        Height = 405
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2943,9 +2952,10 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
+        ExplicitHeight = 407
       end
     end
-    object tsSteps: TTabSheet
+    object tsStepsFile: TTabSheet
       Caption = 'Steps file'
       ImageIndex = 6
       object Panel7: TPanel
@@ -2960,15 +2970,15 @@ object frmMain: TfrmMain
         DesignSize = (
           867
           41)
-        object lbedStepFile: TLabeledEdit
+        object lbedStepsFile: TLabeledEdit
           Left = 64
           Top = 10
           Width = 796
-          Height = 23
+          Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
-          EditLabel.Width = 50
-          EditLabel.Height = 23
+          EditLabel.Width = 56
+          EditLabel.Height = 25
           EditLabel.Caption = 'Steps file:'
           LabelPosition = lpLeft
           ReadOnly = True
@@ -2982,7 +2992,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 857
-        Height = 407
+        Height = 405
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2998,6 +3008,7 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
+        ExplicitHeight = 407
       end
     end
     object tsLog: TTabSheet
@@ -3008,27 +3019,36 @@ object frmMain: TfrmMain
         Left = 5
         Top = 5
         Width = 857
-        Height = 407
+        Height = 405
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
         Margins.Bottom = 5
         Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
         Lines.Strings = (
           'memoLog')
+        ParentFont = False
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 0
+        ExplicitTop = 11
+        ExplicitHeight = 419
       end
       object Panel4: TPanel
         Left = 0
-        Top = 417
+        Top = 415
         Width = 867
         Height = 41
         Align = alBottom
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 1
+        ExplicitTop = 417
         DesignSize = (
           867
           41)
@@ -3036,10 +3056,10 @@ object frmMain: TfrmMain
           Left = 56
           Top = 9
           Width = 806
-          Height = 23
+          Height = 25
           Anchors = [akLeft, akTop, akRight]
-          EditLabel.Width = 42
-          EditLabel.Height = 23
+          EditLabel.Width = 46
+          EditLabel.Height = 25
           EditLabel.Caption = 'Log file:'
           LabelPosition = lpLeft
           ReadOnly = True
@@ -3070,8 +3090,8 @@ object frmMain: TfrmMain
         object lblFontSize: TLabel
           Left = 13
           Top = 27
-          Width = 50
-          Height = 15
+          Width = 55
+          Height = 17
           Caption = 'Font Size:'
           Enabled = False
         end
@@ -3079,7 +3099,7 @@ object frmMain: TfrmMain
           Left = 13
           Top = 56
           Width = 50
-          Height = 23
+          Height = 25
           TabStop = False
           Enabled = False
           ReadOnly = True
