@@ -19,6 +19,8 @@ type
     btnDelete: TButton;
     DBEdit1: TDBEdit;
     lblUrl: TLabel;
+    DBLookupComboBox1: TDBLookupComboBox;
+    Label1: TLabel;
     procedure Button1Click(Sender: TObject);
   private
     { Private declarations }

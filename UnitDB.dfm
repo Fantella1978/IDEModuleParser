@@ -160,7 +160,7 @@ object DM1: TDM1
       Size = 255
     end
   end
-  object dsPackages: TDataSource
+  object dsLocalPackages: TDataSource
     DataSet = cdsPackages
     Left = 568
     Top = 120
@@ -168,5 +168,59 @@ object DM1: TDM1
   object DataSetProvider2: TDataSetProvider
     Left = 568
     Top = 176
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      
+        'Database=C:\Users\Tester\Documents\Embarcadero\Studio\Projects\I' +
+        'DE Module Parser\IDEModuleParser.db3'
+      'DriverID=SQLite')
+    Connected = True
+    LoginPrompt = False
+    Left = 232
+    Top = 56
+  end
+  object fdqModulesFromQuery: TFDQuery
+    Active = True
+    Connection = FDConnection1
+    SQL.Strings = (
+      
+        'SELECT m.FileName, p.Name as PackageName, p.Url FROM Modules m L' +
+        'EFT OUTER JOIN Packages p ON p.Num = m.Package')
+    Left = 232
+    Top = 248
+  end
+  object fdtModules: TFDTable
+    Active = True
+    IndexFieldNames = 'Num'
+    Connection = FDConnection1
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'Modules'
+    Left = 232
+    Top = 120
+  end
+  object dsModules: TDataSource
+    DataSet = fdtModules
+    Left = 232
+    Top = 184
+  end
+  object fdtPackages: TFDTable
+    Active = True
+    IndexFieldNames = 'Num'
+    Connection = FDConnection1
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'Packages'
+    Left = 312
+    Top = 120
+  end
+  object dsPackages: TDataSource
+    DataSet = fdtPackages
+    Left = 312
+    Top = 184
+  end
+  object dsModulesFromQuery: TDataSource
+    DataSet = fdqModulesFromQuery
+    Left = 232
+    Top = 312
   end
 end

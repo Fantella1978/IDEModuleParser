@@ -3,7 +3,13 @@ unit UnitDB;
 interface
 
 uses
-  System.SysUtils, System.Classes, Data.DB, Datasnap.Provider, Datasnap.DBClient;
+  System.SysUtils, System.Classes, Data.DB, Datasnap.Provider, Datasnap.DBClient,
+  FireDAC.Stan.Intf, FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf,
+  FireDAC.Phys.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async,
+  FireDAC.Phys, FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef,
+  FireDAC.Stan.ExprFuncs, FireDAC.Phys.SQLiteWrapper.Stat, FireDAC.VCLUI.Wait,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt,
+  FireDAC.Comp.Client, FireDAC.Comp.DataSet;
 
 type
   TDM1 = class(TDataModule)
@@ -20,8 +26,15 @@ type
     cdsPackagesNum: TIntegerField;
     cdsPackagesName: TStringField;
     cdsPackagesUrl: TStringField;
-    dsPackages: TDataSource;
+    dsLocalPackages: TDataSource;
     DataSetProvider2: TDataSetProvider;
+    FDConnection1: TFDConnection;
+    fdqModulesFromQuery: TFDQuery;
+    fdtModules: TFDTable;
+    dsModules: TDataSource;
+    fdtPackages: TFDTable;
+    dsPackages: TDataSource;
+    dsModulesFromQuery: TDataSource;
   private
     { Private declarations }
   public
