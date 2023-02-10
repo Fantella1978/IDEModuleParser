@@ -126,6 +126,7 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
+          ExplicitWidth = 756
         end
       end
       object MemoTxtModuleFile: TMemo

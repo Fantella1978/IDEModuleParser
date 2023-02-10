@@ -1,0 +1,4 @@
+
+
+SELECT m.FileName, p.Name, p.Url FROM Modules m LEFT OUTER JOIN Packages p ON p.Num = m.Package
+
