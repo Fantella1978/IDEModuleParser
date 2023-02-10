@@ -1,0 +1,1 @@
+Changing the display resolution or turning off high DPi sometimes solves the problem, but most of the time it doesn't

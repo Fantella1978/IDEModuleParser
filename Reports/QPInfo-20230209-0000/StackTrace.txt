@@ -1,0 +1,131 @@
+[501ECF37]{rtl260.bpl  } System.IniFiles.TIniFile.EraseSection (Line 1362, "System.IniFiles.pas" + 3) + $3
+[20990F95]{coreide260.bpl} AutoRecover.TAutoRecoverStorage.Delete (Line 986, "AutoRecover.pas" + 8) + $5
+[2098FB95]{coreide260.bpl} AutoRecover.TAutoRecoverModule.Destroyed (Line 470, "AutoRecover.pas" + 3) + $3
+[208F6936]{coreide260.bpl} DocModul.TCodeIDocModule.NotifyDestroyed (Line 2450, "DocModul.pas" + 6) + $3
+[2101C2D5]{designide260.bpl} ToolUtils.ForEach (Line 99, "ToolUtils.pas" + 5) + $F
+[208F6872]{coreide260.bpl} DocModul.TCodeIDocModule.NotifyDestruction (Line 2430, "DocModul.pas" + 2) + $3
+[208F38C4]{coreide260.bpl} DocModul.TDocModule.BeforeDestruction (Line 1002, "DocModul.pas" + 17) + $3
+[500600B5]{rtl260.bpl  } System.@BeforeDestruction (Line 18848, "System.pas" + 10) + $0
+[2070B442]{coreide260.bpl} SourceModule.TSourceModule.Destroy (Line 429, "SourceModule.pas" + 0) + $6
+[5005F8E8]{rtl260.bpl  } System.TObject.Free (Line 17458, "System.pas" + 1) + $4
+[208F4ACA]{coreide260.bpl} DocModul.WalkDependencies (Line 1639, "DocModul.pas" + 10) + $1
+[208F4B15]{coreide260.bpl} DocModul.TDocModule.WalkDependencies (Line 1648, "DocModul.pas" + 2) + $2
+[208F3BEF]{coreide260.bpl} DocModul.TDocModule.Close (Line 1114, "DocModul.pas" + 13) + $3
+[208F612E]{coreide260.bpl} DocModul.TCodeIDocModule.CloseModule (Line 2243, "DocModul.pas" + 6) + $3
+[2105439B]{designide260.bpl} StFilSys.TActiveTStringsProperty.Notification (Line 270, "StFilSys.pas" + 3) + $7
+[50176EE5]{rtl260.bpl  } System.Classes.TComponent.RemoveFreeNotifications (Line 16562, "System.Classes.pas" + 3) + $5
+[50176D0C]{rtl260.bpl  } System.Classes.TComponent.Destroy (Line 16492, "System.Classes.pas" + 3) + $3
+[50D126C1]{vcl260.bpl  } Vcl.Controls.TControl.Destroy (Line 5504, "Vcl.Controls.pas" + 24) + $6
+[086E1D4A]{themeloader260.bpl} Idetheme.Stylemanager.TIDEThemeStyleEngine.UnRegisterSysStyleHook + $18E
+[50D16FED]{vcl260.bpl  } Vcl.Controls.TWinControl.Destroy (Line 8620, "Vcl.Controls.pas" + 45) + $6
+[50D3D86E]{vcl260.bpl  } Vcl.StdCtrls.TCustomListBox.Destroy (Line 6639, "Vcl.StdCtrls.pas" + 8) + $6
+[50D16F5E]{vcl260.bpl  } Vcl.Controls.TWinControl.Destroy (Line 8600, "Vcl.Controls.pas" + 25) + $6
+[50060056]{rtl260.bpl  } System.@ClassDestroy (Line 18808, "System.pas" + 0) + $2
+[50E626D7]{vcl260.bpl  } Vcl.Forms.TScrollingWinControl.Destroy (Line 3122, "Vcl.Forms.pas" + 3) + $6
+[50E63B38]{vcl260.bpl  } Vcl.Forms.TCustomForm.Destroy (Line 3825, "Vcl.Forms.pas" + 32) + $A
+[21009624]{designide260.bpl} Proxies.DestroyHook (Line 281, "Proxies.pas" + 2) + $6
+[5005F8E8]{rtl260.bpl  } System.TObject.Free (Line 17458, "System.pas" + 1) + $4
+[52861912]{vcldesigner260.bpl} VCLFormDesigner.TVCLRootDesigner.FreeRoot (Line 581, "VCLFormDesigner.pas" + 0) + $2
+[21045F13]{designide260.bpl} ComponentDesigner.TComponentRoot.InternalDeinitializeDesigner (Line 4979, "ComponentDesigner.pas" + 24) + $B
+[21048BFD]{designide260.bpl} ComponentDesigner.TComponentRoot.Close (Line 5914, "ComponentDesigner.pas" + 5) + $5
+[21D826E0]{delphicoreide260.bpl} DelphiModule.TPascalCodeMgrModHandler.Destroyed (Line 756, "DelphiModule.pas" + 11) + $5
+[208F6911]{coreide260.bpl} DocModul.TCodeIDocModule.NotifyDestroyed (Line 2447, "DocModul.pas" + 3) + $3
+[2101C2D5]{designide260.bpl} ToolUtils.ForEach (Line 99, "ToolUtils.pas" + 5) + $F
+[208F6882]{coreide260.bpl} DocModul.TCodeIDocModule.NotifyDestruction (Line 2431, "DocModul.pas" + 3) + $3
+[208F38C4]{coreide260.bpl} DocModul.TDocModule.BeforeDestruction (Line 1002, "DocModul.pas" + 17) + $3
+[500600B5]{rtl260.bpl  } System.@BeforeDestruction (Line 18848, "System.pas" + 10) + $0
+[2070B442]{coreide260.bpl} SourceModule.TSourceModule.Destroy (Line 429, "SourceModule.pas" + 0) + $6
+[5005F8E8]{rtl260.bpl  } System.TObject.Free (Line 17458, "System.pas" + 1) + $4
+[208F4ACA]{coreide260.bpl} DocModul.WalkDependencies (Line 1639, "DocModul.pas" + 10) + $1
+[208F4B15]{coreide260.bpl} DocModul.TDocModule.WalkDependencies (Line 1648, "DocModul.pas" + 2) + $2
+[208F3BEF]{coreide260.bpl} DocModul.TDocModule.Close (Line 1114, "DocModul.pas" + 13) + $3
+[206690B8]{coreide260.bpl} ProjectModule.TBaseProject.BeforeDestruction (Line 1101, "ProjectModule.pas" + 38) + $1
+[21CE407D]{delphicoreide260.bpl} BaseDelphiProject.TBaseDelphiProject.BeforeDestruction (Line 3826, "BaseDelphiProject.pas" + 4) + $2
+[500600B5]{rtl260.bpl  } System.@BeforeDestruction (Line 18848, "System.pas" + 10) + $0
+[21CD32F3]{delphicoreide260.bpl} BaseDelphiProject.TBaseDelphiProject.Destroy (Line 964, "BaseDelphiProject.pas" + 0) + $3
+[5005F8E8]{rtl260.bpl  } System.TObject.Free (Line 17458, "System.pas" + 1) + $4
+[205A5677]{coreide260.bpl} ProjectGroup.TProjectGroup.BeforeDestruction (Line 957, "ProjectGroup.pas" + 50) + $6
+[500600B5]{rtl260.bpl  } System.@BeforeDestruction (Line 18848, "System.pas" + 10) + $0
+[205A53FA]{coreide260.bpl} ProjectGroup.TProjectGroup.Destroy (Line 892, "ProjectGroup.pas" + 0) + $6
+[5005F8E8]{rtl260.bpl  } System.TObject.Free (Line 17458, "System.pas" + 1) + $4
+[205ABBC2]{coreide260.bpl} ProjectGroup.TProjectGroupWrapper.Close (Line 2822, "ProjectGroup.pas" + 2) + $9
+[004AD9F7]{bds.exe     } AppMain.TAppBuilder.DestroyProjectGroup (Line 2523, "AppMain.pas" + 15) + $9
+[004B0F44]{bds.exe     } AppMain.TAppBuilder.WindowCloseQuery (Line 3800, "AppMain.pas" + 47) + $3
+[50E69985]{vcl260.bpl  } Vcl.Forms.TCustomForm.CloseQuery (Line 7225, "Vcl.Forms.pas" + 8) + $14
+[50E698AD]{vcl260.bpl  } Vcl.Forms.TCustomForm.Close (Line 7197, "Vcl.Forms.pas" + 4) + $4
+[50E68748]{vcl260.bpl  } Vcl.Forms.TCustomForm.WMClose (Line 6559, "Vcl.Forms.pas" + 0) + $0
+[50D15292]{vcl260.bpl  } Vcl.Controls.TControl.WndProc (Line 7420, "Vcl.Controls.pas" + 91) + $6
+[5005FDDF]{rtl260.bpl  } System.TObject.Dispatch (Line 18324, "System.pas" + 11) + $0
+[086A8E82]{themeloader260.bpl} Idetheme.Vclstylehooks.TIDEStyleHook.WndProc + $7A
+[086A97B0]{themeloader260.bpl} Idetheme.Vclstylehooks.TMouseTrackControlIDEStyleHook.WndProc + $0
+[086B0BB4]{themeloader260.bpl} Idetheme.Vclstylehooks.TFormIDEStyleHook.WndProc + $24
+[086B0C49]{themeloader260.bpl} Idetheme.Vclstylehooks.TFormIDEStyleHook.WndProc + $B9
+[500679B9]{rtl260.bpl  } System.@IntfCopy (Line 38206, "System.pas" + 6) + $0
+[08748513]{themeloader260.bpl} Themeloader.TIDEThemeManager.GetActiveTheme + $B
+[500679A8]{rtl260.bpl  } System.@IntfClear (Line 38159, "System.pas" + 10) + $0
+[086A893B]{themeloader260.bpl} Idetheme.Vclstylehooks.TIDEStyleHook.HandleMessage + $B7
+[500679A8]{rtl260.bpl  } System.@IntfClear (Line 38159, "System.pas" + 10) + $0
+[50063FD8]{rtl260.bpl  } System.@FinalizeArray (Line 32812, "System.pas" + 144) + $0
+[086E1CC2]{themeloader260.bpl} Idetheme.Stylemanager.TIDEThemeStyleEngine.UnRegisterSysStyleHook + $106
+[50D197BC]{vcl260.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10122, "Vcl.Controls.pas" + 10) + $48
+[50D19D47]{vcl260.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10278, "Vcl.Controls.pas" + 166) + $6
+[50E65245]{vcl260.bpl  } Vcl.Forms.TCustomForm.WndProc (Line 4652, "Vcl.Forms.pas" + 209) + $5
+[08704FA6]{themeloader260.bpl} Idetheme.Styles.Nc.TNCContainer.FormWndProc + $206
+[50D19314]{vcl260.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 9977, "Vcl.Controls.pas" + 3) + $6
+[501796A4]{rtl260.bpl  } System.Classes.StdWndProc (Line 17932, "System.Classes.pas" + 11) + $2
+[50060308]{rtl260.bpl  } System.TMonitor.Destroy (Line 19042, "System.pas" + 0) + $0
+[50D19E56]{vcl260.bpl  } Vcl.Controls.TWinControl.DefaultHandler (Line 10319, "Vcl.Controls.pas" + 30) + $19
+[50E67572]{vcl260.bpl  } Vcl.Forms.TCustomForm.DefaultHandler (Line 5946, "Vcl.Forms.pas" + 11) + $4
+[50D1BBE9]{vcl260.bpl  } Vcl.Controls.TWinControl.WMSysCommand (Line 11531, "Vcl.Controls.pas" + 20) + $7
+[50E68819]{vcl260.bpl  } Vcl.Forms.TCustomForm.WMSysCommand (Line 6610, "Vcl.Forms.pas" + 14) + $4
+[20800B34]{coreide260.bpl} WorkFrm.TWorkForm.WMSysCommand (Line 71, "WorkFrm.pas" + 27) + $8
+[208014DA]{coreide260.bpl} MainWorkFrm.TMainWorkForm.WMSysCommand (Line 128, "MainWorkFrm.pas" + 2) + $8
+[50D15292]{vcl260.bpl  } Vcl.Controls.TControl.WndProc (Line 7420, "Vcl.Controls.pas" + 91) + $6
+[50060308]{rtl260.bpl  } System.TMonitor.Destroy (Line 19042, "System.pas" + 0) + $0
+[5005F98D]{rtl260.bpl  } System.TObject.CleanupInstance (Line 17680, "System.pas" + 37) + $0
+[5005A264]{rtl260.bpl  } System.@FreeMem (Line 4839, "System.pas" + 20) + $0
+[5005F7F0]{rtl260.bpl  } System.TObject.FreeInstance (Line 17395, "System.pas" + 2) + $2
+[50060056]{rtl260.bpl  } System.@ClassDestroy (Line 18808, "System.pas" + 0) + $2
+[50CF069C]{vcl260.bpl  } Vcl.Graphics.TCanvas.Destroy (Line 3740, "Vcl.Graphics.pas" + 10) + $6
+[5005F8E8]{rtl260.bpl  } System.TObject.Free (Line 17458, "System.pas" + 1) + $4
+[086B06BC]{themeloader260.bpl} Idetheme.Vclstylehooks.TFormIDEStyleHook.WMSysCommand + $8
+[087036EA]{themeloader260.bpl} Idetheme.Styles.Nc.TFormStyleNCControls.WMSysCommand + $2A
+[086A8E82]{themeloader260.bpl} Idetheme.Vclstylehooks.TIDEStyleHook.WndProc + $7A
+[086A97B0]{themeloader260.bpl} Idetheme.Vclstylehooks.TMouseTrackControlIDEStyleHook.WndProc + $0
+[086B0BB4]{themeloader260.bpl} Idetheme.Vclstylehooks.TFormIDEStyleHook.WndProc + $24
+[086B0C49]{themeloader260.bpl} Idetheme.Vclstylehooks.TFormIDEStyleHook.WndProc + $B9
+[500679B9]{rtl260.bpl  } System.@IntfCopy (Line 38206, "System.pas" + 6) + $0
+[08748513]{themeloader260.bpl} Themeloader.TIDEThemeManager.GetActiveTheme + $B
+[500679A8]{rtl260.bpl  } System.@IntfClear (Line 38159, "System.pas" + 10) + $0
+[086A893B]{themeloader260.bpl} Idetheme.Vclstylehooks.TIDEStyleHook.HandleMessage + $B7
+[500679A8]{rtl260.bpl  } System.@IntfClear (Line 38159, "System.pas" + 10) + $0
+[50063FD8]{rtl260.bpl  } System.@FinalizeArray (Line 32812, "System.pas" + 144) + $0
+[086E1CC2]{themeloader260.bpl} Idetheme.Stylemanager.TIDEThemeStyleEngine.UnRegisterSysStyleHook + $106
+[50D197BC]{vcl260.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10122, "Vcl.Controls.pas" + 10) + $48
+[50D19D47]{vcl260.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10278, "Vcl.Controls.pas" + 166) + $6
+[50E65245]{vcl260.bpl  } Vcl.Forms.TCustomForm.WndProc (Line 4652, "Vcl.Forms.pas" + 209) + $5
+[08704FA6]{themeloader260.bpl} Idetheme.Styles.Nc.TNCContainer.FormWndProc + $206
+[50D19314]{vcl260.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 9977, "Vcl.Controls.pas" + 3) + $6
+[501796A4]{rtl260.bpl  } System.Classes.StdWndProc (Line 17932, "System.Classes.pas" + 11) + $2
+[086AD3D2]{themeloader260.bpl} Idetheme.Vclstylehooks.TFormIDEStyleHook.Close + $22
+[086B0321]{themeloader260.bpl} Idetheme.Vclstylehooks.TFormIDEStyleHook.WMNCLButtonUp + $A5
+[087033FF]{themeloader260.bpl} Idetheme.Styles.Nc.TFormStyleNCControls.WMNCLButtonUp + $F
+[086A8E82]{themeloader260.bpl} Idetheme.Vclstylehooks.TIDEStyleHook.WndProc + $7A
+[086A97B0]{themeloader260.bpl} Idetheme.Vclstylehooks.TMouseTrackControlIDEStyleHook.WndProc + $0
+[086B0BB4]{themeloader260.bpl} Idetheme.Vclstylehooks.TFormIDEStyleHook.WndProc + $24
+[500679B9]{rtl260.bpl  } System.@IntfCopy (Line 38206, "System.pas" + 6) + $0
+[08748513]{themeloader260.bpl} Themeloader.TIDEThemeManager.GetActiveTheme + $B
+[50F533CF]{vcl260.bpl  } Vcl.Styles.TCustomStyle.SourceLoaded (Line 3243, "Vcl.Styles.pas" + 1) + $F
+[08703880]{themeloader260.bpl} Idetheme.Styles.Nc.TFormStyleNCControls.WndProc + $0
+[086A8924]{themeloader260.bpl} Idetheme.Vclstylehooks.TIDEStyleHook.HandleMessage + $A0
+[086E1493]{themeloader260.bpl} Idetheme.Stylemanager.TIDEThemeStyleEngine.HandleMessage + $97
+[086E1C96]{themeloader260.bpl} Idetheme.Stylemanager.TIDEThemeStyleEngine.UnRegisterSysStyleHook + $DA
+[50D197BC]{vcl260.bpl  } Vcl.Controls.TWinControl.WndProc (Line 10122, "Vcl.Controls.pas" + 10) + $48
+[50E65245]{vcl260.bpl  } Vcl.Forms.TCustomForm.WndProc (Line 4652, "Vcl.Forms.pas" + 209) + $5
+[08704FA6]{themeloader260.bpl} Idetheme.Styles.Nc.TNCContainer.FormWndProc + $206
+[50D19314]{vcl260.bpl  } Vcl.Controls.TWinControl.MainWndProc (Line 9977, "Vcl.Controls.pas" + 3) + $6
+[501796A4]{rtl260.bpl  } System.Classes.StdWndProc (Line 17932, "System.Classes.pas" + 11) + $2
+[50E6EC33]{vcl260.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 10747, "Vcl.Forms.pas" + 23) + $1
+[50E6EC76]{vcl260.bpl  } Vcl.Forms.TApplication.HandleMessage (Line 10777, "Vcl.Forms.pas" + 1) + $4
+[50E6EFA9]{vcl260.bpl  } Vcl.Forms.TApplication.Run (Line 10915, "Vcl.Forms.pas" + 26) + $3
+[0051D022]{bds.exe     } bds.bds (Line 214, "" + 7) + $7

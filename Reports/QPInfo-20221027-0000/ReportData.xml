@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ReportData>
+	<Status>40</Status>
+	<Data_type>A</Data_type>
+	<Severity>0</Severity>
+	<Project>270</Project>
+	<Version>28.0</Version>
+	<Area>30001</Area>
+	<Shortdescription>Automated Incident Report</Shortdescription>
+	<Description>Out of system resources.
+
+Changing the display resolution or turning off high DPi sometimes solves the problem, but most of the time it doesn't</Description>
+	<Build>28.0.46141.937</Build>
+	<Steps>The problem arises during the startup of Delhi Alexandria, before the welcome screen is shown</Steps>
+	<Platform_>430</Platform_>
+	<Workaround/>
+	<Locale>1043;1043</Locale>
+	<Architecture>1</Architecture>
+	<OperativeSystem>Windows 10 (Version 21H2, OS Build 19044.2130, 64-bit Edition)</OperativeSystem>
+	<OSMemory>75.339.948 Kb</OSMemory>
+	<ProcessMemoryUsage>543.256 Kb</ProcessMemoryUsage>
+	<MemoryLargeAddress>true</MemoryLargeAddress>
+	<Date>2022-10-27T16:17:17.386Z</Date>
+</ReportData>

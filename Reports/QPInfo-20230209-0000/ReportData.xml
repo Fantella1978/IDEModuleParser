@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ReportData>
+	<Status>40</Status>
+	<Data_type>A</Data_type>
+	<Severity>0</Severity>
+	<Project>270</Project>
+	<Version>26.0</Version>
+	<Area>30001</Area>
+	<Shortdescription>Automated Incident Report</Shortdescription>
+	<Description>Unable to write to __recovery\__recovery.ini.</Description>
+	<Build>26.0.34749.6593</Build>
+	<Steps>Closing RAD Studio (and the open project)</Steps>
+	<Platform_>430</Platform_>
+	<Workaround/>
+	<Locale>1033;5129</Locale>
+	<Architecture>1</Architecture>
+	<OperativeSystem>Windows 10 (Version 10.0, Build 22621, 64-bit Edition)</OperativeSystem>
+	<OSMemory>32,945,736 Kb</OSMemory>
+	<ProcessMemoryUsage>294,668 Kb</ProcessMemoryUsage>
+	<MemoryLargeAddress>true</MemoryLargeAddress>
+	<Date>2023-02-09T19:39:14.611Z</Date>
+</ReportData>

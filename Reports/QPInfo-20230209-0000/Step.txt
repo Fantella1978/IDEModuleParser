@@ -1,0 +1,1 @@
+Closing RAD Studio (and the open project)
