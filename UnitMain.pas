@@ -15,7 +15,8 @@ uses
   , System.Zip
   , System.StrUtils, Data.DB, Vcl.DBGrids
   , UnitDB
-  , UnitStaticFunctions
+  , UnitStaticFunctions, Vcl.Menus
+  , UnitPackagesEditor
   , Vcl.Themes
   ;
 
@@ -77,6 +78,12 @@ type
     cbCreateLog: TCheckBox;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
+    PopupMenu1: TPopupMenu;
+    GroupBox3: TGroupBox;
+    Button5: TButton;
+    actPackagesEditor: TAction;
+    btnModulesEditor: TButton;
+    actModulesEditor: TAction;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -158,6 +165,8 @@ type
     procedure DBGrid1TitleClick(Column: TColumn);
     procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure actPackagesEditorExecute(Sender: TObject);
+    procedure actModulesEditorExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -519,6 +528,12 @@ begin
 
 end;
 
+procedure TfrmMain.actModulesEditorExecute(Sender: TObject);
+begin
+  // Show Modules Editor
+
+end;
+
 procedure TfrmMain.actOpenModuleFileExecute(Sender: TObject);
 begin
   // Open Module file (ModuleList.txt)
@@ -540,6 +555,12 @@ begin
   if OpenDialog1.Execute then
     mzfFileName := OpenDialog1.FileName;
   OpenZipReportFile(Sender);
+end;
+
+procedure TfrmMain.actPackagesEditorExecute(Sender: TObject);
+begin
+  // Show Packages Editor
+  frmPackagesEditor.ShowModal;
 end;
 
 procedure TfrmMain.actParseCancelExecute(Sender: TObject);

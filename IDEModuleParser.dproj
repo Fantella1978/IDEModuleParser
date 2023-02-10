@@ -155,6 +155,10 @@
         <DCCReference Include="UnitLogger.pas"/>
         <DCCReference Include="UnitIDEModule.pas"/>
         <DCCReference Include="UnitStaticFunctions.pas"/>
+        <DCCReference Include="UnitPackagesEditor.pas">
+            <Form>frmPackagesEditor</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

@@ -1,6 +1,6 @@
 object DM1: TDM1
   Height = 480
-  Width = 640
+  Width = 830
   object cdsModules: TClientDataSet
     PersistDataPacket.Data = {
       A10000009619E0BD010000001800000006000000000003000000A100034E756D
@@ -112,11 +112,61 @@ object DM1: TDM1
   object DataSource1: TDataSource
     DataSet = cdsModules
     Left = 64
-    Top = 152
+    Top = 120
   end
   object DataSetProvider1: TDataSetProvider
     DataSet = cdsModules
     Left = 64
-    Top = 232
+    Top = 176
+  end
+  object cdsPackages: TClientDataSet
+    PersistDataPacket.Data = {
+      570000009619E0BD0100000018000000030000000000030000005700034E756D
+      0400010010000000044E616D6501004900100001000557494454480200020014
+      000355726C020049001000010005574944544802000200FF000000}
+    Active = True
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'Num'
+        Attributes = [faUnNamed]
+        DataType = ftInteger
+      end
+      item
+        Name = 'Name'
+        Attributes = [faUnNamed]
+        DataType = ftString
+        Size = 20
+      end
+      item
+        Name = 'Url'
+        Attributes = [faUnNamed]
+        DataType = ftString
+        Size = 255
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 568
+    Top = 56
+    object cdsPackagesNum: TIntegerField
+      FieldName = 'Num'
+    end
+    object cdsPackagesName: TStringField
+      FieldName = 'Name'
+    end
+    object cdsPackagesUrl: TStringField
+      FieldName = 'Url'
+      Size = 255
+    end
+  end
+  object dsPackages: TDataSource
+    DataSet = cdsPackages
+    Left = 568
+    Top = 120
+  end
+  object DataSetProvider2: TDataSetProvider
+    Left = 568
+    Top = 176
   end
 end

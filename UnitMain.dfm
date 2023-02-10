@@ -91,6 +91,8 @@ object frmMain: TfrmMain
     ParentFont = False
     Style = tsFlatButtons
     TabOrder = 1
+    ExplicitWidth = 873
+    ExplicitHeight = 487
     object tsModuleListFile: TTabSheet
       Caption = 'ModuleList file'
       DesignSize = (
@@ -110,9 +112,9 @@ object frmMain: TfrmMain
           867
           41)
         object lbedModuleFile: TLabeledEdit
-          Left = 96
+          Left = 104
           Top = 10
-          Width = 766
+          Width = 758
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2604,7 +2606,8 @@ object frmMain: TfrmMain
         ReadOnly = True
         TabOrder = 1
         Visible = False
-        ExplicitTop = 47
+        ExplicitWidth = 855
+        ExplicitHeight = 401
       end
       object pnlStartMessage: TPanel
         Left = 167
@@ -2619,7 +2622,7 @@ object frmMain: TfrmMain
         ParentCtl3D = False
         TabOrder = 2
         ExplicitLeft = 166
-        ExplicitTop = 157
+        ExplicitTop = 156
         object lblStartMessageMain: TLabel
           AlignWithMargins = True
           Left = 3
@@ -2802,9 +2805,9 @@ object frmMain: TfrmMain
           867
           41)
         object lbedStackTraceFile: TLabeledEdit
-          Left = 88
+          Left = 96
           Top = 10
-          Width = 772
+          Width = 764
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2839,7 +2842,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitHeight = 407
       end
     end
     object tsDXDiagLogFile: TTabSheet
@@ -2859,9 +2861,9 @@ object frmMain: TfrmMain
           867
           41)
         object lbedDXDiagLogFile: TLabeledEdit
-          Left = 72
+          Left = 80
           Top = 10
-          Width = 788
+          Width = 780
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2896,7 +2898,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitHeight = 407
       end
     end
     object tsDescriptionFile: TTabSheet
@@ -2915,9 +2916,9 @@ object frmMain: TfrmMain
           867
           41)
         object lbedDescriptionFile: TLabeledEdit
-          Left = 96
+          Left = 104
           Top = 10
-          Width = 764
+          Width = 756
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2952,7 +2953,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitHeight = 407
       end
     end
     object tsStepsFile: TTabSheet
@@ -2971,9 +2971,9 @@ object frmMain: TfrmMain
           867
           41)
         object lbedStepsFile: TLabeledEdit
-          Left = 64
+          Left = 72
           Top = 10
-          Width = 796
+          Width = 788
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -3008,7 +3008,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 1
-        ExplicitHeight = 407
       end
     end
     object tsLog: TTabSheet
@@ -3036,8 +3035,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 0
-        ExplicitTop = 11
-        ExplicitHeight = 419
       end
       object Panel4: TPanel
         Left = 0
@@ -3048,7 +3045,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 1
-        ExplicitTop = 417
         DesignSize = (
           867
           41)
@@ -3139,11 +3135,35 @@ object frmMain: TfrmMain
           OnClick = cbCreateLogClick
         end
       end
+      object GroupBox3: TGroupBox
+        Left = 3
+        Top = 103
+        Width = 225
+        Height = 162
+        Caption = 'Packages && Modules'
+        TabOrder = 3
+        object Button5: TButton
+          Left = 14
+          Top = 24
+          Width = 196
+          Height = 25
+          Action = actPackagesEditor
+          TabOrder = 0
+        end
+        object btnModulesEditor: TButton
+          Left = 14
+          Top = 55
+          Width = 196
+          Height = 25
+          Action = actModulesEditor
+          TabOrder = 1
+        end
+      end
     end
   end
   object ActionList1: TActionList
-    Left = 456
-    Top = 77
+    Left = 544
+    Top = 429
     object actExit: TAction
       Caption = 'Exit'
       Hint = 'Close the program'
@@ -3169,20 +3189,32 @@ object frmMain: TfrmMain
       Caption = 'Stop'
       OnExecute = actParseCancelExecute
     end
+    object actPackagesEditor: TAction
+      Caption = 'Packages Editor'
+      OnExecute = actPackagesEditorExecute
+    end
+    object actModulesEditor: TAction
+      Caption = 'Modules Editor'
+      OnExecute = actModulesEditorExecute
+    end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
     DefaultExt = '.txt'
     Filter = 'ModuleList Text file|*.txt'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     ShowEncodingList = False
-    Left = 550
-    Top = 77
+    Left = 638
+    Top = 429
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = '.zip'
     Filter = 'Zip file|*.zip'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    Left = 649
-    Top = 77
+    Left = 737
+    Top = 429
+  end
+  object PopupMenu1: TPopupMenu
+    Left = 816
+    Top = 429
   end
 end

@@ -16,6 +16,12 @@ type
     cdsModulesVersion: TStringField;
     cdsModulesDateAndTime: TDateTimeField;
     cdsModulesHash: TStringField;
+    cdsPackages: TClientDataSet;
+    cdsPackagesNum: TIntegerField;
+    cdsPackagesName: TStringField;
+    cdsPackagesUrl: TStringField;
+    dsPackages: TDataSource;
+    DataSetProvider2: TDataSetProvider;
   private
     { Private declarations }
   public
