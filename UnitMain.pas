@@ -18,6 +18,8 @@ uses
   , UnitStaticFunctions, Vcl.Menus
   , UnitPackagesEditor
   , Vcl.Themes
+  , Clipbrd
+  , UnitCopyAsText
   ;
 
 type
@@ -78,12 +80,16 @@ type
     cbCreateLog: TCheckBox;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
-    PopupMenu1: TPopupMenu;
+    ppmModulesGrid: TPopupMenu;
     GroupBox3: TGroupBox;
     Button5: TButton;
     actPackagesEditor: TAction;
     btnModulesEditor: TButton;
     actModulesEditor: TAction;
+    actModulesCopySelectedAsText: TAction;
+    Copytoclipboard1: TMenuItem;
+    actModulesSelectAll: TAction;
+    actModulesSelectAll1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -167,6 +173,8 @@ type
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure actPackagesEditorExecute(Sender: TObject);
     procedure actModulesEditorExecute(Sender: TObject);
+    procedure actModulesCopySelectedAsTextExecute(Sender: TObject);
+    procedure actModulesSelectAllExecute(Sender: TObject);
 
   private
     { Private declarations }
@@ -534,6 +542,22 @@ begin
 
 end;
 
+procedure TfrmMain.actModulesSelectAllExecute(Sender: TObject);
+var
+  bmark : TBookmark;
+begin
+  // Select All Modules in grid
+  DM1.cdsModules.DisableControls;
+  DBGrid1.SelectedRows.Clear;
+  DM1.cdsModules.First;
+  while not DM1.cdsModules.Eof do
+  begin
+    DBGrid1.SelectedRows.CurrentRowSelected := true;
+    DM1.cdsModules.Next;
+  end;
+  DM1.cdsModules.EnableControls;
+end;
+
 procedure TfrmMain.actOpenModuleFileExecute(Sender: TObject);
 begin
   // Open Module file (ModuleList.txt)
@@ -612,6 +636,11 @@ begin
       else BDSIDEModule := nil;
     end;
   actParseModuleFile.Enabled := false;
+end;
+
+procedure TfrmMain.actModulesCopySelectedAsTextExecute(Sender: TObject);
+begin
+  frmCopyAsText.ShowModal;
 end;
 
 procedure TfrmMain.cbCreateLogClick(Sender: TObject);

@@ -81,7 +81,7 @@ object frmMain: TfrmMain
     Top = 0
     Width = 875
     Height = 491
-    ActivePage = TabModulesList
+    ActivePage = tsModuleListFile
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -107,7 +107,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 865
         DesignSize = (
           867
           41)
@@ -126,7 +125,6 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 754
         end
       end
       object MemoTxtModuleFile: TMemo
@@ -2607,8 +2605,6 @@ object frmMain: TfrmMain
         ReadOnly = True
         TabOrder = 1
         Visible = False
-        ExplicitWidth = 855
-        ExplicitHeight = 401
       end
       object pnlStartMessage: TPanel
         Left = 166
@@ -2622,8 +2618,6 @@ object frmMain: TfrmMain
         ParentColor = True
         ParentCtl3D = False
         TabOrder = 2
-        ExplicitLeft = 165
-        ExplicitTop = 156
         object lblStartMessageMain: TLabel
           AlignWithMargins = True
           Left = 3
@@ -2716,6 +2710,7 @@ object frmMain: TfrmMain
         TabOrder = 1
         Text = ''
         OnClick = actOpenModuleFileExecute
+        ExplicitWidth = 781
       end
       object ledtBDSInstDate: TLabeledEdit
         Left = 370
@@ -2742,6 +2737,7 @@ object frmMain: TfrmMain
         Anchors = [akLeft, akTop, akRight, akBottom]
         DataSource = DM1.DataSource1
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
+        PopupMenu = ppmModulesGrid
         TabOrder = 3
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -2773,6 +2769,7 @@ object frmMain: TfrmMain
           item
             Expanded = False
             FieldName = 'DateAndTime'
+            Title.Caption = 'Date & Time'
             Width = 140
             Visible = True
           end
@@ -3198,6 +3195,14 @@ object frmMain: TfrmMain
       Caption = 'Modules Editor'
       OnExecute = actModulesEditorExecute
     end
+    object actModulesCopySelectedAsText: TAction
+      Caption = 'Copy as Text'
+      OnExecute = actModulesCopySelectedAsTextExecute
+    end
+    object actModulesSelectAll: TAction
+      Caption = 'Select All'
+      OnExecute = actModulesSelectAllExecute
+    end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
     DefaultExt = '.txt'
@@ -3214,8 +3219,14 @@ object frmMain: TfrmMain
     Left = 737
     Top = 429
   end
-  object PopupMenu1: TPopupMenu
-    Left = 816
-    Top = 429
+  object ppmModulesGrid: TPopupMenu
+    Left = 808
+    Top = 165
+    object Copytoclipboard1: TMenuItem
+      Action = actModulesCopySelectedAsText
+    end
+    object actModulesSelectAll1: TMenuItem
+      Action = actModulesSelectAll
+    end
   end
 end

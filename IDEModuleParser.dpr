@@ -10,7 +10,8 @@ uses
   UnitLogger in 'UnitLogger.pas',
   UnitIDEModule in 'UnitIDEModule.pas',
   UnitStaticFunctions in 'UnitStaticFunctions.pas',
-  UnitPackagesEditor in 'UnitPackagesEditor.pas' {frmPackagesEditor};
+  UnitPackagesEditor in 'UnitPackagesEditor.pas' {frmPackagesEditor},
+  UnitCopyAsText in 'UnitCopyAsText.pas' {frmCopyAsText};
 
 {$R *.res}
 
@@ -22,5 +23,6 @@ begin
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TfrmParse, frmParse);
   Application.CreateForm(TfrmPackagesEditor, frmPackagesEditor);
+  Application.CreateForm(TfrmCopyAsText, frmCopyAsText);
   Application.Run;
 end.
