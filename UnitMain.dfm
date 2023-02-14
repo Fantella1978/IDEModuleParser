@@ -31,7 +31,7 @@ object frmMain: TfrmMain
       875
       37)
     object Button1: TButton
-      Left = 653
+      Left = 651
       Top = 6
       Width = 135
       Height = 25
@@ -40,10 +40,10 @@ object frmMain: TfrmMain
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 651
+      ExplicitLeft = 649
     end
     object Button2: TButton
-      Left = 794
+      Left = 792
       Top = 6
       Width = 75
       Height = 25
@@ -52,20 +52,20 @@ object frmMain: TfrmMain
       Cancel = True
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 792
+      ExplicitLeft = 790
     end
     object Button3: TButton
-      Left = 440
+      Left = 438
       Top = 6
       Width = 75
       Height = 25
       Action = actParseModuleFile
       Anchors = [akRight, akBottom]
       TabOrder = 2
-      ExplicitLeft = 438
+      ExplicitLeft = 436
     end
     object Button4: TButton
-      Left = 521
+      Left = 519
       Top = 6
       Width = 126
       Height = 25
@@ -73,7 +73,7 @@ object frmMain: TfrmMain
       Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
       TabOrder = 3
-      ExplicitLeft = 519
+      ExplicitLeft = 517
     end
   end
   object PageControl1: TPageControl
@@ -81,7 +81,7 @@ object frmMain: TfrmMain
     Top = 0
     Width = 875
     Height = 491
-    ActivePage = tsModuleListFile
+    ActivePage = TabModulesList
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -114,7 +114,7 @@ object frmMain: TfrmMain
         object lbedModuleFile: TLabeledEdit
           Left = 104
           Top = 10
-          Width = 758
+          Width = 756
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -126,7 +126,7 @@ object frmMain: TfrmMain
           TabOrder = 0
           Text = ''
           OnClick = actOpenModuleFileExecute
-          ExplicitWidth = 756
+          ExplicitWidth = 754
         end
       end
       object MemoTxtModuleFile: TMemo
@@ -2611,7 +2611,7 @@ object frmMain: TfrmMain
         ExplicitHeight = 401
       end
       object pnlStartMessage: TPanel
-        Left = 167
+        Left = 166
         Top = 158
         Width = 532
         Height = 180
@@ -2622,7 +2622,7 @@ object frmMain: TfrmMain
         ParentColor = True
         ParentCtl3D = False
         TabOrder = 2
-        ExplicitLeft = 166
+        ExplicitLeft = 165
         ExplicitTop = 156
         object lblStartMessageMain: TLabel
           AlignWithMargins = True
@@ -2696,7 +2696,7 @@ object frmMain: TfrmMain
       object ledtBDSPath: TLabeledEdit
         Left = 80
         Top = 10
-        Width = 785
+        Width = 783
         Height = 25
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight]
@@ -3052,7 +3052,7 @@ object frmMain: TfrmMain
         object lbedLogPath: TLabeledEdit
           Left = 56
           Top = 9
-          Width = 806
+          Width = 804
           Height = 25
           Anchors = [akLeft, akTop, akRight]
           EditLabel.Width = 46

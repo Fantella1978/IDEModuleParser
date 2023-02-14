@@ -17,11 +17,16 @@ type
     DBNavigator1: TDBNavigator;
     btnAdd: TButton;
     btnDelete: TButton;
-    DBEdit1: TDBEdit;
+    dbeURL: TDBEdit;
     lblUrl: TLabel;
-    DBLookupComboBox1: TDBLookupComboBox;
-    Label1: TLabel;
+    dbeVersion: TDBEdit;
+    DBEdit2: TDBEdit;
+    lblVersion: TLabel;
+    lblVersionRegExp: TLabel;
     procedure Button1Click(Sender: TObject);
+    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+      DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure FormResize(Sender: TObject);
   private
     { Private declarations }
   public
@@ -42,6 +47,30 @@ uses
 procedure TfrmPackagesEditor.Button1Click(Sender: TObject);
 begin
   Close;
+end;
+
+procedure TfrmPackagesEditor.DBGrid1DrawColumnCell(Sender: TObject;
+  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
+Var
+  wi, sw, i : Integer;
+begin
+  // Rize Column width if text is a long
+  wi := 5 + DBGrid1.Canvas.TextExtent(Column.Field.DisplayText).cx;
+  if wi > column.Width
+  then
+    begin
+      sw := 0;
+      for i := 0 to DBGrid1.Columns.Count - 1 do
+        if DBGrid1.Columns[i].Visible AND (DBGrid1.Columns[i] <> Column)
+          then sw := sw + DBGrid1.Columns[i].Width;
+      if DBGrid1.Width > sw + wi then Column.Width := wi;
+    end;
+end;
+
+procedure TfrmPackagesEditor.FormResize(Sender: TObject);
+begin
+   for var i := 0 to DBGrid1.Columns.Count - 1 do
+    if DBGrid1.Columns[i].Visible AND (DBGrid1.Columns[i].Width > 100) then DBGrid1.Columns[i].Width := 100;
 end;
 
 end.

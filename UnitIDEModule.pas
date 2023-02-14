@@ -51,7 +51,7 @@ var
 begin
   //
   // \d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}    // date Groups[4]
-  // \d{1,2}:\d{1,2}:\d{1,2}(?:\s*[AP]M)?     // time Groups[5]
+  // \d{1,2}:\d{1,2}:\d{1,2}(?:\s*([\S]{2}))?     // time Groups[5]
   //
   DateTimeRegexp := TPerlRegEx.Create;
   try

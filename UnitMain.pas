@@ -640,7 +640,7 @@ procedure TfrmMain.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
 Var
   wi, sw, i : Integer;
 begin
-  // Rize Column with if text is long
+  // Rize Column width if text is a long
   wi := 5 + DBGrid1.Canvas.TextExtent(Column.Field.DisplayText).cx;
   if wi > column.Width
   then
