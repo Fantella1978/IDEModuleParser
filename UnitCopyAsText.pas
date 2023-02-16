@@ -1,4 +1,4 @@
-unit UnitCopyAsText;
+﻿unit UnitCopyAsText;
 
 interface
 
@@ -8,17 +8,17 @@ uses
 
 type
   TfrmCopyAsText = class(TForm)
-    Button1: TButton;
-    Button2: TButton;
+    btnOk: TButton;
+    btnCancel: TButton;
     Panel1: TPanel;
     GroupBox1: TGroupBox;
     CheckListBox1: TCheckListBox;
     GroupBox2: TGroupBox;
     Memo1: TMemo;
     Splitter1: TSplitter;
-    procedure Button1Click(Sender: TObject);
+    procedure btnOkClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
     procedure CheckListBox1ClickCheck(Sender: TObject);
   private
     procedure CopyModulesToClipboard();
@@ -42,48 +42,55 @@ uses
   , Data.DB
   ;
 
-procedure TfrmCopyAsText.Button2Click(Sender: TObject);
+procedure TfrmCopyAsText.btnCancelClick(Sender: TObject);
 begin
+  // ShowMessage('Canceled');
   Close;
 end;
 
 procedure TfrmCopyAsText.CheckListBox1ClickCheck(Sender: TObject);
 begin
   Memo1.Text := ModulesGetText();
+  if Memo1.Text = ''
+    then btnOk.Enabled := false
+    else btnOk.Enabled := true
 end;
 
 procedure TfrmCopyAsText.CopyModulesToClipboard();
 var
-  i : integer;
-  ml : TStringList;
   cl : TClipboard;
 begin
   // Copy Selected Modules to ....
-  DM1.cdsModules.DisableControls;
-  ml := TStringList.Create;
-  for i := 0 to frmMain.DBGrid1.SelectedRows.Count - 1 do
-  begin
-    frmMain.DBGrid1.DataSource.DataSet.GotoBookmark(Tbookmark(frmMain.DBGrid1.SelectedRows[i]));
-    ml.Add(frmMain.DBGrid1.Columns[1].field.asString);
-  end;
-  // DBGrid1.SelectedRows.Clear;
   cl := TClipboard.Create;
-  cl.AsText := ml.GetText;
-  // DM1.cdsModules.First;
-  DM1.cdsModules.EnableControls;
+  cl.AsText := ModulesGetText();
 end;
 
 procedure TfrmCopyAsText.FormShow(Sender: TObject);
 var
   i : integer;
+  colCaption : string;
 begin
   CheckListBox1.Clear;
   Memo1.Clear;
   for I := 0 to frmMain.DBGrid1.Columns.Count - 1 do
   begin
-    if frmMain.DBGrid1.Columns[i].Visible then
-      CheckListBox1.Items.Add(frmMain.DBGrid1.Columns[i].DisplayName);
+    if frmMain.DBGrid1.Columns[i].Visible
+    then
+      begin
+        colCaption := frmMain.DBGrid1.Columns[i].Title.Caption;
+        if (pos(' ˅', colCaption, Length(colCaption) - 2) <> 0) OR
+           (pos(' ˄', colCaption, Length(colCaption) - 2) <> 0)
+         then colCaption := copy(colCaption, 1, Length(colCaption) - 2);
+
+        CheckListBox1.Items.Add(colCaption);
+      end;
   end;
+  if CheckListBox1.Items.Count > 0 then CheckListBox1.Checked[0] := true;
+
+  Memo1.Text := ModulesGetText();
+  if Memo1.Text = ''
+    then btnOk.Enabled := false
+    else btnOk.Enabled := true
 end;
 
 function TfrmCopyAsText.ModulesGetText: PWideChar;
@@ -92,7 +99,7 @@ var
   ml : TStringList;
   s: string;
 begin
-  // Copy Selected Modules to ....
+  // Get Selected Modules as Text
   DM1.cdsModules.DisableControls;
   ml := TStringList.Create;
   for i := 0 to frmMain.DBGrid1.SelectedRows.Count - 1 do
@@ -111,14 +118,14 @@ begin
           end;
       if frmMain.DBGrid1.Columns[k].Visible then inc(kc);
     end;
-    ml.Add(s);
+    if s <> '' then ml.Add(s);
   end;
   DM1.cdsModules.EnableControls;
 
   Result := ml.GetText;
 end;
 
-procedure TfrmCopyAsText.Button1Click(Sender: TObject);
+procedure TfrmCopyAsText.btnOkClick(Sender: TObject);
 begin
   CopyModulesToClipboard();
 end;

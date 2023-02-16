@@ -3,7 +3,7 @@ object frmPackagesEditor: TfrmPackagesEditor
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Packages Edit'
-  ClientHeight = 418
+  ClientHeight = 414
   ClientWidth = 706
   Color = clBtnFace
   Constraints.MinHeight = 400
@@ -17,7 +17,7 @@ object frmPackagesEditor: TfrmPackagesEditor
   OnResize = FormResize
   DesignSize = (
     706
-    418)
+    414)
   TextHeight = 15
   object lblName: TLabel
     Left = 12
@@ -49,14 +49,12 @@ object frmPackagesEditor: TfrmPackagesEditor
   end
   object Panel1: TPanel
     Left = 0
-    Top = 381
+    Top = 377
     Width = 706
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 324
-    ExplicitWidth = 704
     DesignSize = (
       706
       37)
@@ -78,7 +76,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     Left = 0
     Top = 160
     Width = 706
-    Height = 221
+    Height = 217
     Align = alBottom
     Anchors = [akLeft, akTop, akRight, akBottom]
     DataSource = DM1.dsPackages
@@ -141,6 +139,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     DataSource = DM1.dsPackages
     Anchors = [akTop, akRight]
     TabOrder = 3
+    ExplicitLeft = -1
   end
   object btnAdd: TButton
     Left = 626
@@ -182,6 +181,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     DataField = 'Version'
     DataSource = DM1.dsPackages
     TabOrder = 7
+    ExplicitWidth = 186
   end
   object DBEdit2: TDBEdit
     Left = 95
@@ -192,5 +192,6 @@ object frmPackagesEditor: TfrmPackagesEditor
     DataField = 'VersionRegExp'
     DataSource = DM1.dsPackages
     TabOrder = 8
+    ExplicitWidth = 523
   end
 end

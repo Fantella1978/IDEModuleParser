@@ -1,0 +1,23 @@
+[1D0DE883]{ParnassusDebugger_Alexandria.dll} Unbekannte Funktion bei __dbk_fcall_wrapper + $1CEA3
+[500689A0]{rtl280.bpl  } System.@IntfClear (Line 38564, "System.pas" + 10) + $0
+[1D42A105]{ParnassusDebugger_Alexandria.dll} Unbekannte Funktion bei __dbk_fcall_wrapper + $368725
+[1D0DEF5E]{ParnassusDebugger_Alexandria.dll} Unbekannte Funktion bei __dbk_fcall_wrapper + $1D57E
+[1D42A611]{ParnassusDebugger_Alexandria.dll} Unbekannte Funktion bei __dbk_fcall_wrapper + $368C31
+[6E221BA7]{vcl280.bpl  } Vcl.ExtCtrls.TTimer.Timer (Line 3222, "Vcl.ExtCtrls.pas" + 1) + $E
+[6E221A87]{vcl280.bpl  } Vcl.ExtCtrls.TTimer.WndProc (Line 3180, "Vcl.ExtCtrls.pas" + 4) + $7
+[50174A30]{rtl280.bpl  } System.Classes.StdWndProc (Line 18375, "System.Classes.pas" + 8) + $0
+[211D4F17]{vclide280.bpl} IDEVirtualTrees.TVirtualTreeHintWindow.IsHintMsg (Line 7111, "IDEVirtualTrees.pas" + 7) + $13
+[6E29D697]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 11336, "Vcl.Forms.pas" + 23) + $1
+[6E29D6C2]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessages (Line 11358, "Vcl.Forms.pas" + 1) + $4
+[004A068B]{bds.exe     } AppMain.TAppBuilder.ApplicationActivated (Line 2734, "AppMain.pas" + 0) + $7
+[6E2F5C6F]{vcl280.bpl  } Vcl.AppEvnts.TCustomApplicationEvents.DoActivate (Line 210, "Vcl.AppEvnts.pas" + 1) + $12
+[6E2F6311]{vcl280.bpl  } Vcl.AppEvnts.TMultiCaster.DoActivate (Line 438, "Vcl.AppEvnts.pas" + 5) + $C
+[6E29CB47]{vcl280.bpl  } Vcl.Forms.TApplication.WndProc (Line 10911, "Vcl.Forms.pas" + 140) + $C
+[5B03D785]{cxLibraryRS28.bpl} Cxcontainer. + $0
+[5AFCABF1]{cxLibraryRS28.bpl} Dxhooks. + $0
+[50174A30]{rtl280.bpl  } System.Classes.StdWndProc (Line 18375, "System.Classes.pas" + 8) + $0
+[211D4F17]{vclide280.bpl} IDEVirtualTrees.TVirtualTreeHintWindow.IsHintMsg (Line 7111, "IDEVirtualTrees.pas" + 7) + $13
+[6E29D697]{vcl280.bpl  } Vcl.Forms.TApplication.ProcessMessage (Line 11336, "Vcl.Forms.pas" + 23) + $1
+[6E29D6DA]{vcl280.bpl  } Vcl.Forms.TApplication.HandleMessage (Line 11366, "Vcl.Forms.pas" + 1) + $4
+[6E29DA19]{vcl280.bpl  } Vcl.Forms.TApplication.Run (Line 11505, "Vcl.Forms.pas" + 27) + $3
+[004F7FA2]{bds.exe     } bds.bds (Line 227, "" + 16) + $2

@@ -11,14 +11,16 @@ uses
   UnitIDEModule in 'UnitIDEModule.pas',
   UnitStaticFunctions in 'UnitStaticFunctions.pas',
   UnitPackagesEditor in 'UnitPackagesEditor.pas' {frmPackagesEditor},
-  UnitCopyAsText in 'UnitCopyAsText.pas' {frmCopyAsText};
+  UnitCopyAsText in 'UnitCopyAsText.pas' {frmCopyAsText},
+  UnitDBGrid in 'UnitDBGrid.pas',
+  UnitSettings in 'UnitSettings.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Glow');
+  TStyleManager.TrySetStyle('Amethyst Kamri');
   Application.CreateForm(TDM1, DM1);
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TfrmParse, frmParse);

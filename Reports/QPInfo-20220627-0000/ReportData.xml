@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ReportData>
+	<Status>40</Status>
+	<Data_type>A</Data_type>
+	<Severity>0</Severity>
+	<Project>270</Project>
+	<Version>28.0</Version>
+	<Area>30001</Area>
+	<Shortdescription>Automatisierter Problemreport</Shortdescription>
+	<Description>Zugriffsverletzung bei Adresse 1D0DE883 in Modul 'ParnassusDebugger_Alexandria.dll'. Lesen von Adresse 00000004.
+
+after 15 Minutes of Debugging</Description>
+	<Build>28.0.44500.8973</Build>
+	<Steps/>
+	<Platform_>430</Platform_>
+	<Workaround/>
+	<Locale>1031;1031</Locale>
+	<Architecture>1</Architecture>
+	<OperativeSystem>Windows 11 (Version 21H2, Betriebssystem-Build 22000.739, 64-Bit-Edition)</OperativeSystem>
+	<OSMemory>33.226.972 Kb</OSMemory>
+	<ProcessMemoryUsage>1.597.296 Kb</ProcessMemoryUsage>
+	<MemoryLargeAddress>true</MemoryLargeAddress>
+	<Date>2022-06-27T17:13:50.209Z</Date>
+</ReportData>

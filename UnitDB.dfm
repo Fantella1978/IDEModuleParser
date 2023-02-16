@@ -3,12 +3,13 @@ object DM1: TDM1
   Width = 830
   object cdsModules: TClientDataSet
     PersistDataPacket.Data = {
-      A10000009619E0BD010000001800000006000000000003000000A100034E756D
+      D30000009619E0BD010000001800000008000000000003000000D300034E756D
       0400010004000000044E616D650100490000000100055749445448020002007F
       000450617468020049000000010005574944544802000200FF00075665727369
       6F6E0100490000000100055749445448020002001B000B44617465416E645469
       6D65080008000000000004486173680100490000000100055749445448020002
-      0028000000}
+      002800095061636B616765494404000100000000000B5061636B6167654E616D
+      650100490000000100055749445448020002003C000000}
     Active = True
     Aggregates = <>
     FieldDefs = <
@@ -40,16 +41,25 @@ object DM1: TDM1
         Name = 'Hash'
         DataType = ftString
         Size = 40
+      end
+      item
+        Name = 'PackageID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'PackageName'
+        DataType = ftString
+        Size = 60
       end>
     IndexDefs = <
       item
         Name = 'cdsModulesNameIndexASC'
-        Fields = 'Name;Path'
+        Fields = 'Name'
         Options = [ixCaseInsensitive]
       end
       item
         Name = 'cdsModulesNameIndex'
-        Fields = 'Name;Path'
+        Fields = 'Name'
         Options = [ixDescending, ixCaseInsensitive]
       end
       item
@@ -79,14 +89,26 @@ object DM1: TDM1
         Name = 'cdsModulesVersionIndex'
         Fields = 'Version;Name'
         Options = [ixDescending]
+      end
+      item
+        Name = 'cdsModulesPackageNameIndexASC'
+        Fields = 'PackageName;Name'
+      end
+      item
+        Name = 'cdsModulesPackageNameIndex'
+        Fields = 'PackageName;Name'
+        Options = [ixDescending]
       end>
+    IndexName = 'cdsModulesNameIndexASC'
     Params = <>
     StoreDefs = True
+    AfterScroll = cdsModulesAfterScroll
     Left = 64
     Top = 56
     object cdsModulesNum: TIntegerField
       AutoGenerateValue = arAutoInc
       FieldName = 'Num'
+      ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
     object cdsModulesName: TStringField
@@ -107,6 +129,13 @@ object DM1: TDM1
     object cdsModulesHash: TStringField
       FieldName = 'Hash'
       Size = 40
+    end
+    object cdsModulesPackageID: TIntegerField
+      FieldName = 'PackageID'
+    end
+    object cdsModulesPackageName: TStringField
+      FieldName = 'PackageName'
+      Size = 60
     end
   end
   object DataSource1: TDataSource

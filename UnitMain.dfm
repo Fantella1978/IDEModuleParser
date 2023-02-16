@@ -2,8 +2,8 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'IDE Module Parser'
-  ClientHeight = 528
-  ClientWidth = 875
+  ClientHeight = 499
+  ClientWidth = 983
   Color = clBtnFace
   Constraints.MinHeight = 480
   Constraints.MinWidth = 640
@@ -16,22 +16,23 @@ object frmMain: TfrmMain
   Position = poDesktopCenter
   OnClose = FormClose
   OnCreate = FormCreate
+  OnResize = FormResize
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
-    Top = 491
-    Width = 875
+    Top = 462
+    Width = 983
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 487
-    ExplicitWidth = 873
+    ExplicitTop = 458
+    ExplicitWidth = 981
     DesignSize = (
-      875
+      983
       37)
     object Button1: TButton
-      Left = 651
+      Left = 759
       Top = 6
       Width = 135
       Height = 25
@@ -40,10 +41,10 @@ object frmMain: TfrmMain
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 649
+      ExplicitLeft = 757
     end
     object Button2: TButton
-      Left = 792
+      Left = 900
       Top = 6
       Width = 75
       Height = 25
@@ -52,20 +53,20 @@ object frmMain: TfrmMain
       Cancel = True
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 790
+      ExplicitLeft = 898
     end
     object Button3: TButton
-      Left = 438
+      Left = 546
       Top = 6
       Width = 75
       Height = 25
       Action = actParseModuleFile
       Anchors = [akRight, akBottom]
       TabOrder = 2
-      ExplicitLeft = 436
+      ExplicitLeft = 544
     end
     object Button4: TButton
-      Left = 519
+      Left = 627
       Top = 6
       Width = 126
       Height = 25
@@ -73,15 +74,15 @@ object frmMain: TfrmMain
       Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
       TabOrder = 3
-      ExplicitLeft = 517
+      ExplicitLeft = 625
     end
   end
   object PageControl1: TPageControl
     Left = 0
     Top = 0
-    Width = 875
-    Height = 491
-    ActivePage = tsModuleListFile
+    Width = 983
+    Height = 462
+    ActivePage = tsHome
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -91,29 +92,76 @@ object frmMain: TfrmMain
     ParentFont = False
     Style = tsFlatButtons
     TabOrder = 1
-    ExplicitWidth = 873
-    ExplicitHeight = 487
+    ExplicitWidth = 981
+    ExplicitHeight = 458
+    object tsHome: TTabSheet
+      Caption = 'Home'
+      ImageIndex = 8
+      DesignSize = (
+        975
+        427)
+      object lblStartMessageMain: TLabel
+        AlignWithMargins = True
+        Left = 392
+        Top = 86
+        Width = 192
+        Height = 28
+        Alignment = taCenter
+        Anchors = []
+        Caption = 'Open or Drag&&Drop'
+        Color = clWindow
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clHighlight
+        Font.Height = -20
+        Font.Name = 'Segoe UI'
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        StyleElements = [seClient, seBorder]
+        ExplicitLeft = 352
+        ExplicitTop = 75
+      end
+      object lblStartMessageSecondary: TLabel
+        AlignWithMargins = True
+        Left = 269
+        Top = 152
+        Width = 438
+        Height = 122
+        Alignment = taCenter
+        Anchors = []
+        AutoSize = False
+        Caption = 'lblStartMessageSecondary'
+        Color = clWindow
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clMedGray
+        Font.Height = -19
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        ParentColor = False
+        ParentFont = False
+        Transparent = True
+        WordWrap = True
+        StyleElements = [seClient, seBorder]
+      end
+    end
     object tsModuleListFile: TTabSheet
       Caption = 'ModuleList file'
-      DesignSize = (
-        867
-        456)
       object Panel2: TPanel
         Left = 0
         Top = 0
-        Width = 867
+        Width = 975
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
         DesignSize = (
-          867
+          975
           41)
         object lbedModuleFile: TLabeledEdit
           Left = 104
           Top = 10
-          Width = 756
+          Width = 864
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -131,8 +179,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 857
-        Height = 405
+        Width = 965
+        Height = 376
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2603,74 +2651,54 @@ object frmMain: TfrmMain
           'C0CB99AED9853A20EEE2A8621505F556BB94F245')
         ParentFont = False
         ReadOnly = True
+        ScrollBars = ssBoth
         TabOrder = 1
-        Visible = False
-      end
-      object pnlStartMessage: TPanel
-        Left = 166
-        Top = 158
-        Width = 532
-        Height = 180
-        Anchors = []
-        BevelOuter = bvNone
-        Ctl3D = True
-        ParentBackground = False
-        ParentColor = True
-        ParentCtl3D = False
-        TabOrder = 2
-        object lblStartMessageMain: TLabel
-          AlignWithMargins = True
-          Left = 3
-          Top = 3
-          Width = 526
-          Height = 28
-          Align = alTop
-          Alignment = taCenter
-          AutoSize = False
-          Caption = 'Open or Drag&&Drop'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clHighlight
-          Font.Height = -20
-          Font.Name = 'Segoe UI'
-          Font.Style = [fsBold]
-          ParentFont = False
-          StyleElements = [seClient, seBorder]
-          ExplicitLeft = 0
-          ExplicitTop = 0
-          ExplicitWidth = 349
-        end
-        object lblStartMessageSecondary: TLabel
-          AlignWithMargins = True
-          Left = 3
-          Top = 37
-          Width = 526
-          Height = 140
-          Align = alClient
-          Alignment = taCenter
-          Caption = 'lblStartMessageSecondary'
-          Color = clWindow
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clMedGray
-          Font.Height = -19
-          Font.Name = 'Segoe UI'
-          Font.Style = []
-          ParentColor = False
-          ParentFont = False
-          Transparent = True
-          WordWrap = True
-          StyleElements = [seClient, seBorder]
-          ExplicitWidth = 221
-          ExplicitHeight = 25
-        end
       end
     end
-    object TabModulesList: TTabSheet
+    object tsModulesList: TTabSheet
       Caption = 'Modules'
       Enabled = False
       ImageIndex = 1
       DesignSize = (
-        867
-        456)
+        975
+        427)
+      object SpeedButton1: TSpeedButton
+        Left = 878
+        Top = 73
+        Width = 94
+        Height = 22
+        Action = actModulesCopySelectedAsText
+        Anchors = [akTop, akRight]
+        ExplicitLeft = 770
+      end
+      object SpeedButton2: TSpeedButton
+        Left = 616
+        Top = 73
+        Width = 73
+        Height = 22
+        Action = actModulesSelectAll
+        Anchors = [akTop, akRight]
+        ExplicitLeft = 676
+      end
+      object lblModulesSelectedCount: TLabel
+        Left = 856
+        Top = 50
+        Width = 116
+        Height = 17
+        Alignment = taRightJustify
+        Anchors = [akTop, akRight]
+        Caption = 'Selected count: '#1061#1061#1061
+        ExplicitLeft = 902
+      end
+      object SpeedButton3: TSpeedButton
+        Left = 695
+        Top = 73
+        Width = 177
+        Height = 22
+        Action = actModulesAddSelectedToDB
+        Anchors = [akTop, akRight]
+        ExplicitLeft = 725
+      end
       object ledtBDSBuild: TLabeledEdit
         Left = 80
         Top = 39
@@ -2683,14 +2711,14 @@ object frmMain: TfrmMain
         EditLabel.Caption = 'BDS build '#8470':'
         LabelPosition = lpLeft
         ReadOnly = True
-        TabOrder = 0
+        TabOrder = 1
         Text = ''
         OnClick = actOpenModuleFileExecute
       end
       object ledtBDSPath: TLabeledEdit
         Left = 80
         Top = 10
-        Width = 783
+        Width = 891
         Height = 25
         Cursor = crHandPoint
         Anchors = [akLeft, akTop, akRight]
@@ -2707,14 +2735,13 @@ object frmMain: TfrmMain
         EditLabel.ParentFont = False
         LabelPosition = lpLeft
         ReadOnly = True
-        TabOrder = 1
+        TabOrder = 0
         Text = ''
-        OnClick = actOpenModuleFileExecute
-        ExplicitWidth = 781
+        ExplicitWidth = 889
       end
       object ledtBDSInstDate: TLabeledEdit
-        Left = 370
-        Top = 39
+        Left = 98
+        Top = 70
         Width = 174
         Height = 25
         Cursor = crHandPoint
@@ -2730,14 +2757,15 @@ object frmMain: TfrmMain
       end
       object DBGrid1: TDBGrid
         Left = 0
-        Top = 75
-        Width = 867
-        Height = 381
+        Top = 101
+        Width = 975
+        Height = 326
         Align = alBottom
         Anchors = [akLeft, akTop, akRight, akBottom]
         DataSource = DM1.DataSource1
-        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
+        Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
         PopupMenu = ppmModulesGrid
+        ReadOnly = True
         TabOrder = 3
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
@@ -2745,6 +2773,13 @@ object frmMain: TfrmMain
         TitleFont.Name = 'Segoe UI'
         TitleFont.Style = []
         OnDrawColumnCell = DBGrid1DrawColumnCell
+        OnEnter = DBGrid1Enter
+        OnExit = DBGrid1Exit
+        OnKeyPress = DBGrid1KeyPress
+        OnKeyUp = DBGrid1KeyUp
+        OnMouseActivate = DBGrid1MouseActivate
+        OnMouseDown = DBGrid1MouseDown
+        OnMouseUp = DBGrid1MouseUp
         OnTitleClick = DBGrid1TitleClick
         Columns = <
           item
@@ -2768,9 +2803,9 @@ object frmMain: TfrmMain
           end
           item
             Expanded = False
-            FieldName = 'DateAndTime'
-            Title.Caption = 'Date & Time'
-            Width = 140
+            FieldName = 'PackageName'
+            Title.Caption = 'Package'
+            Width = 200
             Visible = True
           end
           item
@@ -2781,9 +2816,21 @@ object frmMain: TfrmMain
           end
           item
             Expanded = False
+            FieldName = 'DateAndTime'
+            Title.Caption = 'Date & Time'
+            Width = 140
+            Visible = True
+          end
+          item
+            Expanded = False
             FieldName = 'Hash'
             Width = 250
             Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'PackageID'
+            Visible = False
           end>
       end
     end
@@ -2793,19 +2840,19 @@ object frmMain: TfrmMain
       object Panel5: TPanel
         Left = 0
         Top = 0
-        Width = 867
+        Width = 975
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
         DesignSize = (
-          867
+          975
           41)
         object lbedStackTraceFile: TLabeledEdit
           Left = 96
           Top = 10
-          Width = 764
+          Width = 872
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2823,8 +2870,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 857
-        Height = 405
+        Width = 965
+        Height = 376
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2849,19 +2896,19 @@ object frmMain: TfrmMain
       object Panel6: TPanel
         Left = 0
         Top = 0
-        Width = 867
+        Width = 975
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
         DesignSize = (
-          867
+          975
           41)
         object lbedDXDiagLogFile: TLabeledEdit
           Left = 80
           Top = 10
-          Width = 780
+          Width = 888
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2879,8 +2926,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 857
-        Height = 405
+        Width = 965
+        Height = 376
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2904,19 +2951,19 @@ object frmMain: TfrmMain
       object Panel8: TPanel
         Left = 0
         Top = 0
-        Width = 867
+        Width = 975
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
         DesignSize = (
-          867
+          975
           41)
         object lbedDescriptionFile: TLabeledEdit
           Left = 104
           Top = 10
-          Width = 756
+          Width = 864
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2934,8 +2981,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 857
-        Height = 405
+        Width = 965
+        Height = 376
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2959,19 +3006,19 @@ object frmMain: TfrmMain
       object Panel7: TPanel
         Left = 0
         Top = 0
-        Width = 867
+        Width = 975
         Height = 41
         Align = alTop
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 0
         DesignSize = (
-          867
+          975
           41)
         object lbedStepsFile: TLabeledEdit
           Left = 72
           Top = 10
-          Width = 788
+          Width = 896
           Height = 25
           Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
@@ -2989,8 +3036,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 5
         Top = 46
-        Width = 857
-        Height = 405
+        Width = 965
+        Height = 376
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -3008,67 +3055,13 @@ object frmMain: TfrmMain
         TabOrder = 1
       end
     end
-    object tsLog: TTabSheet
-      Caption = 'Log'
-      ImageIndex = 3
-      object memoLog: TMemo
-        AlignWithMargins = True
-        Left = 5
-        Top = 5
-        Width = 857
-        Height = 405
-        Margins.Left = 5
-        Margins.Top = 5
-        Margins.Right = 5
-        Margins.Bottom = 5
-        Align = alClient
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -13
-        Font.Name = 'Segoe UI'
-        Font.Style = []
-        Lines.Strings = (
-          'memoLog')
-        ParentFont = False
-        ReadOnly = True
-        ScrollBars = ssBoth
-        TabOrder = 0
-      end
-      object Panel4: TPanel
-        Left = 0
-        Top = 415
-        Width = 867
-        Height = 41
-        Align = alBottom
-        BevelOuter = bvNone
-        ParentBackground = False
-        TabOrder = 1
-        DesignSize = (
-          867
-          41)
-        object lbedLogPath: TLabeledEdit
-          Left = 56
-          Top = 9
-          Width = 804
-          Height = 25
-          Anchors = [akLeft, akTop, akRight]
-          EditLabel.Width = 46
-          EditLabel.Height = 25
-          EditLabel.Caption = 'Log file:'
-          LabelPosition = lpLeft
-          ReadOnly = True
-          TabOrder = 0
-          Text = ''
-        end
-      end
-    end
     object tsSettings: TTabSheet
       Caption = 'Settings'
       ImageIndex = 7
       object Panel3: TPanel
         Left = 0
         Top = 0
-        Width = 867
+        Width = 975
         Height = 169
         Align = alTop
         BevelOuter = bvNone
@@ -3077,45 +3070,44 @@ object frmMain: TfrmMain
       object GroupBox1: TGroupBox
         Left = 3
         Top = 3
-        Width = 225
+        Width = 278
         Height = 94
         Caption = 'Font'
         TabOrder = 1
         object lblFontSize: TLabel
           Left = 13
           Top = 27
-          Width = 55
+          Width = 26
           Height = 17
-          Caption = 'Font Size:'
+          Caption = 'Size:'
           Enabled = False
-        end
-        object edtFontSize: TEdit
-          Left = 13
-          Top = 56
-          Width = 50
-          Height = 25
-          TabStop = False
-          Enabled = False
-          ReadOnly = True
-          TabOrder = 0
-          Text = '10'
         end
         object tbFontSize: TTrackBar
-          Left = 69
+          Left = 45
           Top = 19
-          Width = 150
+          Width = 174
           Height = 46
           Hint = 'Font Size'
           Enabled = False
           Max = 24
           Min = 8
           Position = 10
-          TabOrder = 1
+          TabOrder = 0
           OnChange = tbFontSizeChange
+        end
+        object edtFontSize: TEdit
+          Left = 225
+          Top = 23
+          Width = 40
+          Height = 25
+          Alignment = taCenter
+          ReadOnly = True
+          TabOrder = 1
+          Text = '10'
         end
       end
       object GroupBox2: TGroupBox
-        Left = 234
+        Left = 287
         Top = 3
         Width = 225
         Height = 94
@@ -3157,10 +3149,72 @@ object frmMain: TfrmMain
           TabOrder = 1
         end
       end
+      object Button6: TButton
+        Left = 3
+        Top = 447
+        Width = 134
+        Height = 25
+        Action = actSettingsRestoreDefaults
+        TabOrder = 4
+      end
+    end
+    object tsLog: TTabSheet
+      Caption = 'Log'
+      ImageIndex = 3
+      object memoLog: TMemo
+        AlignWithMargins = True
+        Left = 5
+        Top = 5
+        Width = 965
+        Height = 376
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Segoe UI'
+        Font.Style = []
+        Lines.Strings = (
+          'memoLog')
+        ParentFont = False
+        ReadOnly = True
+        ScrollBars = ssBoth
+        TabOrder = 0
+      end
+      object Panel4: TPanel
+        Left = 0
+        Top = 386
+        Width = 975
+        Height = 41
+        Align = alBottom
+        BevelOuter = bvNone
+        ParentBackground = False
+        TabOrder = 1
+        DesignSize = (
+          975
+          41)
+        object lbedLogPath: TLabeledEdit
+          Left = 56
+          Top = 9
+          Width = 912
+          Height = 25
+          Anchors = [akLeft, akTop, akRight]
+          EditLabel.Width = 46
+          EditLabel.Height = 25
+          EditLabel.Caption = 'Log file:'
+          LabelPosition = lpLeft
+          ReadOnly = True
+          TabOrder = 0
+          Text = ''
+        end
+      end
     end
   end
   object ActionList1: TActionList
-    Left = 544
+    Left = 136
     Top = 429
     object actExit: TAction
       Caption = 'Exit'
@@ -3196,12 +3250,28 @@ object frmMain: TfrmMain
       OnExecute = actModulesEditorExecute
     end
     object actModulesCopySelectedAsText: TAction
+      Category = 'Modules Grid'
       Caption = 'Copy as Text'
       OnExecute = actModulesCopySelectedAsTextExecute
     end
     object actModulesSelectAll: TAction
+      Category = 'Modules Grid'
       Caption = 'Select All'
       OnExecute = actModulesSelectAllExecute
+    end
+    object actModulesUnSelectAll: TAction
+      Category = 'Modules Grid'
+      Caption = 'Unselect All'
+      OnExecute = actModulesUnSelectAllExecute
+    end
+    object actModulesAddSelectedToDB: TAction
+      Category = 'Modules Grid'
+      Caption = 'Add to Known Modules DB'
+    end
+    object actSettingsRestoreDefaults: TAction
+      Category = 'Settings'
+      Caption = 'Restore Defaults'
+      OnExecute = actSettingsRestoreDefaultsExecute
     end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
@@ -3209,24 +3279,33 @@ object frmMain: TfrmMain
     Filter = 'ModuleList Text file|*.txt'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     ShowEncodingList = False
-    Left = 638
+    Left = 230
     Top = 429
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = '.zip'
     Filter = 'Zip file|*.zip'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    Left = 737
+    Left = 329
     Top = 429
   end
   object ppmModulesGrid: TPopupMenu
-    Left = 808
-    Top = 165
+    Left = 48
+    Top = 429
     object Copytoclipboard1: TMenuItem
       Action = actModulesCopySelectedAsText
     end
+    object AddtoKnownModulesDB1: TMenuItem
+      Action = actModulesAddSelectedToDB
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
     object actModulesSelectAll1: TMenuItem
       Action = actModulesSelectAll
+    end
+    object UnselectAll1: TMenuItem
+      Action = actModulesUnSelectAll
     end
   end
 end

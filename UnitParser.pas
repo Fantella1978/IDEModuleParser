@@ -179,6 +179,7 @@ begin
       DM1.cdsModules.Post;
       SetCurrentTaskPosition(i);
     end;
+  DM1.cdsModules.First;
   DM1.cdsModules.EnableControls;
 end;
 
