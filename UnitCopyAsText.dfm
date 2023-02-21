@@ -3,8 +3,8 @@ object frmCopyAsText: TfrmCopyAsText
   Top = 0
   BorderIcons = []
   Caption = 'Copy as Text'
-  ClientHeight = 425
-  ClientWidth = 904
+  ClientHeight = 421
+  ClientWidth = 902
   Color = clBtnFace
   Constraints.MinHeight = 400
   Constraints.MinWidth = 780
@@ -19,24 +19,26 @@ object frmCopyAsText: TfrmCopyAsText
   object Splitter1: TSplitter
     Left = 198
     Top = 0
-    Height = 388
+    Height = 384
     ExplicitLeft = 176
     ExplicitTop = 120
     ExplicitHeight = 100
   end
   object Panel1: TPanel
     Left = 0
-    Top = 388
-    Width = 904
+    Top = 384
+    Width = 902
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 380
+    ExplicitWidth = 900
     DesignSize = (
-      904
+      902
       37)
     object btnOk: TButton
-      Left = 694
+      Left = 692
       Top = 6
       Width = 117
       Height = 25
@@ -46,10 +48,10 @@ object frmCopyAsText: TfrmCopyAsText
       ModalResult = 1
       TabOrder = 0
       OnClick = btnOkClick
-      ExplicitLeft = 692
+      ExplicitLeft = 690
     end
     object btnCancel: TButton
-      Left = 823
+      Left = 821
       Top = 6
       Width = 75
       Height = 25
@@ -59,15 +61,15 @@ object frmCopyAsText: TfrmCopyAsText
       ModalResult = 2
       TabOrder = 1
       OnClick = btnCancelClick
-      ExplicitLeft = 821
+      ExplicitLeft = 819
     end
   end
   object GroupBox2: TGroupBox
     AlignWithMargins = True
     Left = 206
     Top = 0
-    Width = 698
-    Height = 388
+    Width = 696
+    Height = 384
     Margins.Left = 5
     Margins.Top = 0
     Margins.Right = 0
@@ -76,12 +78,14 @@ object frmCopyAsText: TfrmCopyAsText
     Caption = 'Preview'
     Constraints.MinWidth = 250
     TabOrder = 1
+    ExplicitWidth = 694
+    ExplicitHeight = 380
     object Memo1: TMemo
       AlignWithMargins = True
       Left = 5
       Top = 20
-      Width = 688
-      Height = 363
+      Width = 686
+      Height = 359
       TabStop = False
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -95,6 +99,8 @@ object frmCopyAsText: TfrmCopyAsText
       ReadOnly = True
       ScrollBars = ssBoth
       TabOrder = 0
+      ExplicitWidth = 684
+      ExplicitHeight = 355
     end
   end
   object GroupBox1: TGroupBox
@@ -102,7 +108,7 @@ object frmCopyAsText: TfrmCopyAsText
     Left = 0
     Top = 0
     Width = 193
-    Height = 388
+    Height = 384
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 5
@@ -111,12 +117,13 @@ object frmCopyAsText: TfrmCopyAsText
     Caption = 'Columns'
     Constraints.MinWidth = 150
     TabOrder = 2
+    ExplicitHeight = 380
     object CheckListBox1: TCheckListBox
       AlignWithMargins = True
       Left = 5
       Top = 20
       Width = 183
-      Height = 363
+      Height = 359
       Align = alClient
       Color = clBtnFace
       ItemHeight = 15
@@ -130,6 +137,7 @@ object frmCopyAsText: TfrmCopyAsText
         'Item 7')
       TabOrder = 0
       OnClickCheck = CheckListBox1ClickCheck
+      ExplicitHeight = 355
     end
   end
 end

@@ -1,9 +1,9 @@
 object frmPackagesEditor: TfrmPackagesEditor
   Left = 0
   Top = 0
-  BorderStyle = bsDialog
-  Caption = 'Packages Edit'
-  ClientHeight = 414
+  BorderStyle = bsSingle
+  Caption = 'Packages Editor'
+  ClientHeight = 365
   ClientWidth = 706
   Color = clBtnFace
   Constraints.MinHeight = 400
@@ -14,10 +14,11 @@ object frmPackagesEditor: TfrmPackagesEditor
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poMainFormCenter
+  OnCloseQuery = FormCloseQuery
   OnResize = FormResize
   DesignSize = (
     706
-    414)
+    365)
   TextHeight = 15
   object lblName: TLabel
     Left = 12
@@ -28,14 +29,14 @@ object frmPackagesEditor: TfrmPackagesEditor
   end
   object lblUrl: TLabel
     Left = 23
-    Top = 49
+    Top = 73
     Width = 24
     Height = 15
     Caption = 'URL:'
   end
   object lblVersion: TLabel
     Left = 6
-    Top = 75
+    Top = 46
     Width = 41
     Height = 15
     Caption = 'Version:'
@@ -49,16 +50,18 @@ object frmPackagesEditor: TfrmPackagesEditor
   end
   object Panel1: TPanel
     Left = 0
-    Top = 377
+    Top = 328
     Width = 706
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 324
+    ExplicitWidth = 704
     DesignSize = (
       706
       37)
-    object Button1: TButton
+    object ButtonOK: TButton
       Left = 621
       Top = 6
       Width = 75
@@ -68,15 +71,15 @@ object frmPackagesEditor: TfrmPackagesEditor
       Default = True
       ModalResult = 1
       TabOrder = 0
-      OnClick = Button1Click
+      OnClick = ButtonOKClick
       ExplicitLeft = 619
     end
   end
-  object DBGrid1: TDBGrid
+  object dbgPackages: TDBGrid
     Left = 0
     Top = 160
     Width = 706
-    Height = 217
+    Height = 168
     Align = alBottom
     Anchors = [akLeft, akTop, akRight, akBottom]
     DataSource = DM1.dsPackages
@@ -88,7 +91,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     TitleFont.Height = -12
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
-    OnDrawColumnCell = DBGrid1DrawColumnCell
+    OnDrawColumnCell = dbgPackagesDrawColumnCell
     Columns = <
       item
         Expanded = False
@@ -99,6 +102,7 @@ object frmPackagesEditor: TfrmPackagesEditor
         Expanded = False
         FieldName = 'Name'
         Title.Caption = 'Package Name'
+        Width = 250
         Visible = True
       end
       item
@@ -129,41 +133,40 @@ object frmPackagesEditor: TfrmPackagesEditor
     DataField = 'Name'
     DataSource = DM1.dsPackages
     TabOrder = 2
+    OnChange = dbeNameChange
     ExplicitWidth = 565
   end
   object DBNavigator1: TDBNavigator
-    Left = 1
+    Left = 8
     Top = 129
     Width = 240
     Height = 25
     DataSource = DM1.dsPackages
-    Anchors = [akTop, akRight]
     TabOrder = 3
-    ExplicitLeft = -1
   end
   object btnAdd: TButton
     Left = 626
     Top = 8
     Width = 75
     Height = 25
+    Action = actPackageAdd
     Anchors = [akTop, akRight]
-    Caption = 'Add'
     TabOrder = 4
     ExplicitLeft = 624
   end
   object btnDelete: TButton
     Left = 626
-    Top = 39
+    Top = 68
     Width = 75
     Height = 25
+    Action = actPackageDelete
     Anchors = [akTop, akRight]
-    Caption = 'Delete'
     TabOrder = 5
     ExplicitLeft = 624
   end
   object dbeURL: TDBEdit
     Left = 53
-    Top = 40
+    Top = 69
     Width = 567
     Height = 23
     Anchors = [akLeft, akTop, akRight]
@@ -174,18 +177,19 @@ object frmPackagesEditor: TfrmPackagesEditor
   end
   object dbeVersion: TDBEdit
     Left = 53
-    Top = 69
+    Top = 40
     Width = 188
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'Version'
     DataSource = DM1.dsPackages
     TabOrder = 7
+    OnChange = dbeVersionChange
     ExplicitWidth = 186
   end
   object DBEdit2: TDBEdit
     Left = 95
-    Top = 98
+    Top = 100
     Width = 525
     Height = 23
     Anchors = [akLeft, akTop, akRight]
@@ -193,5 +197,61 @@ object frmPackagesEditor: TfrmPackagesEditor
     DataSource = DM1.dsPackages
     TabOrder = 8
     ExplicitWidth = 523
+  end
+  object Button2: TButton
+    Left = 626
+    Top = 39
+    Width = 75
+    Height = 25
+    Action = actPackageEdit
+    Anchors = [akTop, akRight]
+    TabOrder = 9
+    ExplicitLeft = 624
+  end
+  object Button3: TButton
+    Left = 626
+    Top = 97
+    Width = 75
+    Height = 25
+    Action = actPackagesSave
+    Anchors = [akTop, akRight]
+    TabOrder = 10
+    ExplicitLeft = 624
+  end
+  object Button4: TButton
+    Left = 626
+    Top = 128
+    Width = 75
+    Height = 25
+    Action = actPackagesCancel
+    Anchors = [akTop, akRight]
+    TabOrder = 11
+    ExplicitLeft = 624
+  end
+  object ActionList1: TActionList
+    Left = 304
+    Top = 128
+    object actPackageAdd: TAction
+      Caption = 'Add'
+      OnExecute = actPackageAddExecute
+    end
+    object actPackageDelete: TAction
+      Caption = 'Delete'
+      OnExecute = actPackageDeleteExecute
+    end
+    object actPackageEdit: TAction
+      Caption = 'Edit'
+      OnExecute = actPackageEditExecute
+    end
+    object actPackagesSave: TAction
+      Caption = 'Save'
+      Enabled = False
+      OnExecute = actPackagesSaveExecute
+    end
+    object actPackagesCancel: TAction
+      Caption = 'Cancel'
+      Enabled = False
+      OnExecute = actPackagesCancelExecute
+    end
   end
 end

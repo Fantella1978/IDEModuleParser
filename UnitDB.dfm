@@ -198,20 +198,18 @@ object DM1: TDM1
     Left = 568
     Top = 176
   end
-  object FDConnection1: TFDConnection
+  object fdcSQLite: TFDConnection
     Params.Strings = (
       
         'Database=C:\Users\Tester\Documents\Embarcadero\Studio\Projects\I' +
         'DE Module Parser\IDEModuleParser.db3'
       'DriverID=SQLite')
-    Connected = True
     LoginPrompt = False
-    Left = 232
+    Left = 280
     Top = 56
   end
   object fdqModulesFromQuery: TFDQuery
-    Active = True
-    Connection = FDConnection1
+    Connection = fdcSQLite
     SQL.Strings = (
       
         'SELECT m.FileName, p.Name as PackageName, p.Url FROM Modules m L' +
@@ -220,9 +218,8 @@ object DM1: TDM1
     Top = 248
   end
   object fdtModules: TFDTable
-    Active = True
     IndexFieldNames = 'Num'
-    Connection = FDConnection1
+    Connection = fdcSQLite
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     TableName = 'Modules'
     Left = 232
@@ -234,22 +231,31 @@ object DM1: TDM1
     Top = 184
   end
   object fdtPackages: TFDTable
-    Active = True
+    AfterOpen = fdtPackagesAfterOpen
+    AfterEdit = fdtPackagesAfterEdit
+    AfterCancel = fdtPackagesAfterCancel
+    AfterRefresh = fdtPackagesAfterRefresh
     IndexFieldNames = 'Num'
-    Connection = FDConnection1
+    Connection = fdcSQLite
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     TableName = 'Packages'
-    Left = 312
+    Left = 336
     Top = 120
   end
   object dsPackages: TDataSource
     DataSet = fdtPackages
-    Left = 312
+    OnStateChange = dsPackagesStateChange
+    Left = 336
     Top = 184
   end
   object dsModulesFromQuery: TDataSource
     DataSet = fdqModulesFromQuery
     Left = 232
     Top = 312
+  end
+  object FDUpdateSQL1: TFDUpdateSQL
+    Connection = fdcSQLite
+    Left = 336
+    Top = 248
   end
 end

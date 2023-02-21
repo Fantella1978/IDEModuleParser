@@ -22,6 +22,8 @@ uses
   , UnitCopyAsText
   , UnitDBGrid
   , UnitSettings
+  , UnitModulesEditor
+  , UnitAddModules
   ;
 
 type
@@ -59,9 +61,6 @@ type
     tsModulesList: TTabSheet;
     tsDXDiagLogFile: TTabSheet;
     tsLog: TTabSheet;
-    ledtBDSBuild: TLabeledEdit;
-    ledtBDSPath: TLabeledEdit;
-    ledtBDSInstDate: TLabeledEdit;
     memoLog: TMemo;
     Panel4: TPanel;
     lbedLogPath: TLabeledEdit;
@@ -104,17 +103,25 @@ type
     actModulesSelectAll1: TMenuItem;
     actModulesUnSelectAll: TAction;
     UnselectAll1: TMenuItem;
-    SpeedButton1: TSpeedButton;
-    SpeedButton2: TSpeedButton;
-    lblModulesSelectedCount: TLabel;
     actModulesAddSelectedToDB: TAction;
     AddtoKnownModulesDB1: TMenuItem;
     N1: TMenuItem;
-    SpeedButton3: TSpeedButton;
     Button6: TButton;
     actSettingsRestoreDefaults: TAction;
     tsHome: TTabSheet;
     edtFontSize: TEdit;
+    Panel9: TPanel;
+    ledtBDSBuild: TLabeledEdit;
+    SpeedButton1: TSpeedButton;
+    SpeedButton3: TSpeedButton;
+    SpeedButton2: TSpeedButton;
+    ledtBDSInstDate: TLabeledEdit;
+    ledtBDSPath: TLabeledEdit;
+    GroupBox4: TGroupBox;
+    lblModulesSelectedCount: TLabel;
+    lblModulesCount: TLabel;
+    GroupBox5: TGroupBox;
+    Splitter1: TSplitter;
     procedure FormCreate(Sender: TObject);
     procedure ModulesGridSelectionChanged(Sender: TObject);
     /// <summary>Exit from application</summary>
@@ -219,10 +226,12 @@ type
       Shift: TShiftState; X, Y, HitTest: Integer;
       var MouseActivate: TMouseActivate);
     procedure FormResize(Sender: TObject);
+    procedure actModulesAddSelectedToDBExecute(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
       LinfoSize: DWORD;
+    procedure ModulesCountDisplay;
   public
     { Public declarations }
   end;
@@ -582,7 +591,7 @@ end;
 procedure TfrmMain.actModulesEditorExecute(Sender: TObject);
 begin
   // Show Modules Editor
-
+  frmModulesEditor.ShowModal;
 end;
 
 procedure TfrmMain.actModulesSelectAllExecute(Sender: TObject);
@@ -670,7 +679,7 @@ begin
   // Parse Module file
 
   if (DM1.cdsModules.RecordCount > 0) AND
-    (MessageDlg('Modules list not empty. Clear modules list and parse ModulesList file?',
+    (MessageDlg('ModulesList already parsed. ReParse ModulesList file?',
        mtConfirmation, [mbYes, mbNo], 0) in [mrNo, mrCancel])
     then Exit;
 
@@ -702,17 +711,32 @@ begin
       DM1.cdsModules.IndexName := '';
       DM1.cdsModules.First;
       DBGrid1.SelectedRows.Clear;
+      ModulesCountDisplay();
+      ModulesSelectedCountDisplay();
+
       // DM1.cdsModules.IndexName := 'cdsModulesNameIndexASC';
       // DM1.cdsModules.EnableControls;
     end;
-  actParseModuleFile.Enabled := false;
+  // actParseModuleFile.Enabled := false;
 end;
 
 procedure TfrmMain.actSettingsRestoreDefaultsExecute(Sender: TObject);
 begin
   // Restore settings to Defaults
-  RestorSattingsToDefaults();
-  actSettingsRestoreDefaults.Enabled := false;
+  if MessageDlg('Are you sure restore settings to Defaults?', mtConfirmation, [mbYes, mbNo], 0) = mrYes
+    then
+      begin
+        RestoreSettingsToDefaults();
+        actSettingsRestoreDefaults.Enabled := false;
+        tbFontSize.Position := GlobalDefaultFontSize;
+        cbCreateLog.Checked := GlobalLogCreate;
+      end;
+end;
+
+procedure TfrmMain.actModulesAddSelectedToDBExecute(Sender: TObject);
+begin
+  //
+  frmAddModules.Show;
 end;
 
 procedure TfrmMain.actModulesCopySelectedAsTextExecute(Sender: TObject);
@@ -746,11 +770,17 @@ begin
       Logger.LogEnabled := false;
     end;
   GlobalLogCreate := cbCreateLog.Checked;
+  actSettingsRestoreDefaults.Enabled := true;
 end;
 
 procedure TfrmMain.ModulesSelectedCountDisplay();
 begin
   frmMain.lblModulesSelectedCount.Caption := 'Selected count: ' + IntToStr(frmMain.DBGrid1.SelectedRows.Count);
+end;
+
+procedure TfrmMain.ModulesCountDisplay();
+begin
+  frmMain.lblModulesCount.Caption := 'Modules count: ' + IntToStr(DM1.cdsModules.RecordCount);
 end;
 
 procedure TfrmMain.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -759,7 +789,7 @@ Var
   wi, sw, i : Integer;
 begin
   // Rize Column width if text is a long
-  wi := 5 + DBGrid1.Canvas.TextExtent(Column.Field.DisplayText).cx;
+  wi := 10 + DBGrid1.Canvas.TextExtent(Column.Field.DisplayText).cx;
   if wi > column.Width
   then
     begin
@@ -815,7 +845,7 @@ end;
 procedure TfrmMain.DBGrid1MouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
-  ShowMessage('DBGrid1 MouseDown');
+  // ShowMessage('DBGrid1 MouseDown');
 end;
 
 procedure TfrmMain.DBGrid1MouseUp(Sender: TObject; Button: TMouseButton;
@@ -858,9 +888,7 @@ begin
       // First;
       GotoBookmark(CurrentBookMark);
       FreeBookMark(CurrentBookMark);
-
       DBGrid1.SelectedRows.Clear; // Clear Selected Rows TEMPORARILY
-
       //EnableControls;
       // Application.ProcessMessages;
     end;
@@ -955,6 +983,10 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   //
   if not DM1.cdsModules.Active then DM1.cdsModules.Open;
+  DM1.fdcSQLite.Connected := true;
+  DM1.fdtPackages.Active := true;
+  DM1.fdtModules.Active := true;
+
   Caption := 'IDE Module Parser' + ' ' + GetFileVersionStr(Application.ExeName);
   // ImageList1.GetBitmap(0, Image1.Picture.Bitmap);
 
@@ -1119,6 +1151,8 @@ begin
   memoSteps.Font.Size := GlobalDefaultFontSize;
   memoLog.Font.Size := GlobalDefaultFontSize;
   DBGrid1.Font.Size := GlobalDefaultFontSize;
+
+  actSettingsRestoreDefaults.Enabled := true;
 end;
 
 function TfrmMain.TryOpenDescFileInReport: boolean;

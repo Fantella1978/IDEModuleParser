@@ -28,7 +28,7 @@ type
     cdsPackagesUrl: TStringField;
     dsLocalPackages: TDataSource;
     DataSetProvider2: TDataSetProvider;
-    FDConnection1: TFDConnection;
+    fdcSQLite: TFDConnection;
     fdqModulesFromQuery: TFDQuery;
     fdtModules: TFDTable;
     dsModules: TDataSource;
@@ -37,7 +37,13 @@ type
     dsModulesFromQuery: TDataSource;
     cdsModulesPackageID: TIntegerField;
     cdsModulesPackageName: TStringField;
+    FDUpdateSQL1: TFDUpdateSQL;
     procedure cdsModulesAfterScroll(DataSet: TDataSet);
+    procedure fdtPackagesAfterCancel(DataSet: TDataSet);
+    procedure fdtPackagesAfterEdit(DataSet: TDataSet);
+    procedure fdtPackagesAfterOpen(DataSet: TDataSet);
+    procedure fdtPackagesAfterRefresh(DataSet: TDataSet);
+    procedure dsPackagesStateChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -54,6 +60,7 @@ implementation
 
 uses
     UnitMain
+  , UnitPackagesEditor
   ;
 
 {$R *.dfm}
@@ -77,6 +84,73 @@ begin
       cdsModules.Delete;
     end;
   cdsModules.EnableControls;
+end;
+
+procedure TDM1.dsPackagesStateChange(Sender: TObject);
+begin
+  if (frmPackagesEditor = nil) OR not frmPackagesEditor.Visible then Exit;
+  if dsPackages.State in [dsEdit, dsInsert]
+    then
+      begin
+        frmPackagesEditor.actPackageAdd.Enabled := false;
+        frmPackagesEditor.actPackageEdit.Enabled := false;
+        frmPackagesEditor.actPackageDelete.Enabled := false;
+        frmPackagesEditor.actPackagesSave.Enabled := true;
+        frmPackagesEditor.actPackagesCancel.Enabled := true;
+      end;
+  if dsPackages.State in [dsBrowse]
+    then
+      begin
+        frmPackagesEditor.actPackageAdd.Enabled := true;
+        frmPackagesEditor.actPackageEdit.Enabled := true;
+        if dsPackages.DataSet.RecordCount > 0
+          then frmPackagesEditor.actPackageDelete.Enabled := true
+          else frmPackagesEditor.actPackageDelete.Enabled := false;
+        frmPackagesEditor.actPackagesSave.Enabled := false;
+        frmPackagesEditor.actPackagesCancel.Enabled := false;
+      end;
+end;
+
+procedure TDM1.fdtPackagesAfterCancel(DataSet: TDataSet);
+begin
+  frmPackagesEditor.actPackageAdd.Enabled := true;
+  frmPackagesEditor.actPackageEdit.Enabled := true;
+  frmPackagesEditor.actPackageDelete.Enabled := true;
+  frmPackagesEditor.actPackagesSave.Enabled := false;
+  frmPackagesEditor.actPackagesCancel.Enabled := false;
+end;
+
+procedure TDM1.fdtPackagesAfterEdit(DataSet: TDataSet);
+begin
+  frmPackagesEditor.actPackageAdd.Enabled := true;
+  frmPackagesEditor.actPackageEdit.Enabled := true;
+  frmPackagesEditor.actPackageDelete.Enabled := true;
+  frmPackagesEditor.actPackagesSave.Enabled := false;
+  frmPackagesEditor.actPackagesCancel.Enabled := false;
+end;
+
+procedure TDM1.fdtPackagesAfterOpen(DataSet: TDataSet);
+begin
+  if (frmPackagesEditor = nil) OR not frmPackagesEditor.Visible then Exit;
+  frmPackagesEditor.actPackageAdd.Enabled := true;
+  frmPackagesEditor.actPackageEdit.Enabled := false;
+  frmPackagesEditor.actPackageDelete.Enabled := false;
+  frmPackagesEditor.actPackagesSave.Enabled := false;
+  frmPackagesEditor.actPackagesCancel.Enabled := false;
+end;
+
+procedure TDM1.fdtPackagesAfterRefresh(DataSet: TDataSet);
+begin
+  if (frmPackagesEditor = nil) OR not frmPackagesEditor.Visible then Exit;
+  frmPackagesEditor.actPackageAdd.Enabled := true;
+  if DataSet.RecordCount >0
+  then
+    begin
+      frmPackagesEditor.actPackageEdit.Enabled := false;
+      frmPackagesEditor.actPackageDelete.Enabled := false;
+    end;
+  frmPackagesEditor.actPackagesSave.Enabled := false;
+  frmPackagesEditor.actPackagesCancel.Enabled := false;
 end;
 
 end.

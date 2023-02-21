@@ -7,7 +7,7 @@ interface
   /// <summary></summary>
   function LoadSattingsFromRegistry() : boolean;
   /// <summary>Restore Global Sattings To Defaults</summary>
-  procedure RestorSattingsToDefaults();
+  procedure RestoreSettingsToDefaults();
 
 var
   // Global Settings
@@ -88,13 +88,14 @@ begin
 
         reg.CloseKey;
         Result := true;
-      end;
+      end
+    else RestoreSettingsToDefaults();
   finally
     reg.Free;
   end;
 end;
 
-procedure RestorSattingsToDefaults();
+procedure RestoreSettingsToDefaults();
 begin
   // Restore Global Sattings To Defaults
   GlobalDefaultFontSize := Def_DefaultFontSize;

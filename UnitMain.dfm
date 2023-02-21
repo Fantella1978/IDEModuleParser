@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'IDE Module Parser'
-  ClientHeight = 499
+  ClientHeight = 560
   ClientWidth = 983
   Color = clBtnFace
   Constraints.MinHeight = 480
@@ -20,13 +20,13 @@ object frmMain: TfrmMain
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
-    Top = 462
+    Top = 523
     Width = 983
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 458
+    ExplicitTop = 519
     ExplicitWidth = 981
     DesignSize = (
       983
@@ -81,8 +81,8 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 983
-    Height = 462
-    ActivePage = tsHome
+    Height = 523
+    ActivePage = tsModulesList
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -93,17 +93,17 @@ object frmMain: TfrmMain
     Style = tsFlatButtons
     TabOrder = 1
     ExplicitWidth = 981
-    ExplicitHeight = 458
+    ExplicitHeight = 519
     object tsHome: TTabSheet
       Caption = 'Home'
       ImageIndex = 8
       DesignSize = (
         975
-        427)
+        488)
       object lblStartMessageMain: TLabel
         AlignWithMargins = True
         Left = 392
-        Top = 86
+        Top = 100
         Width = 192
         Height = 28
         Alignment = taCenter
@@ -124,7 +124,7 @@ object frmMain: TfrmMain
       object lblStartMessageSecondary: TLabel
         AlignWithMargins = True
         Left = 269
-        Top = 152
+        Top = 182
         Width = 438
         Height = 122
         Alignment = taCenter
@@ -142,6 +142,7 @@ object frmMain: TfrmMain
         Transparent = True
         WordWrap = True
         StyleElements = [seClient, seBorder]
+        ExplicitTop = 152
       end
     end
     object tsModuleListFile: TTabSheet
@@ -180,7 +181,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 965
-        Height = 376
+        Height = 437
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2659,114 +2660,24 @@ object frmMain: TfrmMain
       Caption = 'Modules'
       Enabled = False
       ImageIndex = 1
-      DesignSize = (
-        975
-        427)
-      object SpeedButton1: TSpeedButton
-        Left = 878
-        Top = 73
-        Width = 94
-        Height = 22
-        Action = actModulesCopySelectedAsText
-        Anchors = [akTop, akRight]
-        ExplicitLeft = 770
-      end
-      object SpeedButton2: TSpeedButton
-        Left = 616
-        Top = 73
-        Width = 73
-        Height = 22
-        Action = actModulesSelectAll
-        Anchors = [akTop, akRight]
-        ExplicitLeft = 676
-      end
-      object lblModulesSelectedCount: TLabel
-        Left = 856
-        Top = 50
-        Width = 116
-        Height = 17
-        Alignment = taRightJustify
-        Anchors = [akTop, akRight]
-        Caption = 'Selected count: '#1061#1061#1061
-        ExplicitLeft = 902
-      end
-      object SpeedButton3: TSpeedButton
-        Left = 695
-        Top = 73
-        Width = 177
-        Height = 22
-        Action = actModulesAddSelectedToDB
-        Anchors = [akTop, akRight]
-        ExplicitLeft = 725
-      end
-      object ledtBDSBuild: TLabeledEdit
-        Left = 80
-        Top = 39
-        Width = 192
-        Height = 25
-        Cursor = crHandPoint
-        Alignment = taCenter
-        EditLabel.Width = 78
-        EditLabel.Height = 25
-        EditLabel.Caption = 'BDS build '#8470':'
-        LabelPosition = lpLeft
-        ReadOnly = True
-        TabOrder = 1
-        Text = ''
-        OnClick = actOpenModuleFileExecute
-      end
-      object ledtBDSPath: TLabeledEdit
-        Left = 80
-        Top = 10
-        Width = 891
-        Height = 25
-        Cursor = crHandPoint
-        Anchors = [akLeft, akTop, akRight]
-        EditLabel.Width = 51
-        EditLabel.Height = 25
-        EditLabel.Caption = 'BDS Path:'
-        EditLabel.Color = clBtnFace
-        EditLabel.Font.Charset = DEFAULT_CHARSET
-        EditLabel.Font.Color = clWindowText
-        EditLabel.Font.Height = -12
-        EditLabel.Font.Name = 'Segoe UI'
-        EditLabel.Font.Style = []
-        EditLabel.ParentColor = False
-        EditLabel.ParentFont = False
-        LabelPosition = lpLeft
-        ReadOnly = True
-        TabOrder = 0
-        Text = ''
-        ExplicitWidth = 889
-      end
-      object ledtBDSInstDate: TLabeledEdit
-        Left = 98
-        Top = 70
-        Width = 174
-        Height = 25
-        Cursor = crHandPoint
-        Alignment = taCenter
-        EditLabel.Width = 94
-        EditLabel.Height = 25
-        EditLabel.Caption = 'BDS install Date:'
-        LabelPosition = lpLeft
-        ReadOnly = True
-        TabOrder = 2
-        Text = ''
-        OnClick = actOpenModuleFileExecute
+      object Splitter1: TSplitter
+        Left = 145
+        Top = 105
+        Width = 5
+        Height = 383
+        ExplicitLeft = 185
       end
       object DBGrid1: TDBGrid
-        Left = 0
-        Top = 101
-        Width = 975
-        Height = 326
-        Align = alBottom
-        Anchors = [akLeft, akTop, akRight, akBottom]
+        Left = 150
+        Top = 105
+        Width = 825
+        Height = 383
+        Align = alClient
         DataSource = DM1.DataSource1
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
         PopupMenu = ppmModulesGrid
         ReadOnly = True
-        TabOrder = 3
+        TabOrder = 0
         TitleFont.Charset = DEFAULT_CHARSET
         TitleFont.Color = clWindowText
         TitleFont.Height = -13
@@ -2833,6 +2744,130 @@ object frmMain: TfrmMain
             Visible = False
           end>
       end
+      object Panel9: TPanel
+        Left = 0
+        Top = 0
+        Width = 975
+        Height = 105
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 1
+        DesignSize = (
+          975
+          105)
+        object SpeedButton1: TSpeedButton
+          Left = 873
+          Top = 70
+          Width = 94
+          Height = 22
+          Action = actModulesCopySelectedAsText
+          Anchors = [akTop, akRight]
+        end
+        object SpeedButton3: TSpeedButton
+          Left = 690
+          Top = 70
+          Width = 177
+          Height = 22
+          Action = actModulesAddSelectedToDB
+          Anchors = [akTop, akRight]
+        end
+        object SpeedButton2: TSpeedButton
+          Left = 611
+          Top = 70
+          Width = 73
+          Height = 22
+          Action = actModulesSelectAll
+          Anchors = [akTop, akRight]
+        end
+        object ledtBDSBuild: TLabeledEdit
+          Left = 302
+          Top = 41
+          Width = 192
+          Height = 25
+          Cursor = crHandPoint
+          Alignment = taCenter
+          EditLabel.Width = 78
+          EditLabel.Height = 25
+          EditLabel.Caption = 'BDS build '#8470':'
+          LabelPosition = lpLeft
+          ReadOnly = True
+          TabOrder = 0
+          Text = ''
+          OnClick = actOpenModuleFileExecute
+        end
+        object ledtBDSInstDate: TLabeledEdit
+          Left = 302
+          Top = 70
+          Width = 192
+          Height = 25
+          Cursor = crHandPoint
+          Alignment = taCenter
+          EditLabel.Width = 94
+          EditLabel.Height = 25
+          EditLabel.Caption = 'BDS install Date:'
+          LabelPosition = lpLeft
+          ReadOnly = True
+          TabOrder = 1
+          Text = ''
+          OnClick = actOpenModuleFileExecute
+        end
+        object ledtBDSPath: TLabeledEdit
+          Left = 302
+          Top = 10
+          Width = 673
+          Height = 25
+          Cursor = crHandPoint
+          Anchors = [akLeft, akTop, akRight]
+          EditLabel.Width = 51
+          EditLabel.Height = 25
+          EditLabel.Caption = 'BDS Path:'
+          EditLabel.Color = clBtnFace
+          EditLabel.Font.Charset = DEFAULT_CHARSET
+          EditLabel.Font.Color = clWindowText
+          EditLabel.Font.Height = -12
+          EditLabel.Font.Name = 'Segoe UI'
+          EditLabel.Font.Style = []
+          EditLabel.ParentColor = False
+          EditLabel.ParentFont = False
+          LabelPosition = lpLeft
+          ReadOnly = True
+          TabOrder = 2
+          Text = ''
+          ExplicitWidth = 635
+        end
+        object GroupBox4: TGroupBox
+          Left = 0
+          Top = 0
+          Width = 145
+          Height = 105
+          Align = alLeft
+          Caption = 'Statistic'
+          TabOrder = 3
+          object lblModulesSelectedCount: TLabel
+            Left = 11
+            Top = 48
+            Width = 116
+            Height = 17
+            Caption = 'Selected count: '#1061#1061#1061
+          end
+          object lblModulesCount: TLabel
+            Left = 11
+            Top = 25
+            Width = 118
+            Height = 17
+            Caption = 'Modules count: '#1061#1061#1061
+          end
+        end
+      end
+      object GroupBox5: TGroupBox
+        Left = 0
+        Top = 105
+        Width = 145
+        Height = 383
+        Align = alLeft
+        Caption = 'Filters'
+        TabOrder = 2
+      end
     end
     object tsStackTraceFile: TTabSheet
       Caption = 'StackTrace file'
@@ -2871,7 +2906,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 965
-        Height = 376
+        Height = 437
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2927,7 +2962,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 965
-        Height = 376
+        Height = 437
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2982,7 +3017,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 965
-        Height = 376
+        Height = 437
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -3037,7 +3072,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 965
-        Height = 376
+        Height = 437
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -3058,6 +3093,9 @@ object frmMain: TfrmMain
     object tsSettings: TTabSheet
       Caption = 'Settings'
       ImageIndex = 7
+      DesignSize = (
+        975
+        488)
       object Panel3: TPanel
         Left = 0
         Top = 0
@@ -3066,6 +3104,7 @@ object frmMain: TfrmMain
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 973
       end
       object GroupBox1: TGroupBox
         Left = 3
@@ -3130,7 +3169,7 @@ object frmMain: TfrmMain
         Top = 103
         Width = 225
         Height = 162
-        Caption = 'Packages && Modules'
+        Caption = 'Known Packages && Modules'
         TabOrder = 3
         object Button5: TButton
           Left = 14
@@ -3151,11 +3190,13 @@ object frmMain: TfrmMain
       end
       object Button6: TButton
         Left = 3
-        Top = 447
+        Top = 460
         Width = 134
         Height = 25
         Action = actSettingsRestoreDefaults
+        Anchors = [akLeft, akBottom]
         TabOrder = 4
+        ExplicitTop = 456
       end
     end
     object tsLog: TTabSheet
@@ -3166,7 +3207,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 5
         Width = 965
-        Height = 376
+        Height = 437
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -3186,7 +3227,7 @@ object frmMain: TfrmMain
       end
       object Panel4: TPanel
         Left = 0
-        Top = 386
+        Top = 447
         Width = 975
         Height = 41
         Align = alBottom
@@ -3267,6 +3308,7 @@ object frmMain: TfrmMain
     object actModulesAddSelectedToDB: TAction
       Category = 'Modules Grid'
       Caption = 'Add to Known Modules DB'
+      OnExecute = actModulesAddSelectedToDBExecute
     end
     object actSettingsRestoreDefaults: TAction
       Category = 'Settings'

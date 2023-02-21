@@ -51,32 +51,32 @@ object frmParse: TfrmParse
       484
       37)
     object btnStop: TButton
-      Left = 409
+      Left = 411
       Top = 8
       Width = 75
       Height = 25
       Action = frmMain.actParseCancel
       Anchors = [akRight, akBottom]
       TabOrder = 0
-      ExplicitLeft = 407
+      ExplicitLeft = 409
     end
   end
   object pBarOverall: TProgressBar
     Left = 8
     Top = 78
-    Width = 476
+    Width = 478
     Height = 17
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 1
-    ExplicitWidth = 474
+    ExplicitWidth = 476
   end
   object pBarCurrentTask: TProgressBar
     Left = 8
     Top = 34
-    Width = 476
+    Width = 478
     Height = 17
     Anchors = [akLeft, akTop, akRight]
     TabOrder = 2
-    ExplicitWidth = 474
+    ExplicitWidth = 476
   end
 end

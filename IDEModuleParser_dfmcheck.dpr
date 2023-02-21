@@ -15,7 +15,8 @@ uses
   UnitDBGrid in 'UnitDBGrid.pas',
   UnitSettings in 'UnitSettings.pas',
   UnitModulesEditor in 'UnitModulesEditor.pas' {frmModulesEditor},
-  UnitAddModules in 'UnitAddModules.pas' {frmAddModules};
+  UnitAddModules in 'UnitAddModules.pas' {frmAddModules},
+  IDEModuleParser_DfmCheck_Unit in 'IDEModuleParser_DfmCheck_Unit.pas';
 
 {$R *.res}
 

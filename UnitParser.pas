@@ -23,7 +23,8 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
     function TaskModuleFileParse(): boolean;
-    function TaskModuleFileCreateDB(): boolean;
+    function TaskCreateModulesDB(): boolean;
+    function TaskFindAllKnowModules(): boolean;
     function GetModuleLineRegExp(): string;
     procedure ShowCurrentTaskName(name: string);
     procedure StartTasks(Count: integer);
@@ -84,13 +85,13 @@ end;
 function TfrmParse.GetModuleLineRegExp: string;
 begin
 
-  // (.*)\t\(\d{1}x[0-9A-F]{8}\)\t([^\t]*)\t(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\s*(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[\S]{2})?)\t([\dA-F]{40})
+  // (.*)\t\(\d{1}x[0-9A-F]{8}\)\t([^\t]*)\t(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})[\.]?\s*(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[\S]{2})?)\t([\dA-F]{40})
 
   Result := '(.*)\t' +                                // file name Groups[1]
     '\(\d{1}x[0-9A-F]{8}\)\t' +                        //
     '([^\t]*)\t' +                                    // path Groups[2]
     '(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?' +   // version Groups[3]
-    '(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})\s*' +    // date Groups[4]
+    '(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})[\.]?\s*' +    // date Groups[4]
     '(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[\S]{2})?)\t' +    // time Groups[5]
     '([\dA-F]{40})';                                  // hash Groups[6]
 
@@ -109,9 +110,10 @@ begin
   frmMain.actParseCancel.Enabled := true;
   parseCanceled := not frmMain.actParseCancel.Enabled;
 
-  StartTasks(2); // Start 2 Tasks
+  StartTasks(3); // Start 2 Tasks
   TaskModuleFileParse();
-  TaskModuleFileCreateDB();
+  TaskCreateModulesDB();
+  TaskFindAllKnowModules();
 
   frmMain.actParseCancel.Enabled := false;
   parseSuccess := true;
@@ -152,7 +154,7 @@ begin
   currentTask := 0;
 end;
 
-function TfrmParse.TaskModuleFileCreateDB: boolean;
+function TfrmParse.TaskCreateModulesDB: boolean;
 var
   tempIDEModule : TIDEModule;
 begin
@@ -167,8 +169,9 @@ begin
       DM1.cdsModules.Append;
       DM1.cdsModules.FieldByName('Num').AsInteger := i;
       DM1.cdsModules.FieldByName('Name').AsString :=
-        UpperCase(TPath.GetFileNameWithoutExtension(tempIDEModule.FileName)) +
-        LowerCase(TPath.GetExtension(tempIDEModule.FileName));
+        // UpperCase(TPath.GetFileNameWithoutExtension(tempIDEModule.FileName)) +
+        // LowerCase(TPath.GetExtension(tempIDEModule.FileName));
+        tempIDEModule.FileName;
       if Length(tempIDEModule.Path) < 255
         then DM1.cdsModules.FieldByName('Path').AsString := LowerCase(tempIDEModule.Path)
         else DM1.cdsModules.FieldByName('Path').AsString := LowerCase(copy(tempIDEModule.Path, 1, 255));
@@ -179,6 +182,51 @@ begin
       DM1.cdsModules.Post;
       SetCurrentTaskPosition(i);
     end;
+  DM1.cdsModules.First;
+  DM1.cdsModules.EnableControls;
+end;
+
+function TfrmParse.TaskFindAllKnowModules: boolean;
+var
+  i : integer;
+begin
+  StartTask('Find known modules in DB...');
+  SetCurrentTaskPositionsMinMax(0, DM1.cdsModules.RecordCount - 1);
+  DM1.cdsModules.DisableControls;
+  DM1.cdsModules.First;
+  for i := 0 to DM1.cdsModules.RecordCount - 1 do
+  begin
+    SetCurrentTaskPosition(i);
+
+
+    // SELECT m.*, p.Num AS PackageID, p.Name AS PackageName FROM Modules AS m LEFT OUTER JOIN Packages AS p ON m.Package=p.Num WHERE lower(m.FileName)="bds.exe" LIMIT 0,1
+    DM1.fdqModulesFromQuery.SQL.Clear;
+    DM1.fdqModulesFromQuery.SQL.Add(
+      'SELECT m.*, p.Num AS PackageID, p.Name AS PackageName ' +
+      'FROM Modules AS m ' +
+      'LEFT OUTER JOIN Packages AS p ON m.Package=p.Num ' +
+      'WHERE lower(m.FileName)="' +
+      LowerCase(DM1.cdsModules.FieldByName('Name').AsString) +
+      '" LIMIT 0,100');
+    DM1.fdqModulesFromQuery.Open;
+    {
+    var S := LowerCase(DM1.cdsModules.FieldByName('Name').AsString);
+    var L := length(LowerCase(DM1.cdsModules.FieldByName('Name').AsString));
+    if LowerCase(DM1.cdsModules.FieldByName('Name').AsString) = 'bds.exe' + #9 then
+    begin
+      var p := 2;
+    end;
+    }
+    if DM1.fdqModulesFromQuery.RecordCount > 0
+    then
+      begin
+        DM1.cdsModules.Edit;
+        DM1.cdsModules.FieldByName('PackageID').AsInteger := DM1.fdqModulesFromQuery.FieldByName('PackageID').AsInteger;
+        DM1.cdsModules.FieldByName('PackageName').AsString := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
+      end;
+    DM1.fdqModulesFromQuery.Close;
+    DM1.cdsModules.Next;
+  end;
   DM1.cdsModules.First;
   DM1.cdsModules.EnableControls;
 end;
