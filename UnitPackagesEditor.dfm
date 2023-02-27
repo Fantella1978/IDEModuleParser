@@ -3,8 +3,8 @@ object frmPackagesEditor: TfrmPackagesEditor
   Top = 0
   BorderStyle = bsSingle
   Caption = 'Packages Editor'
-  ClientHeight = 365
-  ClientWidth = 706
+  ClientHeight = 637
+  ClientWidth = 953
   Color = clBtnFace
   Constraints.MinHeight = 400
   Constraints.MinWidth = 720
@@ -17,52 +17,57 @@ object frmPackagesEditor: TfrmPackagesEditor
   OnCloseQuery = FormCloseQuery
   OnResize = FormResize
   DesignSize = (
-    706
-    365)
+    953
+    637)
   TextHeight = 15
   object lblName: TLabel
     Left = 12
-    Top = 19
+    Top = 17
     Width = 35
     Height = 15
     Caption = 'Name:'
   end
   object lblUrl: TLabel
     Left = 23
-    Top = 73
+    Top = 74
     Width = 24
     Height = 15
     Caption = 'URL:'
   end
   object lblVersion: TLabel
     Left = 6
-    Top = 46
+    Top = 47
     Width = 41
     Height = 15
     Caption = 'Version:'
   end
   object lblVersionRegExp: TLabel
     Left = 6
-    Top = 101
+    Top = 102
     Width = 83
     Height = 15
     Caption = 'Version RegExp:'
   end
+  object lblSurName: TLabel
+    Left = 344
+    Top = 17
+    Width = 55
+    Height = 15
+    Caption = 'Sur Name:'
+  end
   object Panel1: TPanel
     Left = 0
-    Top = 328
-    Width = 706
+    Top = 600
+    Width = 953
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 324
-    ExplicitWidth = 704
     DesignSize = (
-      706
+      953
       37)
     object ButtonOK: TButton
-      Left = 621
+      Left = 868
       Top = 6
       Width = 75
       Height = 25
@@ -72,14 +77,14 @@ object frmPackagesEditor: TfrmPackagesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = ButtonOKClick
-      ExplicitLeft = 619
+      ExplicitLeft = 774
     end
   end
   object dbgPackages: TDBGrid
     Left = 0
-    Top = 160
-    Width = 706
-    Height = 168
+    Top = 161
+    Width = 953
+    Height = 439
     Align = alBottom
     Anchors = [akLeft, akTop, akRight, akBottom]
     DataSource = DM1.dsPackages
@@ -107,6 +112,12 @@ object frmPackagesEditor: TfrmPackagesEditor
       end
       item
         Expanded = False
+        FieldName = 'SubName'
+        Width = 250
+        Visible = True
+      end
+      item
+        Expanded = False
         FieldName = 'Version'
         Visible = True
       end
@@ -127,106 +138,119 @@ object frmPackagesEditor: TfrmPackagesEditor
   object dbeName: TDBEdit
     Left = 53
     Top = 11
-    Width = 567
+    Width = 284
     Height = 23
-    Anchors = [akLeft, akTop, akRight]
     DataField = 'Name'
     DataSource = DM1.dsPackages
+    MaxLength = 60
     TabOrder = 2
     OnChange = dbeNameChange
-    ExplicitWidth = 565
   end
   object DBNavigator1: TDBNavigator
-    Left = 8
-    Top = 129
-    Width = 240
+    Left = 494
+    Top = 130
+    Width = 370
     Height = 25
     DataSource = DM1.dsPackages
+    Anchors = [akTop, akRight]
     TabOrder = 3
+    ExplicitLeft = 400
   end
   object btnAdd: TButton
-    Left = 626
+    Left = 870
     Top = 8
     Width = 75
     Height = 25
     Action = actPackageAdd
     Anchors = [akTop, akRight]
     TabOrder = 4
-    ExplicitLeft = 624
+    ExplicitLeft = 776
   end
   object btnDelete: TButton
-    Left = 626
+    Left = 870
     Top = 68
     Width = 75
     Height = 25
     Action = actPackageDelete
     Anchors = [akTop, akRight]
     TabOrder = 5
-    ExplicitLeft = 624
+    ExplicitLeft = 776
   end
   object dbeURL: TDBEdit
     Left = 53
-    Top = 69
-    Width = 567
+    Top = 70
+    Width = 814
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'Url'
     DataSource = DM1.dsPackages
     TabOrder = 6
-    ExplicitWidth = 565
+    ExplicitWidth = 720
   end
   object dbeVersion: TDBEdit
     Left = 53
-    Top = 40
-    Width = 188
+    Top = 41
+    Width = 164
     Height = 23
-    Anchors = [akLeft, akTop, akRight]
     DataField = 'Version'
     DataSource = DM1.dsPackages
+    MaxLength = 27
     TabOrder = 7
     OnChange = dbeVersionChange
-    ExplicitWidth = 186
   end
   object DBEdit2: TDBEdit
     Left = 95
-    Top = 100
-    Width = 525
+    Top = 101
+    Width = 772
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'VersionRegExp'
     DataSource = DM1.dsPackages
     TabOrder = 8
-    ExplicitWidth = 523
+    ExplicitWidth = 678
   end
   object Button2: TButton
-    Left = 626
-    Top = 39
+    Left = 870
+    Top = 38
     Width = 75
     Height = 25
     Action = actPackageEdit
     Anchors = [akTop, akRight]
     TabOrder = 9
-    ExplicitLeft = 624
+    ExplicitLeft = 776
   end
   object Button3: TButton
-    Left = 626
-    Top = 97
+    Left = 870
+    Top = 98
     Width = 75
     Height = 25
     Action = actPackagesSave
     Anchors = [akTop, akRight]
     TabOrder = 10
-    ExplicitLeft = 624
+    ExplicitLeft = 776
   end
   object Button4: TButton
-    Left = 626
-    Top = 128
+    Left = 870
+    Top = 129
     Width = 75
     Height = 25
     Action = actPackagesCancel
     Anchors = [akTop, akRight]
     TabOrder = 11
-    ExplicitLeft = 624
+    ExplicitLeft = 776
+  end
+  object dbeSurName: TDBEdit
+    Left = 405
+    Top = 11
+    Width = 459
+    Height = 23
+    Anchors = [akLeft, akTop, akRight]
+    DataField = 'SubName'
+    DataSource = DM1.dsPackages
+    MaxLength = 60
+    TabOrder = 12
+    OnChange = dbeVersionChange
+    ExplicitWidth = 365
   end
   object ActionList1: TActionList
     Left = 304

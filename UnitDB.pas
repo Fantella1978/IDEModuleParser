@@ -16,18 +16,11 @@ type
     cdsModules: TClientDataSet;
     DataSource1: TDataSource;
     DataSetProvider1: TDataSetProvider;
-    cdsModulesName: TStringField;
     cdsModulesNum: TIntegerField;
     cdsModulesPath: TStringField;
     cdsModulesVersion: TStringField;
     cdsModulesDateAndTime: TDateTimeField;
     cdsModulesHash: TStringField;
-    cdsPackages: TClientDataSet;
-    cdsPackagesNum: TIntegerField;
-    cdsPackagesName: TStringField;
-    cdsPackagesUrl: TStringField;
-    dsLocalPackages: TDataSource;
-    DataSetProvider2: TDataSetProvider;
     fdcSQLite: TFDConnection;
     fdqModulesFromQuery: TFDQuery;
     fdtModules: TFDTable;
@@ -38,6 +31,14 @@ type
     cdsModulesPackageID: TIntegerField;
     cdsModulesPackageName: TStringField;
     FDUpdateSQL1: TFDUpdateSQL;
+    cdsModulesFileName: TStringField;
+    fdtModulesNum: TFDAutoIncField;
+    fdtModulesFileName: TStringField;
+    fdtModulesHash: TStringField;
+    fdtModulesPathRegExp: TWideStringField;
+    fdtModulesVersion: TStringField;
+    fdtModulesVersionRegExp: TWideStringField;
+    fdtModulesPackageID: TIntegerField;
     procedure cdsModulesAfterScroll(DataSet: TDataSet);
     procedure fdtPackagesAfterCancel(DataSet: TDataSet);
     procedure fdtPackagesAfterEdit(DataSet: TDataSet);
@@ -61,6 +62,8 @@ implementation
 uses
     UnitMain
   , UnitPackagesEditor
+  , System.IOUtils
+  , vcl.Forms
   ;
 
 {$R *.dfm}
@@ -73,16 +76,16 @@ begin
 end;
 
 procedure TDM1.ClearModulesDB;
-var
-  i : integer;
 begin
   if cdsModules.RecordCount = 0 then Exit;
   cdsModules.DisableControls;
   cdsModules.First;
-  for i := 0 to cdsModules.RecordCount - 1 do
-    begin
-      cdsModules.Delete;
-    end;
+  while not cdsModules.Eof do
+  begin
+    cdsModules.Delete;
+  end;
+  cdsModules.Close;
+  cdsModules.Open;
   cdsModules.EnableControls;
 end;
 

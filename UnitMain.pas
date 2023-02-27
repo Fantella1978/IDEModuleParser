@@ -23,7 +23,7 @@ uses
   , UnitDBGrid
   , UnitSettings
   , UnitModulesEditor
-  , UnitAddModules
+  , UnitAddModules, Vcl.CheckLst
   ;
 
 type
@@ -110,7 +110,7 @@ type
     actSettingsRestoreDefaults: TAction;
     tsHome: TTabSheet;
     edtFontSize: TEdit;
-    Panel9: TPanel;
+    Panel9Top: TPanel;
     ledtBDSBuild: TLabeledEdit;
     SpeedButton1: TSpeedButton;
     SpeedButton3: TSpeedButton;
@@ -122,7 +122,14 @@ type
     lblModulesCount: TLabel;
     GroupBox5: TGroupBox;
     Splitter1: TSplitter;
+    cbMaximizeOnStartup: TCheckBox;
+    Panel10Left: TPanel;
+    Panel11Right: TPanel;
+    clbVisiblePackages: TCheckListBox;
+    Label1: TLabel;
+    gbModulesList: TGroupBox;
     procedure FormCreate(Sender: TObject);
+    function ConnectToDB : boolean;
     procedure ModulesGridSelectionChanged(Sender: TObject);
     /// <summary>Exit from application</summary>
     procedure actExitExecute(Sender: TObject);
@@ -227,10 +234,10 @@ type
       var MouseActivate: TMouseActivate);
     procedure FormResize(Sender: TObject);
     procedure actModulesAddSelectedToDBExecute(Sender: TObject);
+    procedure cbMaximizeOnStartupClick(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
-      LinfoSize: DWORD;
     procedure ModulesCountDisplay;
   public
     { Public declarations }
@@ -368,6 +375,51 @@ begin
       Logger.AddToLog('The opening of a new Steps file has not been confirmed.');
       Exit;
     end;
+end;
+
+function TfrmMain.ConnectToDB : boolean;
+begin
+  // Connect To DB
+  try
+    DM1.cdsModules.CreateDataSet;
+    DM1.cdsModules.Active := true;
+    DM1.cdsModules.IndexName := '';
+
+    var DBFileName := 'IDEModuleParser.db3';
+    var DBFileNameWithPath := TPath.GetDirectoryName(Application.ExeName) +
+      TPath.DirectorySeparatorChar + DBFileName;
+    if FileExists(DBFileNameWithPath)
+      then DM1.fdcSQLite.Params.Database := DBFileNameWithPath
+      else
+        begin
+          var DBDirectory := TPath.GetFullPath(TPath.GetDirectoryName(Application.ExeName) + '\..\..');
+          if TDirectory.Exists(DBDirectory)
+            then
+              begin
+                DBFileNameWithPath := DBDirectory + TPath.DirectorySeparatorChar + DBFileName;
+                if FileExists(DBFileNameWithPath)
+                then DM1.fdcSQLite.Params.Database := DBFileNameWithPath
+                else
+                  begin
+                    ShowMessage('DB file ' + DBFileNameWithPath +' not found.');
+                    Result := false;
+                    Exit;
+                  end;
+              end
+            else
+        end;
+    DM1.fdcSQLite.Connected := true;
+    DM1.fdtPackages.Active := true;
+    DM1.fdtModules.Active := true;
+  except
+    on E:Exception do
+    begin
+      ShowMessage(E.Message);
+      Result := false;
+      Exit;
+    end;
+  end;
+  Result := true;
 end;
 
 function TfrmMain.ConfirmNewDxDiagLogFileLoad(AskForAll: boolean): boolean;
@@ -612,6 +664,7 @@ begin
   DM1.cdsModules.FreeBookMark(CurrentBookMark);
   DM1.cdsModules.EnableControls;
   actModulesSelectAll.Enabled := false;
+  ModulesSelectedCountDisplay();
 end;
 
 procedure TfrmMain.actModulesUnSelectAllExecute(Sender: TObject);
@@ -627,6 +680,7 @@ begin
   DM1.cdsModules.EnableControls;
   actModulesUnSelectAll.Enabled := false;
   actModulesCopySelectedAsText.Enabled := false;
+  ModulesSelectedCountDisplay();
 end;
 
 procedure TfrmMain.actOpenModuleFileExecute(Sender: TObject);
@@ -673,10 +727,8 @@ begin
 end;
 
 procedure TfrmMain.actParseModuleFileExecute(Sender: TObject);
-var
-  tempIDEModule : TIDEModule;
 begin
-  // Parse Module file
+  // Parse ModulesList file
 
   if (DM1.cdsModules.RecordCount > 0) AND
     (MessageDlg('ModulesList already parsed. ReParse ModulesList file?',
@@ -686,6 +738,8 @@ begin
   ledtBDSPath.Text := '';
   ledtBDSBuild.Text := '';
   ledtBDSInstDate.Text := '';
+
+  DBGrid1TitleClick(DBGrid1.Columns[0]); // Set IndexName = 'cdsModulesNameIndexASC';
 
   frmParse.parseSuccess := false;
   frmParse.Show;
@@ -708,13 +762,13 @@ begin
       PageControl1.ActivePage := tsModulesList;
 
       // DM1.cdsModules.DisableControls;
-      DM1.cdsModules.IndexName := '';
-      DM1.cdsModules.First;
+      // DM1.cdsModules.IndexName := 'cdsModulesNameIndexASC';
+      // if DM1.cdsModules.IndexName = '' then DBGrid1TitleClick(DBGrid1.Columns[0]);
+      // DM1.cdsModules.First;
       DBGrid1.SelectedRows.Clear;
       ModulesCountDisplay();
       ModulesSelectedCountDisplay();
 
-      // DM1.cdsModules.IndexName := 'cdsModulesNameIndexASC';
       // DM1.cdsModules.EnableControls;
     end;
   // actParseModuleFile.Enabled := false;
@@ -771,6 +825,11 @@ begin
     end;
   GlobalLogCreate := cbCreateLog.Checked;
   actSettingsRestoreDefaults.Enabled := true;
+end;
+
+procedure TfrmMain.cbMaximizeOnStartupClick(Sender: TObject);
+begin
+  GlobalMaximizeOnStartup := cbMaximizeOnStartup.Checked;
 end;
 
 procedure TfrmMain.ModulesSelectedCountDisplay();
@@ -866,7 +925,7 @@ begin
   with DM1.cdsModules do
     try
       CurrentBookMark := GetBookmark;
-      //DisableControls;
+      DisableControls;
       ci:= column.Index;
       if ci <> DBGrid1_PrevCol
       then
@@ -877,20 +936,26 @@ begin
         end;
       Column.Title.Font.Style := Column.Title.Font.Style + [fsBold];
       DBGrid1_PrevCol := ci;
-      if Column.Title.Caption = Column.FieldName + ' ˅'
-        then Column.Title.Caption := Column.FieldName + ' ˄'
-        else Column.Title.Caption := Column.FieldName + ' ˅';
-
       if IndexName = 'cdsModules' + Column.FieldName + 'Index'
         then IndexName := 'cdsModules' + Column.FieldName + 'IndexASC'
         else IndexName := 'cdsModules' + Column.FieldName + 'Index';
+
+      var colCaption := Column.Title.Caption;
+      if (pos(' ˅', colCaption, Length(colCaption) - 2) <> 0) or
+        (pos(' ˄', colCaption, Length(colCaption) - 2) <> 0)
+      then
+        colCaption := copy(colCaption, 1, Length(colCaption) - 2);
+      Column.Title.Caption := colCaption;
+      if IndexName = 'cdsModules' + Column.FieldName + 'Index'
+        then Column.Title.Caption := Column.Title.Caption + ' ˄'
+        else Column.Title.Caption := Column.Title.Caption + ' ˅';
+
     finally
       // First;
       GotoBookmark(CurrentBookMark);
       FreeBookMark(CurrentBookMark);
       DBGrid1.SelectedRows.Clear; // Clear Selected Rows TEMPORARILY
-      //EnableControls;
-      // Application.ProcessMessages;
+      EnableControls;
     end;
 end;
 
@@ -982,13 +1047,12 @@ end;
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   //
-  if not DM1.cdsModules.Active then DM1.cdsModules.Open;
-  DM1.fdcSQLite.Connected := true;
-  DM1.fdtPackages.Active := true;
-  DM1.fdtModules.Active := true;
-
-  Caption := 'IDE Module Parser' + ' ' + GetFileVersionStr(Application.ExeName);
-  // ImageList1.GetBitmap(0, Image1.Picture.Bitmap);
+  if not ConnectToDB()
+    then
+      begin
+        Application.Terminate;
+        Exit;
+      end;
 
   // Logger
   Logger := TMyLogger.Create;
@@ -1007,6 +1071,11 @@ begin
   if loadSettingsRes
     then Logger.AddToLog('Application settings successfuly loaded')
     else Logger.AddToLog('[Error] Can''t load application settings');
+
+  if GlobalMaximizeOnStartup
+    then frmMain.WindowState := TWindowState.wsMaximized
+    else frmMain.WindowState := TWindowState.wsNormal;
+  Caption := 'IDE Module Parser' + ' ' + GetFileVersionStr(Application.ExeName);
 
   MemoTxtModuleFile.Clear;
 
@@ -1030,6 +1099,7 @@ begin
   AskConfirmOpenForAll := false;
 
   TFormatSettings.Create;
+
   DBGrid1.OnSelectionChanged := ModulesGridSelectionChanged;
 end;
 
@@ -1242,26 +1312,35 @@ begin
   //
   if not frmMain.DBGrid1.Visible then Exit;
 
-  // Enable Modules Select All menu item
-  if frmMain.DBGrid1.DataSource.DataSet.RecordCount <> frmMain.DBGrid1.SelectedRows.Count
-    then frmMain.actModulesSelectAll.Enabled := true;
-  // Enable Modules UnSelect All menu item
+  // Enable/Disable action - Modules Select All
+  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
+    (frmMain.DBGrid1.DataSource.DataSet.RecordCount <> frmMain.DBGrid1.SelectedRows.Count)
+    then frmMain.actModulesSelectAll.Enabled := true
+    else frmMain.actModulesSelectAll.Enabled := false;
+  // Enable action - Modules UnSelect All
   if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
     (frmMain.DBGrid1.SelectedRows.Count < frmMain.DBGrid1.DataSource.DataSet.RecordCount)
     then frmMain.actModulesUnSelectAll.Enabled := true;
-  // Disable Modules UnSelect All menu item
+  // Enable action - Modules Copy Selected As Text
+  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
+    (frmMain.DBGrid1.SelectedRows.Count > 0)
+    then frmMain.actModulesCopySelectedAsText.Enabled := true;
+  // Enable action - Modules Add to Known Modules DB
+  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
+    (frmMain.DBGrid1.SelectedRows.Count > 0)
+    then frmMain.actModulesAddSelectedToDB.Enabled := true;
+
   if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
     (frmMain.DBGrid1.SelectedRows.Count = 0)
     then
       begin
+        // Disable action - Modules UnSelect All
         frmMain.actModulesUnSelectAll.Enabled := false;
-        // Disable Modules Copy Selected As Text menu item
+        // Disable action - Modules Copy Selected As Text
         frmMain.actModulesCopySelectedAsText.Enabled := false;
+        // Disable action - Modules Add to Known Modules DB
+        frmMain.actModulesAddSelectedToDB.Enabled := false;
       end;
-  // Enable Modules Copy Selected As Text menu item
-  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
-    (frmMain.DBGrid1.SelectedRows.Count > 0)
-    then frmMain.actModulesCopySelectedAsText.Enabled := true;
 end;
 
 procedure TfrmMain.UpdateDisplayDescriptionFileName;
@@ -1299,6 +1378,7 @@ begin
   // Update Objects according loaded global Settings
   tbFontSize.Position := GlobalDefaultFontSize;
   cbCreateLog.Checked := GlobalLogCreate;
+  cbMaximizeOnStartup.Checked := GlobalMaximizeOnStartup;
   // cbCreateLogClick(frmMain);
 
   actSettingsRestoreDefaults.Enabled := true;
@@ -1475,8 +1555,8 @@ end;
 
 { TDBGrid }
 
-procedure TDBGrid.KeyDown(var Key: Word; Shift: TShiftState);
 
+procedure TDBGrid.KeyDown(var Key: Word; Shift: TShiftState);
 begin
   inherited;
   if Assigned(FOnSelectionChanged) then FOnSelectionChanged(self);
@@ -1493,5 +1573,6 @@ begin
   inherited;
   if Assigned(FOnSelectionChanged) then FOnSelectionChanged(self);
 end;
+
 
 end.

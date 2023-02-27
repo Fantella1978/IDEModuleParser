@@ -16,6 +16,7 @@ type
     Panel2: TPanel;
     procedure dbgModulesDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -32,6 +33,11 @@ implementation
 uses
   UnitDB
   ;
+
+procedure TfrmModulesEditor.Button1Click(Sender: TObject);
+begin
+  Close;
+end;
 
 procedure TfrmModulesEditor.dbgModulesDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
