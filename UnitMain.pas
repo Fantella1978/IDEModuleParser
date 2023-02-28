@@ -24,6 +24,7 @@ uses
   , UnitSettings
   , UnitModulesEditor
   , UnitAddModules, Vcl.CheckLst
+  , UnitEnableAdminMode
   ;
 
 type
@@ -85,7 +86,6 @@ type
     lblStartMessageMain: TLabel;
     lblStartMessageSecondary: TLabel;
     tsSettings: TTabSheet;
-    Panel3: TPanel;
     lblFontSize: TLabel;
     tbFontSize: TTrackBar;
     cbCreateLog: TCheckBox;
@@ -128,6 +128,14 @@ type
     clbVisiblePackages: TCheckListBox;
     Label1: TLabel;
     gbModulesList: TGroupBox;
+    cbParseFileOnOpen: TCheckBox;
+    GroupBox6: TGroupBox;
+    cbParseLevel2: TCheckBox;
+    GroupBox7: TGroupBox;
+    actEnableAdminMode: TAction;
+    actDisableAdminMode: TAction;
+    Button7: TButton;
+    Button8: TButton;
     procedure FormCreate(Sender: TObject);
     function ConnectToDB : boolean;
     procedure ModulesGridSelectionChanged(Sender: TObject);
@@ -227,7 +235,7 @@ type
     procedure DBGrid1KeyPress(Sender: TObject; var Key: Char);
     procedure UpdateActionsWithSelectedModels();
     procedure DBGrid1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
-    procedure UpdateObjectsAccordingSattings();
+    procedure UpdateObjectsAccordingSettings();
     procedure actSettingsRestoreDefaultsExecute(Sender: TObject);
     procedure DBGrid1MouseActivate(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y, HitTest: Integer;
@@ -235,10 +243,15 @@ type
     procedure FormResize(Sender: TObject);
     procedure actModulesAddSelectedToDBExecute(Sender: TObject);
     procedure cbMaximizeOnStartupClick(Sender: TObject);
+    procedure cbParseFileOnOpenClick(Sender: TObject);
+    procedure cbParseLevel2Click(Sender: TObject);
+    procedure actEnableAdminModeExecute(Sender: TObject);
+    procedure actDisableAdminModeExecute(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
     procedure ModulesCountDisplay;
+    function IsAdminModeEnabled: boolean;
   public
     { Public declarations }
   end;
@@ -263,11 +276,40 @@ implementation
 
 {$R *.dfm}
 
+procedure TfrmMain.actDisableAdminModeExecute(Sender: TObject);
+begin
+  // Disable Admin Mode
+  GlobalAdminMode := false;
+  actEnableAdminMode.Enabled := true;
+  actDisableAdminMode.Enabled := false;
+end;
+
+procedure TfrmMain.actEnableAdminModeExecute(Sender: TObject);
+begin
+  // Enable Admin Mode
+  if (frmEnableAdminMode.ShowModal = mrOk) AND GlobalAdminMode
+  then
+    begin
+      actEnableAdminMode.Enabled := false;
+      actDisableAdminMode.Enabled := true;
+    end;
+end;
+
 procedure TfrmMain.actExitExecute(Sender: TObject);
 begin
   Close;
 end;
 
+
+procedure TfrmMain.cbParseFileOnOpenClick(Sender: TObject);
+begin
+  GlobalParseOnFileOpen := cbParseFileOnOpen.Checked;
+end;
+
+procedure TfrmMain.cbParseLevel2Click(Sender: TObject);
+begin
+  GlobalModulesCompareLevel2 := cbParseLevel2.Checked;
+end;
 
 function TfrmMain.CheckZipReportFile(Sender: TObject): boolean;
 var
@@ -551,7 +593,7 @@ begin
   if not FileExists(FileName) OR not ConfirmNewDxDiagLogFileLoad(AskConfirmOpenForAll) then Exit;
   HideStartMessage;
   ddfFileName := FileName;
-  PageControl1.ActivePage := tsStackTraceFile;
+  PageControl1.ActivePage := tsDXDiagLogFile;
   UpdateDisplayDxDiagLogFileName();
   LoadTxtDxDiagLogFile();
 end;
@@ -638,12 +680,15 @@ begin
   TryOpenModuleListFileInReport();
   ConfirmOpenForAll := -1;
 
+  if actParseModuleFile.Enabled
+    then actParseModuleFileExecute(Sender);
+
 end;
 
 procedure TfrmMain.actModulesEditorExecute(Sender: TObject);
 begin
   // Show Modules Editor
-  frmModulesEditor.ShowModal;
+  if IsAdminModeEnabled then frmModulesEditor.ShowModal;
 end;
 
 procedure TfrmMain.actModulesSelectAllExecute(Sender: TObject);
@@ -693,6 +738,8 @@ begin
       begin
         OpenTextModuleListFile(OpenTextFileDialog1.FileName);
         PageControl1.ActivePage := tsModuleListFile;
+        if actParseModuleFile.Enabled
+          then actParseModuleFileExecute(Sender);
       end;
 end;
 
@@ -709,10 +756,29 @@ begin
       end;
 end;
 
+function TfrmMain.IsAdminModeEnabled() : boolean;
+begin
+  if not GlobalAdminMode
+  then
+    begin
+      if PageControl1.ActivePage = tsSettings
+        then ShowMessage('This action requires Administrator Mode to be enabled. Enable Administrator Mode first.')
+        else
+          begin
+            if MessageDlg('This action requires Administrator Mode to be enabled. Go to settings and enable this mode.',
+            TMsgDlgType.mtInformation, [mbOk, mbCancel], 0) = mrOk
+            then PageControl1.ActivePage := tsSettings;
+          end;
+      Result := false;
+      Exit;
+    end;
+  Result := true;
+end;
+
 procedure TfrmMain.actPackagesEditorExecute(Sender: TObject);
 begin
   // Show Packages Editor
-  frmPackagesEditor.ShowModal;
+  if IsAdminModeEnabled then frmPackagesEditor.ShowModal;
 end;
 
 procedure TfrmMain.actParseCancelExecute(Sender: TObject);
@@ -727,6 +793,8 @@ begin
 end;
 
 procedure TfrmMain.actParseModuleFileExecute(Sender: TObject);
+var
+  oldIndex : string;
 begin
   // Parse ModulesList file
 
@@ -739,7 +807,10 @@ begin
   ledtBDSBuild.Text := '';
   ledtBDSInstDate.Text := '';
 
-  DBGrid1TitleClick(DBGrid1.Columns[0]); // Set IndexName = 'cdsModulesNameIndexASC';
+  DM1.cdsModules.DisableControls;
+
+  oldIndex := DM1.cdsModules.IndexName;
+  DM1.cdsModules.IndexName := 'cdsModulesNumIndexUNIQ'; // Set Num Index
 
   frmParse.parseSuccess := false;
   frmParse.Show;
@@ -757,20 +828,25 @@ begin
         end
       else BDSIDEModule := nil;
 
+
+      // Restore IndexName
+      if oldIndex = ''
+        then DBGrid1TitleClick(DBGrid1.Columns[0])
+        else DM1.cdsModules.IndexName := oldIndex;
+
       tsModulesList.TabVisible := true;
       tsModulesList.Enabled := true;
       PageControl1.ActivePage := tsModulesList;
 
-      // DM1.cdsModules.DisableControls;
-      // DM1.cdsModules.IndexName := 'cdsModulesNameIndexASC';
-      // if DM1.cdsModules.IndexName = '' then DBGrid1TitleClick(DBGrid1.Columns[0]);
-      // DM1.cdsModules.First;
-      DBGrid1.SelectedRows.Clear;
       ModulesCountDisplay();
       ModulesSelectedCountDisplay();
 
-      // DM1.cdsModules.EnableControls;
+      DBGrid1.SelectedRows.Clear;
+      DM1.cdsModules.EnableControls;
+      DM1.cdsModules.First;
+
     end;
+
   // actParseModuleFile.Enabled := false;
 end;
 
@@ -782,15 +858,14 @@ begin
       begin
         RestoreSettingsToDefaults();
         actSettingsRestoreDefaults.Enabled := false;
-        tbFontSize.Position := GlobalDefaultFontSize;
-        cbCreateLog.Checked := GlobalLogCreate;
+        UpdateObjectsAccordingSettings();
       end;
 end;
 
 procedure TfrmMain.actModulesAddSelectedToDBExecute(Sender: TObject);
 begin
   //
-  frmAddModules.Show;
+  if IsAdminModeEnabled then frmAddModules.Show;
 end;
 
 procedure TfrmMain.actModulesCopySelectedAsTextExecute(Sender: TObject);
@@ -936,9 +1011,9 @@ begin
         end;
       Column.Title.Font.Style := Column.Title.Font.Style + [fsBold];
       DBGrid1_PrevCol := ci;
-      if IndexName = 'cdsModules' + Column.FieldName + 'Index'
-        then IndexName := 'cdsModules' + Column.FieldName + 'IndexASC'
-        else IndexName := 'cdsModules' + Column.FieldName + 'Index';
+      if IndexName = 'cdsModules' + Column.FieldName + 'IndexASC'
+        then IndexName := 'cdsModules' + Column.FieldName + 'Index'
+        else IndexName := 'cdsModules' + Column.FieldName + 'IndexASC';
 
       var colCaption := Column.Title.Caption;
       if (pos(' ˅', colCaption, Length(colCaption) - 2) <> 0) or
@@ -1064,7 +1139,7 @@ begin
   Logger.Clear;
 
   var loadSettingsRes := LoadSattingsFromRegistry();
-  UpdateObjectsAccordingSattings();
+  UpdateObjectsAccordingSettings();
 
   Logger.LogEnabled := cbCreateLog.Checked;
   Logger.AddToLog('Application started');
@@ -1373,13 +1448,27 @@ begin
   lbedStepsFile.Text := spfFileName;
 end;
 
-procedure TfrmMain.UpdateObjectsAccordingSattings;
+procedure TfrmMain.UpdateObjectsAccordingSettings;
 begin
   // Update Objects according loaded global Settings
   tbFontSize.Position := GlobalDefaultFontSize;
   cbCreateLog.Checked := GlobalLogCreate;
   cbMaximizeOnStartup.Checked := GlobalMaximizeOnStartup;
+  cbParseFileOnOpen.Checked := GlobalParseOnFileOpen;
+  cbParseLevel2.Checked := GlobalModulesCompareLevel2;
   // cbCreateLogClick(frmMain);
+
+  if GlobalAdminMode
+  then
+    begin
+      actEnableAdminMode.Enabled := false;
+      actDisableAdminMode.Enabled := true;
+    end
+  else
+    begin
+      actEnableAdminMode.Enabled := true;
+      actDisableAdminMode.Enabled := false;
+    end;
 
   actSettingsRestoreDefaults.Enabled := true;
 

@@ -82,7 +82,7 @@ object frmMain: TfrmMain
     Top = 0
     Width = 994
     Height = 483
-    ActivePage = tsModulesList
+    ActivePage = tsSettings
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -2659,7 +2659,6 @@ object frmMain: TfrmMain
     end
     object tsModulesList: TTabSheet
       Caption = 'Modules'
-      Enabled = False
       ImageIndex = 1
       object Splitter1: TSplitter
         Left = 200
@@ -2678,8 +2677,6 @@ object frmMain: TfrmMain
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 779
-        ExplicitHeight = 444
         object gbModulesList: TGroupBox
           Left = 0
           Top = 105
@@ -2688,8 +2685,6 @@ object frmMain: TfrmMain
           Align = alClient
           Caption = 'Modules List'
           TabOrder = 1
-          ExplicitWidth = 779
-          ExplicitHeight = 339
           object DBGrid1: TDBGrid
             Left = 2
             Top = 19
@@ -2766,7 +2761,6 @@ object frmMain: TfrmMain
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 779
           DesignSize = (
             781
             105)
@@ -2851,7 +2845,6 @@ object frmMain: TfrmMain
             ReadOnly = True
             TabOrder = 2
             Text = ''
-            ExplicitWidth = 477
           end
         end
       end
@@ -2864,7 +2857,6 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         Constraints.MinWidth = 200
         TabOrder = 0
-        ExplicitHeight = 444
         object GroupBox5: TGroupBox
           Left = 0
           Top = 83
@@ -2874,7 +2866,6 @@ object frmMain: TfrmMain
           Caption = 'Filters'
           Constraints.MinWidth = 100
           TabOrder = 0
-          ExplicitHeight = 361
           DesignSize = (
             200
             365)
@@ -2893,7 +2884,6 @@ object frmMain: TfrmMain
             Anchors = [akLeft, akTop, akRight, akBottom]
             ItemHeight = 17
             TabOrder = 0
-            ExplicitHeight = 212
           end
         end
         object GroupBox4: TGroupBox
@@ -2941,7 +2931,6 @@ object frmMain: TfrmMain
           Top = 10
           Width = 883
           Height = 25
-          Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
           EditLabel.Width = 85
           EditLabel.Height = 25
@@ -2950,7 +2939,6 @@ object frmMain: TfrmMain
           ReadOnly = True
           TabOrder = 0
           Text = ''
-          OnClick = actOpenModuleFileExecute
         end
       end
       object memoStackTrace: TMemo
@@ -2978,7 +2966,6 @@ object frmMain: TfrmMain
     end
     object tsDXDiagLogFile: TTabSheet
       Caption = 'DXDiag Log'
-      Enabled = False
       ImageIndex = 2
       object Panel6: TPanel
         Left = 0
@@ -2997,7 +2984,6 @@ object frmMain: TfrmMain
           Top = 10
           Width = 899
           Height = 25
-          Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
           EditLabel.Width = 68
           EditLabel.Height = 25
@@ -3006,7 +2992,6 @@ object frmMain: TfrmMain
           ReadOnly = True
           TabOrder = 0
           Text = ''
-          OnClick = actOpenModuleFileExecute
         end
       end
       object memoDXDiagLog: TMemo
@@ -3107,7 +3092,6 @@ object frmMain: TfrmMain
           Top = 10
           Width = 907
           Height = 25
-          Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
           EditLabel.Width = 56
           EditLabel.Height = 25
@@ -3116,7 +3100,6 @@ object frmMain: TfrmMain
           ReadOnly = True
           TabOrder = 0
           Text = ''
-          OnClick = actOpenModuleFileExecute
         end
       end
       object memoSteps: TMemo
@@ -3148,22 +3131,13 @@ object frmMain: TfrmMain
       DesignSize = (
         986
         448)
-      object Panel3: TPanel
-        Left = 0
-        Top = 0
-        Width = 986
-        Height = 169
-        Align = alTop
-        BevelOuter = bvNone
-        TabOrder = 0
-      end
       object GroupBox1: TGroupBox
         Left = 3
         Top = 3
         Width = 278
         Height = 94
         Caption = 'Font'
-        TabOrder = 1
+        TabOrder = 0
         object lblFontSize: TLabel
           Left = 13
           Top = 27
@@ -3200,9 +3174,9 @@ object frmMain: TfrmMain
         Left = 287
         Top = 3
         Width = 258
-        Height = 262
+        Height = 198
         Caption = 'Settings'
-        TabOrder = 2
+        TabOrder = 1
         object cbCreateLog: TCheckBox
           Left = 17
           Top = 27
@@ -3223,14 +3197,23 @@ object frmMain: TfrmMain
           TabOrder = 1
           OnClick = cbMaximizeOnStartupClick
         end
+        object cbParseFileOnOpen: TCheckBox
+          Left = 16
+          Top = 73
+          Width = 129
+          Height = 17
+          Caption = 'Parse on file open'
+          TabOrder = 2
+          OnClick = cbParseFileOnOpenClick
+        end
       end
       object GroupBox3: TGroupBox
         Left = 3
         Top = 103
         Width = 278
-        Height = 162
+        Height = 98
         Caption = 'Known Packages && Modules'
-        TabOrder = 3
+        TabOrder = 2
         object Button5: TButton
           Left = 14
           Top = 24
@@ -3255,7 +3238,48 @@ object frmMain: TfrmMain
         Height = 25
         Action = actSettingsRestoreDefaults
         Anchors = [akLeft, akBottom]
+        TabOrder = 3
+      end
+      object GroupBox6: TGroupBox
+        Left = 3
+        Top = 207
+        Width = 278
+        Height = 138
+        Caption = 'ModulesList file parse Level'
         TabOrder = 4
+        object cbParseLevel2: TCheckBox
+          Left = 14
+          Top = 32
+          Width = 131
+          Height = 17
+          Caption = 'Compare Versions'
+          TabOrder = 0
+          OnClick = cbParseLevel2Click
+        end
+      end
+      object GroupBox7: TGroupBox
+        Left = 287
+        Top = 207
+        Width = 258
+        Height = 138
+        Caption = 'Admin mode'
+        TabOrder = 5
+        object Button7: TButton
+          Left = 12
+          Top = 24
+          Width = 235
+          Height = 25
+          Action = actEnableAdminMode
+          TabOrder = 0
+        end
+        object Button8: TButton
+          Left = 11
+          Top = 55
+          Width = 235
+          Height = 25
+          Action = actDisableAdminMode
+          TabOrder = 1
+        end
       end
     end
     object tsLog: TTabSheet
@@ -3283,6 +3307,8 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 0
+        ExplicitWidth = 974
+        ExplicitHeight = 393
       end
       object Panel4: TPanel
         Left = 0
@@ -3293,6 +3319,8 @@ object frmMain: TfrmMain
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 1
+        ExplicitTop = 403
+        ExplicitWidth = 984
         DesignSize = (
           986
           41)
@@ -3309,6 +3337,7 @@ object frmMain: TfrmMain
           ReadOnly = True
           TabOrder = 0
           Text = ''
+          ExplicitWidth = 921
         end
       end
     end
@@ -3373,6 +3402,16 @@ object frmMain: TfrmMain
       Category = 'Settings'
       Caption = 'Restore Defaults'
       OnExecute = actSettingsRestoreDefaultsExecute
+    end
+    object actEnableAdminMode: TAction
+      Category = 'Settings'
+      Caption = 'Enable Admin Mode'
+      OnExecute = actEnableAdminModeExecute
+    end
+    object actDisableAdminMode: TAction
+      Category = 'Settings'
+      Caption = 'Disable Admin Mode'
+      OnExecute = actDisableAdminModeExecute
     end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog

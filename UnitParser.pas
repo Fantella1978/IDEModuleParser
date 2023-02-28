@@ -34,7 +34,6 @@ type
     procedure SetCurrentTaskPositionsMinMax(PosMin, PosMax : integer);
   private
     { Private declarations }
-    FCurrentKnownModule: TBookmark;
     FCurrentModulePackageID: Integer;
     FCurrentModulePackageName: string;
     function GetOverallTaskPosition(): Integer;
@@ -222,7 +221,6 @@ begin
   if DM1.fdqModulesFromQuery.RecordCount > 0
   then
     begin
-      FCurrentKnownModule := DM1.fdqModulesFromQuery.GetBookmark; // ???
       FCurrentModulePackageID := DM1.fdqModulesFromQuery.FieldByName('PackageID').AsInteger;
       FCurrentModulePackageName := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
     end;
@@ -257,13 +255,11 @@ begin
     end;
 
   DM1.fdqModulesFromQuery.First;
-  // DM1.fdqModulesFromQuery.Next;
   for i := 0 to DM1.fdqModulesFromQuery.RecordCount - 1 do
   begin
     if DM1.cdsModules.FieldByName('Version').AsString = DM1.fdqModulesFromQuery.FieldByName('Version').AsString
       then
         begin
-          FCurrentKnownModule := DM1.fdqModulesFromQuery.GetBookmark; // ???
           FCurrentModulePackageID := DM1.fdqModulesFromQuery.FieldByName('PackageID').AsInteger;
           FCurrentModulePackageName := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
           if DM1.fdqModulesFromQuery.FieldByName('PackageSubName').AsString <> ''
@@ -279,14 +275,13 @@ end;
 
 function TfrmParse.DetermineCurrentModule() : boolean;
 begin
-  FCurrentKnownModule := nil;
   FCurrentModulePackageID := -1;
   FCurrentModulePackageName := '';
 
   GetKnownModulesForFileName();
   DetermineCurrentModuleLevel1();
-  if GlobalModulesCompareLevel2 then
-    DetermineCurrentModuleLevel2();
+  if GlobalModulesCompareLevel2 then DetermineCurrentModuleLevel2();
+  SaveCurrentModuleData();
 
     {
     var S := LowerCase(DM1.cdsModules.FieldByName('FileName').AsString);
@@ -297,28 +292,27 @@ begin
         var p := 2;
       end;
     }
-  SaveCurrentModuleData();
 
   Result := true;
 end;
 
 function TfrmParse.TaskFindAllKnowModules: boolean;
-var
-  i : integer;
 begin
   StartTask('Find known modules in DB...');
   SetCurrentTaskPositionsMinMax(0, DM1.cdsModules.RecordCount - 1);
   DM1.cdsModules.DisableControls;
   DM1.cdsModules.First;
-  for i := 0 to DM1.cdsModules.RecordCount - 1 do
+  var i := -1;
+  while not DM1.cdsModules.Eof do
   begin
+    inc(i);
     SetCurrentTaskPosition(i);
+    {
     if DM1.cdsModules.FieldByName('FileName').AsString = 'tethering280.bpl'
       then var k := 470;
-
+    }
     DetermineCurrentModule();
     Logger.AddToLog('Determine Current Module [' + IntToStr(i) + '] for FileName: ' + DM1.cdsModules.FieldByName('FileName').AsString );
-
 
     DM1.cdsModules.Next;
   end;

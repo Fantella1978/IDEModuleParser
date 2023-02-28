@@ -89,6 +89,11 @@ object DM1: TDM1
         Name = 'cdsModulesPackageNameIndex'
         Fields = 'PackageName;FileName'
         Options = [ixDescending]
+      end
+      item
+        Name = 'cdsModulesNumIndexUNIQ'
+        Fields = 'Num'
+        Options = [ixPrimary, ixUnique]
       end>
     Params = <>
     StoreDefs = True

@@ -15,7 +15,8 @@ uses
   UnitDBGrid in 'UnitDBGrid.pas',
   UnitSettings in 'UnitSettings.pas',
   UnitModulesEditor in 'UnitModulesEditor.pas' {frmModulesEditor},
-  UnitAddModules in 'UnitAddModules.pas' {frmAddModules};
+  UnitAddModules in 'UnitAddModules.pas' {frmAddModules},
+  UnitEnableAdminMode in 'UnitEnableAdminMode.pas' {frmEnableAdminMode};
 
 {$R *.res}
 
@@ -30,5 +31,6 @@ begin
   Application.CreateForm(TfrmCopyAsText, frmCopyAsText);
   Application.CreateForm(TfrmModulesEditor, frmModulesEditor);
   Application.CreateForm(TfrmAddModules, frmAddModules);
+  Application.CreateForm(TfrmEnableAdminMode, frmEnableAdminMode);
   Application.Run;
 end.

@@ -14,7 +14,10 @@ var
   GlobalDefaultFontSize: integer; // DefaultFontSize
   GlobalLogCreate: boolean; // Create a Logging to file
   GlobalMaximizeOnStartup: boolean; // Maximize Application window on Startup
+  GlobalParseOnFileOpen: boolean; // Parese on ModulesList file open
   GlobalModulesCompareLevel2: boolean; // Modules Compare Level 2 enabled (Compare with Package SurName)
+
+  GlobalAdminMode: boolean; // Admin Mode
 
 implementation
 
@@ -30,7 +33,8 @@ const
   Def_DefaultFontSize = 10; // default value for DefaultFontSize
   Def_LogCreate = true; // default value for LogCreate
   Def_MaximizeOnStartup = false; // default value for MaximizeOnStartup
-  Def_ModulesCompareLevel2 = true; // default value for GlobalModulesCompareLevel2
+  Def_ParseOnFileOpen = true; // default value for ParseOnFileOpen
+  Def_ModulesCompareLevel2 = true; // default value for ModulesCompareLevel2
 
 var
   reg: TRegistry;
@@ -67,6 +71,7 @@ begin
       reg.WriteInteger('DefaultFontSize', GlobalDefaultFontSize);
       reg.WriteBool('LogCreate', GlobalLogCreate);
       reg.WriteBool('MaximizeOnStartup', GlobalMaximizeOnStartup);
+      reg.WriteBool('ParseOnFileOpen', GlobalParseOnFileOpen);
       reg.WriteBool('ModulesCompareLevel2', GlobalModulesCompareLevel2);
 
       reg.CloseKey;
@@ -91,8 +96,10 @@ begin
       GlobalDefaultFontSize := LoadIntegerValue('DefaultFontSize', Def_DefaultFontSize);
       GlobalLogCreate       := LoadBooleanValue('LogCreate', Def_LogCreate);
       GlobalMaximizeOnStartup := LoadBooleanValue('MaximizeOnStartup', Def_MaximizeOnStartup);
+      GlobalParseOnFileOpen := LoadBooleanValue('ParseOnFileOpen', Def_ParseOnFileOpen);
       GlobalModulesCompareLevel2 := LoadBooleanValue('ModulesCompareLevel2', Def_ModulesCompareLevel2);
 
+      GlobalAdminMode := false;
       reg.CloseKey;
       Result := true;
     end
@@ -109,7 +116,9 @@ begin
   GlobalDefaultFontSize := Def_DefaultFontSize;
   GlobalLogCreate       := Def_LogCreate;
   GlobalMaximizeOnStartup := Def_MaximizeOnStartup;
+  GlobalParseOnFileOpen := Def_ParseOnFileOpen;
   GlobalModulesCompareLevel2 := Def_ModulesCompareLevel2;
+  GlobalAdminMode := false;
 end;
 
 end.

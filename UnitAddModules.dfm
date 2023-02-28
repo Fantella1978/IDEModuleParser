@@ -25,6 +25,8 @@ object frmAddModules: TfrmAddModules
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 395
+    ExplicitWidth = 806
     DesignSize = (
       808
       37)
@@ -39,6 +41,7 @@ object frmAddModules: TfrmAddModules
       ModalResult = 1
       TabOrder = 0
       OnClick = btnAddClick
+      ExplicitLeft = 622
     end
     object btnCancel: TButton
       Left = 711
@@ -51,6 +54,7 @@ object frmAddModules: TfrmAddModules
       ModalResult = 2
       TabOrder = 1
       OnClick = btnCancelClick
+      ExplicitLeft = 709
     end
     object ProgressBarAddModules: TProgressBar
       Left = 6
@@ -70,6 +74,8 @@ object frmAddModules: TfrmAddModules
     Caption = 'Modules'
     Constraints.MinHeight = 100
     TabOrder = 1
+    ExplicitWidth = 806
+    ExplicitHeight = 266
     object lbxModules: TListBox
       AlignWithMargins = True
       Left = 5
@@ -86,6 +92,8 @@ object frmAddModules: TfrmAddModules
       ItemHeight = 17
       ParentFont = False
       TabOrder = 0
+      ExplicitWidth = 796
+      ExplicitHeight = 241
     end
   end
   object Panel2: TPanel
@@ -96,6 +104,7 @@ object frmAddModules: TfrmAddModules
     Align = alTop
     Anchors = []
     TabOrder = 2
+    ExplicitWidth = 806
     object GroupBox2: TGroupBox
       Left = 1
       Top = 1
@@ -130,6 +139,7 @@ object frmAddModules: TfrmAddModules
       Caption = 'Package'
       ParentBackground = False
       TabOrder = 1
+      ExplicitWidth = 668
       DesignSize = (
         670
         127)
@@ -161,6 +171,7 @@ object frmAddModules: TfrmAddModules
         TabOrder = 1
         Text = 'cbPackages'
         OnCloseUp = cbPackagesCloseUp
+        ExplicitWidth = 588
       end
     end
   end
