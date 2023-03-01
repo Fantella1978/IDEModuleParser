@@ -145,9 +145,7 @@ object DM1: TDM1
   end
   object fdcSQLite: TFDConnection
     Params.Strings = (
-      
-        'Database=C:\Users\Tester\Documents\Embarcadero\Studio\Projects\I' +
-        'DE Module Parser\IDEModuleParser.db3'
+      'Database=Z:\IDE Module Parser\IDEModuleParser.db3'
       'DriverID=SQLite')
     LoginPrompt = False
     Left = 280
@@ -214,15 +212,52 @@ object DM1: TDM1
   end
   object fdtPackages: TFDTable
     AfterOpen = fdtPackagesAfterOpen
+    AfterInsert = fdtPackagesAfterInsert
     AfterEdit = fdtPackagesAfterEdit
     AfterCancel = fdtPackagesAfterCancel
     AfterRefresh = fdtPackagesAfterRefresh
-    IndexFieldNames = 'Num'
+    IndexName = 'NameSubNameIndex'
     Connection = fdcSQLite
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     TableName = 'Packages'
     Left = 336
     Top = 120
+    object fdtPackagesNum: TFDAutoIncField
+      FieldName = 'Num'
+      Origin = 'Num'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+    end
+    object fdtPackagesName: TStringField
+      FieldName = 'Name'
+      Origin = 'Name'
+      Required = True
+      Size = 60
+    end
+    object fdtPackagesSubName: TStringField
+      FieldName = 'SubName'
+      Origin = 'SubName'
+      Size = 60
+    end
+    object fdtPackagesUrl: TStringField
+      FieldName = 'Url'
+      Origin = 'Url'
+      Size = 255
+    end
+    object fdtPackagesVersionRegExp: TStringField
+      FieldName = 'VersionRegExp'
+      Origin = 'VersionRegExp'
+      Size = 100
+    end
+    object fdtPackagesVersion: TStringField
+      FieldName = 'Version'
+      Origin = 'Version'
+      Size = 27
+    end
+    object fdtPackagesType: TIntegerField
+      FieldName = 'Type'
+      Origin = 'Type'
+    end
   end
   object dsPackages: TDataSource
     DataSet = fdtPackages
@@ -239,5 +274,18 @@ object DM1: TDM1
     Connection = fdcSQLite
     Left = 336
     Top = 248
+  end
+  object fdtPackageTypes: TFDTable
+    IndexFieldNames = 'ID'
+    Connection = fdcSQLite
+    ResourceOptions.AssignedValues = [rvEscapeExpand]
+    TableName = 'PackageTypes'
+    Left = 424
+    Top = 120
+  end
+  object dsPackageTypes: TDataSource
+    DataSet = fdtPackageTypes
+    Left = 424
+    Top = 184
   end
 end

@@ -136,6 +136,14 @@ type
     actDisableAdminMode: TAction;
     Button7: TButton;
     Button8: TButton;
+    GroupBox8: TGroupBox;
+    cbxStyles: TComboBox;
+    StatusBar1: TStatusBar;
+    lbedFilterFileName: TLabeledEdit;
+    lblModulesFilteredCount: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    Label4: TLabel;
     procedure FormCreate(Sender: TObject);
     function ConnectToDB : boolean;
     procedure ModulesGridSelectionChanged(Sender: TObject);
@@ -247,11 +255,16 @@ type
     procedure cbParseLevel2Click(Sender: TObject);
     procedure actEnableAdminModeExecute(Sender: TObject);
     procedure actDisableAdminModeExecute(Sender: TObject);
+    procedure cbxStylesChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure lbedFilterFileNameChange(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
     procedure ModulesCountDisplay;
     function IsAdminModeEnabled: boolean;
+    procedure ModulesFilteredCountDisplay;
+    procedure ModulesStatisticDisplay;
   public
     { Public declarations }
   end;
@@ -280,6 +293,7 @@ procedure TfrmMain.actDisableAdminModeExecute(Sender: TObject);
 begin
   // Disable Admin Mode
   GlobalAdminMode := false;
+  Logger.AddToLog('Admin Mode disabled.');
   actEnableAdminMode.Enabled := true;
   actDisableAdminMode.Enabled := false;
 end;
@@ -290,6 +304,7 @@ begin
   if (frmEnableAdminMode.ShowModal = mrOk) AND GlobalAdminMode
   then
     begin
+      Logger.AddToLog('Admin Mode enabled.');
       actEnableAdminMode.Enabled := false;
       actDisableAdminMode.Enabled := true;
     end;
@@ -309,6 +324,13 @@ end;
 procedure TfrmMain.cbParseLevel2Click(Sender: TObject);
 begin
   GlobalModulesCompareLevel2 := cbParseLevel2.Checked;
+end;
+
+procedure TfrmMain.cbxStylesChange(Sender: TObject);
+begin
+  TStyleManager.SetStyle(cbxStyles.Text);
+  GlobalVCLStyle := TStyleManager.ActiveStyle.Name;
+  Logger.AddToLog('Application VCL Style applied: ' + TStyleManager.ActiveStyle.Name)
 end;
 
 function TfrmMain.CheckZipReportFile(Sender: TObject): boolean;
@@ -452,6 +474,7 @@ begin
         end;
     DM1.fdcSQLite.Connected := true;
     DM1.fdtPackages.Active := true;
+    DM1.fdtPackageTypes.Active := true;
     DM1.fdtModules.Active := true;
   except
     on E:Exception do
@@ -775,6 +798,24 @@ begin
   Result := true;
 end;
 
+procedure TfrmMain.lbedFilterFileNameChange(Sender: TObject);
+begin
+  if lbedFilterFileName.Text <> ''
+  then
+    begin
+      DM1.cdsModules.Filter := 'FileName LIKE ''' + lbedFilterFileName.Text + '%''';
+      DM1.cdsModules.FilterOptions := [foCaseInsensitive];
+      DM1.cdsModules.Filtered := true;
+    end
+  else
+    begin
+      DM1.cdsModules.Filtered := false;
+    end;
+  DBGrid1.SelectedRows.Clear;
+  ModulesFilteredCountDisplay();
+  ModulesSelectedCountDisplay();
+end;
+
 procedure TfrmMain.actPackagesEditorExecute(Sender: TObject);
 begin
   // Show Packages Editor
@@ -838,13 +879,11 @@ begin
       tsModulesList.Enabled := true;
       PageControl1.ActivePage := tsModulesList;
 
-      ModulesCountDisplay();
-      ModulesSelectedCountDisplay();
+      ModulesStatisticDisplay();
 
       DBGrid1.SelectedRows.Clear;
       DM1.cdsModules.EnableControls;
       DM1.cdsModules.First;
-
     end;
 
   // actParseModuleFile.Enabled := false;
@@ -907,14 +946,28 @@ begin
   GlobalMaximizeOnStartup := cbMaximizeOnStartup.Checked;
 end;
 
+procedure TfrmMain.ModulesFilteredCountDisplay();
+begin
+  if DM1.cdsModules.Filtered
+    then frmMain.lblModulesFilteredCount.Caption := IntToStr(DM1.cdsModules.RecordCount)
+    else frmMain.lblModulesFilteredCount.Caption := '-';
+end;
+
 procedure TfrmMain.ModulesSelectedCountDisplay();
 begin
-  frmMain.lblModulesSelectedCount.Caption := 'Selected count: ' + IntToStr(frmMain.DBGrid1.SelectedRows.Count);
+  frmMain.lblModulesSelectedCount.Caption := IntToStr(frmMain.DBGrid1.SelectedRows.Count);
 end;
 
 procedure TfrmMain.ModulesCountDisplay();
 begin
-  frmMain.lblModulesCount.Caption := 'Modules count: ' + IntToStr(DM1.cdsModules.RecordCount);
+  frmMain.lblModulesCount.Caption := IntToStr(DM1.cdsModules.RecordCount);
+end;
+
+procedure TfrmMain.ModulesStatisticDisplay();
+begin
+  ModulesCountDisplay();
+  ModulesSelectedCountDisplay();
+  ModulesFilteredCountDisplay();
 end;
 
 procedure TfrmMain.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -937,7 +990,7 @@ end;
 
 procedure TfrmMain.DBGrid1Enter(Sender: TObject);
 begin
-  //  ShowMessage('DBGrid1 Enter');
+  // ShowMessage('DBGrid1 Enter');
   // UpdateActionsWithSelectedModels();
 end;
 
@@ -1139,7 +1192,9 @@ begin
   Logger.Clear;
 
   var loadSettingsRes := LoadSattingsFromRegistry();
-  UpdateObjectsAccordingSettings();
+
+  for var StyleName in TStyleManager.StyleNames do
+    cbxStyles.Items.Add(StyleName);
 
   Logger.LogEnabled := cbCreateLog.Checked;
   Logger.AddToLog('Application started');
@@ -1151,6 +1206,8 @@ begin
     then frmMain.WindowState := TWindowState.wsMaximized
     else frmMain.WindowState := TWindowState.wsNormal;
   Caption := 'IDE Module Parser' + ' ' + GetFileVersionStr(Application.ExeName);
+
+  UpdateObjectsAccordingSettings();
 
   MemoTxtModuleFile.Clear;
 
@@ -1170,7 +1227,6 @@ begin
   // Disable Font Size Change
   EnableFontSizeChange();
 
-  DragAcceptFiles(Self.Handle, True);
   AskConfirmOpenForAll := false;
 
   TFormatSettings.Create;
@@ -1183,6 +1239,11 @@ begin
   lblStartMessageMain.Top := lblStartMessageSecondary.Top - lblStartMessageMain.Height -
     lblStartMessageSecondary.Margins.Top - lblStartMessageMain.Margins.Bottom -
       lblStartMessageMain.Margins.Top;
+end;
+
+procedure TfrmMain.FormShow(Sender: TObject);
+begin
+  DragAcceptFiles(Self.Handle, True);
 end;
 
 procedure TfrmMain.ModulesGridSelectionChanged(Sender: TObject);
@@ -1456,6 +1517,16 @@ begin
   cbMaximizeOnStartup.Checked := GlobalMaximizeOnStartup;
   cbParseFileOnOpen.Checked := GlobalParseOnFileOpen;
   cbParseLevel2.Checked := GlobalModulesCompareLevel2;
+  if cbxStyles.Items.Count <= 1
+    then cbxStyles.Enabled := false
+    else
+      begin
+        cbxStyles.Enabled := true;
+        if cbxStyles.Items.IndexOf(GlobalVCLStyle) > -1
+          then cbxStyles.ItemIndex := cbxStyles.Items.IndexOf(GlobalVCLStyle)
+          else cbxStyles.ItemIndex := 0;
+        cbxStylesChange(frmMain);
+      end;
   // cbCreateLogClick(frmMain);
 
   if GlobalAdminMode

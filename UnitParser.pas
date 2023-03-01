@@ -247,7 +247,7 @@ end;
 function TfrmParse.DetermineCurrentModuleLevel2() : boolean;
 var i : integer;
 begin
-  if DM1.fdqModulesFromQuery.RecordCount <= 1
+  if DM1.fdqModulesFromQuery.RecordCount = 0
   then
     begin
       Result := false;

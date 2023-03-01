@@ -21,7 +21,7 @@ type
     dbeURL: TDBEdit;
     lblUrl: TLabel;
     dbeVersion: TDBEdit;
-    DBEdit2: TDBEdit;
+    dbeVersioRgExp: TDBEdit;
     lblVersion: TLabel;
     lblVersionRegExp: TLabel;
     Button2: TButton;
@@ -35,6 +35,7 @@ type
     actPackagesCancel: TAction;
     lblSurName: TLabel;
     dbeSurName: TDBEdit;
+    DBLookupComboBox1: TDBLookupComboBox;
     procedure ButtonOKClick(Sender: TObject);
     procedure dbgPackagesDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -47,6 +48,9 @@ type
     procedure actPackagesCancelExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure dbeVersionChange(Sender: TObject);
+    procedure dbeVersioRgExpChange(Sender: TObject);
+    procedure dbeURLChange(Sender: TObject);
+    procedure dbeSurNameChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -80,7 +84,8 @@ end;
 procedure TfrmPackagesEditor.actPackageDeleteExecute(Sender: TObject);
 begin
   // Package Delete
-
+  if MessageDlg('Delete Record?', TMsgDlgType.mtConfirmation, [mbOk, mbCancel], 0) = mrOk
+    then DM1.fdtPackages.Delete;
 end;
 
 procedure TfrmPackagesEditor.actPackageEditExecute(Sender: TObject);
@@ -119,6 +124,16 @@ begin
   Close;
 end;
 
+procedure TfrmPackagesEditor.dbeVersioRgExpChange(Sender: TObject);
+begin
+  if DM1.fdtPackages.State in [dsEdit, dsInsert]
+  then
+    begin
+      actPackagesSave.Enabled   := true;
+      actPackagesCancel.Enabled := true;
+    end;
+end;
+
 procedure TfrmPackagesEditor.dbeNameChange(Sender: TObject);
 begin
   if not (DM1.fdtPackages.State in [dsEdit, dsInsert]) or (dbeName.Text = '')
@@ -128,14 +143,34 @@ begin
     actPackagesSave.Enabled := true
 end;
 
+procedure TfrmPackagesEditor.dbeSurNameChange(Sender: TObject);
+begin
+  if DM1.fdtPackages.State in [dsEdit, dsInsert]
+  then
+    begin
+      actPackagesSave.Enabled   := true;
+      actPackagesCancel.Enabled := true;
+    end;
+end;
+
+procedure TfrmPackagesEditor.dbeURLChange(Sender: TObject);
+begin
+  if DM1.fdtPackages.State in [dsEdit, dsInsert]
+  then
+    begin
+      actPackagesSave.Enabled   := true;
+      actPackagesCancel.Enabled := true;
+    end;
+end;
+
 procedure TfrmPackagesEditor.dbeVersionChange(Sender: TObject);
 begin
   if DM1.fdtPackages.State in [dsEdit, dsInsert]
   then
-  begin
-    actPackagesSave.Enabled   := true;
-    actPackagesCancel.Enabled := true;
-  end;
+    begin
+      actPackagesSave.Enabled   := true;
+      actPackagesCancel.Enabled := true;
+    end;
 end;
 
 procedure TfrmPackagesEditor.dbgPackagesDrawColumnCell(Sender: TObject;

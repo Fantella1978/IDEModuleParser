@@ -13,7 +13,7 @@ object frmModulesEditor: TfrmModulesEditor
   Position = poMainFormCenter
   WindowState = wsMaximized
   TextHeight = 15
-  object Panel1: TPanel
+  object pnlBottom: TPanel
     Left = 0
     Top = 449
     Width = 766
@@ -27,7 +27,7 @@ object frmModulesEditor: TfrmModulesEditor
       766
       37)
     object Button1: TButton
-      Left = 676
+      Left = 685
       Top = 6
       Width = 75
       Height = 25
@@ -37,14 +37,13 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
-      ExplicitLeft = 674
     end
   end
   object dbgModules: TDBGrid
     Left = 0
-    Top = 0
+    Top = 73
     Width = 766
-    Height = 407
+    Height = 376
     Align = alClient
     DataSource = DM1.dsModules
     TabOrder = 1
@@ -96,23 +95,41 @@ object frmModulesEditor: TfrmModulesEditor
         Visible = True
       end>
   end
-  object Panel2: TPanel
+  object pnlTop: TPanel
     Left = 0
-    Top = 407
+    Top = 0
     Width = 766
-    Height = 42
-    Align = alBottom
-    BevelOuter = bvNone
+    Height = 73
+    Align = alTop
     TabOrder = 2
-    ExplicitTop = 403
-    ExplicitWidth = 764
+    object GroupBox1: TGroupBox
+      Left = 1
+      Top = 1
+      Width = 136
+      Height = 71
+      Align = alLeft
+      Caption = 'Filter'
+      TabOrder = 0
+      object lbedFilterFileName: TLabeledEdit
+        Left = 7
+        Top = 37
+        Width = 122
+        Height = 23
+        EditLabel.Width = 53
+        EditLabel.Height = 15
+        EditLabel.Caption = 'File Name'
+        TabOrder = 0
+        Text = ''
+        OnChange = lbedFilterFileNameChange
+      end
+    end
     object DBNavigator1: TDBNavigator
-      Left = 8
-      Top = 8
+      Left = 520
+      Top = 40
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
-      TabOrder = 0
+      TabOrder = 1
     end
   end
 end

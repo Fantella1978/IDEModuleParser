@@ -2,6 +2,9 @@ unit UnitSettings;
 
 interface
 
+uses
+  Winapi.Windows;
+
 /// <summary>Save Global Sattings To Registry</summary>
 function SaveSattingsToRegistry(): boolean;
 /// <summary></summary>
@@ -16,6 +19,7 @@ var
   GlobalMaximizeOnStartup: boolean; // Maximize Application window on Startup
   GlobalParseOnFileOpen: boolean; // Parese on ModulesList file open
   GlobalModulesCompareLevel2: boolean; // Modules Compare Level 2 enabled (Compare with Package SurName)
+  GlobalVCLStyle: string; // Application VCL Style
 
   GlobalAdminMode: boolean; // Admin Mode
 
@@ -23,8 +27,8 @@ implementation
 
 uses
   Registry
-    , Winapi.Windows
     , System.SysUtils
+    , VCL.Themes, Winapi.ActiveX
     ;
 
 const
@@ -35,14 +39,18 @@ const
   Def_MaximizeOnStartup = false; // default value for MaximizeOnStartup
   Def_ParseOnFileOpen = true; // default value for ParseOnFileOpen
   Def_ModulesCompareLevel2 = true; // default value for ModulesCompareLevel2
+  Def_VCLStyle_const = 'Amethyst Kamri'; // default value (constant) for VCLStyle
 
 var
   reg: TRegistry;
+  Def_VCLStyle : string; // default value for VCLStyle
 
 function LoadIntegerValue(name: string; defValue: integer): integer;
 begin
   try
-    Result := reg.ReadInteger(name);
+    if reg.ValueExists(name)
+      then Result := reg.ReadInteger(name)
+      else Result := defValue;
   except
     Result := defValue;
   end;
@@ -51,7 +59,20 @@ end;
 function LoadBooleanValue(name: string; defValue: boolean): boolean;
 begin
   try
-    Result := reg.ReadBool(name);
+    if reg.ValueExists(name)
+      then Result := reg.ReadBool(name)
+      else Result := defValue;
+  except
+    Result := defValue;
+  end;
+end;
+
+function LoadStringValue(name: string; defValue: string): string;
+begin
+  try
+    if reg.ValueExists(name)
+      then Result := reg.ReadString(name)
+      else Result := defValue;
   except
     Result := defValue;
   end;
@@ -73,6 +94,7 @@ begin
       reg.WriteBool('MaximizeOnStartup', GlobalMaximizeOnStartup);
       reg.WriteBool('ParseOnFileOpen', GlobalParseOnFileOpen);
       reg.WriteBool('ModulesCompareLevel2', GlobalModulesCompareLevel2);
+      reg.WriteString('VCLStyle', GlobalVCLStyle);
 
       reg.CloseKey;
       Result := true;
@@ -98,6 +120,10 @@ begin
       GlobalMaximizeOnStartup := LoadBooleanValue('MaximizeOnStartup', Def_MaximizeOnStartup);
       GlobalParseOnFileOpen := LoadBooleanValue('ParseOnFileOpen', Def_ParseOnFileOpen);
       GlobalModulesCompareLevel2 := LoadBooleanValue('ModulesCompareLevel2', Def_ModulesCompareLevel2);
+      if Def_VCLStyle_const = TStyleManager.ActiveStyle.Name
+        then Def_VCLStyle := Def_VCLStyle_const
+        else Def_VCLStyle := TStyleManager.ActiveStyle.Name;
+      GlobalVCLStyle := LoadStringValue('VCLStyle', Def_VCLStyle);
 
       GlobalAdminMode := false;
       reg.CloseKey;
@@ -118,6 +144,10 @@ begin
   GlobalMaximizeOnStartup := Def_MaximizeOnStartup;
   GlobalParseOnFileOpen := Def_ParseOnFileOpen;
   GlobalModulesCompareLevel2 := Def_ModulesCompareLevel2;
+  if Def_VCLStyle_const = Def_VCLStyle
+    then GlobalVCLStyle := Def_VCLStyle_const
+    else GlobalVCLStyle := Def_VCLStyle;
+
   GlobalAdminMode := false;
 end;
 

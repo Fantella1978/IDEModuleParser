@@ -17,31 +17,29 @@ object frmMain: TfrmMain
   OnClose = FormClose
   OnCreate = FormCreate
   OnResize = FormResize
+  OnShow = FormShow
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
-    Top = 483
+    Top = 0
     Width = 994
     Height = 37
-    Align = alBottom
+    Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 479
     ExplicitWidth = 992
     DesignSize = (
       994
       37)
     object Button1: TButton
-      Left = 770
+      Left = 4
       Top = 6
-      Width = 135
+      Width = 157
       Height = 25
       Action = actOpenModuleFile
-      Anchors = [akRight, akBottom]
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 768
     end
     object Button2: TButton
       Left = 911
@@ -52,37 +50,33 @@ object frmMain: TfrmMain
       Anchors = [akRight, akBottom]
       Cancel = True
       ModalResult = 2
-      TabOrder = 1
+      TabOrder = 3
       ExplicitLeft = 909
     end
     object Button3: TButton
-      Left = 557
+      Left = 299
       Top = 6
       Width = 75
       Height = 25
       Action = actParseModuleFile
-      Anchors = [akRight, akBottom]
       TabOrder = 2
-      ExplicitLeft = 555
     end
     object Button4: TButton
-      Left = 638
+      Left = 167
       Top = 6
       Width = 126
       Height = 25
       Action = actOpenReportZipFile
-      Anchors = [akRight, akBottom]
       Caption = 'Open Report in Zip'
-      TabOrder = 3
-      ExplicitLeft = 636
+      TabOrder = 1
     end
   end
   object PageControl1: TPageControl
     Left = 0
-    Top = 0
+    Top = 37
     Width = 994
-    Height = 483
-    ActivePage = tsSettings
+    Height = 464
+    ActivePage = tsModulesList
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -92,18 +86,16 @@ object frmMain: TfrmMain
     ParentFont = False
     Style = tsFlatButtons
     TabOrder = 1
-    ExplicitWidth = 992
-    ExplicitHeight = 479
     object tsHome: TTabSheet
       Caption = 'Home'
       ImageIndex = 8
       DesignSize = (
         986
-        448)
+        429)
       object lblStartMessageMain: TLabel
         AlignWithMargins = True
         Left = 397
-        Top = 91
+        Top = 87
         Width = 192
         Height = 28
         Alignment = taCenter
@@ -124,7 +116,7 @@ object frmMain: TfrmMain
       object lblStartMessageSecondary: TLabel
         AlignWithMargins = True
         Left = 274
-        Top = 162
+        Top = 153
         Width = 438
         Height = 122
         Alignment = taCenter
@@ -144,6 +136,310 @@ object frmMain: TfrmMain
         StyleElements = [seClient, seBorder]
         ExplicitLeft = 269
         ExplicitTop = 152
+      end
+    end
+    object tsModulesList: TTabSheet
+      Caption = 'Modules'
+      ImageIndex = 1
+      object Splitter1: TSplitter
+        Left = 200
+        Top = 0
+        Width = 5
+        Height = 429
+        ExplicitLeft = 216
+        ExplicitTop = -2
+        ExplicitHeight = 468
+      end
+      object Panel11Right: TPanel
+        Left = 205
+        Top = 0
+        Width = 781
+        Height = 429
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 1
+        object gbModulesList: TGroupBox
+          Left = 0
+          Top = 105
+          Width = 781
+          Height = 324
+          Align = alClient
+          Caption = 'Modules List'
+          TabOrder = 1
+          object DBGrid1: TDBGrid
+            Left = 2
+            Top = 19
+            Width = 777
+            Height = 303
+            Align = alClient
+            DataSource = DM1.DataSource1
+            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
+            PopupMenu = ppmModulesGrid
+            ReadOnly = True
+            TabOrder = 0
+            TitleFont.Charset = DEFAULT_CHARSET
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -13
+            TitleFont.Name = 'Segoe UI'
+            TitleFont.Style = []
+            OnDrawColumnCell = DBGrid1DrawColumnCell
+            OnEnter = DBGrid1Enter
+            OnExit = DBGrid1Exit
+            OnKeyPress = DBGrid1KeyPress
+            OnKeyUp = DBGrid1KeyUp
+            OnMouseActivate = DBGrid1MouseActivate
+            OnMouseDown = DBGrid1MouseDown
+            OnMouseUp = DBGrid1MouseUp
+            OnTitleClick = DBGrid1TitleClick
+            Columns = <
+              item
+                Expanded = False
+                FieldName = 'FileName'
+                Title.Caption = 'File Name'
+                Title.Color = clGrayText
+                Width = 150
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'Version'
+                Width = 100
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'PackageName'
+                Title.Caption = 'Package Name'
+                Width = 200
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'Path'
+                Width = 300
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'DateAndTime'
+                Title.Caption = 'Date & Time'
+                Width = 140
+                Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'Hash'
+                Width = 250
+                Visible = True
+              end>
+          end
+        end
+        object Panel9Top: TPanel
+          Left = 0
+          Top = 0
+          Width = 781
+          Height = 105
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 0
+          DesignSize = (
+            781
+            105)
+          object SpeedButton1: TSpeedButton
+            Left = 679
+            Top = 77
+            Width = 94
+            Height = 22
+            Action = actModulesCopySelectedAsText
+            Anchors = [akTop, akRight]
+          end
+          object SpeedButton3: TSpeedButton
+            Left = 496
+            Top = 77
+            Width = 177
+            Height = 22
+            Action = actModulesAddSelectedToDB
+            Anchors = [akTop, akRight]
+          end
+          object SpeedButton2: TSpeedButton
+            Left = 417
+            Top = 77
+            Width = 73
+            Height = 22
+            Action = actModulesSelectAll
+            Anchors = [akTop, akRight]
+          end
+          object ledtBDSBuild: TLabeledEdit
+            Left = 110
+            Top = 45
+            Width = 192
+            Height = 25
+            Cursor = crHandPoint
+            Alignment = taCenter
+            EditLabel.Width = 78
+            EditLabel.Height = 25
+            EditLabel.Caption = 'BDS build '#8470':'
+            LabelPosition = lpLeft
+            ReadOnly = True
+            TabOrder = 0
+            Text = ''
+            OnClick = actOpenModuleFileExecute
+          end
+          object ledtBDSInstDate: TLabeledEdit
+            Left = 110
+            Top = 74
+            Width = 192
+            Height = 25
+            Cursor = crHandPoint
+            Alignment = taCenter
+            EditLabel.Width = 94
+            EditLabel.Height = 25
+            EditLabel.Caption = 'BDS install Date:'
+            LabelPosition = lpLeft
+            ReadOnly = True
+            TabOrder = 1
+            Text = ''
+            OnClick = actOpenModuleFileExecute
+          end
+          object ledtBDSPath: TLabeledEdit
+            Left = 110
+            Top = 14
+            Width = 479
+            Height = 25
+            Cursor = crHandPoint
+            Anchors = [akLeft, akTop, akRight]
+            EditLabel.Width = 51
+            EditLabel.Height = 25
+            EditLabel.Caption = 'BDS Path:'
+            EditLabel.Color = clBtnFace
+            EditLabel.Font.Charset = DEFAULT_CHARSET
+            EditLabel.Font.Color = clWindowText
+            EditLabel.Font.Height = -12
+            EditLabel.Font.Name = 'Segoe UI'
+            EditLabel.Font.Style = []
+            EditLabel.ParentColor = False
+            EditLabel.ParentFont = False
+            LabelPosition = lpLeft
+            ReadOnly = True
+            TabOrder = 2
+            Text = ''
+          end
+        end
+      end
+      object Panel10Left: TPanel
+        Left = 0
+        Top = 0
+        Width = 200
+        Height = 429
+        Align = alLeft
+        BevelOuter = bvNone
+        Constraints.MinWidth = 200
+        TabOrder = 0
+        object GroupBox5: TGroupBox
+          Left = 0
+          Top = 105
+          Width = 200
+          Height = 324
+          Align = alClient
+          Caption = 'Filters'
+          Constraints.MinWidth = 100
+          TabOrder = 0
+          ExplicitTop = 83
+          ExplicitHeight = 346
+          DesignSize = (
+            200
+            324)
+          object Label1: TLabel
+            Left = 11
+            Top = 74
+            Width = 54
+            Height = 17
+            Caption = 'Packages'
+          end
+          object clbVisiblePackages: TCheckListBox
+            Left = 9
+            Top = 97
+            Width = 183
+            Height = 175
+            Anchors = [akLeft, akTop, akRight, akBottom]
+            ItemHeight = 17
+            TabOrder = 0
+            ExplicitHeight = 197
+          end
+          object lbedFilterFileName: TLabeledEdit
+            Left = 10
+            Top = 43
+            Width = 181
+            Height = 25
+            EditLabel.Width = 58
+            EditLabel.Height = 17
+            EditLabel.Caption = 'File Name'
+            MaxLength = 60
+            TabOrder = 1
+            Text = ''
+            OnChange = lbedFilterFileNameChange
+          end
+        end
+        object GroupBox4: TGroupBox
+          Left = 0
+          Top = 0
+          Width = 200
+          Height = 105
+          Align = alTop
+          Caption = 'Statistic'
+          TabOrder = 1
+          DesignSize = (
+            200
+            105)
+          object lblModulesSelectedCount: TLabel
+            Left = 163
+            Top = 48
+            Width = 32
+            Height = 17
+            Alignment = taRightJustify
+            Anchors = [akTop, akRight]
+            Caption = #1061#1061#1061'X'
+          end
+          object lblModulesCount: TLabel
+            Left = 163
+            Top = 25
+            Width = 32
+            Height = 17
+            Alignment = taRightJustify
+            Anchors = [akTop, akRight]
+            Caption = #1061#1061#1061'X'
+          end
+          object lblModulesFilteredCount: TLabel
+            Left = 163
+            Top = 71
+            Width = 32
+            Height = 17
+            Alignment = taRightJustify
+            Anchors = [akTop, akRight]
+            Caption = #1061#1061#1061'X'
+          end
+          object Label2: TLabel
+            Left = 11
+            Top = 25
+            Width = 90
+            Height = 17
+            Caption = 'Modules count:'
+          end
+          object Label3: TLabel
+            Left = 11
+            Top = 48
+            Width = 142
+            Height = 17
+            Caption = 'Modules selected count:'
+          end
+          object Label4: TLabel
+            Left = 11
+            Top = 71
+            Width = 135
+            Height = 17
+            Caption = 'Modules filtered count:'
+          end
+        end
       end
     end
     object tsModuleListFile: TTabSheet
@@ -182,7 +478,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 976
-        Height = 397
+        Height = 378
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2657,260 +2953,6 @@ object frmMain: TfrmMain
         TabOrder = 1
       end
     end
-    object tsModulesList: TTabSheet
-      Caption = 'Modules'
-      ImageIndex = 1
-      object Splitter1: TSplitter
-        Left = 200
-        Top = 0
-        Width = 5
-        Height = 448
-        ExplicitLeft = 216
-        ExplicitTop = -2
-        ExplicitHeight = 468
-      end
-      object Panel11Right: TPanel
-        Left = 205
-        Top = 0
-        Width = 781
-        Height = 448
-        Align = alClient
-        BevelOuter = bvNone
-        TabOrder = 1
-        object gbModulesList: TGroupBox
-          Left = 0
-          Top = 105
-          Width = 781
-          Height = 343
-          Align = alClient
-          Caption = 'Modules List'
-          TabOrder = 1
-          object DBGrid1: TDBGrid
-            Left = 2
-            Top = 19
-            Width = 777
-            Height = 322
-            Align = alClient
-            DataSource = DM1.DataSource1
-            Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgMultiSelect, dgTitleClick, dgTitleHotTrack]
-            PopupMenu = ppmModulesGrid
-            ReadOnly = True
-            TabOrder = 0
-            TitleFont.Charset = DEFAULT_CHARSET
-            TitleFont.Color = clWindowText
-            TitleFont.Height = -13
-            TitleFont.Name = 'Segoe UI'
-            TitleFont.Style = []
-            OnDrawColumnCell = DBGrid1DrawColumnCell
-            OnEnter = DBGrid1Enter
-            OnExit = DBGrid1Exit
-            OnKeyPress = DBGrid1KeyPress
-            OnKeyUp = DBGrid1KeyUp
-            OnMouseActivate = DBGrid1MouseActivate
-            OnMouseDown = DBGrid1MouseDown
-            OnMouseUp = DBGrid1MouseUp
-            OnTitleClick = DBGrid1TitleClick
-            Columns = <
-              item
-                Expanded = False
-                FieldName = 'FileName'
-                Title.Caption = 'File Name'
-                Title.Color = clGrayText
-                Width = 150
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'Version'
-                Width = 100
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'PackageName'
-                Title.Caption = 'Package Name'
-                Width = 200
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'Path'
-                Width = 300
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'DateAndTime'
-                Title.Caption = 'Date & Time'
-                Width = 140
-                Visible = True
-              end
-              item
-                Expanded = False
-                FieldName = 'Hash'
-                Width = 250
-                Visible = True
-              end>
-          end
-        end
-        object Panel9Top: TPanel
-          Left = 0
-          Top = 0
-          Width = 781
-          Height = 105
-          Align = alTop
-          BevelOuter = bvNone
-          TabOrder = 0
-          DesignSize = (
-            781
-            105)
-          object SpeedButton1: TSpeedButton
-            Left = 679
-            Top = 70
-            Width = 94
-            Height = 22
-            Action = actModulesCopySelectedAsText
-            Anchors = [akTop, akRight]
-            ExplicitLeft = 873
-          end
-          object SpeedButton3: TSpeedButton
-            Left = 496
-            Top = 70
-            Width = 177
-            Height = 22
-            Action = actModulesAddSelectedToDB
-            Anchors = [akTop, akRight]
-            ExplicitLeft = 690
-          end
-          object SpeedButton2: TSpeedButton
-            Left = 417
-            Top = 70
-            Width = 73
-            Height = 22
-            Action = actModulesSelectAll
-            Anchors = [akTop, akRight]
-            ExplicitLeft = 611
-          end
-          object ledtBDSBuild: TLabeledEdit
-            Left = 110
-            Top = 45
-            Width = 192
-            Height = 25
-            Cursor = crHandPoint
-            Alignment = taCenter
-            EditLabel.Width = 78
-            EditLabel.Height = 25
-            EditLabel.Caption = 'BDS build '#8470':'
-            LabelPosition = lpLeft
-            ReadOnly = True
-            TabOrder = 0
-            Text = ''
-            OnClick = actOpenModuleFileExecute
-          end
-          object ledtBDSInstDate: TLabeledEdit
-            Left = 110
-            Top = 74
-            Width = 192
-            Height = 25
-            Cursor = crHandPoint
-            Alignment = taCenter
-            EditLabel.Width = 94
-            EditLabel.Height = 25
-            EditLabel.Caption = 'BDS install Date:'
-            LabelPosition = lpLeft
-            ReadOnly = True
-            TabOrder = 1
-            Text = ''
-            OnClick = actOpenModuleFileExecute
-          end
-          object ledtBDSPath: TLabeledEdit
-            Left = 110
-            Top = 14
-            Width = 479
-            Height = 25
-            Cursor = crHandPoint
-            Anchors = [akLeft, akTop, akRight]
-            EditLabel.Width = 51
-            EditLabel.Height = 25
-            EditLabel.Caption = 'BDS Path:'
-            EditLabel.Color = clBtnFace
-            EditLabel.Font.Charset = DEFAULT_CHARSET
-            EditLabel.Font.Color = clWindowText
-            EditLabel.Font.Height = -12
-            EditLabel.Font.Name = 'Segoe UI'
-            EditLabel.Font.Style = []
-            EditLabel.ParentColor = False
-            EditLabel.ParentFont = False
-            LabelPosition = lpLeft
-            ReadOnly = True
-            TabOrder = 2
-            Text = ''
-          end
-        end
-      end
-      object Panel10Left: TPanel
-        Left = 0
-        Top = 0
-        Width = 200
-        Height = 448
-        Align = alLeft
-        BevelOuter = bvNone
-        Constraints.MinWidth = 200
-        TabOrder = 0
-        object GroupBox5: TGroupBox
-          Left = 0
-          Top = 83
-          Width = 200
-          Height = 365
-          Align = alClient
-          Caption = 'Filters'
-          Constraints.MinWidth = 100
-          TabOrder = 0
-          DesignSize = (
-            200
-            365)
-          object Label1: TLabel
-            Left = 11
-            Top = 24
-            Width = 54
-            Height = 17
-            Caption = 'Packages'
-          end
-          object clbVisiblePackages: TCheckListBox
-            Left = 9
-            Top = 47
-            Width = 183
-            Height = 216
-            Anchors = [akLeft, akTop, akRight, akBottom]
-            ItemHeight = 17
-            TabOrder = 0
-          end
-        end
-        object GroupBox4: TGroupBox
-          Left = 0
-          Top = 0
-          Width = 200
-          Height = 83
-          Align = alTop
-          Caption = 'Statistic'
-          TabOrder = 1
-          object lblModulesSelectedCount: TLabel
-            Left = 11
-            Top = 48
-            Width = 116
-            Height = 17
-            Caption = 'Selected count: '#1061#1061#1061
-          end
-          object lblModulesCount: TLabel
-            Left = 11
-            Top = 25
-            Width = 118
-            Height = 17
-            Caption = 'Modules count: '#1061#1061#1061
-          end
-        end
-      end
-    end
     object tsStackTraceFile: TTabSheet
       Caption = 'StackTrace file'
       ImageIndex = 4
@@ -2946,7 +2988,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 976
-        Height = 397
+        Height = 378
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -2999,7 +3041,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 976
-        Height = 397
+        Height = 378
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -3054,7 +3096,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 976
-        Height = 397
+        Height = 378
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -3107,7 +3149,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 46
         Width = 976
-        Height = 397
+        Height = 378
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -3130,12 +3172,12 @@ object frmMain: TfrmMain
       ImageIndex = 7
       DesignSize = (
         986
-        448)
+        429)
       object GroupBox1: TGroupBox
         Left = 3
         Top = 3
         Width = 278
-        Height = 94
+        Height = 70
         Caption = 'Font'
         TabOrder = 0
         object lblFontSize: TLabel
@@ -3148,7 +3190,7 @@ object frmMain: TfrmMain
         end
         object tbFontSize: TTrackBar
           Left = 45
-          Top = 19
+          Top = 17
           Width = 174
           Height = 46
           Hint = 'Font Size'
@@ -3171,10 +3213,10 @@ object frmMain: TfrmMain
         end
       end
       object GroupBox2: TGroupBox
-        Left = 287
-        Top = 3
-        Width = 258
-        Height = 198
+        Left = 3
+        Top = 72
+        Width = 278
+        Height = 106
         Caption = 'Settings'
         TabOrder = 1
         object cbCreateLog: TCheckBox
@@ -3208,24 +3250,24 @@ object frmMain: TfrmMain
         end
       end
       object GroupBox3: TGroupBox
-        Left = 3
+        Left = 287
         Top = 103
-        Width = 278
-        Height = 98
+        Width = 258
+        Height = 90
         Caption = 'Known Packages && Modules'
         TabOrder = 2
         object Button5: TButton
-          Left = 14
+          Left = 12
           Top = 24
-          Width = 251
+          Width = 235
           Height = 25
           Action = actPackagesEditor
           TabOrder = 0
         end
         object btnModulesEditor: TButton
-          Left = 14
+          Left = 12
           Top = 55
-          Width = 251
+          Width = 235
           Height = 25
           Action = actModulesEditor
           TabOrder = 1
@@ -3233,18 +3275,19 @@ object frmMain: TfrmMain
       end
       object Button6: TButton
         Left = 3
-        Top = 420
+        Top = 401
         Width = 134
         Height = 25
         Action = actSettingsRestoreDefaults
         Anchors = [akLeft, akBottom]
         TabOrder = 3
+        ExplicitTop = 397
       end
       object GroupBox6: TGroupBox
         Left = 3
-        Top = 207
+        Top = 184
         Width = 278
-        Height = 138
+        Height = 90
         Caption = 'ModulesList file parse Level'
         TabOrder = 4
         object cbParseLevel2: TCheckBox
@@ -3259,9 +3302,9 @@ object frmMain: TfrmMain
       end
       object GroupBox7: TGroupBox
         Left = 287
-        Top = 207
+        Top = 3
         Width = 258
-        Height = 138
+        Height = 94
         Caption = 'Admin mode'
         TabOrder = 5
         object Button7: TButton
@@ -3281,6 +3324,23 @@ object frmMain: TfrmMain
           TabOrder = 1
         end
       end
+      object GroupBox8: TGroupBox
+        Left = 287
+        Top = 199
+        Width = 258
+        Height = 65
+        Caption = 'VCL Style'
+        TabOrder = 6
+        object cbxStyles: TComboBox
+          Left = 12
+          Top = 24
+          Width = 235
+          Height = 25
+          Style = csDropDownList
+          TabOrder = 0
+          OnChange = cbxStylesChange
+        end
+      end
     end
     object tsLog: TTabSheet
       Caption = 'Log'
@@ -3290,7 +3350,7 @@ object frmMain: TfrmMain
         Left = 5
         Top = 5
         Width = 976
-        Height = 397
+        Height = 378
         Margins.Left = 5
         Margins.Top = 5
         Margins.Right = 5
@@ -3307,20 +3367,16 @@ object frmMain: TfrmMain
         ReadOnly = True
         ScrollBars = ssBoth
         TabOrder = 0
-        ExplicitWidth = 974
-        ExplicitHeight = 393
       end
       object Panel4: TPanel
         Left = 0
-        Top = 407
+        Top = 388
         Width = 986
         Height = 41
         Align = alBottom
         BevelOuter = bvNone
         ParentBackground = False
         TabOrder = 1
-        ExplicitTop = 403
-        ExplicitWidth = 984
         DesignSize = (
           986
           41)
@@ -3337,10 +3393,18 @@ object frmMain: TfrmMain
           ReadOnly = True
           TabOrder = 0
           Text = ''
-          ExplicitWidth = 921
         end
       end
     end
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 501
+    Width = 994
+    Height = 19
+    Panels = <>
+    ExplicitTop = 497
+    ExplicitWidth = 992
   end
   object ActionList1: TActionList
     Left = 136
@@ -3351,7 +3415,7 @@ object frmMain: TfrmMain
       OnExecute = actExitExecute
     end
     object actOpenModuleFile: TAction
-      Caption = 'Open Module File'
+      Caption = 'Open ModulesList.txt File'
       Hint = 'Open Module file (ModuleList.txt)'
       OnExecute = actOpenModuleFileExecute
     end

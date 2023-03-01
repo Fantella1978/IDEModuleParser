@@ -39,12 +39,22 @@ type
     fdtModulesVersion: TStringField;
     fdtModulesVersionRegExp: TWideStringField;
     fdtModulesPackageID: TIntegerField;
+    fdtPackageTypes: TFDTable;
+    dsPackageTypes: TDataSource;
+    fdtPackagesNum: TFDAutoIncField;
+    fdtPackagesName: TStringField;
+    fdtPackagesSubName: TStringField;
+    fdtPackagesUrl: TStringField;
+    fdtPackagesVersionRegExp: TStringField;
+    fdtPackagesVersion: TStringField;
+    fdtPackagesType: TIntegerField;
     procedure cdsModulesAfterScroll(DataSet: TDataSet);
     procedure fdtPackagesAfterCancel(DataSet: TDataSet);
     procedure fdtPackagesAfterEdit(DataSet: TDataSet);
     procedure fdtPackagesAfterOpen(DataSet: TDataSet);
     procedure fdtPackagesAfterRefresh(DataSet: TDataSet);
     procedure dsPackagesStateChange(Sender: TObject);
+    procedure fdtPackagesAfterInsert(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -130,6 +140,11 @@ begin
   frmPackagesEditor.actPackageDelete.Enabled := true;
   frmPackagesEditor.actPackagesSave.Enabled := false;
   frmPackagesEditor.actPackagesCancel.Enabled := false;
+end;
+
+procedure TDM1.fdtPackagesAfterInsert(DataSet: TDataSet);
+begin
+  fdtPackages.FieldByName('Type').AsInteger := 1; // Default Package Type
 end;
 
 procedure TDM1.fdtPackagesAfterOpen(DataSet: TDataSet);
