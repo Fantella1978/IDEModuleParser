@@ -160,6 +160,29 @@ type
     Label4: TLabel;
     clbVisiblePackagesTypes: TCheckListBox;
     Label5: TLabel;
+    ppmFilterPackagesTypes: TPopupMenu;
+    ppmFilterPackages: TPopupMenu;
+    actFilterPackagesTypesSelectAll: TAction;
+    actFilterPackagesTypesUnselectAll: TAction;
+    SelectAll1: TMenuItem;
+    actPackagesTypesUnselectAll1: TMenuItem;
+    actFilterPackagesSelectAll: TAction;
+    actFilterPackagesUnSelectAll: TAction;
+    SelectAll2: TMenuItem;
+    UnselectAll2: TMenuItem;
+    SpeedButton4: TSpeedButton;
+    SpeedButton5: TSpeedButton;
+    SpeedButton6: TSpeedButton;
+    SpeedButton7: TSpeedButton;
+    ppmFilters: TPopupMenu;
+    actFiltersClear: TAction;
+    SelectAllPackages1: TMenuItem;
+    UnselectAllPackages1: TMenuItem;
+    N2: TMenuItem;
+    SelectAll3: TMenuItem;
+    UnselectAll3: TMenuItem;
+    N3: TMenuItem;
+    ClearFilters1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     function ConnectToDB : boolean;
     procedure ModulesGridSelectionChanged(Sender: TObject);
@@ -276,6 +299,11 @@ type
     procedure lbedFilterFileNameChange(Sender: TObject);
     procedure clbVisiblePackagesClickCheck(Sender: TObject);
     procedure clbVisiblePackagesTypesClickCheck(Sender: TObject);
+    procedure actFilterPackagesTypesSelectAllExecute(Sender: TObject);
+    procedure actFilterPackagesTypesUnselectAllExecute(Sender: TObject);
+    procedure actFilterPackagesSelectAllExecute(Sender: TObject);
+    procedure actFilterPackagesUnSelectAllExecute(Sender: TObject);
+    procedure actFiltersClearExecute(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -340,6 +368,26 @@ begin
   Close;
 end;
 
+
+procedure TfrmMain.actFilterPackagesSelectAllExecute(Sender: TObject);
+begin
+  clbVisiblePackages.CheckAll(cbChecked, false, false);
+  clbVisiblePackagesClickCheck(Sender);
+end;
+
+procedure TfrmMain.actFilterPackagesUnSelectAllExecute(Sender: TObject);
+begin
+  clbVisiblePackages.CheckAll(cbUnchecked, false, false);
+  clbVisiblePackagesClickCheck(Sender);
+end;
+
+procedure TfrmMain.actFiltersClearExecute(Sender: TObject);
+begin
+  lbedFilterFileName.Text := '';
+  lbedFilterFileNameChange(Sender);
+  actFilterPackagesSelectAllExecute(Sender);
+  actFilterPackagesTypesSelectAllExecute(Sender);
+end;
 
 procedure TfrmMain.cbParseFileOnOpenClick(Sender: TObject);
 begin
@@ -428,8 +476,10 @@ end;
 procedure TfrmMain.clbVisiblePackagesClickCheck(Sender: TObject);
 var
   FilterString : string;
+  checkedCount : integer;
 begin
   FilterString := '';
+  checkedCount := 0;
   for var i := 0 to clbVisiblePackages.Items.Count - 1 do
     begin
       if not clbVisiblePackages.Checked[i]
@@ -439,19 +489,29 @@ begin
             if clbVisiblePackages.Items[i] = '<Empty>'
               then FilterString := FilterString + QuotedStr('')
               else FilterString := FilterString + QuotedStr(clbVisiblePackages.Items[i]);
-          end;
+          end
+        else inc(checkedCount);
     end;
   if FilterString <> ''
     then FModulesFilterPackagesString := 'NOT PackageName IN (' + FilterString + ')'
     else FModulesFilterPackagesString := '';
+  if checkedCount = clbVisiblePackages.Items.Count
+    then actFilterPackagesSelectAll.Enabled := false
+    else actFilterPackagesSelectAll.Enabled := true;
+  if checkedCount = 0
+    then actFilterPackagesUnSelectAll.Enabled := false
+    else actFilterPackagesUnSelectAll.Enabled := true;
+
   ApplyAllFiltres();
 end;
 
 procedure TfrmMain.clbVisiblePackagesTypesClickCheck(Sender: TObject);
 var
   tempFilterString : string;
+  checkedCount : integer;
 begin
   tempFilterString := '';
+  checkedCount := 0;
   for var i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
     begin
       if not clbVisiblePackagesTypes.Checked[i]
@@ -464,14 +524,21 @@ begin
                 begin
                   var PackageTypeID := DM1.FindPackageTypeIDByName(clbVisiblePackagesTypes.Items[i]);
                   if PackageTypeID >= 0
-                    then tempFilterString := tempFilterString + IntToStr(PackageTypeID)
-                    else ;
+                    then tempFilterString := tempFilterString + IntToStr(PackageTypeID);
                 end;
-          end;
+          end
+        else inc(checkedCount);
     end;
   if tempFilterString <> ''
     then FModulesFilterPackagesTypesString := 'NOT PackageTypeID IN (' + tempFilterString + ')'
     else FModulesFilterPackagesTypesString := '';
+  if checkedCount = clbVisiblePackagesTypes.Items.Count
+    then actFilterPackagesTypesSelectAll.Enabled := false
+    else actFilterPackagesTypesSelectAll.Enabled := true;
+  if checkedCount = 0
+    then actFilterPackagesTypesUnSelectAll.Enabled := false
+    else actFilterPackagesTypesUnSelectAll.Enabled := true;
+
   ApplyAllFiltres();
 end;
 
@@ -920,6 +987,18 @@ begin
   if IsAdminModeEnabled then frmPackagesEditor.ShowModal;
 end;
 
+procedure TfrmMain.actFilterPackagesTypesSelectAllExecute(Sender: TObject);
+begin
+  clbVisiblePackagesTypes.CheckAll(cbChecked, false, false);
+  clbVisiblePackagesTypesClickCheck(Sender);
+end;
+
+procedure TfrmMain.actFilterPackagesTypesUnselectAllExecute(Sender: TObject);
+begin
+  clbVisiblePackagesTypes.CheckAll(cbUnchecked, false, false);
+  clbVisiblePackagesTypesClickCheck(Sender);
+end;
+
 procedure TfrmMain.actParseCancelExecute(Sender: TObject);
 begin
   // Cancel Parsing
@@ -943,7 +1022,7 @@ begin
       // clbVisiblePackages.Items.AddPair(FModulesPackages[i].PackageName, IntToStr(FModulesPackages[i].PackageID));
     end;
   clbVisiblePackages.Items.Add('<Empty>');
-  clbVisiblePackages.CheckAll(cbChecked, false, false);
+  actFilterPackagesSelectAllExecute(Sender);
 
   clbVisiblePackagesTypes.Clear;
   DM1.fdtPackageTypes.First;
@@ -953,7 +1032,7 @@ begin
       DM1.fdtPackageTypes.Next;
     end;
   clbVisiblePackagesTypes.Items.Add('<Empty>');
-  clbVisiblePackagesTypes.CheckAll(cbChecked, false, false);
+  actFilterPackagesTypesSelectAllExecute(Sender);
 end;
 
 procedure TfrmMain.actParseModuleFileExecute(Sender: TObject);

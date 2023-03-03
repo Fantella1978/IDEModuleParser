@@ -241,7 +241,7 @@ object frmMain: TfrmMain
               item
                 Expanded = False
                 FieldName = 'PackageTypeID'
-                Visible = True
+                Visible = False
               end>
           end
         end
@@ -320,6 +320,8 @@ object frmMain: TfrmMain
             Height = 25
             Cursor = crHandPoint
             Anchors = [akLeft, akTop, akRight]
+            Constraints.MaxWidth = 600
+            Constraints.MinWidth = 200
             EditLabel.Width = 51
             EditLabel.Height = 25
             EditLabel.Caption = 'BDS Path:'
@@ -358,8 +360,10 @@ object frmMain: TfrmMain
           Align = alClient
           Caption = 'Filters'
           Constraints.MinWidth = 100
+          PopupMenu = ppmFilters
           TabOrder = 0
-          ExplicitHeight = 320
+          ExplicitLeft = 1
+          ExplicitTop = 103
           DesignSize = (
             200
             324)
@@ -378,6 +382,42 @@ object frmMain: TfrmMain
             Anchors = [akLeft, akBottom]
             Caption = 'Packages Types'
           end
+          object SpeedButton4: TSpeedButton
+            Left = 151
+            Top = 77
+            Width = 17
+            Height = 17
+            Action = actFilterPackagesSelectAll
+            Anchors = [akTop, akRight]
+            Caption = '+'
+          end
+          object SpeedButton5: TSpeedButton
+            Left = 172
+            Top = 77
+            Width = 17
+            Height = 17
+            Action = actFilterPackagesUnSelectAll
+            Anchors = [akTop, akRight]
+            Caption = '-'
+          end
+          object SpeedButton6: TSpeedButton
+            Left = 151
+            Top = 197
+            Width = 17
+            Height = 17
+            Action = actFilterPackagesTypesSelectAll
+            Anchors = [akRight, akBottom]
+            Caption = '+'
+          end
+          object SpeedButton7: TSpeedButton
+            Left = 172
+            Top = 197
+            Width = 17
+            Height = 17
+            Action = actFilterPackagesTypesUnselectAll
+            Anchors = [akRight, akBottom]
+            Caption = '-'
+          end
           object clbVisiblePackages: TCheckListBox
             Left = 9
             Top = 96
@@ -385,6 +425,7 @@ object frmMain: TfrmMain
             Height = 94
             Anchors = [akLeft, akTop, akRight, akBottom]
             ItemHeight = 17
+            PopupMenu = ppmFilterPackages
             Sorted = True
             TabOrder = 0
             OnClickCheck = clbVisiblePackagesClickCheck
@@ -415,6 +456,7 @@ object frmMain: TfrmMain
             Margins.Bottom = 7
             Align = alBottom
             ItemHeight = 17
+            PopupMenu = ppmFilterPackagesTypes
             TabOrder = 2
             OnClickCheck = clbVisiblePackagesTypesClickCheck
           end
@@ -3515,6 +3557,30 @@ object frmMain: TfrmMain
       Caption = 'Disable Admin Mode'
       OnExecute = actDisableAdminModeExecute
     end
+    object actFilterPackagesTypesSelectAll: TAction
+      Category = 'Filter Packages Types'
+      Caption = 'Select All Types'
+      OnExecute = actFilterPackagesTypesSelectAllExecute
+    end
+    object actFilterPackagesTypesUnselectAll: TAction
+      Category = 'Filter Packages Types'
+      Caption = 'Unselect All Types'
+      OnExecute = actFilterPackagesTypesUnselectAllExecute
+    end
+    object actFilterPackagesSelectAll: TAction
+      Category = 'Filter Packages'
+      Caption = 'Select All Packages'
+      OnExecute = actFilterPackagesSelectAllExecute
+    end
+    object actFilterPackagesUnSelectAll: TAction
+      Category = 'Filter Packages'
+      Caption = 'Unselect All Packages'
+      OnExecute = actFilterPackagesUnSelectAllExecute
+    end
+    object actFiltersClear: TAction
+      Caption = 'Clear Filters'
+      OnExecute = actFiltersClearExecute
+    end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
     DefaultExt = '.txt'
@@ -3532,8 +3598,8 @@ object frmMain: TfrmMain
     Top = 285
   end
   object ppmModulesGrid: TPopupMenu
-    Left = 264
-    Top = 285
+    Left = 256
+    Top = 261
     object Copytoclipboard1: TMenuItem
       Action = actModulesCopySelectedAsText
     end
@@ -3548,6 +3614,51 @@ object frmMain: TfrmMain
     end
     object UnselectAll1: TMenuItem
       Action = actModulesUnSelectAll
+    end
+  end
+  object ppmFilterPackagesTypes: TPopupMenu
+    Left = 252
+    Top = 389
+    object SelectAll1: TMenuItem
+      Action = actFilterPackagesTypesSelectAll
+    end
+    object actPackagesTypesUnselectAll1: TMenuItem
+      Action = actFilterPackagesTypesUnselectAll
+    end
+  end
+  object ppmFilterPackages: TPopupMenu
+    Left = 252
+    Top = 325
+    object SelectAll2: TMenuItem
+      Action = actFilterPackagesSelectAll
+    end
+    object UnselectAll2: TMenuItem
+      Action = actFilterPackagesUnSelectAll
+    end
+  end
+  object ppmFilters: TPopupMenu
+    Left = 248
+    Top = 208
+    object SelectAllPackages1: TMenuItem
+      Action = actFilterPackagesSelectAll
+    end
+    object UnselectAllPackages1: TMenuItem
+      Action = actFilterPackagesUnSelectAll
+    end
+    object N2: TMenuItem
+      Caption = '-'
+    end
+    object SelectAll3: TMenuItem
+      Action = actFilterPackagesTypesSelectAll
+    end
+    object UnselectAll3: TMenuItem
+      Action = actFilterPackagesTypesUnselectAll
+    end
+    object N3: TMenuItem
+      Caption = '-'
+    end
+    object ClearFilters1: TMenuItem
+      Action = actFiltersClear
     end
   end
 end

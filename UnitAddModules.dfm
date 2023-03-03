@@ -3,8 +3,8 @@ object frmAddModules: TfrmAddModules
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Add Modules to Known'
-  ClientHeight = 436
-  ClientWidth = 808
+  ClientHeight = 397
+  ClientWidth = 821
   Color = clBtnFace
   Constraints.MinHeight = 330
   Constraints.MinWidth = 450
@@ -19,19 +19,19 @@ object frmAddModules: TfrmAddModules
   TextHeight = 15
   object Panel1: TPanel
     Left = 0
-    Top = 399
-    Width = 808
+    Top = 360
+    Width = 821
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 395
-    ExplicitWidth = 806
+    ExplicitTop = 346
+    ExplicitWidth = 769
     DesignSize = (
-      808
+      821
       37)
     object btnAdd: TButton
-      Left = 624
+      Left = 654
       Top = 6
       Width = 75
       Height = 25
@@ -41,10 +41,10 @@ object frmAddModules: TfrmAddModules
       ModalResult = 1
       TabOrder = 0
       OnClick = btnAddClick
-      ExplicitLeft = 622
+      ExplicitLeft = 602
     end
     object btnCancel: TButton
-      Left = 711
+      Left = 737
       Top = 6
       Width = 75
       Height = 25
@@ -54,34 +54,36 @@ object frmAddModules: TfrmAddModules
       ModalResult = 2
       TabOrder = 1
       OnClick = btnCancelClick
-      ExplicitLeft = 709
+      ExplicitLeft = 685
     end
     object ProgressBarAddModules: TProgressBar
       Left = 6
       Top = 10
-      Width = 620
+      Width = 637
       Height = 16
+      Anchors = [akLeft, akTop, akRight]
       TabOrder = 2
       Visible = False
+      ExplicitWidth = 585
     end
   end
   object GroupBox3: TGroupBox
     Left = 0
-    Top = 129
-    Width = 808
-    Height = 270
+    Top = 97
+    Width = 821
+    Height = 263
     Align = alClient
     Caption = 'Modules'
     Constraints.MinHeight = 100
     TabOrder = 1
-    ExplicitWidth = 806
-    ExplicitHeight = 266
+    ExplicitWidth = 769
+    ExplicitHeight = 249
     object lbxModules: TListBox
       AlignWithMargins = True
       Left = 5
       Top = 20
-      Width = 798
-      Height = 245
+      Width = 811
+      Height = 238
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -92,24 +94,25 @@ object frmAddModules: TfrmAddModules
       ItemHeight = 17
       ParentFont = False
       TabOrder = 0
-      ExplicitWidth = 796
-      ExplicitHeight = 241
+      ExplicitWidth = 759
+      ExplicitHeight = 224
     end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 808
-    Height = 129
+    Width = 821
+    Height = 97
     Align = alTop
     Anchors = []
+    BevelOuter = bvNone
     TabOrder = 2
-    ExplicitWidth = 806
+    ExplicitWidth = 769
     object GroupBox2: TGroupBox
-      Left = 1
-      Top = 1
+      Left = 0
+      Top = 0
       Width = 136
-      Height = 127
+      Height = 97
       Align = alLeft
       Caption = 'Copy to DB'
       TabOrder = 0
@@ -118,10 +121,9 @@ object frmAddModules: TfrmAddModules
         Left = 5
         Top = 20
         Width = 126
-        Height = 102
+        Height = 72
         Align = alClient
         Color = clBtnFace
-        ItemHeight = 15
         Items.Strings = (
           'File Name'
           'Version'
@@ -131,18 +133,18 @@ object frmAddModules: TfrmAddModules
       end
     end
     object GroupBox1: TGroupBox
-      Left = 137
-      Top = 1
-      Width = 670
-      Height = 127
+      Left = 136
+      Top = 0
+      Width = 685
+      Height = 97
       Align = alClient
       Caption = 'Package'
       ParentBackground = False
       TabOrder = 1
-      ExplicitWidth = 668
+      ExplicitWidth = 633
       DesignSize = (
-        670
-        127)
+        685
+        97)
       object Label1: TLabel
         Left = 10
         Top = 27
@@ -161,7 +163,7 @@ object frmAddModules: TfrmAddModules
       object cbPackages: TComboBox
         Left = 63
         Top = 24
-        Width = 590
+        Width = 605
         Height = 23
         AutoDropDown = True
         AutoCloseUp = True
@@ -171,13 +173,27 @@ object frmAddModules: TfrmAddModules
         TabOrder = 1
         Text = 'cbPackages'
         OnCloseUp = cbPackagesCloseUp
-        ExplicitWidth = 588
+        ExplicitWidth = 663
+      end
+      object CheckBox1: TCheckBox
+        Left = 255
+        Top = 56
+        Width = 413
+        Height = 17
+        Anchors = [akLeft, akTop, akRight]
+        Caption = 
+          'Automatically replace existing ones with the same File Name && V' +
+          'ersion'
+        Checked = True
+        State = cbChecked
+        TabOrder = 2
+        ExplicitWidth = 361
       end
     end
   end
   object ActionList1: TActionList
-    Left = 40
-    Top = 328
+    Left = 160
+    Top = 80
     object actPackagesEditor: TAction
       Caption = 'Packages Editor'
       OnExecute = actPackagesEditorExecute

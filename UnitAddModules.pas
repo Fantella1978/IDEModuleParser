@@ -24,6 +24,7 @@ type
     ActionList1: TActionList;
     actPackagesEditor: TAction;
     ProgressBarAddModules: TProgressBar;
+    CheckBox1: TCheckBox;
     procedure FormShow(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
