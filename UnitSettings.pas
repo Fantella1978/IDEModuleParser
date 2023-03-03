@@ -144,6 +144,9 @@ begin
   GlobalMaximizeOnStartup := Def_MaximizeOnStartup;
   GlobalParseOnFileOpen := Def_ParseOnFileOpen;
   GlobalModulesCompareLevel2 := Def_ModulesCompareLevel2;
+  if Def_VCLStyle_const = TStyleManager.ActiveStyle.Name
+    then Def_VCLStyle := Def_VCLStyle_const
+    else Def_VCLStyle := TStyleManager.ActiveStyle.Name;
   if Def_VCLStyle_const = Def_VCLStyle
     then GlobalVCLStyle := Def_VCLStyle_const
     else GlobalVCLStyle := Def_VCLStyle;

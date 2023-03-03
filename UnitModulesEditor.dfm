@@ -37,6 +37,7 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
+      ExplicitLeft = 683
     end
   end
   object dbgModules: TDBGrid
@@ -102,6 +103,10 @@ object frmModulesEditor: TfrmModulesEditor
     Height = 73
     Align = alTop
     TabOrder = 2
+    ExplicitWidth = 764
+    DesignSize = (
+      766
+      73)
     object GroupBox1: TGroupBox
       Left = 1
       Top = 1
@@ -129,7 +134,9 @@ object frmModulesEditor: TfrmModulesEditor
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
+      Anchors = [akRight, akBottom]
       TabOrder = 1
+      ExplicitLeft = 518
     end
   end
 end

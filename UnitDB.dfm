@@ -40,7 +40,16 @@ object DM1: TDM1
       item
         Name = 'PackageName'
         DataType = ftString
-        Size = 60
+        Size = 120
+      end
+      item
+        Name = 'PackageTypeID'
+        DataType = ftInteger
+      end
+      item
+        Name = 'PackageVersion'
+        DataType = ftString
+        Size = 27
       end>
     IndexDefs = <
       item
@@ -130,7 +139,14 @@ object DM1: TDM1
     end
     object cdsModulesPackageName: TStringField
       FieldName = 'PackageName'
-      Size = 60
+      Size = 120
+    end
+    object cdsModulesPackageTypeID: TIntegerField
+      FieldName = 'PackageTypeID'
+    end
+    object cdsModulesPackageVersion: TStringField
+      FieldName = 'PackageVersion'
+      Size = 27
     end
   end
   object DataSource1: TDataSource

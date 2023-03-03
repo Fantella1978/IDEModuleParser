@@ -48,6 +48,8 @@ type
     fdtPackagesVersionRegExp: TStringField;
     fdtPackagesVersion: TStringField;
     fdtPackagesType: TIntegerField;
+    cdsModulesPackageTypeID: TIntegerField;
+    cdsModulesPackageVersion: TStringField;
     procedure cdsModulesAfterScroll(DataSet: TDataSet);
     procedure fdtPackagesAfterCancel(DataSet: TDataSet);
     procedure fdtPackagesAfterEdit(DataSet: TDataSet);
@@ -60,6 +62,7 @@ type
   public
     { Public declarations }
     procedure ClearModulesDB;
+    function FindPackageTypeIDByName(name: string): integer;
   end;
 
 var
@@ -97,6 +100,22 @@ begin
   cdsModules.Close;
   cdsModules.Open;
   cdsModules.EnableControls;
+end;
+
+function TDM1.FindPackageTypeIDByName(name : string) : integer;
+begin
+  fdtPackageTypes.First;
+  while not fdtPackageTypes.Eof do
+  begin
+    if fdtPackageTypes.FieldByName('Name').AsString = name
+      then
+        begin
+          Result := fdtPackageTypes.FieldByName('ID').AsInteger;
+          Exit;
+        end;
+    fdtPackageTypes.Next;
+  end;
+  Result := -1;
 end;
 
 procedure TDM1.dsPackagesStateChange(Sender: TObject);

@@ -86,6 +86,8 @@ object frmMain: TfrmMain
     ParentFont = False
     Style = tsFlatButtons
     TabOrder = 1
+    ExplicitWidth = 992
+    ExplicitHeight = 460
     object tsHome: TTabSheet
       Caption = 'Home'
       ImageIndex = 8
@@ -158,6 +160,8 @@ object frmMain: TfrmMain
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitWidth = 779
+        ExplicitHeight = 425
         object gbModulesList: TGroupBox
           Left = 0
           Top = 105
@@ -166,6 +170,8 @@ object frmMain: TfrmMain
           Align = alClient
           Caption = 'Modules List'
           TabOrder = 1
+          ExplicitWidth = 779
+          ExplicitHeight = 320
           object DBGrid1: TDBGrid
             Left = 2
             Top = 19
@@ -231,6 +237,11 @@ object frmMain: TfrmMain
                 FieldName = 'Hash'
                 Width = 250
                 Visible = True
+              end
+              item
+                Expanded = False
+                FieldName = 'PackageTypeID'
+                Visible = True
               end>
           end
         end
@@ -242,6 +253,7 @@ object frmMain: TfrmMain
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
+          ExplicitWidth = 779
           DesignSize = (
             781
             105)
@@ -281,7 +293,7 @@ object frmMain: TfrmMain
             EditLabel.Caption = 'BDS build '#8470':'
             LabelPosition = lpLeft
             ReadOnly = True
-            TabOrder = 0
+            TabOrder = 1
             Text = ''
             OnClick = actOpenModuleFileExecute
           end
@@ -297,7 +309,7 @@ object frmMain: TfrmMain
             EditLabel.Caption = 'BDS install Date:'
             LabelPosition = lpLeft
             ReadOnly = True
-            TabOrder = 1
+            TabOrder = 2
             Text = ''
             OnClick = actOpenModuleFileExecute
           end
@@ -321,8 +333,9 @@ object frmMain: TfrmMain
             EditLabel.ParentFont = False
             LabelPosition = lpLeft
             ReadOnly = True
-            TabOrder = 2
+            TabOrder = 0
             Text = ''
+            ExplicitWidth = 477
           end
         end
       end
@@ -333,8 +346,10 @@ object frmMain: TfrmMain
         Height = 429
         Align = alLeft
         BevelOuter = bvNone
+        Constraints.MaxWidth = 600
         Constraints.MinWidth = 200
         TabOrder = 0
+        ExplicitHeight = 425
         object GroupBox5: TGroupBox
           Left = 0
           Top = 105
@@ -344,33 +359,42 @@ object frmMain: TfrmMain
           Caption = 'Filters'
           Constraints.MinWidth = 100
           TabOrder = 0
-          ExplicitTop = 83
-          ExplicitHeight = 346
+          ExplicitHeight = 320
           DesignSize = (
             200
             324)
           object Label1: TLabel
             Left = 11
-            Top = 74
+            Top = 75
             Width = 54
             Height = 17
             Caption = 'Packages'
           end
+          object Label5: TLabel
+            Left = 11
+            Top = 196
+            Width = 91
+            Height = 17
+            Anchors = [akLeft, akBottom]
+            Caption = 'Packages Types'
+          end
           object clbVisiblePackages: TCheckListBox
             Left = 9
-            Top = 97
-            Width = 183
-            Height = 175
+            Top = 96
+            Width = 182
+            Height = 94
             Anchors = [akLeft, akTop, akRight, akBottom]
             ItemHeight = 17
+            Sorted = True
             TabOrder = 0
-            ExplicitHeight = 197
+            OnClickCheck = clbVisiblePackagesClickCheck
           end
           object lbedFilterFileName: TLabeledEdit
             Left = 10
             Top = 43
-            Width = 181
+            Width = 182
             Height = 25
+            Anchors = [akLeft, akTop, akRight]
             EditLabel.Width = 58
             EditLabel.Height = 17
             EditLabel.Caption = 'File Name'
@@ -378,6 +402,21 @@ object frmMain: TfrmMain
             TabOrder = 1
             Text = ''
             OnChange = lbedFilterFileNameChange
+          end
+          object clbVisiblePackagesTypes: TCheckListBox
+            AlignWithMargins = True
+            Left = 9
+            Top = 216
+            Width = 182
+            Height = 99
+            Margins.Left = 7
+            Margins.Top = 7
+            Margins.Right = 7
+            Margins.Bottom = 7
+            Align = alBottom
+            ItemHeight = 17
+            TabOrder = 2
+            OnClickCheck = clbVisiblePackagesTypesClickCheck
           end
         end
         object GroupBox4: TGroupBox
@@ -392,7 +431,7 @@ object frmMain: TfrmMain
             200
             105)
           object lblModulesSelectedCount: TLabel
-            Left = 163
+            Left = 160
             Top = 48
             Width = 32
             Height = 17
@@ -401,7 +440,7 @@ object frmMain: TfrmMain
             Caption = #1061#1061#1061'X'
           end
           object lblModulesCount: TLabel
-            Left = 163
+            Left = 160
             Top = 25
             Width = 32
             Height = 17
@@ -410,7 +449,7 @@ object frmMain: TfrmMain
             Caption = #1061#1061#1061'X'
           end
           object lblModulesFilteredCount: TLabel
-            Left = 163
+            Left = 160
             Top = 71
             Width = 32
             Height = 17
@@ -3281,7 +3320,6 @@ object frmMain: TfrmMain
         Action = actSettingsRestoreDefaults
         Anchors = [akLeft, akBottom]
         TabOrder = 3
-        ExplicitTop = 397
       end
       object GroupBox6: TGroupBox
         Left = 3
@@ -3407,8 +3445,8 @@ object frmMain: TfrmMain
     ExplicitWidth = 992
   end
   object ActionList1: TActionList
-    Left = 136
-    Top = 429
+    Left = 352
+    Top = 285
     object actExit: TAction
       Caption = 'Exit'
       Hint = 'Close the program'
@@ -3483,19 +3521,19 @@ object frmMain: TfrmMain
     Filter = 'ModuleList Text file|*.txt'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
     ShowEncodingList = False
-    Left = 230
-    Top = 429
+    Left = 446
+    Top = 285
   end
   object OpenDialog1: TOpenDialog
     DefaultExt = '.zip'
     Filter = 'Zip file|*.zip'
     Options = [ofHideReadOnly, ofPathMustExist, ofFileMustExist, ofEnableSizing]
-    Left = 329
-    Top = 429
+    Left = 545
+    Top = 285
   end
   object ppmModulesGrid: TPopupMenu
-    Left = 48
-    Top = 429
+    Left = 264
+    Top = 285
     object Copytoclipboard1: TMenuItem
       Action = actModulesCopySelectedAsText
     end

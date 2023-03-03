@@ -33,8 +33,8 @@ type
     actPackagesSave: TAction;
     Button4: TButton;
     actPackagesCancel: TAction;
-    lblSurName: TLabel;
-    dbeSurName: TDBEdit;
+    lblSubName: TLabel;
+    dbeSubName: TDBEdit;
     DBLookupComboBox1: TDBLookupComboBox;
     procedure ButtonOKClick(Sender: TObject);
     procedure dbgPackagesDrawColumnCell(Sender: TObject; const Rect: TRect;
@@ -50,7 +50,7 @@ type
     procedure dbeVersionChange(Sender: TObject);
     procedure dbeVersioRgExpChange(Sender: TObject);
     procedure dbeURLChange(Sender: TObject);
-    procedure dbeSurNameChange(Sender: TObject);
+    procedure dbeSubNameChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -143,7 +143,7 @@ begin
     actPackagesSave.Enabled := true
 end;
 
-procedure TfrmPackagesEditor.dbeSurNameChange(Sender: TObject);
+procedure TfrmPackagesEditor.dbeSubNameChange(Sender: TObject);
 begin
   if DM1.fdtPackages.State in [dsEdit, dsInsert]
   then

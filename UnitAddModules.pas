@@ -234,6 +234,8 @@ begin
       then PackageName := DM1.fdtPackages.FieldByName('Name').AsString
       else PackageName := DM1.fdtPackages.FieldByName('Name').AsString + ' ' +
         DM1.fdtPackages.FieldByName('SubName').AsString;
+    if DM1.fdtPackages.FieldByName('Version').AsString <> ''
+      then PackageName := PackageName + ' ' + DM1.fdtPackages.FieldByName('Version').AsString;
     cbPackages.Items.Add(PackageName);
     PackageIDs.Add(DM1.fdtPackages.FieldByName('Num').AsString);
     DM1.fdtPackages.Next;

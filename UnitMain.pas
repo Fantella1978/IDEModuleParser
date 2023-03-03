@@ -25,10 +25,24 @@ uses
   , UnitModulesEditor
   , UnitAddModules, Vcl.CheckLst
   , UnitEnableAdminMode
+  , Generics.Defaults
   ;
 
 type
   TModulesArray = array of PIDEModule;
+
+  PModulesPackage = ^TModulesPackage;
+  TModulesPackage = record
+    PackageID : integer;
+    PackageName : string[120];
+    PackageTypeID : integer;
+    PackageVersion : string[27];
+   // class function IndexOfArray<T:Class>(const value: T; const Things: array of T): Integer; static;
+    class function FindSame(const value: TModulesPackage; const MyArr: array of TModulesPackage): boolean; static;
+  private
+  end;
+
+  TModulesPackagesArray = TArray<TModulesPackage>;
 
   TDBGrid=Class(Vcl.DBGrids.TDBGrid)
   private
@@ -144,6 +158,8 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    clbVisiblePackagesTypes: TCheckListBox;
+    Label5: TLabel;
     procedure FormCreate(Sender: TObject);
     function ConnectToDB : boolean;
     procedure ModulesGridSelectionChanged(Sender: TObject);
@@ -258,14 +274,23 @@ type
     procedure cbxStylesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbedFilterFileNameChange(Sender: TObject);
+    procedure clbVisiblePackagesClickCheck(Sender: TObject);
+    procedure clbVisiblePackagesTypesClickCheck(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
+    FModulesFilterFileNameString : string;
+    FModulesFilterPackagesString : string;
+    FModulesFilterPackagesTypesString: string;
     procedure ModulesCountDisplay;
     function IsAdminModeEnabled: boolean;
     procedure ModulesFilteredCountDisplay;
     procedure ModulesStatisticDisplay;
+    procedure PackagesFilterCreate(Sender: TObject);
+    procedure ApplyAllFiltres;
   public
+    FModulesPackages : TArray<TModulesPackage>;
+    // FModulesPackages : TList;
     { Public declarations }
   end;
 
@@ -365,6 +390,89 @@ begin
     zip.Free;
   end;
   Result := true;
+end;
+
+procedure TfrmMain.ApplyAllFiltres();
+var
+  FilterString : string;
+begin
+  if FModulesFilterFileNameString <> ''
+    then FilterString := FModulesFilterFileNameString;
+  if FModulesFilterPackagesString <> ''
+    then
+      begin
+        if FilterString <> ''
+          then FilterString := FilterString + ' AND ';
+        FilterString := FilterString + FModulesFilterPackagesString;
+      end;
+  if FModulesFilterPackagesTypesString <> ''
+    then
+      begin
+        if FilterString <> ''
+          then FilterString := FilterString + ' AND ';
+        FilterString := FilterString + FModulesFilterPackagesTypesString;
+      end;
+  if FilterString <> ''
+    then
+      begin
+        DM1.cdsModules.Filter := FilterString;
+        DM1.cdsModules.FilterOptions := [foCaseInsensitive];
+        DM1.cdsModules.Filtered := true;
+      end
+    else DM1.cdsModules.Filtered := false;
+  DBGrid1.SelectedRows.Clear;
+  ModulesFilteredCountDisplay();
+  ModulesSelectedCountDisplay();
+end;
+
+procedure TfrmMain.clbVisiblePackagesClickCheck(Sender: TObject);
+var
+  FilterString : string;
+begin
+  FilterString := '';
+  for var i := 0 to clbVisiblePackages.Items.Count - 1 do
+    begin
+      if not clbVisiblePackages.Checked[i]
+        then
+          begin
+            if FilterString <> '' then FilterString := FilterString + ', ';
+            if clbVisiblePackages.Items[i] = '<Empty>'
+              then FilterString := FilterString + QuotedStr('')
+              else FilterString := FilterString + QuotedStr(clbVisiblePackages.Items[i]);
+          end;
+    end;
+  if FilterString <> ''
+    then FModulesFilterPackagesString := 'NOT PackageName IN (' + FilterString + ')'
+    else FModulesFilterPackagesString := '';
+  ApplyAllFiltres();
+end;
+
+procedure TfrmMain.clbVisiblePackagesTypesClickCheck(Sender: TObject);
+var
+  tempFilterString : string;
+begin
+  tempFilterString := '';
+  for var i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
+    begin
+      if not clbVisiblePackagesTypes.Checked[i]
+        then
+          begin
+            if tempFilterString <> '' then tempFilterString := tempFilterString + ', ';
+            if clbVisiblePackagesTypes.Items[i] = '<Empty>'
+              then tempFilterString := tempFilterString + '-1'
+              else
+                begin
+                  var PackageTypeID := DM1.FindPackageTypeIDByName(clbVisiblePackagesTypes.Items[i]);
+                  if PackageTypeID >= 0
+                    then tempFilterString := tempFilterString + IntToStr(PackageTypeID)
+                    else ;
+                end;
+          end;
+    end;
+  if tempFilterString <> ''
+    then FModulesFilterPackagesTypesString := 'NOT PackageTypeID IN (' + tempFilterString + ')'
+    else FModulesFilterPackagesTypesString := '';
+  ApplyAllFiltres();
 end;
 
 function TfrmMain.ConfirmNewStackTraceFileLoad(AskForAll: boolean): boolean;
@@ -801,19 +909,9 @@ end;
 procedure TfrmMain.lbedFilterFileNameChange(Sender: TObject);
 begin
   if lbedFilterFileName.Text <> ''
-  then
-    begin
-      DM1.cdsModules.Filter := 'FileName LIKE ''' + lbedFilterFileName.Text + '%''';
-      DM1.cdsModules.FilterOptions := [foCaseInsensitive];
-      DM1.cdsModules.Filtered := true;
-    end
-  else
-    begin
-      DM1.cdsModules.Filtered := false;
-    end;
-  DBGrid1.SelectedRows.Clear;
-  ModulesFilteredCountDisplay();
-  ModulesSelectedCountDisplay();
+    then FModulesFilterFileNameString := 'FileName LIKE ''' + lbedFilterFileName.Text + '%'''
+    else FModulesFilterFileNameString := '';
+  ApplyAllFiltres();
 end;
 
 procedure TfrmMain.actPackagesEditorExecute(Sender: TObject);
@@ -831,6 +929,31 @@ begin
       frmParse.parseCanceled := true;
       frmParse.Close;
     end
+end;
+
+procedure TfrmMain.PackagesFilterCreate(Sender: TObject);
+var
+  i : integer;
+begin
+  clbVisiblePackages.Clear;
+  var L := Length(FModulesPackages);
+  for i := 0 to L - 1 do
+    begin
+      clbVisiblePackages.Items.Add(FModulesPackages[i].PackageName);
+      // clbVisiblePackages.Items.AddPair(FModulesPackages[i].PackageName, IntToStr(FModulesPackages[i].PackageID));
+    end;
+  clbVisiblePackages.Items.Add('<Empty>');
+  clbVisiblePackages.CheckAll(cbChecked, false, false);
+
+  clbVisiblePackagesTypes.Clear;
+  DM1.fdtPackageTypes.First;
+  for i := 0 to DM1.fdtPackageTypes.RecordCount - 1 do
+    begin
+      clbVisiblePackagesTypes.Items.Add(DM1.fdtPackageTypes.FieldByName('Name').AsString);
+      DM1.fdtPackageTypes.Next;
+    end;
+  clbVisiblePackagesTypes.Items.Add('<Empty>');
+  clbVisiblePackagesTypes.CheckAll(cbChecked, false, false);
 end;
 
 procedure TfrmMain.actParseModuleFileExecute(Sender: TObject);
@@ -852,6 +975,8 @@ begin
 
   oldIndex := DM1.cdsModules.IndexName;
   DM1.cdsModules.IndexName := 'cdsModulesNumIndexUNIQ'; // Set Num Index
+  DM1.cdsModules.Filtered := false;
+  lbedFilterFileName.Text := '';
 
   frmParse.parseSuccess := false;
   frmParse.Show;
@@ -869,7 +994,6 @@ begin
         end
       else BDSIDEModule := nil;
 
-
       // Restore IndexName
       if oldIndex = ''
         then DBGrid1TitleClick(DBGrid1.Columns[0])
@@ -880,6 +1004,7 @@ begin
       PageControl1.ActivePage := tsModulesList;
 
       ModulesStatisticDisplay();
+      PackagesFilterCreate(Sender);
 
       DBGrid1.SelectedRows.Clear;
       DM1.cdsModules.EnableControls;
@@ -1734,5 +1859,33 @@ begin
   if Assigned(FOnSelectionChanged) then FOnSelectionChanged(self);
 end;
 
+
+{ TModulesPackage }
+{
+class function TModulesPackage.FindSame<T>(const value: T; const MyArr: array of T): boolean;
+var
+  i: Integer;
+begin
+  for i := 0 to High(MyArr) do
+    if value = MyArr[i] then
+      Exit(true);
+  Result := false;
+end;
+}
+
+{ TModulesPackage }
+
+class function TModulesPackage.FindSame(const value: TModulesPackage; const MyArr: array of TModulesPackage): boolean;
+var
+  i: Integer;
+
+begin
+  for i := 0 to High(MyArr) do
+    if // (value.PackageID = MyArr[i].PackageID) AND
+       (value.PackageName = MyArr[i].PackageName)
+      then
+        Exit(true);
+  Result := false;
+end;
 
 end.

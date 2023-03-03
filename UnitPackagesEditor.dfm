@@ -48,12 +48,12 @@ object frmPackagesEditor: TfrmPackagesEditor
     Height = 15
     Caption = 'Version RegExp:'
   end
-  object lblSurName: TLabel
+  object lblSubName: TLabel
     Left = 344
     Top = 17
     Width = 55
     Height = 15
-    Caption = 'Sur Name:'
+    Caption = 'SubName:'
   end
   object Panel1: TPanel
     Left = 0
@@ -155,6 +155,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     DataSource = DM1.dsPackages
     Anchors = [akTop, akRight]
     TabOrder = 12
+    ExplicitLeft = 392
   end
   object btnAdd: TButton
     Left = 870
@@ -240,7 +241,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     TabOrder = 11
     ExplicitLeft = 868
   end
-  object dbeSurName: TDBEdit
+  object dbeSubName: TDBEdit
     Left = 405
     Top = 11
     Width = 459
@@ -249,7 +250,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     DataField = 'SubName'
     DataSource = DM1.dsPackages
     TabOrder = 2
-    OnChange = dbeSurNameChange
+    OnChange = dbeSubNameChange
     ExplicitWidth = 457
   end
   object DBLookupComboBox1: TDBLookupComboBox
