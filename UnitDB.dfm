@@ -180,6 +180,9 @@ object DM1: TDM1
     IndexFieldNames = 'Num'
     Connection = fdcSQLite
     ResourceOptions.AssignedValues = [rvEscapeExpand]
+    UpdateOptions.AssignedValues = [uvAutoCommitUpdates]
+    UpdateOptions.AutoCommitUpdates = True
+    UpdateOptions.KeyFields = 'Num'
     TableName = 'Modules'
     Left = 232
     Top = 120
@@ -235,6 +238,9 @@ object DM1: TDM1
     IndexName = 'NameSubNameIndex'
     Connection = fdcSQLite
     ResourceOptions.AssignedValues = [rvEscapeExpand]
+    UpdateOptions.AssignedValues = [uvAutoCommitUpdates]
+    UpdateOptions.AutoCommitUpdates = True
+    UpdateOptions.KeyFields = 'Num'
     TableName = 'Packages'
     Left = 336
     Top = 120

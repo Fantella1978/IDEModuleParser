@@ -64,10 +64,18 @@ begin
           AYear := StrToInt(Groups[3]);
           AMonth := StrToInt(Groups[2]);
           ADay := StrToInt(Groups[1]);
+          if (AMonth > 12) AND (ADay <= 12)
+          then
+            begin
+              var t := AMonth;
+              AMonth := ADay;
+              ADay := t;
+            end;
           AHour := StrToInt(Groups[4]);
           AMinute := StrToInt(Groups[5]);
           ASecond := StrToInt(Groups[6]);
           if Groups[7] = 'PM' then AHour := AHour + 12;
+          if AHour >= 24 then AHour := AHour - 24;
           AMilliSecond := 0;
         end
       else

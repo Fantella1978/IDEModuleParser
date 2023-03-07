@@ -127,8 +127,6 @@ begin
         frmPackagesEditor.actPackageAdd.Enabled := false;
         frmPackagesEditor.actPackageEdit.Enabled := false;
         frmPackagesEditor.actPackageDelete.Enabled := false;
-        frmPackagesEditor.actPackagesSave.Enabled := true;
-        frmPackagesEditor.actPackagesCancel.Enabled := true;
       end;
   if dsPackages.State in [dsBrowse]
     then
@@ -138,8 +136,6 @@ begin
         if dsPackages.DataSet.RecordCount > 0
           then frmPackagesEditor.actPackageDelete.Enabled := true
           else frmPackagesEditor.actPackageDelete.Enabled := false;
-        frmPackagesEditor.actPackagesSave.Enabled := false;
-        frmPackagesEditor.actPackagesCancel.Enabled := false;
       end;
 end;
 
@@ -148,8 +144,6 @@ begin
   frmPackagesEditor.actPackageAdd.Enabled := true;
   frmPackagesEditor.actPackageEdit.Enabled := true;
   frmPackagesEditor.actPackageDelete.Enabled := true;
-  frmPackagesEditor.actPackagesSave.Enabled := false;
-  frmPackagesEditor.actPackagesCancel.Enabled := false;
 end;
 
 procedure TDM1.fdtPackagesAfterEdit(DataSet: TDataSet);
@@ -157,8 +151,6 @@ begin
   frmPackagesEditor.actPackageAdd.Enabled := true;
   frmPackagesEditor.actPackageEdit.Enabled := true;
   frmPackagesEditor.actPackageDelete.Enabled := true;
-  frmPackagesEditor.actPackagesSave.Enabled := false;
-  frmPackagesEditor.actPackagesCancel.Enabled := false;
 end;
 
 procedure TDM1.fdtPackagesAfterInsert(DataSet: TDataSet);
@@ -172,22 +164,18 @@ begin
   frmPackagesEditor.actPackageAdd.Enabled := true;
   frmPackagesEditor.actPackageEdit.Enabled := false;
   frmPackagesEditor.actPackageDelete.Enabled := false;
-  frmPackagesEditor.actPackagesSave.Enabled := false;
-  frmPackagesEditor.actPackagesCancel.Enabled := false;
 end;
 
 procedure TDM1.fdtPackagesAfterRefresh(DataSet: TDataSet);
 begin
   if (frmPackagesEditor = nil) OR not frmPackagesEditor.Visible then Exit;
   frmPackagesEditor.actPackageAdd.Enabled := true;
-  if DataSet.RecordCount >0
+  if DataSet.RecordCount > 0
   then
     begin
       frmPackagesEditor.actPackageEdit.Enabled := false;
       frmPackagesEditor.actPackageDelete.Enabled := false;
     end;
-  frmPackagesEditor.actPackagesSave.Enabled := false;
-  frmPackagesEditor.actPackagesCancel.Enabled := false;
 end;
 
 end.

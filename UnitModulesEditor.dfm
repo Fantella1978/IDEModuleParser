@@ -27,7 +27,7 @@ object frmModulesEditor: TfrmModulesEditor
       766
       37)
     object Button1: TButton
-      Left = 685
+      Left = 683
       Top = 6
       Width = 75
       Height = 25
@@ -37,7 +37,7 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
-      ExplicitLeft = 683
+      ExplicitLeft = 681
     end
   end
   object dbgModules: TDBGrid
@@ -129,14 +129,14 @@ object frmModulesEditor: TfrmModulesEditor
       end
     end
     object DBNavigator1: TDBNavigator
-      Left = 520
+      Left = 518
       Top = 40
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
-      ExplicitLeft = 518
+      ExplicitLeft = 516
     end
   end
 end

@@ -4,6 +4,7 @@ uses
   Vcl.Forms,
   Vcl.Themes,
   Vcl.Styles,
+  System.SysUtils,
   UnitMain in 'UnitMain.pas' {frmMain},
   UnitParser in 'UnitParser.pas' {frmParse},
   UnitDB in 'UnitDB.pas' {DM1: TDataModule},
@@ -16,11 +17,18 @@ uses
   UnitSettings in 'UnitSettings.pas',
   UnitModulesEditor in 'UnitModulesEditor.pas' {frmModulesEditor},
   UnitAddModules in 'UnitAddModules.pas' {frmAddModules},
-  UnitEnableAdminMode in 'UnitEnableAdminMode.pas' {frmEnableAdminMode};
+  UnitEnableAdminMode in 'UnitEnableAdminMode.pas' {frmEnableAdminMode},
+  UnitPackageEditor in 'UnitPackageEditor.pas' {frmPackageEditor};
 
 {$R *.res}
 
 begin
+  // TFormatSettings.Create;
+  FormatSettings.DateSeparator := '/';
+  FormatSettings.TimeSeparator := ':';
+  FormatSettings.ShortDateFormat := 'yyyy/mm/dd';
+  FormatSettings.LongTimeFormat := 'hh:nn:ss';
+
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   TStyleManager.TrySetStyle('Amethyst Kamri');
@@ -32,5 +40,6 @@ begin
   Application.CreateForm(TfrmModulesEditor, frmModulesEditor);
   Application.CreateForm(TfrmAddModules, frmAddModules);
   Application.CreateForm(TfrmEnableAdminMode, frmEnableAdminMode);
+  Application.CreateForm(TfrmPackageEditor, frmPackageEditor);
   Application.Run;
 end.

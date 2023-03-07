@@ -6,36 +6,28 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
   Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, System.Actions,
-  Vcl.ActnList;
+  Vcl.ActnList, Vcl.Menus;
 
 type
   TfrmPackagesEditor = class(TForm)
     ButtonOK: TButton;
     Panel1: TPanel;
     dbgPackages: TDBGrid;
-    dbeName: TDBEdit;
-    lblName: TLabel;
     DBNavigator1: TDBNavigator;
     btnAdd: TButton;
     btnDelete: TButton;
-    dbeURL: TDBEdit;
-    lblUrl: TLabel;
-    dbeVersion: TDBEdit;
-    dbeVersioRgExp: TDBEdit;
-    lblVersion: TLabel;
-    lblVersionRegExp: TLabel;
     Button2: TButton;
     ActionList1: TActionList;
     actPackageAdd: TAction;
     actPackageDelete: TAction;
     actPackageEdit: TAction;
-    Button3: TButton;
-    actPackagesSave: TAction;
-    Button4: TButton;
-    actPackagesCancel: TAction;
-    lblSubName: TLabel;
-    dbeSubName: TDBEdit;
-    DBLookupComboBox1: TDBLookupComboBox;
+    GroupBox1: TGroupBox;
+    lbedFilterFileName: TLabeledEdit;
+    ppmPackagesEditor: TPopupMenu;
+    Add1: TMenuItem;
+    Delete1: TMenuItem;
+    Edit1: TMenuItem;
+    N1: TMenuItem;
     procedure ButtonOKClick(Sender: TObject);
     procedure dbgPackagesDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -44,13 +36,10 @@ type
     procedure actPackageDeleteExecute(Sender: TObject);
     procedure actPackageEditExecute(Sender: TObject);
     procedure actPackagesSaveExecute(Sender: TObject);
-    procedure dbeNameChange(Sender: TObject);
     procedure actPackagesCancelExecute(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure dbeVersionChange(Sender: TObject);
-    procedure dbeVersioRgExpChange(Sender: TObject);
-    procedure dbeURLChange(Sender: TObject);
-    procedure dbeSubNameChange(Sender: TObject);
+    procedure DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
+    procedure dbgPackagesDblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -65,6 +54,7 @@ implementation
 uses
     UnitDB
   , System.UITypes
+  , UnitPackageEditor
   ;
 
 {$R *.dfm}
@@ -73,18 +63,15 @@ uses
 procedure TfrmPackagesEditor.actPackageAddExecute(Sender: TObject);
 begin
   // Package Add
-  DM1.fdtPackages.Append;
-  actPackageAdd.Enabled     := false;
-  actPackageEdit.Enabled    := false;
-  actPackageDelete.Enabled  := false;
-  actPackagesSave.Enabled   := false;
-  actPackagesCancel.Enabled := true;
+  if not (DM1.fdtPackages.State in [dsInsert]) then DM1.fdtPackages.Append;
+  frmPackageEditor.ShowModal;
 end;
 
 procedure TfrmPackagesEditor.actPackageDeleteExecute(Sender: TObject);
 begin
   // Package Delete
-  if MessageDlg('Delete Record?', TMsgDlgType.mtConfirmation, [mbOk, mbCancel], 0) = mrOk
+  if MessageDlg('Delete package "' + DM1.fdtPackages.FieldByName('Name').AsString + '"?',
+       TMsgDlgType.mtConfirmation, [mbOk, mbCancel], 0) = mrOk
     then DM1.fdtPackages.Delete;
 end;
 
@@ -95,28 +82,18 @@ begin
   actPackageAdd.Enabled     := false;
   actPackageEdit.Enabled    := false;
   actPackageDelete.Enabled  := false;
-  actPackagesSave.Enabled   := true;
-  actPackagesCancel.Enabled := true;
+  frmPackageEditor.ShowModal;
 end;
 
 procedure TfrmPackagesEditor.actPackagesCancelExecute(Sender: TObject);
 begin
-  // Cancel Package Edit
-  DM1.fdtPackages.Cancel;
-  actPackageAdd.Enabled     := true;
-  actPackagesSave.Enabled   := false;
-  actPackagesCancel.Enabled := false;
+  // Cancel Package Edit or Insert
+  if frmPackageEditor.Visible then frmPackageEditor.Close;
 end;
 
 procedure TfrmPackagesEditor.actPackagesSaveExecute(Sender: TObject);
 begin
   // Save Package Info [Post]
-  DM1.fdtPackages.Post;
-  actPackageAdd.Enabled     := true;
-  actPackageEdit.Enabled    := true;
-  actPackageDelete.Enabled  := true;
-  actPackagesSave.Enabled   := false;
-  actPackagesCancel.Enabled := false;
 end;
 
 procedure TfrmPackagesEditor.ButtonOKClick(Sender: TObject);
@@ -124,53 +101,9 @@ begin
   Close;
 end;
 
-procedure TfrmPackagesEditor.dbeVersioRgExpChange(Sender: TObject);
+procedure TfrmPackagesEditor.dbgPackagesDblClick(Sender: TObject);
 begin
-  if DM1.fdtPackages.State in [dsEdit, dsInsert]
-  then
-    begin
-      actPackagesSave.Enabled   := true;
-      actPackagesCancel.Enabled := true;
-    end;
-end;
-
-procedure TfrmPackagesEditor.dbeNameChange(Sender: TObject);
-begin
-  if not (DM1.fdtPackages.State in [dsEdit, dsInsert]) or (dbeName.Text = '')
-  then
-    actPackagesSave.Enabled := false
-  else
-    actPackagesSave.Enabled := true
-end;
-
-procedure TfrmPackagesEditor.dbeSubNameChange(Sender: TObject);
-begin
-  if DM1.fdtPackages.State in [dsEdit, dsInsert]
-  then
-    begin
-      actPackagesSave.Enabled   := true;
-      actPackagesCancel.Enabled := true;
-    end;
-end;
-
-procedure TfrmPackagesEditor.dbeURLChange(Sender: TObject);
-begin
-  if DM1.fdtPackages.State in [dsEdit, dsInsert]
-  then
-    begin
-      actPackagesSave.Enabled   := true;
-      actPackagesCancel.Enabled := true;
-    end;
-end;
-
-procedure TfrmPackagesEditor.dbeVersionChange(Sender: TObject);
-begin
-  if DM1.fdtPackages.State in [dsEdit, dsInsert]
-  then
-    begin
-      actPackagesSave.Enabled   := true;
-      actPackagesCancel.Enabled := true;
-    end;
+  if DM1.fdtPackages.RecordCount > 0 then actPackageEditExecute(Sender);
 end;
 
 procedure TfrmPackagesEditor.dbgPackagesDrawColumnCell(Sender: TObject;
@@ -193,9 +126,17 @@ begin
   end;
 end;
 
+procedure TfrmPackagesEditor.DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
+begin
+  if Button = nbInsert then actPackageAddExecute(Sender);
+  if Button = nbEdit then actPackageEditExecute(Sender);
+  if Button = nbDelete then actPackageDeleteExecute(Sender);
+end;
+
 procedure TfrmPackagesEditor.FormCloseQuery(Sender: TObject;
   var CanClose: Boolean);
 begin
+  {
   if DM1.fdtPackages.State in [dsEdit, dsInsert]
   then
   begin
@@ -222,6 +163,7 @@ begin
   end
   else
     CanClose := true;
+    }
 end;
 
 procedure TfrmPackagesEditor.FormResize(Sender: TObject);

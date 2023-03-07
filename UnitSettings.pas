@@ -125,7 +125,7 @@ begin
         else Def_VCLStyle := TStyleManager.ActiveStyle.Name;
       GlobalVCLStyle := LoadStringValue('VCLStyle', Def_VCLStyle);
 
-      GlobalAdminMode := false;
+      GlobalAdminMode := true;
       reg.CloseKey;
       Result := true;
     end
@@ -151,7 +151,7 @@ begin
     then GlobalVCLStyle := Def_VCLStyle_const
     else GlobalVCLStyle := Def_VCLStyle;
 
-  GlobalAdminMode := false;
+  GlobalAdminMode := true;
 end;
 
 end.

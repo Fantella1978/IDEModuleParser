@@ -118,9 +118,9 @@
         <Icon_MainIcon>IDEModuleParser_Icon.ico</Icon_MainIcon>
         <VerInfo_MajorVer>0</VerInfo_MajorVer>
         <VerInfo_MinorVer>1</VerInfo_MinorVer>
-        <VerInfo_Build>134</VerInfo_Build>
+        <VerInfo_Build>135</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=0.1.0.134;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=0.1.0.135;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
@@ -143,14 +143,12 @@
         </DelphiCompile>
         <DCCReference Include="UnitMain.pas">
             <Form>frmMain</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitParser.pas">
             <Form>frmParse</Form>
         </DCCReference>
         <DCCReference Include="UnitDB.pas">
             <Form>DM1</Form>
-            <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="UnitLogger.pas"/>
@@ -158,24 +156,23 @@
         <DCCReference Include="UnitStaticFunctions.pas"/>
         <DCCReference Include="UnitPackagesEditor.pas">
             <Form>frmPackagesEditor</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitCopyAsText.pas">
             <Form>frmCopyAsText</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitDBGrid.pas"/>
         <DCCReference Include="UnitSettings.pas"/>
         <DCCReference Include="UnitModulesEditor.pas">
             <Form>frmModulesEditor</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitAddModules.pas">
             <Form>frmAddModules</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="UnitEnableAdminMode.pas">
             <Form>frmEnableAdminMode</Form>
+        </DCCReference>
+        <DCCReference Include="UnitPackageEditor.pas">
+            <Form>frmPackageEditor</Form>
             <FormType>dfm</FormType>
         </DCCReference>
         <BuildConfiguration Include="Base">
@@ -225,6 +222,12 @@
                 <DeployFile LocalName="Win64\Debug\IDEModuleParser.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win64">
                         <RemoteName>IDEModuleParser.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="Win64\Debug\IDEModuleParser.rsm" Configuration="Debug" Class="DebugSymbols">
+                    <Platform Name="Win64">
+                        <RemoteName>IDEModuleParser.rsm</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

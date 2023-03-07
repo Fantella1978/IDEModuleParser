@@ -1415,7 +1415,7 @@ begin
 
   MemoTxtModuleFile.Clear;
 
-  lblStartMessageSecondary.Caption := 'QPInfo Report QPInfo-ХХХХХХХХ-0000.zip file' + #13 +
+  lblStartMessageSecondary.Caption := 'QPInfo Report QPInfo-ХХХХХХХХ-ХХХХ.zip file' + #13 +
     'or separately' + #13 +
     'ModuleList.txt, StackTrace.txt, DXDiag_log.txt,' +#13 +
     'Desc.txt, Step.txt, ReportData.xml files.';
@@ -1432,8 +1432,6 @@ begin
   EnableFontSizeChange();
 
   AskConfirmOpenForAll := false;
-
-  TFormatSettings.Create;
 
   DBGrid1.OnSelectionChanged := ModulesGridSelectionChanged;
 end;

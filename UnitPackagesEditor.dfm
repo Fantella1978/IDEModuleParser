@@ -20,41 +20,6 @@ object frmPackagesEditor: TfrmPackagesEditor
     953
     637)
   TextHeight = 15
-  object lblName: TLabel
-    Left = 12
-    Top = 17
-    Width = 35
-    Height = 15
-    Caption = 'Name:'
-  end
-  object lblUrl: TLabel
-    Left = 23
-    Top = 74
-    Width = 24
-    Height = 15
-    Caption = 'URL:'
-  end
-  object lblVersion: TLabel
-    Left = 6
-    Top = 47
-    Width = 41
-    Height = 15
-    Caption = 'Version:'
-  end
-  object lblVersionRegExp: TLabel
-    Left = 6
-    Top = 102
-    Width = 83
-    Height = 15
-    Caption = 'Version RegExp:'
-  end
-  object lblSubName: TLabel
-    Left = 344
-    Top = 17
-    Width = 55
-    Height = 15
-    Caption = 'SubName:'
-  end
   object Panel1: TPanel
     Left = 0
     Top = 600
@@ -62,7 +27,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 13
+    TabOrder = 5
     ExplicitTop = 596
     ExplicitWidth = 951
     DesignSize = (
@@ -84,13 +49,14 @@ object frmPackagesEditor: TfrmPackagesEditor
   end
   object dbgPackages: TDBGrid
     Left = 0
-    Top = 161
+    Top = 69
     Width = 953
-    Height = 439
+    Height = 531
     Align = alBottom
     Anchors = [akLeft, akTop, akRight, akBottom]
     DataSource = DM1.dsPackages
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
+    PopupMenu = ppmPackagesEditor
     ReadOnly = True
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
@@ -99,6 +65,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     OnDrawColumnCell = dbgPackagesDrawColumnCell
+    OnDblClick = dbgPackagesDblClick
     Columns = <
       item
         Expanded = False
@@ -137,137 +104,67 @@ object frmPackagesEditor: TfrmPackagesEditor
         Visible = True
       end>
   end
-  object dbeName: TDBEdit
-    Left = 53
-    Top = 11
-    Width = 284
-    Height = 23
-    DataField = 'Name'
-    DataSource = DM1.dsPackages
-    TabOrder = 1
-    OnChange = dbeNameChange
-  end
   object DBNavigator1: TDBNavigator
-    Left = 394
-    Top = 130
-    Width = 470
+    Left = 271
+    Top = 8
+    Width = 420
     Height = 25
     DataSource = DM1.dsPackages
+    VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbInsert, nbEdit, nbRefresh]
     Anchors = [akTop, akRight]
-    TabOrder = 12
-    ExplicitLeft = 392
+    TabOrder = 4
+    OnClick = DBNavigator1Click
   end
   object btnAdd: TButton
-    Left = 870
+    Left = 706
     Top = 8
     Width = 75
     Height = 25
     Action = actPackageAdd
     Anchors = [akTop, akRight]
-    TabOrder = 7
-    ExplicitLeft = 868
+    TabOrder = 1
   end
   object btnDelete: TButton
-    Left = 870
-    Top = 68
+    Left = 868
+    Top = 8
     Width = 75
     Height = 25
     Action = actPackageDelete
     Anchors = [akTop, akRight]
-    TabOrder = 9
-    ExplicitLeft = 868
-  end
-  object dbeURL: TDBEdit
-    Left = 53
-    Top = 70
-    Width = 814
-    Height = 23
-    Anchors = [akLeft, akTop, akRight]
-    DataField = 'Url'
-    DataSource = DM1.dsPackages
-    TabOrder = 5
-    OnChange = dbeURLChange
-    ExplicitWidth = 812
-  end
-  object dbeVersion: TDBEdit
-    Left = 53
-    Top = 41
-    Width = 164
-    Height = 23
-    DataField = 'Version'
-    DataSource = DM1.dsPackages
     TabOrder = 3
-    OnChange = dbeVersionChange
-  end
-  object dbeVersioRgExp: TDBEdit
-    Left = 95
-    Top = 101
-    Width = 772
-    Height = 23
-    Anchors = [akLeft, akTop, akRight]
-    DataField = 'VersionRegExp'
-    DataSource = DM1.dsPackages
-    TabOrder = 6
-    OnChange = dbeVersioRgExpChange
-    ExplicitWidth = 770
   end
   object Button2: TButton
-    Left = 870
-    Top = 38
+    Left = 787
+    Top = 8
     Width = 75
     Height = 25
     Action = actPackageEdit
     Anchors = [akTop, akRight]
-    TabOrder = 8
-    ExplicitLeft = 868
-  end
-  object Button3: TButton
-    Left = 870
-    Top = 98
-    Width = 75
-    Height = 25
-    Action = actPackagesSave
-    Anchors = [akTop, akRight]
-    TabOrder = 10
-    ExplicitLeft = 868
-  end
-  object Button4: TButton
-    Left = 870
-    Top = 129
-    Width = 75
-    Height = 25
-    Action = actPackagesCancel
-    Anchors = [akTop, akRight]
-    TabOrder = 11
-    ExplicitLeft = 868
-  end
-  object dbeSubName: TDBEdit
-    Left = 405
-    Top = 11
-    Width = 459
-    Height = 23
-    Anchors = [akLeft, akTop, akRight]
-    DataField = 'SubName'
-    DataSource = DM1.dsPackages
     TabOrder = 2
-    OnChange = dbeSubNameChange
-    ExplicitWidth = 457
   end
-  object DBLookupComboBox1: TDBLookupComboBox
-    Left = 405
-    Top = 40
-    Width = 292
-    Height = 23
-    DataField = 'Type'
-    DataSource = DM1.dsPackages
-    KeyField = 'ID'
-    ListField = 'Name'
-    ListSource = DM1.dsPackageTypes
-    TabOrder = 4
+  object GroupBox1: TGroupBox
+    Left = 0
+    Top = 0
+    Width = 265
+    Height = 69
+    Align = alLeft
+    Caption = 'Filter'
+    TabOrder = 6
+    object lbedFilterFileName: TLabeledEdit
+      Left = 7
+      Top = 37
+      Width = 251
+      Height = 23
+      EditLabel.Width = 53
+      EditLabel.Height = 15
+      EditLabel.Caption = 'File Name'
+      TabOrder = 0
+      Text = ''
+    end
   end
   object ActionList1: TActionList
-    Left = 304
-    Top = 128
+    Left = 656
+    Top = 56
     object actPackageAdd: TAction
       Caption = 'Add'
       OnExecute = actPackageAddExecute
@@ -280,15 +177,24 @@ object frmPackagesEditor: TfrmPackagesEditor
       Caption = 'Edit'
       OnExecute = actPackageEditExecute
     end
-    object actPackagesSave: TAction
-      Caption = 'Save'
-      Enabled = False
-      OnExecute = actPackagesSaveExecute
+  end
+  object ppmPackagesEditor: TPopupMenu
+    Left = 560
+    Top = 56
+    object Add1: TMenuItem
+      Action = actPackageAdd
+      Caption = 'Add new package'
     end
-    object actPackagesCancel: TAction
-      Caption = 'Cancel'
-      Enabled = False
-      OnExecute = actPackagesCancelExecute
+    object Edit1: TMenuItem
+      Action = actPackageEdit
+      Caption = 'Edit package'
+    end
+    object N1: TMenuItem
+      Caption = '-'
+    end
+    object Delete1: TMenuItem
+      Action = actPackageDelete
+      Caption = 'Delete package'
     end
   end
 end

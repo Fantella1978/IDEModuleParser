@@ -286,7 +286,6 @@ object frmMain: TfrmMain
             Top = 45
             Width = 192
             Height = 25
-            Cursor = crHandPoint
             Alignment = taCenter
             EditLabel.Width = 78
             EditLabel.Height = 25
@@ -295,14 +294,12 @@ object frmMain: TfrmMain
             ReadOnly = True
             TabOrder = 1
             Text = ''
-            OnClick = actOpenModuleFileExecute
           end
           object ledtBDSInstDate: TLabeledEdit
             Left = 110
             Top = 74
             Width = 192
             Height = 25
-            Cursor = crHandPoint
             Alignment = taCenter
             EditLabel.Width = 94
             EditLabel.Height = 25
@@ -311,14 +308,12 @@ object frmMain: TfrmMain
             ReadOnly = True
             TabOrder = 2
             Text = ''
-            OnClick = actOpenModuleFileExecute
           end
           object ledtBDSPath: TLabeledEdit
             Left = 110
             Top = 14
             Width = 479
             Height = 25
-            Cursor = crHandPoint
             Anchors = [akLeft, akTop, akRight]
             Constraints.MaxWidth = 600
             Constraints.MinWidth = 200
@@ -362,8 +357,7 @@ object frmMain: TfrmMain
           Constraints.MinWidth = 100
           PopupMenu = ppmFilters
           TabOrder = 0
-          ExplicitLeft = 1
-          ExplicitTop = 103
+          ExplicitHeight = 320
           DesignSize = (
             200
             324)
@@ -429,6 +423,7 @@ object frmMain: TfrmMain
             Sorted = True
             TabOrder = 0
             OnClickCheck = clbVisiblePackagesClickCheck
+            ExplicitHeight = 90
           end
           object lbedFilterFileName: TLabeledEdit
             Left = 10
@@ -459,6 +454,7 @@ object frmMain: TfrmMain
             PopupMenu = ppmFilterPackagesTypes
             TabOrder = 2
             OnClickCheck = clbVisiblePackagesTypesClickCheck
+            ExplicitTop = 212
           end
         end
         object GroupBox4: TGroupBox
