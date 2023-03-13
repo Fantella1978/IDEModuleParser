@@ -38,7 +38,7 @@ object frmCopyAsText: TfrmCopyAsText
       902
       37)
     object btnOk: TButton
-      Left = 692
+      Left = 690
       Top = 6
       Width = 117
       Height = 25
@@ -48,10 +48,10 @@ object frmCopyAsText: TfrmCopyAsText
       ModalResult = 1
       TabOrder = 0
       OnClick = btnOkClick
-      ExplicitLeft = 690
+      ExplicitLeft = 688
     end
     object btnCancel: TButton
-      Left = 821
+      Left = 819
       Top = 6
       Width = 75
       Height = 25
@@ -61,7 +61,7 @@ object frmCopyAsText: TfrmCopyAsText
       ModalResult = 2
       TabOrder = 1
       OnClick = btnCancelClick
-      ExplicitLeft = 819
+      ExplicitLeft = 817
     end
   end
   object GroupBox2: TGroupBox
@@ -126,7 +126,6 @@ object frmCopyAsText: TfrmCopyAsText
       Height = 359
       Align = alClient
       Color = clBtnFace
-      ItemHeight = 15
       Items.Strings = (
         'Item 1'
         'Item 2'

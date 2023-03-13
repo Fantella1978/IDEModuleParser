@@ -65,7 +65,7 @@ procedure TfrmAddModules.btnAddClick(Sender: TObject);
 begin
   //
   AddAllSelectedModulesToDB();
-  Sleep(20);
+  Sleep(50);
   Close;
   if MessageDlg('ReParse recomended. ReParse ModulesList file?', mtConfirmation, [mbYes, mbNo], 0) in [mrYes]
     then
@@ -227,6 +227,8 @@ begin
   PackageIDs.Clear;
   cbPackages.Clear;
   DM1.fdtPackages.DisableControls;
+  DM1.fdtPackages.Filtered := false;
+  DM1.fdtPackages.Filter := '';
   DM1.fdtPackages.IndexName := 'NameSubNameIndex';
   DM1.fdtPackages.First;
   for i := 0 to DM1.fdtPackages.RecordCount - 1 do

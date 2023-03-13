@@ -64,8 +64,12 @@ var
   cl: TClipboard;
 begin
   // Copy Selected Modules to ....
-  cl        := TClipboard.Create;
-  cl.AsText := ModulesGetText();
+  cl := TClipboard.Create;
+  try
+    cl.AsText := ModulesGetText();
+  finally
+    cl.Free;
+  end;
 end;
 
 procedure TfrmCopyAsText.FormShow(Sender: TObject);

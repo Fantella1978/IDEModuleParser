@@ -225,19 +225,22 @@ begin
     FROM Modules AS m LEFT OUTER JOIN Packages AS p ON m.Package=p.Num
     WHERE lower(m.FileName)="bds.exe"
   }
-  if DM1.fdqModulesFromQuery.Active then DM1.fdqModulesFromQuery.Close;
-  DM1.fdqModulesFromQuery.SQL.Clear;
-  DM1.fdqModulesFromQuery.SQL.Add(
-    'SELECT m.*, p.Num AS PackageID, p.Name AS PackageName, p.SubName AS PackageSubName, pt.ID AS PackageTypeID, ' +
-    'p.Version AS PackageVersion ' +
-    'FROM Modules AS m ' +
-    'LEFT JOIN Packages AS p ON m.PackageID=p.Num ' +
-    'LEFT JOIN PackageTypes AS pt ON p.Type=pt.ID ' +
-    'WHERE lower(m.FileName)="' +
-    LowerCase(DM1.cdsModules.FieldByName('FileName').AsString) +
-    '"' +
-    ';');
-  DM1.fdqModulesFromQuery.Open;
+  with DM1.fdqModulesFromQuery do
+  begin
+    if Active then Close;
+    SQL.Clear;
+    SQL.Add(
+      'SELECT m.*, p.Num AS PackageID, p.Name AS PackageName, p.SubName AS PackageSubName, pt.ID AS PackageTypeID, ' +
+      'p.Version AS PackageVersion ' +
+      'FROM Modules AS m ' +
+      'LEFT JOIN Packages AS p ON m.PackageID=p.Num ' +
+      'LEFT JOIN PackageTypes AS pt ON p.Type=pt.ID ' +
+      'WHERE lower(m.FileName)="' +
+      LowerCase(DM1.cdsModules.FieldByName('FileName').AsString) +
+      '"' +
+      ';');
+    Open;
+  end;
 
   Result := true;
 end;

@@ -160,8 +160,6 @@ object frmMain: TfrmMain
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 779
-        ExplicitHeight = 425
         object gbModulesList: TGroupBox
           Left = 0
           Top = 105
@@ -170,8 +168,6 @@ object frmMain: TfrmMain
           Align = alClient
           Caption = 'Modules List'
           TabOrder = 1
-          ExplicitWidth = 779
-          ExplicitHeight = 320
           object DBGrid1: TDBGrid
             Left = 2
             Top = 19
@@ -253,7 +249,6 @@ object frmMain: TfrmMain
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 779
           DesignSize = (
             781
             105)
@@ -332,7 +327,6 @@ object frmMain: TfrmMain
             ReadOnly = True
             TabOrder = 0
             Text = ''
-            ExplicitWidth = 477
           end
         end
       end
@@ -346,7 +340,6 @@ object frmMain: TfrmMain
         Constraints.MaxWidth = 600
         Constraints.MinWidth = 200
         TabOrder = 0
-        ExplicitHeight = 425
         object GroupBox5: TGroupBox
           Left = 0
           Top = 105
@@ -357,7 +350,6 @@ object frmMain: TfrmMain
           Constraints.MinWidth = 100
           PopupMenu = ppmFilters
           TabOrder = 0
-          ExplicitHeight = 320
           DesignSize = (
             200
             324)
@@ -384,6 +376,8 @@ object frmMain: TfrmMain
             Action = actFilterPackagesSelectAll
             Anchors = [akTop, akRight]
             Caption = '+'
+            ParentShowHint = False
+            ShowHint = True
           end
           object SpeedButton5: TSpeedButton
             Left = 172
@@ -393,6 +387,8 @@ object frmMain: TfrmMain
             Action = actFilterPackagesUnSelectAll
             Anchors = [akTop, akRight]
             Caption = '-'
+            ParentShowHint = False
+            ShowHint = True
           end
           object SpeedButton6: TSpeedButton
             Left = 151
@@ -402,6 +398,8 @@ object frmMain: TfrmMain
             Action = actFilterPackagesTypesSelectAll
             Anchors = [akRight, akBottom]
             Caption = '+'
+            ParentShowHint = False
+            ShowHint = True
           end
           object SpeedButton7: TSpeedButton
             Left = 172
@@ -411,6 +409,20 @@ object frmMain: TfrmMain
             Action = actFilterPackagesTypesUnselectAll
             Anchors = [akRight, akBottom]
             Caption = '-'
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object SpeedButton8: TSpeedButton
+            Left = 128
+            Top = 77
+            Width = 17
+            Height = 17
+            Action = actFilterPackagesCopyToClipboard
+            Anchors = [akTop, akRight]
+            Caption = 'C'
+            Margin = 4
+            ParentShowHint = False
+            ShowHint = True
           end
           object clbVisiblePackages: TCheckListBox
             Left = 9
@@ -423,7 +435,6 @@ object frmMain: TfrmMain
             Sorted = True
             TabOrder = 0
             OnClickCheck = clbVisiblePackagesClickCheck
-            ExplicitHeight = 90
           end
           object lbedFilterFileName: TLabeledEdit
             Left = 10
@@ -454,7 +465,6 @@ object frmMain: TfrmMain
             PopupMenu = ppmFilterPackagesTypes
             TabOrder = 2
             OnClickCheck = clbVisiblePackagesTypesClickCheck
-            ExplicitTop = 212
           end
         end
         object GroupBox4: TGroupBox
@@ -3165,7 +3175,6 @@ object frmMain: TfrmMain
           ReadOnly = True
           TabOrder = 0
           Text = ''
-          OnClick = actOpenModuleFileExecute
         end
       end
       object memoDescription: TMemo
@@ -3297,7 +3306,7 @@ object frmMain: TfrmMain
         Caption = 'Settings'
         TabOrder = 1
         object cbCreateLog: TCheckBox
-          Left = 17
+          Left = 14
           Top = 27
           Width = 88
           Height = 17
@@ -3308,7 +3317,7 @@ object frmMain: TfrmMain
           OnClick = cbCreateLogClick
         end
         object cbMaximizeOnStartup: TCheckBox
-          Left = 16
+          Left = 14
           Top = 50
           Width = 145
           Height = 17
@@ -3317,7 +3326,7 @@ object frmMain: TfrmMain
           OnClick = cbMaximizeOnStartupClick
         end
         object cbParseFileOnOpen: TCheckBox
-          Left = 16
+          Left = 14
           Top = 73
           Width = 129
           Height = 17
@@ -3358,6 +3367,7 @@ object frmMain: TfrmMain
         Action = actSettingsRestoreDefaults
         Anchors = [akLeft, akBottom]
         TabOrder = 3
+        ExplicitTop = 397
       end
       object GroupBox6: TGroupBox
         Left = 3
@@ -3566,16 +3576,29 @@ object frmMain: TfrmMain
     object actFilterPackagesSelectAll: TAction
       Category = 'Filter Packages'
       Caption = 'Select All Packages'
+      Hint = 'Select all packages in filters list'
       OnExecute = actFilterPackagesSelectAllExecute
     end
     object actFilterPackagesUnSelectAll: TAction
       Category = 'Filter Packages'
       Caption = 'Unselect All Packages'
+      Hint = 'Unselect all packages in filters list'
       OnExecute = actFilterPackagesUnSelectAllExecute
     end
     object actFiltersClear: TAction
       Caption = 'Clear Filters'
       OnExecute = actFiltersClearExecute
+    end
+    object actModulesFindSelectedInKnownDB: TAction
+      Category = 'Modules Grid'
+      Caption = 'Find In Known Modules DB'
+      OnExecute = actModulesFindSelectedInKnownDBExecute
+    end
+    object actFilterPackagesCopyToClipboard: TAction
+      Category = 'Filter Packages'
+      Caption = 'Copy to Clipboard'
+      Hint = 'Copy pacakges list to clipboard'
+      OnExecute = actFilterPackagesCopyToClipboardExecute
     end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
@@ -3601,6 +3624,9 @@ object frmMain: TfrmMain
     end
     object AddtoKnownModulesDB1: TMenuItem
       Action = actModulesAddSelectedToDB
+    end
+    object FindInKnownModulesDB1: TMenuItem
+      Action = actModulesFindSelectedInKnownDB
     end
     object N1: TMenuItem
       Caption = '-'
@@ -3630,6 +3656,12 @@ object frmMain: TfrmMain
     end
     object UnselectAll2: TMenuItem
       Action = actFilterPackagesUnSelectAll
+    end
+    object N4: TMenuItem
+      Caption = '-'
+    end
+    object actFilterPackagesCopyToClipboard1: TMenuItem
+      Action = actFilterPackagesCopyToClipboard
     end
   end
   object ppmFilters: TPopupMenu

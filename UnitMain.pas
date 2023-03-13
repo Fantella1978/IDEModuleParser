@@ -183,6 +183,12 @@ type
     UnselectAll3: TMenuItem;
     N3: TMenuItem;
     ClearFilters1: TMenuItem;
+    actModulesFindSelectedInKnownDB: TAction;
+    FindInKnownModulesDB1: TMenuItem;
+    actFilterPackagesCopyToClipboard: TAction;
+    actFilterPackagesCopyToClipboard1: TMenuItem;
+    N4: TMenuItem;
+    SpeedButton8: TSpeedButton;
     procedure FormCreate(Sender: TObject);
     function ConnectToDB : boolean;
     procedure ModulesGridSelectionChanged(Sender: TObject);
@@ -304,6 +310,8 @@ type
     procedure actFilterPackagesSelectAllExecute(Sender: TObject);
     procedure actFilterPackagesUnSelectAllExecute(Sender: TObject);
     procedure actFiltersClearExecute(Sender: TObject);
+    procedure actModulesFindSelectedInKnownDBExecute(Sender: TObject);
+    procedure actFilterPackagesCopyToClipboardExecute(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -369,6 +377,35 @@ begin
 end;
 
 
+procedure TfrmMain.actFilterPackagesCopyToClipboardExecute(Sender: TObject);
+var
+  i : integer;
+  pl : TStringList;
+  cl : TClipboard;
+begin
+  // Copy Packages to clipboard
+  pl := TStringList.Create;
+  try
+    for i := 0 to clbVisiblePackages.Items.Count - 1 do
+    begin
+      if clbVisiblePackages.Checked[i]
+        then
+          begin
+            if clbVisiblePackages.Items[i] <> '<Empty>'
+              then pl.Add(clbVisiblePackages.Items[i]);
+          end;
+    end;
+    cl := TClipboard.Create;
+    try
+      cl.AsText := pl.Text;
+    finally
+      cl.Free;
+    end;
+  finally
+    pl.Free;
+  end;
+end;
+
 procedure TfrmMain.actFilterPackagesSelectAllExecute(Sender: TObject);
 begin
   clbVisiblePackages.CheckAll(cbChecked, false, false);
@@ -387,6 +424,14 @@ begin
   lbedFilterFileNameChange(Sender);
   actFilterPackagesSelectAllExecute(Sender);
   actFilterPackagesTypesSelectAllExecute(Sender);
+end;
+
+procedure TfrmMain.actModulesFindSelectedInKnownDBExecute(Sender: TObject);
+begin
+  // Find current Module in In Known Modules DB
+  frmModulesEditor.lbedFilterFileName.Text := DM1.cdsModules.FieldByName('FileName').AsString;
+  frmModulesEditor.WindowState := TWindowState.wsNormal;
+  if IsAdminModeEnabled then frmModulesEditor.ShowModal;
 end;
 
 procedure TfrmMain.cbParseFileOnOpenClick(Sender: TObject);
@@ -886,6 +931,8 @@ end;
 procedure TfrmMain.actModulesEditorExecute(Sender: TObject);
 begin
   // Show Modules Editor
+  frmModulesEditor.lbedFilterFileName.Text := '';
+  frmModulesEditor.WindowState := TWindowState.wsMaximized;
   if IsAdminModeEnabled then frmModulesEditor.ShowModal;
 end;
 
@@ -1667,6 +1714,20 @@ begin
   if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
     (frmMain.DBGrid1.SelectedRows.Count > 0)
     then frmMain.actModulesAddSelectedToDB.Enabled := true;
+  // Enable action - Modules Find current Module in Known Modules DB
+  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
+    (frmMain.DBGrid1.SelectedRows.Count = 1)
+    then
+      begin
+        actModulesFindSelectedInKnownDB.Enabled := true;
+        actModulesFindSelectedInKnownDB.Caption := 'Find ' +
+          DM1.cdsModules.FieldByName('FileName').AsString + ' in Known Modules DB';
+      end
+    else
+      begin
+        actModulesFindSelectedInKnownDB.Enabled := false;
+        actModulesFindSelectedInKnownDB.Caption := 'Find in Known Modules DB';
+      end;
 
   if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
     (frmMain.DBGrid1.SelectedRows.Count = 0)

@@ -40,6 +40,7 @@ type
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
     procedure dbgPackagesDblClick(Sender: TObject);
+    procedure lbedFilterFileNameChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -171,6 +172,22 @@ begin
   for var i := 0 to dbgPackages.Columns.Count - 1 do
     if dbgPackages.Columns[i].Visible and (dbgPackages.Columns[i].Width > 100) then
       dbgPackages.Columns[i].Width := 100;
+end;
+
+procedure TfrmPackagesEditor.lbedFilterFileNameChange(Sender: TObject);
+begin
+  if lbedFilterFileName.Text <> ''
+  then
+    begin
+      DM1.fdtPackages.Filter := 'Name LIKE ''' + lbedFilterFileName.Text + '%''';
+      DM1.fdtPackages.FilterOptions := [foCaseInsensitive];
+      DM1.fdtPackages.Filtered := true;
+    end
+  else
+    begin
+      DM1.fdtPackages.Filtered := false;
+    end;
+
 end;
 
 end.

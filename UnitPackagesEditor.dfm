@@ -114,6 +114,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     Anchors = [akTop, akRight]
     TabOrder = 4
     OnClick = DBNavigator1Click
+    ExplicitLeft = 269
   end
   object btnAdd: TButton
     Left = 706
@@ -123,6 +124,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     Action = actPackageAdd
     Anchors = [akTop, akRight]
     TabOrder = 1
+    ExplicitLeft = 704
   end
   object btnDelete: TButton
     Left = 868
@@ -132,6 +134,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     Action = actPackageDelete
     Anchors = [akTop, akRight]
     TabOrder = 3
+    ExplicitLeft = 866
   end
   object Button2: TButton
     Left = 787
@@ -141,6 +144,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     Action = actPackageEdit
     Anchors = [akTop, akRight]
     TabOrder = 2
+    ExplicitLeft = 785
   end
   object GroupBox1: TGroupBox
     Left = 0
@@ -160,6 +164,7 @@ object frmPackagesEditor: TfrmPackagesEditor
       EditLabel.Caption = 'File Name'
       TabOrder = 0
       Text = ''
+      OnChange = lbedFilterFileNameChange
     end
   end
   object ActionList1: TActionList

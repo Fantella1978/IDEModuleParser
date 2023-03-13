@@ -77,6 +77,7 @@ uses
   , UnitPackagesEditor
   , System.IOUtils
   , vcl.Forms
+  , UnitModulesEditor
   ;
 
 {$R *.dfm}
@@ -89,9 +90,14 @@ begin
 end;
 
 procedure TDM1.ClearModulesDB;
+var
+  oldIndex : string;
 begin
   if cdsModules.RecordCount = 0 then Exit;
   cdsModules.DisableControls;
+  oldIndex := DM1.cdsModules.IndexName;
+  DM1.cdsModules.IndexName := 'cdsModulesNumIndexUNIQ';
+  DM1.cdsModules.Filtered := false;
   cdsModules.First;
   while not cdsModules.Eof do
   begin
@@ -99,6 +105,7 @@ begin
   end;
   cdsModules.Close;
   cdsModules.Open;
+  DM1.cdsModules.IndexName := oldIndex;
   cdsModules.EnableControls;
 end;
 

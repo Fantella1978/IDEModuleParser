@@ -18,7 +18,8 @@ uses
   UnitModulesEditor in 'UnitModulesEditor.pas' {frmModulesEditor},
   UnitAddModules in 'UnitAddModules.pas' {frmAddModules},
   UnitEnableAdminMode in 'UnitEnableAdminMode.pas' {frmEnableAdminMode},
-  UnitPackageEditor in 'UnitPackageEditor.pas' {frmPackageEditor};
+  UnitPackageEditor in 'UnitPackageEditor.pas' {frmPackageEditor},
+  UnitProgressWindow in 'UnitProgressWindow.pas' {frmProgress};
 
 {$R *.res}
 
@@ -41,5 +42,6 @@ begin
   Application.CreateForm(TfrmAddModules, frmAddModules);
   Application.CreateForm(TfrmEnableAdminMode, frmEnableAdminMode);
   Application.CreateForm(TfrmPackageEditor, frmPackageEditor);
+  Application.CreateForm(TfrmProgress, frmProgress);
   Application.Run;
 end.
