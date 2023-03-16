@@ -76,7 +76,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsModulesList
+    ActivePage = tsSettings
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -160,6 +160,8 @@ object frmMain: TfrmMain
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitWidth = 779
+        ExplicitHeight = 425
         object gbModulesList: TGroupBox
           Left = 0
           Top = 105
@@ -168,6 +170,8 @@ object frmMain: TfrmMain
           Align = alClient
           Caption = 'Modules List'
           TabOrder = 1
+          ExplicitWidth = 779
+          ExplicitHeight = 320
           object DBGrid1: TDBGrid
             Left = 2
             Top = 19
@@ -249,6 +253,7 @@ object frmMain: TfrmMain
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
+          ExplicitWidth = 779
           DesignSize = (
             781
             105)
@@ -259,6 +264,8 @@ object frmMain: TfrmMain
             Height = 22
             Action = actModulesCopySelectedAsText
             Anchors = [akTop, akRight]
+            ParentShowHint = False
+            ShowHint = True
           end
           object SpeedButton3: TSpeedButton
             Left = 496
@@ -267,6 +274,8 @@ object frmMain: TfrmMain
             Height = 22
             Action = actModulesAddSelectedToDB
             Anchors = [akTop, akRight]
+            ParentShowHint = False
+            ShowHint = True
           end
           object SpeedButton2: TSpeedButton
             Left = 417
@@ -275,6 +284,8 @@ object frmMain: TfrmMain
             Height = 22
             Action = actModulesSelectAll
             Anchors = [akTop, akRight]
+            ParentShowHint = False
+            ShowHint = True
           end
           object ledtBDSBuild: TLabeledEdit
             Left = 110
@@ -327,6 +338,7 @@ object frmMain: TfrmMain
             ReadOnly = True
             TabOrder = 0
             Text = ''
+            ExplicitWidth = 477
           end
         end
       end
@@ -340,6 +352,7 @@ object frmMain: TfrmMain
         Constraints.MaxWidth = 600
         Constraints.MinWidth = 200
         TabOrder = 0
+        ExplicitHeight = 425
         object GroupBox5: TGroupBox
           Left = 0
           Top = 105
@@ -350,6 +363,7 @@ object frmMain: TfrmMain
           Constraints.MinWidth = 100
           PopupMenu = ppmFilters
           TabOrder = 0
+          ExplicitHeight = 320
           DesignSize = (
             200
             324)
@@ -435,6 +449,7 @@ object frmMain: TfrmMain
             Sorted = True
             TabOrder = 0
             OnClickCheck = clbVisiblePackagesClickCheck
+            ExplicitHeight = 90
           end
           object lbedFilterFileName: TLabeledEdit
             Left = 10
@@ -465,6 +480,7 @@ object frmMain: TfrmMain
             PopupMenu = ppmFilterPackagesTypes
             TabOrder = 2
             OnClickCheck = clbVisiblePackagesTypesClickCheck
+            ExplicitTop = 212
           end
         end
         object GroupBox4: TGroupBox
@@ -3367,7 +3383,6 @@ object frmMain: TfrmMain
         Action = actSettingsRestoreDefaults
         Anchors = [akLeft, akBottom]
         TabOrder = 3
-        ExplicitTop = 397
       end
       object GroupBox6: TGroupBox
         Left = 3
@@ -3384,6 +3399,15 @@ object frmMain: TfrmMain
           Caption = 'Compare Versions'
           TabOrder = 0
           OnClick = cbParseLevel2Click
+        end
+        object cbParseLevel3: TCheckBox
+          Left = 14
+          Top = 55
+          Width = 179
+          Height = 17
+          Caption = 'RegEx compare file name'
+          TabOrder = 1
+          OnClick = cbParseLevel3Click
         end
       end
       object GroupBox7: TGroupBox
@@ -3423,6 +3447,7 @@ object frmMain: TfrmMain
           Width = 235
           Height = 25
           Style = csDropDownList
+          Sorted = True
           TabOrder = 0
           OnChange = cbxStylesChange
         end
@@ -3531,21 +3556,25 @@ object frmMain: TfrmMain
     object actModulesCopySelectedAsText: TAction
       Category = 'Modules Grid'
       Caption = 'Copy as Text'
+      Hint = 'Copy modules list to clipboard'
       OnExecute = actModulesCopySelectedAsTextExecute
     end
     object actModulesSelectAll: TAction
       Category = 'Modules Grid'
       Caption = 'Select All'
+      Hint = 'Select all modules'
       OnExecute = actModulesSelectAllExecute
     end
     object actModulesUnSelectAll: TAction
       Category = 'Modules Grid'
       Caption = 'Unselect All'
+      Hint = 'Unselect all modules'
       OnExecute = actModulesUnSelectAllExecute
     end
     object actModulesAddSelectedToDB: TAction
       Category = 'Modules Grid'
       Caption = 'Add to Known Modules DB'
+      Hint = 'Add selected modules to Known Modules DB'
       OnExecute = actModulesAddSelectedToDBExecute
     end
     object actSettingsRestoreDefaults: TAction
@@ -3592,12 +3621,13 @@ object frmMain: TfrmMain
     object actModulesFindSelectedInKnownDB: TAction
       Category = 'Modules Grid'
       Caption = 'Find In Known Modules DB'
+      Hint = 'Find current module in Known Modules DB'
       OnExecute = actModulesFindSelectedInKnownDBExecute
     end
     object actFilterPackagesCopyToClipboard: TAction
       Category = 'Filter Packages'
       Caption = 'Copy to Clipboard'
-      Hint = 'Copy pacakges list to clipboard'
+      Hint = 'Copy packages list to clipboard'
       OnExecute = actFilterPackagesCopyToClipboardExecute
     end
   end

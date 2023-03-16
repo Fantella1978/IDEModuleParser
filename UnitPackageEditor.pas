@@ -69,6 +69,7 @@ begin
   then
     begin
       DM1.fdtPackages.Post;
+      DM1.fdtPackages.Refresh;
       Close;
     end;
 end;

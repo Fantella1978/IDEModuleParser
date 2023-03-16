@@ -163,6 +163,7 @@ object DM1: TDM1
     Params.Strings = (
       'Database=Z:\IDE Module Parser\IDEModuleParser.db3'
       'DriverID=SQLite')
+    Connected = True
     LoginPrompt = False
     Left = 280
     Top = 56
@@ -177,6 +178,8 @@ object DM1: TDM1
     Top = 248
   end
   object fdtModules: TFDTable
+    AfterScroll = fdtModulesAfterScroll
+    AfterRefresh = fdtModulesAfterRefresh
     IndexFieldNames = 'Num'
     Connection = fdcSQLite
     ResourceOptions.AssignedValues = [rvEscapeExpand]
@@ -204,24 +207,29 @@ object DM1: TDM1
       FixedChar = True
       Size = 40
     end
-    object fdtModulesPathRegExp: TWideStringField
-      FieldName = 'PathRegExp'
-      Origin = 'PathRegExp'
-      Size = 100
-    end
     object fdtModulesVersion: TStringField
       FieldName = 'Version'
       Origin = 'Version'
       Size = 27
     end
-    object fdtModulesVersionRegExp: TWideStringField
+    object fdtModulesPackageID: TIntegerField
+      FieldName = 'PackageID'
+      Origin = 'PackageID'
+    end
+    object fdtModulesPathRegExp: TStringField
+      FieldName = 'PathRegExp'
+      Origin = 'PathRegExp'
+      Size = 100
+    end
+    object fdtModulesVersionRegExp: TStringField
       FieldName = 'VersionRegExp'
       Origin = 'VersionRegExp'
       Size = 100
     end
-    object fdtModulesPackageID: TIntegerField
-      FieldName = 'PackageID'
-      Origin = 'PackageID'
+    object fdtModulesFileNameRegExp: TStringField
+      FieldName = 'FileNameRegExp'
+      Origin = 'FileNameRegExp'
+      Size = 120
     end
   end
   object dsModules: TDataSource
@@ -235,11 +243,10 @@ object DM1: TDM1
     AfterEdit = fdtPackagesAfterEdit
     AfterCancel = fdtPackagesAfterCancel
     AfterRefresh = fdtPackagesAfterRefresh
-    IndexName = 'NameSubNameIndex'
     Connection = fdcSQLite
+    UpdateTransaction = FDTransaction1
     ResourceOptions.AssignedValues = [rvEscapeExpand]
-    UpdateOptions.AssignedValues = [uvAutoCommitUpdates]
-    UpdateOptions.AutoCommitUpdates = True
+    UpdateOptions.AssignedValues = [uvUpdateNonBaseFields, uvAutoCommitUpdates]
     UpdateOptions.KeyFields = 'Num'
     TableName = 'Packages'
     Left = 336
@@ -309,5 +316,10 @@ object DM1: TDM1
     DataSet = fdtPackageTypes
     Left = 424
     Top = 184
+  end
+  object FDTransaction1: TFDTransaction
+    Connection = fdcSQLite
+    Left = 336
+    Top = 312
   end
 end

@@ -25,6 +25,9 @@ type
     actPackagesEditor: TAction;
     ProgressBarAddModules: TProgressBar;
     CheckBox1: TCheckBox;
+    cbOptionsFileNameRegExp: TCheckBox;
+    Panel3: TPanel;
+    GroupBox4: TGroupBox;
     procedure FormShow(Sender: TObject);
     procedure btnCancelClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
@@ -153,6 +156,9 @@ begin
   if clbFields.Checked[2]
     then DM1.fdtModules.FieldByName('Hash').AsString := DM1.cdsModules.FieldByName('Hash').AsString
     else DM1.fdtModules.FieldByName('Hash').AsString := '';
+  if cbOptionsFileNameRegExp.Checked
+    then DM1.fdtModules.FieldByName('FileNameRegExp').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
+
   DM1.fdtModules.Post;
   // ShowMessage('Module ' + DM1.cdsModules.FieldByName('Name').AsString + ' successfuly added to DB.');
   ProgressBarAddModules.Position := ProgressBarAddModules.Position + 1;

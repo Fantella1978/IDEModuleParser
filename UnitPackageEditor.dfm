@@ -68,13 +68,13 @@ object frmPackageEditor: TfrmPackageEditor
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 6
-    ExplicitTop = 404
-    ExplicitWidth = 626
+    ExplicitTop = 158
+    ExplicitWidth = 771
     DesignSize = (
       773
       37)
     object Button1: TButton
-      Left = 605
+      Left = 603
       Top = 6
       Width = 75
       Height = 25
@@ -82,10 +82,10 @@ object frmPackageEditor: TfrmPackageEditor
       Anchors = [akTop, akRight]
       Default = True
       TabOrder = 0
-      ExplicitLeft = 458
+      ExplicitLeft = 601
     end
     object Button2: TButton
-      Left = 692
+      Left = 690
       Top = 6
       Width = 75
       Height = 25
@@ -93,7 +93,7 @@ object frmPackageEditor: TfrmPackageEditor
       Anchors = [akTop, akRight]
       Cancel = True
       TabOrder = 1
-      ExplicitLeft = 545
+      ExplicitLeft = 688
     end
   end
   object dbeName: TDBEdit
@@ -129,26 +129,26 @@ object frmPackageEditor: TfrmPackageEditor
   object dbeURL: TDBEdit
     Left = 77
     Top = 127
-    Width = 688
+    Width = 686
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'Url'
     DataSource = DM1.dsPackages
     TabOrder = 5
     OnChange = dbeURLChange
-    ExplicitWidth = 819
+    ExplicitWidth = 684
   end
   object dbeVersioRgExp: TDBEdit
     Left = 341
     Top = 69
-    Width = 424
+    Width = 422
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'VersionRegExp'
     DataSource = DM1.dsPackages
     TabOrder = 3
     OnChange = dbeVersioRgExpChange
-    ExplicitWidth = 555
+    ExplicitWidth = 420
   end
   object DBLookupComboBox1: TDBLookupComboBox
     Left = 77

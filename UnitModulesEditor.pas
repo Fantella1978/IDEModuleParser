@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
-  Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls, Vcl.Mask, System.Actions, Vcl.ActnList;
+  Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls, Vcl.Mask, System.Actions, Vcl.ActnList,
+  Vcl.Buttons;
 
 type
   TfrmModulesEditor = class(TForm)
@@ -25,6 +26,8 @@ type
     Label2: TLabel;
     Button4: TButton;
     actFindAndDeleteDuplicates: TAction;
+    actCopyFileNameAsRegExp: TAction;
+    SpeedButton1: TSpeedButton;
     procedure dbgModulesDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure Button1Click(Sender: TObject);
@@ -34,6 +37,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure actFindAndDeleteDuplicatesExecute(Sender: TObject);
+    procedure actCopyFileNameAsRegExpExecute(Sender: TObject);
   private
     FFindNext : boolean;
     FFindNextNum : integer;
@@ -143,6 +147,17 @@ begin
   if DM1.fdtModules.RecordCount > 2
     then frmModulesEditor.actFindDuplicates.Enabled := true
     else frmModulesEditor.actFindDuplicates.Enabled := false;
+end;
+
+procedure TfrmModulesEditor.actCopyFileNameAsRegExpExecute(Sender: TObject);
+begin
+  // Copy FileName to FileNameRegExp
+  if DM1.fdtModules.State in [dsBrowse]
+    then DM1.fdtModules.Edit;
+  if DM1.fdtModules.State in [dsInsert, dsEdit]
+    then DM1.fdtModulesFileNameRegExp.AsString := DM1.fdtModulesFileName.AsString;
+  // DM1.fdtModules.Post;
+  // DM1.fdtModules.Refresh;
 end;
 
 procedure TfrmModulesEditor.actFindAndDeleteDuplicatesExecute(Sender: TObject);

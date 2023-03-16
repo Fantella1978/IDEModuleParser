@@ -18,8 +18,10 @@ var
   GlobalLogCreate: boolean; // Create a Logging to file
   GlobalMaximizeOnStartup: boolean; // Maximize Application window on Startup
   GlobalParseOnFileOpen: boolean; // Parese on ModulesList file open
-  GlobalModulesCompareLevel2: boolean; // Modules Compare Level 2 enabled (Compare with Package SurName)
   GlobalVCLStyle: string; // Application VCL Style
+
+  GlobalModulesCompareLevel2: boolean; // Modules Compare Level 2 enabled (Compare with Module Version)
+  GlobalModulesCompareLevel3: boolean; // Modules Compare Level 3 enabled (Compare with Module Name RegExp)
 
   GlobalAdminMode: boolean; // Admin Mode
 
@@ -39,6 +41,7 @@ const
   Def_MaximizeOnStartup = false; // default value for MaximizeOnStartup
   Def_ParseOnFileOpen = true; // default value for ParseOnFileOpen
   Def_ModulesCompareLevel2 = true; // default value for ModulesCompareLevel2
+  Def_ModulesCompareLevel3 = true; // default value for ModulesCompareLevel3
   Def_VCLStyle_const = 'Amethyst Kamri'; // default value (constant) for VCLStyle
 
 var
@@ -94,6 +97,7 @@ begin
       reg.WriteBool('MaximizeOnStartup', GlobalMaximizeOnStartup);
       reg.WriteBool('ParseOnFileOpen', GlobalParseOnFileOpen);
       reg.WriteBool('ModulesCompareLevel2', GlobalModulesCompareLevel2);
+      reg.WriteBool('ModulesCompareLevel3', GlobalModulesCompareLevel3);
       reg.WriteString('VCLStyle', GlobalVCLStyle);
 
       reg.CloseKey;
@@ -120,6 +124,7 @@ begin
       GlobalMaximizeOnStartup := LoadBooleanValue('MaximizeOnStartup', Def_MaximizeOnStartup);
       GlobalParseOnFileOpen := LoadBooleanValue('ParseOnFileOpen', Def_ParseOnFileOpen);
       GlobalModulesCompareLevel2 := LoadBooleanValue('ModulesCompareLevel2', Def_ModulesCompareLevel2);
+      GlobalModulesCompareLevel3 := LoadBooleanValue('ModulesCompareLevel3', Def_ModulesCompareLevel3);
       if Def_VCLStyle_const = TStyleManager.ActiveStyle.Name
         then Def_VCLStyle := Def_VCLStyle_const
         else Def_VCLStyle := TStyleManager.ActiveStyle.Name;
@@ -144,6 +149,7 @@ begin
   GlobalMaximizeOnStartup := Def_MaximizeOnStartup;
   GlobalParseOnFileOpen := Def_ParseOnFileOpen;
   GlobalModulesCompareLevel2 := Def_ModulesCompareLevel2;
+  GlobalModulesCompareLevel3 := Def_ModulesCompareLevel3;
   if Def_VCLStyle_const = TStyleManager.ActiveStyle.Name
     then Def_VCLStyle := Def_VCLStyle_const
     else Def_VCLStyle := TStyleManager.ActiveStyle.Name;

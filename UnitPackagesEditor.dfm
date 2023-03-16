@@ -14,7 +14,6 @@ object frmPackagesEditor: TfrmPackagesEditor
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poMainFormCenter
-  OnCloseQuery = FormCloseQuery
   OnResize = FormResize
   DesignSize = (
     953

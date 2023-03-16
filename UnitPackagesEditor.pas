@@ -37,7 +37,6 @@ type
     procedure actPackageEditExecute(Sender: TObject);
     procedure actPackagesSaveExecute(Sender: TObject);
     procedure actPackagesCancelExecute(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
     procedure dbgPackagesDblClick(Sender: TObject);
     procedure lbedFilterFileNameChange(Sender: TObject);
@@ -132,39 +131,6 @@ begin
   if Button = nbInsert then actPackageAddExecute(Sender);
   if Button = nbEdit then actPackageEditExecute(Sender);
   if Button = nbDelete then actPackageDeleteExecute(Sender);
-end;
-
-procedure TfrmPackagesEditor.FormCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
-begin
-  {
-  if DM1.fdtPackages.State in [dsEdit, dsInsert]
-  then
-  begin
-    var
-    res := MessageDlg('Save edited data before exit?', mtInformation, [mbYes, mbNo, mbCancel], 0);
-    case res of
-      mrCancel:
-        CanClose := false;
-      mrYes:
-        begin
-          try
-            DM1.fdtPackages.Post;
-            CanClose := true;
-          except
-            CanClose := false;
-          end;
-        end;
-      mrNo:
-        begin
-          DM1.fdtPackages.Cancel;
-          CanClose := true;
-        end;
-    end;
-  end
-  else
-    CanClose := true;
-    }
 end;
 
 procedure TfrmPackagesEditor.FormResize(Sender: TObject);

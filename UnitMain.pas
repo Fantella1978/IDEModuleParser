@@ -31,17 +31,6 @@ uses
 type
   TModulesArray = array of PIDEModule;
 
-  PModulesPackage = ^TModulesPackage;
-  TModulesPackage = record
-    PackageID : integer;
-    PackageName : string[120];
-    PackageTypeID : integer;
-    PackageVersion : string[27];
-   // class function IndexOfArray<T:Class>(const value: T; const Things: array of T): Integer; static;
-    class function FindSame(const value: TModulesPackage; const MyArr: array of TModulesPackage): boolean; static;
-  private
-  end;
-
   TModulesPackagesArray = TArray<TModulesPackage>;
 
   TDBGrid=Class(Vcl.DBGrids.TDBGrid)
@@ -49,11 +38,9 @@ type
     FOnSelectionChanged: TNotifyEvent;
     procedure LinkActive(Value: Boolean); override;
     procedure KeyDown(var Key: Word; Shift: TShiftState);override;
-    procedure MouseDown(Button: TMouseButton; Shift: TShiftState;
-      X, Y: Integer); override;
+    procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
   published
-    published
-    property OnSelectionChanged:TNotifyEvent read  FOnSelectionChanged write FOnSelectionChanged;
+    property OnSelectionChanged: TNotifyEvent read  FOnSelectionChanged write FOnSelectionChanged;
   End;
 
   TfrmMain = class(TForm)
@@ -189,7 +176,9 @@ type
     actFilterPackagesCopyToClipboard1: TMenuItem;
     N4: TMenuItem;
     SpeedButton8: TSpeedButton;
+    cbParseLevel3: TCheckBox;
     procedure FormCreate(Sender: TObject);
+    /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
     procedure ModulesGridSelectionChanged(Sender: TObject);
     /// <summary>Exit from application</summary>
@@ -312,6 +301,7 @@ type
     procedure actFiltersClearExecute(Sender: TObject);
     procedure actModulesFindSelectedInKnownDBExecute(Sender: TObject);
     procedure actFilterPackagesCopyToClipboardExecute(Sender: TObject);
+    procedure cbParseLevel3Click(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -442,6 +432,11 @@ end;
 procedure TfrmMain.cbParseLevel2Click(Sender: TObject);
 begin
   GlobalModulesCompareLevel2 := cbParseLevel2.Checked;
+end;
+
+procedure TfrmMain.cbParseLevel3Click(Sender: TObject);
+begin
+  GlobalModulesCompareLevel3 := cbParseLevel3.Checked;
 end;
 
 procedure TfrmMain.cbxStylesChange(Sender: TObject);
@@ -1065,7 +1060,7 @@ begin
   var L := Length(FModulesPackages);
   for i := 0 to L - 1 do
     begin
-      clbVisiblePackages.Items.Add(FModulesPackages[i].PackageName);
+      clbVisiblePackages.Items.Add(string(FModulesPackages[i].PackageName));
       // clbVisiblePackages.Items.AddPair(FModulesPackages[i].PackageName, IntToStr(FModulesPackages[i].PackageID));
     end;
   clbVisiblePackages.Items.Add('<Empty>');
@@ -1137,7 +1132,6 @@ begin
       DM1.cdsModules.First;
     end;
 
-  // actParseModuleFile.Enabled := false;
 end;
 
 procedure TfrmMain.actSettingsRestoreDefaultsExecute(Sender: TObject);
@@ -1497,7 +1491,6 @@ end;
 
 procedure TfrmMain.ModulesGridSelectionChanged(Sender: TObject);
 begin
-  // Caption := IntToStr(TDBGrid(Sender).SelectedRows.Count);
   ModulesSelectedCountDisplay();
   UpdateActionsWithSelectedModels();
 end;
@@ -1513,7 +1506,6 @@ end;
 
 procedure TfrmMain.HideStartMessage;
 begin
-  // pnlStartMessage.Visible := false;
   tsHome.TabVisible := false;
 end;
 
@@ -1780,6 +1772,7 @@ begin
   cbMaximizeOnStartup.Checked := GlobalMaximizeOnStartup;
   cbParseFileOnOpen.Checked := GlobalParseOnFileOpen;
   cbParseLevel2.Checked := GlobalModulesCompareLevel2;
+  cbParseLevel3.Checked := GlobalModulesCompareLevel3;
   if cbxStyles.Items.Count <= 1
     then cbxStyles.Enabled := false
     else
@@ -1995,35 +1988,6 @@ procedure TDBGrid.MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Inte
 begin
   inherited;
   if Assigned(FOnSelectionChanged) then FOnSelectionChanged(self);
-end;
-
-
-{ TModulesPackage }
-{
-class function TModulesPackage.FindSame<T>(const value: T; const MyArr: array of T): boolean;
-var
-  i: Integer;
-begin
-  for i := 0 to High(MyArr) do
-    if value = MyArr[i] then
-      Exit(true);
-  Result := false;
-end;
-}
-
-{ TModulesPackage }
-
-class function TModulesPackage.FindSame(const value: TModulesPackage; const MyArr: array of TModulesPackage): boolean;
-var
-  i: Integer;
-
-begin
-  for i := 0 to High(MyArr) do
-    if // (value.PackageID = MyArr[i].PackageID) AND
-       (value.PackageName = MyArr[i].PackageName)
-      then
-        Exit(true);
-  Result := false;
 end;
 
 end.

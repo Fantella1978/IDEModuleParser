@@ -28,7 +28,7 @@ object frmModulesEditor: TfrmModulesEditor
       871
       37)
     object Button1: TButton
-      Left = 788
+      Left = 786
       Top = 6
       Width = 75
       Height = 25
@@ -38,6 +38,7 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
+      ExplicitLeft = 784
     end
   end
   object dbgModules: TDBGrid
@@ -47,8 +48,7 @@ object frmModulesEditor: TfrmModulesEditor
     Height = 376
     Align = alClient
     DataSource = DM1.dsModules
-    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgAlwaysShowSelection, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-    ReadOnly = True
+    Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -87,13 +87,19 @@ object frmModulesEditor: TfrmModulesEditor
       end
       item
         Expanded = False
-        FieldName = 'PathRegExp'
+        FieldName = 'VersionRegExp'
         Width = 200
         Visible = True
       end
       item
         Expanded = False
-        FieldName = 'VersionRegExp'
+        FieldName = 'FileNameRegExp'
+        Width = 100
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'PathRegExp'
         Width = 200
         Visible = True
       end
@@ -130,6 +136,14 @@ object frmModulesEditor: TfrmModulesEditor
       Caption = 'Label2'
       Visible = False
     end
+    object SpeedButton1: TSpeedButton
+      Left = 654
+      Top = 11
+      Width = 207
+      Height = 22
+      Action = actCopyFileNameAsRegExp
+      Anchors = [akTop, akRight]
+    end
     object GroupBox1: TGroupBox
       Left = 1
       Top = 1
@@ -152,13 +166,14 @@ object frmModulesEditor: TfrmModulesEditor
       end
     end
     object DBNavigator1: TDBNavigator
-      Left = 623
+      Left = 621
       Top = 39
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
+      ExplicitLeft = 619
     end
     object Button2: TButton
       Left = 221
@@ -186,8 +201,8 @@ object frmModulesEditor: TfrmModulesEditor
     end
   end
   object ActionList1: TActionList
-    Left = 440
-    Top = 16
+    Left = 400
+    Top = 184
     object actFindDuplicates: TAction
       Caption = 'Find Duplicates'
       OnExecute = actFindDuplicatesExecute
@@ -200,6 +215,11 @@ object frmModulesEditor: TfrmModulesEditor
     object actFindAndDeleteDuplicates: TAction
       Caption = 'Delete Duplicates'
       OnExecute = actFindAndDeleteDuplicatesExecute
+    end
+    object actCopyFileNameAsRegExp: TAction
+      Caption = 'Copy FileName to FileNameRegExp'
+      ShortCut = 16466
+      OnExecute = actCopyFileNameAsRegExpExecute
     end
   end
 end

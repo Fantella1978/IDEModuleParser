@@ -45,6 +45,8 @@ type
     function DetermineCurrentModuleLevel2() : boolean;
     function SaveCurrentModuleData : boolean;
     function TaskFindAllUsedPackages: boolean;
+    function TaskFindModulesByFileNameRegExp: boolean;
+    function DetermineModulesByFileNameRegExp: boolean;
   public
     { Public declarations }
     parseCanceled: boolean;
@@ -122,10 +124,15 @@ begin
   frmMain.actParseCancel.Enabled := true;
   parseCanceled := not frmMain.actParseCancel.Enabled;
 
-  StartTasks(4); // Start 4 Tasks
+  if GlobalModulesCompareLevel3
+    then StartTasks(5)    // Start 5 Tasks
+    else StartTasks(4);   // Start 4 Tasks
+
+  // Tasks
   TaskModuleFileParse();
   TaskCreateModulesDB();
   TaskFindAllKnowModules();
+  if GlobalModulesCompareLevel3 then TaskFindModulesByFileNameRegExp();
   TaskFindAllUsedPackages();
 
   frmMain.actParseCancel.Enabled := false;
@@ -278,12 +285,7 @@ end;
 function TfrmParse.DetermineCurrentModuleLevel2() : boolean;
 var i : integer;
 begin
-  if DM1.fdqModulesFromQuery.RecordCount = 0
-  then
-    begin
-      Result := false;
-      Exit;
-    end;
+  if DM1.fdqModulesFromQuery.RecordCount = 0 then Exit(false);
 
   DM1.fdqModulesFromQuery.First;
   for i := 0 to DM1.fdqModulesFromQuery.RecordCount - 1 do
@@ -312,9 +314,103 @@ begin
   FCurrentModulePackageTypeID := -1;
 
   GetKnownModulesForFileName();
-  DetermineCurrentModuleLevel1();
   if GlobalModulesCompareLevel2 then DetermineCurrentModuleLevel2();
+  if FCurrentModulePackageID = -1 then DetermineCurrentModuleLevel1();
   SaveCurrentModuleData();
+
+  Result := true;
+end;
+
+function TfrmParse.DetermineModulesByFileNameRegExp() : boolean;
+var
+  regexp : TPerlRegEx;
+begin
+  Result := false;
+  if parseCanceled then Exit;
+
+  regexp := TPerlRegEx.Create;
+  try
+    var count1 := DM1.cdsModules.RecordCount;
+    DM1.cdsModules.Filter := 'PackageID = -1';
+    DM1.cdsModules.Filtered := true;
+    DM1.cdsModules.First;
+    var count2 := DM1.cdsModules.RecordCount;
+    with regexp do
+    begin
+      Options := [preCaseLess, preNoAutoCapture];
+      RegEx := '^' + DM1.fdqModulesFromQuery.FieldByName('FileNameRegExp').AsString + '$';
+      while not DM1.cdsModules.Eof do
+      begin
+        if parseCanceled then Break;
+        Subject := DM1.cdsModulesFileName.AsString;
+        if Match
+        then
+          begin
+            // Module File Name Match RegExp
+            DM1.cdsModules.Edit;
+            DM1.cdsModulesPackageID.AsInteger := DM1.fdqModulesFromQuery.FieldByName('PackageID').AsInteger;
+            DM1.cdsModulesPackageName.AsString := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
+            DM1.cdsModulesPackageTypeID.AsInteger := DM1.fdqModulesFromQuery.FieldByName('PackageTypeID').AsInteger;
+
+            ShowMessage('Found module ' + Subject + ' by RegExp: ' + RegEx);
+            Logger.AddToLog('Module found by FileNameRegExp: ' + Subject);
+          end;
+        DM1.cdsModules.Next;
+      end;
+    end;
+  finally
+    regexp.Free;
+  end;
+
+  Result := true;
+end;
+
+function TfrmParse.TaskFindModulesByFileNameRegExp() : boolean;
+begin
+  Result := false;
+  if parseCanceled then Exit;
+  StartTask('Find known modules in DB...');
+  Logger.AddToLog('Find known modules by FileName RegExp in DB started.');
+  DM1.cdsModules.DisableControls;
+
+  with DM1.fdqModulesFromQuery do
+  begin
+    if Active then Close;
+    SQL.Clear;
+    SQL.Add(
+      'SELECT m.FileNameRegExp as FileNameRegExp, ' +
+      'p.Num AS PackageID, p.Name AS PackageName, pt.ID AS PackageTypeID ' +
+      'FROM Modules AS m ' +
+      'LEFT JOIN Packages AS p ON m.PackageID=p.Num ' +
+      'LEFT JOIN PackageTypes AS pt ON p.Type=pt.ID ' +
+      'WHERE m.FileNameRegExp<>""' +
+      ';');
+    Open;
+  end;
+  SetCurrentTaskPositionsMinMax(0, DM1.fdqModulesFromQuery.RecordCount - 1);
+
+  var i := -1;
+  while not DM1.fdqModulesFromQuery.Eof do
+  begin
+    if parseCanceled then Break;
+
+    inc(i);
+    SetCurrentTaskPosition(i);
+
+    DetermineModulesByFileNameRegExp();
+
+    DM1.fdqModulesFromQuery.Next;
+  end;
+
+  DM1.cdsModules.Filter := '';
+  DM1.cdsModules.Filtered := false;
+  DM1.cdsModules.First;
+  DM1.cdsModules.EnableControls;
+  DM1.fdqModulesFromQuery.Close;
+
+  if not parseCanceled
+    then Logger.AddToLog('Find known modules by FileName RegExp success.')
+    else Logger.AddToLog('Find known modules by FileName RegExp canceled. Parsing canceled.');
 
   Result := true;
 end;
@@ -336,6 +432,8 @@ begin
   frmMain.FModulesPackages := [];
   while not DM1.cdsModules.Eof do
   begin
+    if parseCanceled then Break;
+
     inc(i);
     SetCurrentTaskPosition(i);
 
@@ -343,9 +441,9 @@ begin
     then
       begin
         tmpPackage.PackageID := DM1.cdsModules.FieldByName('PackageID').AsInteger;
-        tmpPackage.PackageName := DM1.cdsModules.FieldByName('PackageName').AsString;
+        tmpPackage.PackageName := string(DM1.cdsModules.FieldByName('PackageName').AsString);
         tmpPackage.PackageTypeID := DM1.cdsModules.FieldByName('PackageTypeID').AsInteger;
-        tmpPackage.PackageVersion := DM1.cdsModules.FieldByName('PackageVersion').AsString;;
+        tmpPackage.PackageVersion := string(DM1.cdsModules.FieldByName('PackageVersion').AsString);
 
         {if not TModulesPackage.FindSame<TModulesPackage>(tmpPackage, frmMain.FModulesPackages)
           then frmMain.FModulesPackages := frmMain.FModulesPackages + [tmpPackage];}
@@ -354,22 +452,16 @@ begin
           then frmMain.FModulesPackages := frmMain.FModulesPackages + [tmpPackage];
       end;
     DM1.cdsModules.Next;
-
-    if parseCanceled
-    then
-      begin
-        Logger.AddToLog('Find known Packages canceled. Parsing canceled.');
-        Break;
-      end;
   end;
-  Logger.AddToLog('Find known Packages started.');
+
   DM1.cdsModules.Filter := '';
   DM1.cdsModules.Filtered := false;
   DM1.cdsModules.First;
   DM1.cdsModules.EnableControls;
 
   if not parseCanceled
-    then Logger.AddToLog('Find known Packages success.');
+    then Logger.AddToLog('Find known Packages success.')
+    else Logger.AddToLog('Find known Packages canceled. Parsing canceled.');
 
   Result := true;
 end;
@@ -386,29 +478,25 @@ begin
   var i := -1;
   while not DM1.cdsModules.Eof do
   begin
+    if parseCanceled then Break;
+
     inc(i);
     SetCurrentTaskPosition(i);
-    {
-    if DM1.cdsModules.FieldByName('FileName').AsString = 'tethering280.bpl'
-      then var k := 470;
-    }
+
     DetermineCurrentModule();
+
     Logger.AddToLog('Determine current Module [' + IntToStr(i) + '] for FileName: ' + DM1.cdsModules.FieldByName('FileName').AsString );
-
     DM1.cdsModules.Next;
-
-    if parseCanceled
-    then
-      begin
-        Logger.AddToLog('Find known modules in DB canceled. Parsing canceled.');
-        Break;
-      end;
   end;
+
+  DM1.cdsModules.Filter := '';
+  DM1.cdsModules.Filtered := false;
   DM1.cdsModules.First;
   DM1.cdsModules.EnableControls;
 
   if not parseCanceled
-    then Logger.AddToLog('Find known modules in DB success.');
+    then Logger.AddToLog('Find known modules in DB success.')
+    else Logger.AddToLog('Find known modules in DB canceled. Parsing canceled.');
 
   Result := true;
 end;
@@ -436,7 +524,6 @@ begin
       RegEx := GetModuleLineRegExp();
       for i := 0 to cl - 1 do
         begin
-          // sleep(1); // Sleep
           SetCurrentTaskPosition(i);
           Subject := frmMain.MemoTxtModuleFile.Lines[i];
           if Match

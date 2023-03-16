@@ -35,9 +35,7 @@ type
     fdtModulesNum: TFDAutoIncField;
     fdtModulesFileName: TStringField;
     fdtModulesHash: TStringField;
-    fdtModulesPathRegExp: TWideStringField;
     fdtModulesVersion: TStringField;
-    fdtModulesVersionRegExp: TWideStringField;
     fdtModulesPackageID: TIntegerField;
     fdtPackageTypes: TFDTable;
     dsPackageTypes: TDataSource;
@@ -50,6 +48,10 @@ type
     fdtPackagesType: TIntegerField;
     cdsModulesPackageTypeID: TIntegerField;
     cdsModulesPackageVersion: TStringField;
+    FDTransaction1: TFDTransaction;
+    fdtModulesPathRegExp: TStringField;
+    fdtModulesVersionRegExp: TStringField;
+    fdtModulesFileNameRegExp: TStringField;
     procedure cdsModulesAfterScroll(DataSet: TDataSet);
     procedure fdtPackagesAfterCancel(DataSet: TDataSet);
     procedure fdtPackagesAfterEdit(DataSet: TDataSet);
@@ -57,6 +59,8 @@ type
     procedure fdtPackagesAfterRefresh(DataSet: TDataSet);
     procedure dsPackagesStateChange(Sender: TObject);
     procedure fdtPackagesAfterInsert(DataSet: TDataSet);
+    procedure fdtModulesAfterScroll(DataSet: TDataSet);
+    procedure fdtModulesAfterRefresh(DataSet: TDataSet);
   private
     { Private declarations }
   public
@@ -64,6 +68,18 @@ type
     procedure ClearModulesDB;
     function FindPackageTypeIDByName(name: string): integer;
   end;
+
+  PModulesPackage = ^TModulesPackage;
+  TModulesPackage = record
+    PackageID : integer;
+    PackageName : string;
+    PackageTypeID : integer;
+    PackageVersion : string;
+    class function FindSame(const value: TModulesPackage; const MyArr: array of TModulesPackage): boolean; static;
+    // class function IndexOfArray<T:Class>(const value: T; const Things: array of T): Integer; static;
+  private
+  end;
+
 
 var
   DM1: TDM1;
@@ -81,6 +97,34 @@ uses
   ;
 
 {$R *.dfm}
+
+{ TModulesPackage }
+
+class function TModulesPackage.FindSame(const value: TModulesPackage; const MyArr: array of TModulesPackage): boolean;
+var
+  i: Integer;
+
+begin
+  for i := 0 to High(MyArr) do
+    if // (value.PackageID = MyArr[i].PackageID) AND
+       (value.PackageName = MyArr[i].PackageName)
+      then Exit(true);
+  Result := false;
+end;
+
+{
+class function TModulesPackage.FindSame<T>(const value: T; const MyArr: array of T): boolean;
+var
+  i: Integer;
+begin
+  for i := 0 to High(MyArr) do
+    if value = MyArr[i] then
+      Exit(true);
+  Result := false;
+end;
+}
+
+{ TModulesPackage }
 
 { TDM1 }
 
@@ -144,6 +188,28 @@ begin
           then frmPackagesEditor.actPackageDelete.Enabled := true
           else frmPackagesEditor.actPackageDelete.Enabled := false;
       end;
+end;
+
+procedure TDM1.fdtModulesAfterRefresh(DataSet: TDataSet);
+begin
+  if frmModulesEditor <> nil
+   then
+    begin
+      if DM1.fdtModules.FieldByName('FileNameRegExp').AsString = ''
+        then frmModulesEditor.actCopyFileNameAsRegExp.Enabled := true
+        else frmModulesEditor.actCopyFileNameAsRegExp.Enabled := false;
+    end;
+end;
+
+procedure TDM1.fdtModulesAfterScroll(DataSet: TDataSet);
+begin
+  if frmModulesEditor <> nil
+   then
+    begin
+      if DM1.fdtModules.FieldByName('FileNameRegExp').AsString = ''
+        then frmModulesEditor.actCopyFileNameAsRegExp.Enabled := true
+        else frmModulesEditor.actCopyFileNameAsRegExp.Enabled := false;
+    end;
 end;
 
 procedure TDM1.fdtPackagesAfterCancel(DataSet: TDataSet);
