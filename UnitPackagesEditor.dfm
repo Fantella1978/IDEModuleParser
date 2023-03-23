@@ -15,6 +15,7 @@ object frmPackagesEditor: TfrmPackagesEditor
   Font.Style = []
   Position = poMainFormCenter
   OnResize = FormResize
+  OnShow = FormShow
   DesignSize = (
     953
     637)

@@ -6,7 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
   Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, System.Actions,
-  Vcl.ActnList, Vcl.Menus;
+  Vcl.ActnList, Vcl.Menus
+  , UnitStaticFunctions
+  ;
 
 type
   TfrmPackagesEditor = class(TForm)
@@ -40,7 +42,9 @@ type
     procedure DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
     procedure dbgPackagesDblClick(Sender: TObject);
     procedure lbedFilterFileNameChange(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
+    dbgPackagesColumnsWidth: TDBGridColumnsWidthArray;
     { Private declarations }
   public
     { Public declarations }
@@ -108,22 +112,9 @@ end;
 
 procedure TfrmPackagesEditor.dbgPackagesDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
-var
-  wi, sw, i: Integer;
 begin
   // Rize Column width if text is a long
-  wi := 10 + dbgPackages.Canvas.TextExtent(Column.Field.DisplayText).cx;
-  if wi > Column.Width
-  then
-  begin
-    sw    := 0;
-    for i := 0 to dbgPackages.Columns.Count - 1 do
-      if dbgPackages.Columns[i].Visible and (dbgPackages.Columns[i] <> Column)
-      then
-        sw := sw + dbgPackages.Columns[i].Width;
-    if dbgPackages.Width > sw + wi then
-      Column.Width := wi;
-  end;
+  AutoCalcDBGridColumnsWidth(dbgPackages, Column, dbgPackagesColumnsWidth);
 end;
 
 procedure TfrmPackagesEditor.DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
@@ -135,9 +126,19 @@ end;
 
 procedure TfrmPackagesEditor.FormResize(Sender: TObject);
 begin
+  {
   for var i := 0 to dbgPackages.Columns.Count - 1 do
     if dbgPackages.Columns[i].Visible and (dbgPackages.Columns[i].Width > 100) then
       dbgPackages.Columns[i].Width := 100;
+  }
+  AutoStretchDBGridColumns(dbgPackages, dbgPackagesColumnsWidth);
+end;
+
+procedure TfrmPackagesEditor.FormShow(Sender: TObject);
+begin
+  SetLength(dbgPackagesColumnsWidth, dbgPackages.Columns.Count);
+  for var i := 0 to dbgPackages.Columns.Count - 1 do
+    dbgPackagesColumnsWidth[i] := dbgPackages.Columns[i].Width;
 end;
 
 procedure TfrmPackagesEditor.lbedFilterFileNameChange(Sender: TObject);

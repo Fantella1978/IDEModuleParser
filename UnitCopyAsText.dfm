@@ -3,8 +3,8 @@ object frmCopyAsText: TfrmCopyAsText
   Top = 0
   BorderIcons = []
   Caption = 'Copy as Text'
-  ClientHeight = 421
-  ClientWidth = 902
+  ClientHeight = 417
+  ClientWidth = 900
   Color = clBtnFace
   Constraints.MinHeight = 400
   Constraints.MinWidth = 780
@@ -19,26 +19,24 @@ object frmCopyAsText: TfrmCopyAsText
   object Splitter1: TSplitter
     Left = 198
     Top = 0
-    Height = 384
+    Height = 380
     ExplicitLeft = 176
     ExplicitTop = 120
     ExplicitHeight = 100
   end
   object Panel1: TPanel
     Left = 0
-    Top = 384
-    Width = 902
+    Top = 380
+    Width = 900
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 380
-    ExplicitWidth = 900
     DesignSize = (
-      902
+      900
       37)
     object btnOk: TButton
-      Left = 690
+      Left = 686
       Top = 6
       Width = 117
       Height = 25
@@ -51,7 +49,7 @@ object frmCopyAsText: TfrmCopyAsText
       ExplicitLeft = 688
     end
     object btnCancel: TButton
-      Left = 819
+      Left = 815
       Top = 6
       Width = 75
       Height = 25
@@ -68,8 +66,8 @@ object frmCopyAsText: TfrmCopyAsText
     AlignWithMargins = True
     Left = 206
     Top = 0
-    Width = 696
-    Height = 384
+    Width = 694
+    Height = 380
     Margins.Left = 5
     Margins.Top = 0
     Margins.Right = 0
@@ -78,8 +76,6 @@ object frmCopyAsText: TfrmCopyAsText
     Caption = 'Preview'
     Constraints.MinWidth = 250
     TabOrder = 1
-    ExplicitWidth = 694
-    ExplicitHeight = 380
     object Memo1: TMemo
       AlignWithMargins = True
       Left = 5
@@ -99,8 +95,6 @@ object frmCopyAsText: TfrmCopyAsText
       ReadOnly = True
       ScrollBars = ssBoth
       TabOrder = 0
-      ExplicitWidth = 684
-      ExplicitHeight = 355
     end
   end
   object GroupBox1: TGroupBox
@@ -108,7 +102,7 @@ object frmCopyAsText: TfrmCopyAsText
     Left = 0
     Top = 0
     Width = 193
-    Height = 384
+    Height = 380
     Margins.Left = 0
     Margins.Top = 0
     Margins.Right = 5
@@ -117,7 +111,6 @@ object frmCopyAsText: TfrmCopyAsText
     Caption = 'Columns'
     Constraints.MinWidth = 150
     TabOrder = 2
-    ExplicitHeight = 380
     object CheckListBox1: TCheckListBox
       AlignWithMargins = True
       Left = 5
@@ -136,7 +129,6 @@ object frmCopyAsText: TfrmCopyAsText
         'Item 7')
       TabOrder = 0
       OnClickCheck = CheckListBox1ClickCheck
-      ExplicitHeight = 355
     end
   end
 end

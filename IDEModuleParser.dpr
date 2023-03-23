@@ -30,6 +30,8 @@ begin
   FormatSettings.ShortDateFormat := 'yyyy/mm/dd';
   FormatSettings.LongTimeFormat := 'hh:nn:ss';
 
+  ReportMemoryLeaksOnShutdown := true;
+
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   TStyleManager.TrySetStyle('Amethyst Kamri');

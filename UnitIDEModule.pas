@@ -81,6 +81,8 @@ begin
       else
         begin
           Logger.AddToLog('[Error] Can''t convert string to DateTime: ' + str);
+          DecodeDateTime( 0 , AYear, AMonth, ADay, AHour, AMinute, ASecond, AMilliSecond);
+          {
           AYear := 0;
           AMonth := 0;
           ADay := 0;
@@ -88,6 +90,7 @@ begin
           AMinute := 0;
           ASecond := 0;
           AMilliSecond := 0;
+          }
         end;
     end;
   finally

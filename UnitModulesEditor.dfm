@@ -12,6 +12,7 @@ object frmModulesEditor: TfrmModulesEditor
   Font.Style = []
   Position = poMainFormCenter
   OnCreate = FormCreate
+  OnResize = FormResize
   OnShow = FormShow
   TextHeight = 15
   object pnlBottom: TPanel
@@ -28,7 +29,7 @@ object frmModulesEditor: TfrmModulesEditor
       871
       37)
     object Button1: TButton
-      Left = 786
+      Left = 782
       Top = 6
       Width = 75
       Height = 25
@@ -38,7 +39,7 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
-      ExplicitLeft = 784
+      ExplicitLeft = 780
     end
   end
   object dbgModules: TDBGrid
@@ -48,7 +49,6 @@ object frmModulesEditor: TfrmModulesEditor
     Height = 376
     Align = alClient
     DataSource = DM1.dsModules
-    Options = [dgEditing, dgAlwaysShowEditor, dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -137,12 +137,13 @@ object frmModulesEditor: TfrmModulesEditor
       Visible = False
     end
     object SpeedButton1: TSpeedButton
-      Left = 654
+      Left = 650
       Top = 11
       Width = 207
       Height = 22
       Action = actCopyFileNameAsRegExp
       Anchors = [akTop, akRight]
+      ExplicitLeft = 654
     end
     object GroupBox1: TGroupBox
       Left = 1
@@ -166,14 +167,14 @@ object frmModulesEditor: TfrmModulesEditor
       end
     end
     object DBNavigator1: TDBNavigator
-      Left = 621
+      Left = 617
       Top = 39
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
-      ExplicitLeft = 619
+      ExplicitLeft = 615
     end
     object Button2: TButton
       Left = 221

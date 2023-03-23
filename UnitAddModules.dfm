@@ -196,8 +196,6 @@ object frmAddModules: TfrmAddModules
           Height = 17
           Anchors = [akLeft, akTop, akRight]
           Caption = 'Add File Name also as a File Name RegExp'
-          Checked = True
-          State = cbChecked
           TabOrder = 1
           ExplicitWidth = 408
         end

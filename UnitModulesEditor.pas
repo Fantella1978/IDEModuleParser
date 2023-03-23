@@ -6,7 +6,9 @@ uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Data.DB,
   Vcl.Grids, Vcl.DBGrids, Vcl.DBCtrls, Vcl.Mask, System.Actions, Vcl.ActnList,
-  Vcl.Buttons;
+  Vcl.Buttons
+  , UnitStaticFunctions
+  ;
 
 type
   TfrmModulesEditor = class(TForm)
@@ -38,10 +40,12 @@ type
     procedure FormShow(Sender: TObject);
     procedure actFindAndDeleteDuplicatesExecute(Sender: TObject);
     procedure actCopyFileNameAsRegExpExecute(Sender: TObject);
+    procedure FormResize(Sender: TObject);
   private
     FFindNext : boolean;
     FFindNextNum : integer;
     FFindNextBookmark : TBookmark;
+    dbgModulesColumnsWidth : TDBGridColumnsWidthArray;
     function FindModuleDuplicate() : integer;
     function FindModuleFullDuplicates(id : integer) : integer;
     { Private declarations }
@@ -142,11 +146,23 @@ begin
   FFindNextNum := 0;
 end;
 
+procedure TfrmModulesEditor.FormResize(Sender: TObject);
+begin
+  // for DBGrid Columns Width adjust
+  AutoStretchDBGridColumns(dbgModules, dbgModulesColumnsWidth);
+end;
+
 procedure TfrmModulesEditor.FormShow(Sender: TObject);
 begin
   if DM1.fdtModules.RecordCount > 2
     then frmModulesEditor.actFindDuplicates.Enabled := true
     else frmModulesEditor.actFindDuplicates.Enabled := false;
+
+  // for DBGrid Columns Width adjust
+  SetLength(dbgModulesColumnsWidth, dbgModules.Columns.Count);
+  for var i := 0 to dbgModules.Columns.Count - 1 do
+    dbgModulesColumnsWidth[i] := dbgModules.Columns[i].Width;
+
 end;
 
 procedure TfrmModulesEditor.actCopyFileNameAsRegExpExecute(Sender: TObject);
@@ -156,8 +172,6 @@ begin
     then DM1.fdtModules.Edit;
   if DM1.fdtModules.State in [dsInsert, dsEdit]
     then DM1.fdtModulesFileNameRegExp.AsString := DM1.fdtModulesFileName.AsString;
-  // DM1.fdtModules.Post;
-  // DM1.fdtModules.Refresh;
 end;
 
 procedure TfrmModulesEditor.actFindAndDeleteDuplicatesExecute(Sender: TObject);
@@ -201,7 +215,6 @@ begin
               '.');
              inc(deletedDuplicatesCount);
              Delete;
-             // Next;
            end;
         end;
         DM1.fdtModules.Refresh;
@@ -328,20 +341,9 @@ end;
 
 procedure TfrmModulesEditor.dbgModulesDrawColumnCell(Sender: TObject;
   const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
-Var
-  wi, sw, i : Integer;
 begin
   // Rize Column width if text is a long
-  wi := 10 + dbgModules.Canvas.TextExtent(Column.Field.DisplayText).cx;
-  if wi > column.Width
-  then
-    begin
-      sw := 0;
-      for i := 0 to dbgModules.Columns.Count - 1 do
-        if dbgModules.Columns[i].Visible AND (dbgModules.Columns[i] <> Column)
-          then sw := sw + dbgModules.Columns[i].Width;
-      if dbgModules.Width > sw + wi then Column.Width := wi;
-    end;
+  AutoCalcDBGridColumnsWidth(dbgModules, Column, dbgModulesColumnsWidth);
 end;
 
 procedure TfrmModulesEditor.lbedFilterFileNameChange(Sender: TObject);

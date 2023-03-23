@@ -106,7 +106,7 @@ begin
     '([^\t]*)\t' +                                    // path Groups[2]
     '(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?' +   // version Groups[3]
     '(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})[\.]?\s*' +    // date Groups[4]
-    '(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[\S]{2})?)\t' +    // time Groups[5]
+    '(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[\S]{2})?|)\t' +    // time Groups[5]
     '([\dA-F]{40})';                                  // hash Groups[6]
 
 end;
@@ -330,11 +330,11 @@ begin
 
   regexp := TPerlRegEx.Create;
   try
-    var count1 := DM1.cdsModules.RecordCount;
+    // var count1 := DM1.cdsModules.RecordCount;
     DM1.cdsModules.Filter := 'PackageID = -1';
     DM1.cdsModules.Filtered := true;
     DM1.cdsModules.First;
-    var count2 := DM1.cdsModules.RecordCount;
+    // var count2 := DM1.cdsModules.RecordCount;
     with regexp do
     begin
       Options := [preCaseLess, preNoAutoCapture];
@@ -352,7 +352,7 @@ begin
             DM1.cdsModulesPackageName.AsString := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
             DM1.cdsModulesPackageTypeID.AsInteger := DM1.fdqModulesFromQuery.FieldByName('PackageTypeID').AsInteger;
 
-            ShowMessage('Found module ' + Subject + ' by RegExp: ' + RegEx);
+            // ShowMessage('Found module ' + Subject + ' by RegExp: ' + RegEx);
             Logger.AddToLog('Module found by FileNameRegExp: ' + Subject);
           end;
         DM1.cdsModules.Next;
@@ -377,6 +377,8 @@ begin
   begin
     if Active then Close;
     SQL.Clear;
+    SQL.Add('SELECT * FROM ModulesWithFileNameRegExp'); // Use SQLite Views
+    {
     SQL.Add(
       'SELECT m.FileNameRegExp as FileNameRegExp, ' +
       'p.Num AS PackageID, p.Name AS PackageName, pt.ID AS PackageTypeID ' +
@@ -385,6 +387,7 @@ begin
       'LEFT JOIN PackageTypes AS pt ON p.Type=pt.ID ' +
       'WHERE m.FileNameRegExp<>""' +
       ';');
+    }
     Open;
   end;
   SetCurrentTaskPositionsMinMax(0, DM1.fdqModulesFromQuery.RecordCount - 1);

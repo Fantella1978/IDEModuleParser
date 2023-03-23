@@ -83,7 +83,7 @@ type
     lbedDescriptionFile: TLabeledEdit;
     memoDescription: TMemo;
     memoSteps: TMemo;
-    DBGrid1: TDBGrid;
+    DBGridModules: TDBGrid;
     lblStartMessageMain: TLabel;
     lblStartMessageSecondary: TLabel;
     tsSettings: TTabSheet;
@@ -258,28 +258,28 @@ type
 
     function FileExistsInReport(var FileName: string): boolean;
     procedure cbCreateLogClick(Sender: TObject);
-    procedure DBGrid1TitleClick(Column: TColumn);
-    procedure DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+    procedure DBGridModulesTitleClick(Column: TColumn);
+    procedure DBGridModulesDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
     procedure actPackagesEditorExecute(Sender: TObject);
     procedure actModulesEditorExecute(Sender: TObject);
     procedure actModulesCopySelectedAsTextExecute(Sender: TObject);
     procedure actModulesSelectAllExecute(Sender: TObject);
-    procedure DBGrid1MouseDown(Sender: TObject; Button: TMouseButton;
+    procedure DBGridModulesMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure ModelsGridSelectRange;
-    procedure DBGrid1MouseUp(Sender: TObject; Button: TMouseButton;
+    procedure DBGridModulesMouseUp(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
     procedure actModulesUnSelectAllExecute(Sender: TObject);
     procedure ModulesSelectedCountDisplay();
-    procedure DBGrid1Enter(Sender: TObject);
-    procedure DBGrid1Exit(Sender: TObject);
-    procedure DBGrid1KeyPress(Sender: TObject; var Key: Char);
+    procedure DBGridModulesEnter(Sender: TObject);
+    procedure DBGridModulesExit(Sender: TObject);
+    procedure DBGridModulesKeyPress(Sender: TObject; var Key: Char);
     procedure UpdateActionsWithSelectedModels();
-    procedure DBGrid1KeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
+    procedure DBGridModulesKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure UpdateObjectsAccordingSettings();
     procedure actSettingsRestoreDefaultsExecute(Sender: TObject);
-    procedure DBGrid1MouseActivate(Sender: TObject; Button: TMouseButton;
+    procedure DBGridModulesMouseActivate(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y, HitTest: Integer;
       var MouseActivate: TMouseActivate);
     procedure FormResize(Sender: TObject);
@@ -302,12 +302,14 @@ type
     procedure actModulesFindSelectedInKnownDBExecute(Sender: TObject);
     procedure actFilterPackagesCopyToClipboardExecute(Sender: TObject);
     procedure cbParseLevel3Click(Sender: TObject);
+    procedure PageControl1Change(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
     FModulesFilterFileNameString : string;
     FModulesFilterPackagesString : string;
     FModulesFilterPackagesTypesString: string;
+    DBGridModulesColumnsWidth: TDBGridColumnsWidthArray;
     procedure ModulesCountDisplay;
     function IsAdminModeEnabled: boolean;
     procedure ModulesFilteredCountDisplay;
@@ -508,7 +510,7 @@ begin
         DM1.cdsModules.Filtered := true;
       end
     else DM1.cdsModules.Filtered := false;
-  DBGrid1.SelectedRows.Clear;
+  DBGridModules.SelectedRows.Clear;
   ModulesFilteredCountDisplay();
   ModulesSelectedCountDisplay();
 end;
@@ -664,6 +666,7 @@ begin
     DM1.cdsModules.Active := true;
     DM1.cdsModules.IndexName := '';
 
+    DM1.fdcSQLite.Close;
     var DBFileName := 'IDEModuleParser.db3';
     var DBFileNameWithPath := TPath.GetDirectoryName(Application.ExeName) +
       TPath.DirectorySeparatorChar + DBFileName;
@@ -927,7 +930,9 @@ procedure TfrmMain.actModulesEditorExecute(Sender: TObject);
 begin
   // Show Modules Editor
   frmModulesEditor.lbedFilterFileName.Text := '';
-  frmModulesEditor.WindowState := TWindowState.wsMaximized;
+  if frmMain.WindowState = wsMaximized
+    then frmModulesEditor.WindowState := TWindowState.wsMaximized
+    else frmModulesEditor.WindowState := TWindowState.wsNormal;
   if IsAdminModeEnabled then frmModulesEditor.ShowModal;
 end;
 
@@ -938,11 +943,11 @@ begin
   // Select All Modules in grid
   DM1.cdsModules.DisableControls;
   CurrentBookMark := DM1.cdsModules.GetBookmark;
-  DBGrid1.SelectedRows.Clear;
+  DBGridModules.SelectedRows.Clear;
   DM1.cdsModules.First;
   while not DM1.cdsModules.Eof do
   begin
-    DBGrid1.SelectedRows.CurrentRowSelected := true;
+    DBGridModules.SelectedRows.CurrentRowSelected := true;
     DM1.cdsModules.Next;
   end;
   DM1.cdsModules.GotoBookmark(CurrentBookMark);
@@ -959,7 +964,7 @@ begin
   // UnSelect All Modules in grid
   DM1.cdsModules.DisableControls;
   CurrentBookMark := DM1.cdsModules.GetBookmark;
-  DBGrid1.SelectedRows.Clear;
+  DBGridModules.SelectedRows.Clear;
   DM1.cdsModules.GotoBookmark(CurrentBookMark);
   DM1.cdsModules.FreeBookMark(CurrentBookMark);
   DM1.cdsModules.EnableControls;
@@ -1077,6 +1082,12 @@ begin
   actFilterPackagesTypesSelectAllExecute(Sender);
 end;
 
+procedure TfrmMain.PageControl1Change(Sender: TObject);
+begin
+  if PageControl1.ActivePage = tsModulesList
+    then AutoStretchDBGridColumns(DBGridModules, DBGridModulesColumnsWidth);
+end;
+
 procedure TfrmMain.actParseModuleFileExecute(Sender: TObject);
 var
   oldIndex : string;
@@ -1117,7 +1128,7 @@ begin
 
       // Restore IndexName
       if oldIndex = ''
-        then DBGrid1TitleClick(DBGrid1.Columns[0])
+        then DBGridModulesTitleClick(DBGridModules.Columns[0])
         else DM1.cdsModules.IndexName := oldIndex;
 
       tsModulesList.TabVisible := true;
@@ -1127,7 +1138,7 @@ begin
       ModulesStatisticDisplay();
       PackagesFilterCreate(Sender);
 
-      DBGrid1.SelectedRows.Clear;
+      DBGridModules.SelectedRows.Clear;
       DM1.cdsModules.EnableControls;
       DM1.cdsModules.First;
     end;
@@ -1200,7 +1211,7 @@ end;
 
 procedure TfrmMain.ModulesSelectedCountDisplay();
 begin
-  frmMain.lblModulesSelectedCount.Caption := IntToStr(frmMain.DBGrid1.SelectedRows.Count);
+  lblModulesSelectedCount.Caption := IntToStr(DBGridModules.SelectedRows.Count);
 end;
 
 procedure TfrmMain.ModulesCountDisplay();
@@ -1215,51 +1226,40 @@ begin
   ModulesFilteredCountDisplay();
 end;
 
-procedure TfrmMain.DBGrid1DrawColumnCell(Sender: TObject; const Rect: TRect;
+procedure TfrmMain.DBGridModulesDrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
-Var
-  wi, sw, i : Integer;
 begin
   // Rize Column width if text is a long
-  wi := 10 + DBGrid1.Canvas.TextExtent(Column.Field.DisplayText).cx;
-  if wi > column.Width
-  then
-    begin
-      sw := 0;
-      for i := 0 to DBGrid1.Columns.Count - 1 do
-        if DBGrid1.Columns[i].Visible AND (DBGrid1.Columns[i] <> Column)
-          then sw := sw + DBGrid1.Columns[i].Width;
-      if DBGrid1.Width > sw + wi then Column.Width := wi;
-    end;
+  AutoCalcDBGridColumnsWidth(DBGridModules, Column, DBGridModulesColumnsWidth);
 end;
 
-procedure TfrmMain.DBGrid1Enter(Sender: TObject);
+procedure TfrmMain.DBGridModulesEnter(Sender: TObject);
 begin
-  // ShowMessage('DBGrid1 Enter');
+  // ShowMessage('DBGridModules Enter');
   // UpdateActionsWithSelectedModels();
 end;
 
-procedure TfrmMain.DBGrid1Exit(Sender: TObject);
+procedure TfrmMain.DBGridModulesExit(Sender: TObject);
 begin
-  // ShowMessage('DBGrid1 Exit');
+  // ShowMessage('DBGridModules Exit');
   // ModulesSelectedCountDisplay();
   // UpdateActionsWithSelectedModels();
 end;
 
-procedure TfrmMain.DBGrid1KeyPress(Sender: TObject; var Key: Char);
+procedure TfrmMain.DBGridModulesKeyPress(Sender: TObject; var Key: Char);
 begin
   // ModulesSelectedCountDisplay();
-  // ShowMessage('DBGrid1 KeyPress');
+  // ShowMessage('DBGridModules KeyPress');
 end;
 
-procedure TfrmMain.DBGrid1KeyUp(Sender: TObject; var Key: Word;
+procedure TfrmMain.DBGridModulesKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   // ShowMessage('DBGrid1 KeyUp');
   // UpdateActionsWithSelectedModels();
 end;
 
-procedure TfrmMain.DBGrid1MouseActivate(Sender: TObject; Button: TMouseButton;
+procedure TfrmMain.DBGridModulesMouseActivate(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y, HitTest: Integer;
   var MouseActivate: TMouseActivate);
 begin
@@ -1274,13 +1274,13 @@ begin
   end;
 end;
 
-procedure TfrmMain.DBGrid1MouseDown(Sender: TObject; Button: TMouseButton;
+procedure TfrmMain.DBGridModulesMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   // ShowMessage('DBGrid1 MouseDown');
 end;
 
-procedure TfrmMain.DBGrid1MouseUp(Sender: TObject; Button: TMouseButton;
+procedure TfrmMain.DBGridModulesMouseUp(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   // ShowMessage('DBGrid1 MouseUp');
@@ -1288,7 +1288,7 @@ begin
   // inherited;
 end;
 
-procedure TfrmMain.DBGrid1TitleClick(Column: TColumn);
+procedure TfrmMain.DBGridModulesTitleClick(Column: TColumn);
 var
   ci : integer;
   CurrentBookMark : TBookmark;
@@ -1303,9 +1303,9 @@ begin
       if ci <> DBGrid1_PrevCol
       then
         begin
-          DBGrid1.Columns[DBGrid1_PrevCol].Title.Font.Style :=
-            DBGrid1.Columns[DBGrid1_PrevCol].Title.Font.Style - [fsBold];
-          DBGrid1.Columns[DBGrid1_PrevCol].Title.Caption := DBGrid1.Columns[DBGrid1_PrevCol].FieldName;
+          DBGridModules.Columns[DBGrid1_PrevCol].Title.Font.Style :=
+            DBGridModules.Columns[DBGrid1_PrevCol].Title.Font.Style - [fsBold];
+          DBGridModules.Columns[DBGrid1_PrevCol].Title.Caption := DBGridModules.Columns[DBGrid1_PrevCol].FieldName;
         end;
       Column.Title.Font.Style := Column.Title.Font.Style + [fsBold];
       DBGrid1_PrevCol := ci;
@@ -1327,7 +1327,7 @@ begin
       // First;
       GotoBookmark(CurrentBookMark);
       FreeBookMark(CurrentBookMark);
-      DBGrid1.SelectedRows.Clear; // Clear Selected Rows TEMPORARILY
+      DBGridModules.SelectedRows.Clear; // Clear Selected Rows TEMPORARILY
       EnableControls;
     end;
 end;
@@ -1415,6 +1415,7 @@ begin
     then Logger.AddToLog('Application settings successfuly saved')
     else Logger.AddToLog('[Error] Can''t save application settings');
   Logger.AddToLog('Application closed');
+  Logger.Free;
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
@@ -1474,7 +1475,7 @@ begin
 
   AskConfirmOpenForAll := false;
 
-  DBGrid1.OnSelectionChanged := ModulesGridSelectionChanged;
+  DBGridModules.OnSelectionChanged := ModulesGridSelectionChanged;
 end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
@@ -1482,11 +1483,20 @@ begin
   lblStartMessageMain.Top := lblStartMessageSecondary.Top - lblStartMessageMain.Height -
     lblStartMessageSecondary.Margins.Top - lblStartMessageMain.Margins.Bottom -
       lblStartMessageMain.Margins.Top;
+
+  if PageControl1.ActivePage = tsModulesList
+    then AutoStretchDBGridColumns(DBGridModules, DBGridModulesColumnsWidth);
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
   DragAcceptFiles(Self.Handle, True);
+
+  // for DBGrid Columns Width adjust
+  SetLength(DBGridModulesColumnsWidth, DBGridModules.Columns.Count);
+  for var i := 0 to DBGridModules.Columns.Count - 1 do
+    DBGridModulesColumnsWidth[i] := DBGridModules.Columns[i].Width;
+
 end;
 
 procedure TfrmMain.ModulesGridSelectionChanged(Sender: TObject);
@@ -1597,7 +1607,7 @@ begin
   memoDXDiagLog.Font.Size := GlobalDefaultFontSize;
   memoSteps.Font.Size := GlobalDefaultFontSize;
   memoLog.Font.Size := GlobalDefaultFontSize;
-  DBGrid1.Font.Size := GlobalDefaultFontSize;
+  DBGridModules.Font.Size := GlobalDefaultFontSize;
 
   actSettingsRestoreDefaults.Enabled := true;
 end;
@@ -1687,28 +1697,28 @@ end;
 procedure TfrmMain.UpdateActionsWithSelectedModels;
 begin
   //
-  if not frmMain.DBGrid1.Visible then Exit;
+  if not DBGridModules.Visible then Exit;
 
   // Enable/Disable action - Modules Select All
-  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
-    (frmMain.DBGrid1.DataSource.DataSet.RecordCount <> frmMain.DBGrid1.SelectedRows.Count)
+  if (DBGridModules.DataSource.DataSet.RecordCount > 0) AND
+    (DBGridModules.DataSource.DataSet.RecordCount <> DBGridModules.SelectedRows.Count)
     then frmMain.actModulesSelectAll.Enabled := true
     else frmMain.actModulesSelectAll.Enabled := false;
   // Enable action - Modules UnSelect All
-  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
-    (frmMain.DBGrid1.SelectedRows.Count < frmMain.DBGrid1.DataSource.DataSet.RecordCount)
+  if (DBGridModules.DataSource.DataSet.RecordCount > 0) AND
+    (DBGridModules.SelectedRows.Count < DBGridModules.DataSource.DataSet.RecordCount)
     then frmMain.actModulesUnSelectAll.Enabled := true;
   // Enable action - Modules Copy Selected As Text
-  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
-    (frmMain.DBGrid1.SelectedRows.Count > 0)
+  if (DBGridModules.DataSource.DataSet.RecordCount > 0) AND
+    (DBGridModules.SelectedRows.Count > 0)
     then frmMain.actModulesCopySelectedAsText.Enabled := true;
   // Enable action - Modules Add to Known Modules DB
-  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
-    (frmMain.DBGrid1.SelectedRows.Count > 0)
+  if (DBGridModules.DataSource.DataSet.RecordCount > 0) AND
+    (DBGridModules.SelectedRows.Count > 0)
     then frmMain.actModulesAddSelectedToDB.Enabled := true;
   // Enable action - Modules Find current Module in Known Modules DB
-  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
-    (frmMain.DBGrid1.SelectedRows.Count = 1)
+  if (DBGridModules.DataSource.DataSet.RecordCount > 0) AND
+    (DBGridModules.SelectedRows.Count = 1)
     then
       begin
         actModulesFindSelectedInKnownDB.Enabled := true;
@@ -1721,8 +1731,8 @@ begin
         actModulesFindSelectedInKnownDB.Caption := 'Find in Known Modules DB';
       end;
 
-  if (frmMain.DBGrid1.DataSource.DataSet.RecordCount > 0) AND
-    (frmMain.DBGrid1.SelectedRows.Count = 0)
+  if (DBGridModules.DataSource.DataSet.RecordCount > 0) AND
+    (DBGridModules.SelectedRows.Count = 0)
     then
       begin
         // Disable action - Modules UnSelect All
@@ -1921,7 +1931,7 @@ var
   CurrentBookMark, CursorBookMark, FirstBookMark, LastBookMark: TBookmark;
   Dir: integer;
 begin
-  with frmMain.DBGrid1 do
+  with DBGridModules do
   begin
     if SelectedRows.Count <= 1 then
       exit;

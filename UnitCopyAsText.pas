@@ -79,12 +79,12 @@ var
 begin
   CheckListBox1.Clear;
   Memo1.Clear;
-  for i := 0 to frmMain.DBGrid1.Columns.Count - 1 do
+  for i := 0 to frmMain.DBGridModules.Columns.Count - 1 do
   begin
-    if frmMain.DBGrid1.Columns[i].Visible
+    if frmMain.DBGridModules.Columns[i].Visible
     then
     begin
-      colCaption := frmMain.DBGrid1.Columns[i].Title.Caption;
+      colCaption := frmMain.DBGridModules.Columns[i].Title.Caption;
       if (pos(' ˅', colCaption, Length(colCaption) - 2) <> 0) or
         (pos(' ˄', colCaption, Length(colCaption) - 2) <> 0)
       then
@@ -113,23 +113,23 @@ begin
   // Get Selected Modules as Text
   DM1.cdsModules.DisableControls;
   ml    := TStringList.Create;
-  for i := 0 to frmMain.DBGrid1.SelectedRows.Count - 1 do
+  for i := 0 to frmMain.DBGridModules.SelectedRows.Count - 1 do
   begin
     s  := '';
     kc := 0;
-    frmMain.DBGrid1.DataSource.DataSet.GotoBookmark(Tbookmark(frmMain.DBGrid1.SelectedRows[i]));
-    for k := 0 to frmMain.DBGrid1.Columns.Count - 1 do
+    frmMain.DBGridModules.DataSource.DataSet.GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
+    for k := 0 to frmMain.DBGridModules.Columns.Count - 1 do
     begin
-      if not frmMain.DBGrid1.Columns[k].Visible
+      if not frmMain.DBGridModules.Columns[k].Visible
       then
         continue;
-      if frmMain.DBGrid1.Columns[k].Visible and CheckListBox1.Checked[kc]
+      if frmMain.DBGridModules.Columns[k].Visible and CheckListBox1.Checked[kc]
       then
       begin
         if s <> '' then s := s + #9;
-        s := s + frmMain.DBGrid1.Columns[k].Field.asString;
+        s := s + frmMain.DBGridModules.Columns[k].Field.asString;
       end;
-      if frmMain.DBGrid1.Columns[k].Visible then
+      if frmMain.DBGridModules.Columns[k].Visible then
         inc(kc);
     end;
     if s <> '' then

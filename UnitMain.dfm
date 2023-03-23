@@ -86,6 +86,7 @@ object frmMain: TfrmMain
     ParentFont = False
     Style = tsFlatButtons
     TabOrder = 1
+    OnChange = PageControl1Change
     ExplicitWidth = 992
     ExplicitHeight = 460
     object tsHome: TTabSheet
@@ -160,8 +161,6 @@ object frmMain: TfrmMain
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 779
-        ExplicitHeight = 425
         object gbModulesList: TGroupBox
           Left = 0
           Top = 105
@@ -172,7 +171,7 @@ object frmMain: TfrmMain
           TabOrder = 1
           ExplicitWidth = 779
           ExplicitHeight = 320
-          object DBGrid1: TDBGrid
+          object DBGridModules: TDBGrid
             Left = 2
             Top = 19
             Width = 777
@@ -188,15 +187,15 @@ object frmMain: TfrmMain
             TitleFont.Height = -13
             TitleFont.Name = 'Segoe UI'
             TitleFont.Style = []
-            OnDrawColumnCell = DBGrid1DrawColumnCell
-            OnEnter = DBGrid1Enter
-            OnExit = DBGrid1Exit
-            OnKeyPress = DBGrid1KeyPress
-            OnKeyUp = DBGrid1KeyUp
-            OnMouseActivate = DBGrid1MouseActivate
-            OnMouseDown = DBGrid1MouseDown
-            OnMouseUp = DBGrid1MouseUp
-            OnTitleClick = DBGrid1TitleClick
+            OnDrawColumnCell = DBGridModulesDrawColumnCell
+            OnEnter = DBGridModulesEnter
+            OnExit = DBGridModulesExit
+            OnKeyPress = DBGridModulesKeyPress
+            OnKeyUp = DBGridModulesKeyUp
+            OnMouseActivate = DBGridModulesMouseActivate
+            OnMouseDown = DBGridModulesMouseDown
+            OnMouseUp = DBGridModulesMouseUp
+            OnTitleClick = DBGridModulesTitleClick
             Columns = <
               item
                 Expanded = False
@@ -253,7 +252,6 @@ object frmMain: TfrmMain
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 779
           DesignSize = (
             781
             105)
@@ -352,7 +350,6 @@ object frmMain: TfrmMain
         Constraints.MaxWidth = 600
         Constraints.MinWidth = 200
         TabOrder = 0
-        ExplicitHeight = 425
         object GroupBox5: TGroupBox
           Left = 0
           Top = 105
@@ -363,7 +360,6 @@ object frmMain: TfrmMain
           Constraints.MinWidth = 100
           PopupMenu = ppmFilters
           TabOrder = 0
-          ExplicitHeight = 320
           DesignSize = (
             200
             324)
@@ -449,7 +445,6 @@ object frmMain: TfrmMain
             Sorted = True
             TabOrder = 0
             OnClickCheck = clbVisiblePackagesClickCheck
-            ExplicitHeight = 90
           end
           object lbedFilterFileName: TLabeledEdit
             Left = 10
@@ -480,7 +475,6 @@ object frmMain: TfrmMain
             PopupMenu = ppmFilterPackagesTypes
             TabOrder = 2
             OnClickCheck = clbVisiblePackagesTypesClickCheck
-            ExplicitTop = 212
           end
         end
         object GroupBox4: TGroupBox
@@ -3383,6 +3377,7 @@ object frmMain: TfrmMain
         Action = actSettingsRestoreDefaults
         Anchors = [akLeft, akBottom]
         TabOrder = 3
+        ExplicitTop = 397
       end
       object GroupBox6: TGroupBox
         Left = 3

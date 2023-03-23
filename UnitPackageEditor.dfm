@@ -3,8 +3,8 @@ object frmPackageEditor: TfrmPackageEditor
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Package Editor'
-  ClientHeight = 199
-  ClientWidth = 773
+  ClientHeight = 195
+  ClientWidth = 771
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,8 +15,8 @@ object frmPackageEditor: TfrmPackageEditor
   OnCloseQuery = FormCloseQuery
   OnShow = FormShow
   DesignSize = (
-    773
-    199)
+    771
+    195)
   TextHeight = 15
   object lblName: TLabel
     Left = 36
@@ -62,19 +62,17 @@ object frmPackageEditor: TfrmPackageEditor
   end
   object Panel1: TPanel
     Left = 0
-    Top = 162
-    Width = 773
+    Top = 158
+    Width = 771
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 6
-    ExplicitTop = 158
-    ExplicitWidth = 771
     DesignSize = (
-      773
+      771
       37)
     object Button1: TButton
-      Left = 603
+      Left = 599
       Top = 6
       Width = 75
       Height = 25
@@ -85,7 +83,7 @@ object frmPackageEditor: TfrmPackageEditor
       ExplicitLeft = 601
     end
     object Button2: TButton
-      Left = 690
+      Left = 686
       Top = 6
       Width = 75
       Height = 25
@@ -129,7 +127,7 @@ object frmPackageEditor: TfrmPackageEditor
   object dbeURL: TDBEdit
     Left = 77
     Top = 127
-    Width = 686
+    Width = 682
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'Url'
@@ -141,7 +139,7 @@ object frmPackageEditor: TfrmPackageEditor
   object dbeVersioRgExp: TDBEdit
     Left = 341
     Top = 69
-    Width = 422
+    Width = 418
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'VersionRegExp'

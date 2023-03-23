@@ -61,6 +61,7 @@ type
     procedure fdtPackagesAfterInsert(DataSet: TDataSet);
     procedure fdtModulesAfterScroll(DataSet: TDataSet);
     procedure fdtModulesAfterRefresh(DataSet: TDataSet);
+    procedure fdtModulesFileNameRegExpValidate(Sender: TField);
   private
     { Private declarations }
   public
@@ -94,6 +95,7 @@ uses
   , System.IOUtils
   , vcl.Forms
   , UnitModulesEditor
+  , System.RegularExpressionsCore
   ;
 
 {$R *.dfm}
@@ -210,6 +212,26 @@ begin
         then frmModulesEditor.actCopyFileNameAsRegExp.Enabled := true
         else frmModulesEditor.actCopyFileNameAsRegExp.Enabled := false;
     end;
+end;
+
+procedure TDM1.fdtModulesFileNameRegExpValidate(Sender: TField);
+var
+  regexp : TPerlRegEx;
+  CompileResult : boolean;
+begin
+  if Sender.Value = '' then Exit;
+
+  CompileResult := false;
+  regexp := TPerlRegEx.Create;
+  try
+    regexp.RegEx := Sender.Value;
+    regexp.Compile;
+    CompileResult := true;
+  finally
+    regexp.Free;
+  end;
+  if not CompileResult
+    then raise Exception.Create('Incorrect Regular Expression');
 end;
 
 procedure TDM1.fdtPackagesAfterCancel(DataSet: TDataSet);

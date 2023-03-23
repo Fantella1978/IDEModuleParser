@@ -32,7 +32,7 @@ type
     procedure btnCancelClick(Sender: TObject);
     procedure btnAddClick(Sender: TObject);
     procedure cbPackagesCloseUp(Sender: TObject);
-    function GetModulesListItems() : TStrings;
+    function GetModulesListItems(): boolean;
     procedure clbFieldsClickCheck(Sender: TObject);
     function AddAllSelectedModulesToDB() : boolean;
     function AddCurrentModuleToKnown() : boolean;
@@ -49,7 +49,7 @@ type
 var
   frmAddModules: TfrmAddModules;
   PackageIDs : TStringList;
-  FieldNums : TStringList;
+  // FieldNums : TStringList;
 
 implementation
 
@@ -94,7 +94,7 @@ procedure TfrmAddModules.clbFieldsClickCheck(Sender: TObject);
 begin
   if (clbFields.Items.Count > 0) AND (clbFields.ItemIndex < 0) then clbFields.ItemIndex := 0;
   if clbFields.Items[clbFields.ItemIndex] = 'File Name' then clbFields.Checked[clbFields.ItemIndex] := true;
-  lbxModules.Items.SetStrings(GetModulesListItems());
+  GetModulesListItems();
   {
   if lbxModules.Items.Count = 0
     then btnAdd.Enabled := false
@@ -116,7 +116,7 @@ var
 begin
   //
   ProgressBarAddModules.Min := 0;
-  ProgressBarAddModules.Max := frmMain.DBGrid1.SelectedRows.Count;
+  ProgressBarAddModules.Max := frmMain.DBGridModules.SelectedRows.Count;
   ProgressBarAddModules.Position := 0;
   ProgressBarAddModules.Visible := true;
   Application.ProcessMessages;
@@ -124,9 +124,9 @@ begin
   begin
     CurrentBookMark := GetBookmark;
     DM1.cdsModules.DisableControls;
-    for i := 0 to frmMain.DBGrid1.SelectedRows.Count - 1 do
+    for i := 0 to frmMain.DBGridModules.SelectedRows.Count - 1 do
     begin
-      DM1.cdsModules.GotoBookmark(Tbookmark(frmMain.DBGrid1.SelectedRows[i]));
+      DM1.cdsModules.GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
       AddCurrentModuleToKnown();
     end;
     DM1.cdsModules.EnableControls;
@@ -174,6 +174,7 @@ end;
 procedure TfrmAddModules.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   ProgressBarAddModules.Visible := false;
+  FreeAndNil(PackageIDs);
 end;
 
 procedure TfrmAddModules.FormShow(Sender: TObject);
@@ -184,44 +185,38 @@ begin
   clbFieldsClickCheck(Sender);
 end;
 
-function TfrmAddModules.GetModulesListItems(): TStrings;
+function TfrmAddModules.GetModulesListItems(): boolean;
 var
   i, k : integer;
   s : string;
-  list : TStringList;
-  AddFieldToResult : boolean;
 begin
-  list := TStringList.Create;
-  list.Clear;
+  lbxModules.Items.Clear;
   // Get Selected Modules as List
   DM1.cdsModules.DisableControls;
   lbxModules.Columns := 0;
-  {for i := 0 to clbFields.Items.Count - 1 do
-    if clbFields.Checked[i] then lbxModules.Columns := lbxModules.Columns + 1;}
-  for i := 0 to frmMain.DBGrid1.SelectedRows.Count - 1 do
+  for i := 0 to frmMain.DBGridModules.SelectedRows.Count - 1 do
   begin
     s := '';
-    frmMain.DBGrid1.DataSource.DataSet.GotoBookmark(Tbookmark(frmMain.DBGrid1.SelectedRows[i]));
-    for k := 0 to frmMain.DBGrid1.Columns.Count - 1 do
+    frmMain.DBGridModules.DataSource.DataSet.GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
+    for k := 0 to frmMain.DBGridModules.Columns.Count - 1 do
     begin
-      AddFieldToResult := false;
-      if ((frmMain.DBGrid1.Columns[k].FieldName = 'FileName') AND clbFields.Checked[0]) OR
-         ((frmMain.DBGrid1.Columns[k].FieldName = 'Version') AND clbFields.Checked[1]) OR
+      if ((frmMain.DBGridModules.Columns[k].FieldName = 'FileName') AND clbFields.Checked[0]) OR
+         ((frmMain.DBGridModules.Columns[k].FieldName = 'Version') AND clbFields.Checked[1]) OR
         { ((frmMain.DBGrid1.Columns[k].FieldName = 'DateAndTime') AND clbFields.Checked[2]) OR}
         { ((frmMain.DBGrid1.Columns[k].FieldName = 'Path') AND clbFields.Checked[3]) OR         }
-         ((frmMain.DBGrid1.Columns[k].FieldName = 'Hash') AND clbFields.Checked[2])
-       then AddFieldToResult := true;
-      if AddFieldToResult then
-        begin
-          if s <> '' then s := s + #9;
-          s := s + frmMain.DBGrid1.Columns[k].Field.asString;
-        end;
+         ((frmMain.DBGridModules.Columns[k].FieldName = 'Hash') AND clbFields.Checked[2])
+        then
+          begin
+            if s <> '' then s := s + #9;
+            s := s + frmMain.DBGridModules.Columns[k].Field.asString;
+          end;
     end;
-    if s <> '' then list.Add(s);
+    if s <> '' then lbxModules.Items.Add(s);
   end;
   DM1.cdsModules.EnableControls;
   lbxModules.TabWidth := 8;
-  Result := list;
+
+  Result := true;
 end;
 
 function TfrmAddModules.UpdatePackagesInfo: boolean;
@@ -235,7 +230,8 @@ begin
   DM1.fdtPackages.DisableControls;
   DM1.fdtPackages.Filtered := false;
   DM1.fdtPackages.Filter := '';
-  DM1.fdtPackages.IndexName := 'NameSubNameIndex';
+  // DM1.fdtPackages.IndexName := 'NameSubNameIndex';
+  DM1.fdtPackages.IndexFieldNames := 'Name;SubName';
   DM1.fdtPackages.First;
   for i := 0 to DM1.fdtPackages.RecordCount - 1 do
   begin

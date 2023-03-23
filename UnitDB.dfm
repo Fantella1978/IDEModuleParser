@@ -163,7 +163,6 @@ object DM1: TDM1
     Params.Strings = (
       'Database=Z:\IDE Module Parser\IDEModuleParser.db3'
       'DriverID=SQLite')
-    Connected = True
     LoginPrompt = False
     Left = 280
     Top = 56
@@ -182,10 +181,11 @@ object DM1: TDM1
     AfterRefresh = fdtModulesAfterRefresh
     IndexFieldNames = 'Num'
     Connection = fdcSQLite
+    FormatOptions.AssignedValues = [fvSortLocale, fvSortOptions]
+    FormatOptions.SortLocale = 0
+    FormatOptions.SortOptions = [soNoCase]
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     UpdateOptions.AssignedValues = [uvAutoCommitUpdates]
-    UpdateOptions.AutoCommitUpdates = True
-    UpdateOptions.KeyFields = 'Num'
     TableName = 'Modules'
     Left = 232
     Top = 120
@@ -229,6 +229,7 @@ object DM1: TDM1
     object fdtModulesFileNameRegExp: TStringField
       FieldName = 'FileNameRegExp'
       Origin = 'FileNameRegExp'
+      OnValidate = fdtModulesFileNameRegExpValidate
       Size = 120
     end
   end
@@ -245,6 +246,9 @@ object DM1: TDM1
     AfterRefresh = fdtPackagesAfterRefresh
     Connection = fdcSQLite
     UpdateTransaction = FDTransaction1
+    FormatOptions.AssignedValues = [fvSortLocale, fvSortOptions]
+    FormatOptions.SortLocale = 0
+    FormatOptions.SortOptions = [soNoCase]
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     UpdateOptions.AssignedValues = [uvUpdateNonBaseFields, uvAutoCommitUpdates]
     UpdateOptions.KeyFields = 'Num'
