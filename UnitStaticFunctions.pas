@@ -3,14 +3,15 @@ unit UnitStaticFunctions;
 interface
 
 uses
-  Vcl.DBGrids;
+  Vcl.DBGrids
+  ;
 
 type
   TDBGridColumnsWidthArray = array of integer;
 
   function GetFileVersionStr(const AFileName: string): string;
-  function AutoCalcDBGridColumnsWidth(DBGrid: TDBGrid; Column: TColumn;
-     var WidthArray: TDBGridColumnsWidthArray) : boolean;
+  function AutoCalcDBGridColumnsWidth(Grid: TDBGrid; Column: TColumn;
+   var WidthArray: TDBGridColumnsWidthArray) : boolean;
   procedure AutoStretchDBGridColumns(Grid: TDBGrid; MinWidths: Array of integer);
 
 implementation
@@ -52,7 +53,7 @@ begin
 
 end;
 
-function AutoCalcDBGridColumnsWidth(DBGrid: TDBGrid; Column: TColumn;
+function AutoCalcDBGridColumnsWidth(Grid: TDBGrid; Column: TColumn;
    var WidthArray: TDBGridColumnsWidthArray) : boolean;
 Var
   TextWidth, sw, i : Integer;
@@ -60,16 +61,16 @@ Var
 begin
   // DBGridColumnsWidthArray := [];
   // SetLength(DBGridColumnsWidthArray, DBGrid.Columns.Count);
-  TextWidth := 10 + DBGrid.Canvas.TextExtent(Column.Field.DisplayText).cx;
+  TextWidth := 10 + Grid.Canvas.TextExtent(Column.Field.DisplayText).cx;
   if TextWidth > Column.Width
   then
     begin
       sw := 0;
-      for i := 0 to DBGrid.Columns.Count - 1 do
-        if DBGrid.Columns[i].Visible AND (DBGrid.Columns[i].FieldName <> Column.FieldName)
-          then sw := sw + DBGrid.Columns[i].Width;
-      for i := 0 to DBGrid.Columns.Count - 1 do
-        if DBGrid.Columns[i].FieldName = Column.FieldName
+      for i := 0 to Grid.Columns.Count - 1 do
+        if Grid.Columns[i].Visible AND (Grid.Columns[i].FieldName <> Column.FieldName)
+          then sw := sw + Grid.Columns[i].Width;
+      for i := 0 to Grid.Columns.Count - 1 do
+        if Grid.Columns[i].FieldName = Column.FieldName
           then WidthArray[i] := TextWidth;
     end;
   Result := true;
@@ -91,12 +92,12 @@ begin
     if Grid.Columns[i].Visible then
       ww := ww + Grid.Columns[i].Width + 1;
   end;
-  if dgIndicator in Grid.Options then
-    ww := ww + IndicatorWidth;
+  if dgIndicator in Grid.Options then ww := ww + IndicatorWidth;
   x := (Grid.ClientWidth - ww) div ColumnsCount;
-  // x := 0;
   for i := 0 to  ColumnsCount - 1 do
+  begin
     Grid.Columns[i].Width := Max(Grid.Columns[i].Width + x, MinWidths[i]);
+  end;
 end;
 
 end.

@@ -3,7 +3,7 @@ object frmParse: TfrmParse
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Parsing'
-  ClientHeight = 141
+  ClientHeight = 145
   ClientWidth = 532
   Color = clBtnFace
   Constraints.MaxHeight = 180
@@ -21,7 +21,7 @@ object frmParse: TfrmParse
   OnShow = FormShow
   DesignSize = (
     532
-    141)
+    145)
   TextHeight = 15
   object lblOverall: TLabel
     Left = 7
@@ -41,12 +41,13 @@ object frmParse: TfrmParse
   end
   object Panel1: TPanel
     Left = 0
-    Top = 104
+    Top = 108
     Width = 532
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 104
     ExplicitWidth = 530
     DesignSize = (
       532

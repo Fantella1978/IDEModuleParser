@@ -274,14 +274,10 @@ type
     procedure ModulesSelectedCountDisplay();
     procedure DBGridModulesEnter(Sender: TObject);
     procedure DBGridModulesExit(Sender: TObject);
-    procedure DBGridModulesKeyPress(Sender: TObject; var Key: Char);
     procedure UpdateActionsWithSelectedModels();
     procedure DBGridModulesKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure UpdateObjectsAccordingSettings();
     procedure actSettingsRestoreDefaultsExecute(Sender: TObject);
-    procedure DBGridModulesMouseActivate(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y, HitTest: Integer;
-      var MouseActivate: TMouseActivate);
     procedure FormResize(Sender: TObject);
     procedure actModulesAddSelectedToDBExecute(Sender: TObject);
     procedure cbMaximizeOnStartupClick(Sender: TObject);
@@ -303,6 +299,7 @@ type
     procedure actFilterPackagesCopyToClipboardExecute(Sender: TObject);
     procedure cbParseLevel3Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
+    procedure SetDBGridModulesDefaultColumnsWidth(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -1095,6 +1092,15 @@ begin
     then AutoStretchDBGridColumns(DBGridModules, DBGridModulesColumnsWidth);
 end;
 
+procedure TfrmMain.SetDBGridModulesDefaultColumnsWidth(Sender: TObject);
+begin
+  // Set DBGridModules Default Columns Width
+  SetLength(DBGridModulesColumnsWidth, DBGridModules.Columns.Count);
+  DBGridModulesColumnsWidth := [150, 100, 200, 300, 140, 250, -1];
+  for var i := 0 to DBGridModules.Columns.Count - 1 do
+    DBGridModules.Columns[i].Width := DBGridModulesColumnsWidth[i];
+end;
+
 procedure TfrmMain.actParseModuleFileExecute(Sender: TObject);
 var
   oldIndex : string;
@@ -1110,6 +1116,7 @@ begin
   ledtBDSBuild.Text := '';
   ledtBDSInstDate.Text := '';
 
+  SetDBGridModulesDefaultColumnsWidth(Sender);
   DM1.cdsModules.DisableControls;
 
   oldIndex := DM1.cdsModules.IndexName;
@@ -1141,6 +1148,7 @@ begin
       tsModulesList.TabVisible := true;
       tsModulesList.Enabled := true;
       PageControl1.ActivePage := tsModulesList;
+      AutoStretchDBGridColumns(DBGridModules, DBGridModulesColumnsWidth);
 
       ModulesStatisticDisplay();
       PackagesFilterCreate(Sender);
@@ -1253,32 +1261,11 @@ begin
   // UpdateActionsWithSelectedModels();
 end;
 
-procedure TfrmMain.DBGridModulesKeyPress(Sender: TObject; var Key: Char);
-begin
-  // ModulesSelectedCountDisplay();
-  // ShowMessage('DBGridModules KeyPress');
-end;
-
 procedure TfrmMain.DBGridModulesKeyUp(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
   // ShowMessage('DBGrid1 KeyUp');
   // UpdateActionsWithSelectedModels();
-end;
-
-procedure TfrmMain.DBGridModulesMouseActivate(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y, HitTest: Integer;
-  var MouseActivate: TMouseActivate);
-begin
-  // ShowMessage('DBGrid1 MouseActivate');
-  // MouseActivate := maActivate;
-  // inherited;
-  // if Shift = [ssCtrl, ssShift, ssLeft] then
-  if Shift = [ssShift] then
-  begin
-    // ShowMessage('ssCtrl, ssShift, ssLeft');
-    // frmMain.ModelsGridSelectRange;
-  end;
 end;
 
 procedure TfrmMain.DBGridModulesMouseDown(Sender: TObject; Button: TMouseButton;
@@ -1435,6 +1422,15 @@ begin
         Exit;
       end;
 
+  // for DBGrid Columns Width adjust
+  SetLength(DBGridModulesColumnsWidth, DBGridModules.Columns.Count);
+  for var i := 0 to DBGridModules.Columns.Count - 1 do
+    DBGridModulesColumnsWidth[i] := DBGridModules.Columns[i].Width;
+  {
+  for var i := 0 to DBGridModules.Columns.Count - 1 do
+    Memo1.Lines.Add(IntToStr(i) + ' > ' + IntToStr(DBGridModulesColumnsWidth[i]));
+  }
+
   // Logger
   Logger := TMyLogger.Create;
   Logger.LogMemo := frmMain.memoLog;
@@ -1491,18 +1487,20 @@ begin
     lblStartMessageSecondary.Margins.Top - lblStartMessageMain.Margins.Bottom -
       lblStartMessageMain.Margins.Top;
 
-  if PageControl1.ActivePage = tsModulesList
+  AutoStretchDBGridColumns(DBGridModules, DBGridModulesColumnsWidth);
+  {
+  if (tsModulesList.Visible = true) AND (PageControl1.ActivePage = tsModulesList)
     then AutoStretchDBGridColumns(DBGridModules, DBGridModulesColumnsWidth);
+  }
+  {
+  for var i := 0 to DBGridModules.Columns.Count - 1 do
+    Memo1.Lines.Add(IntToStr(i) + ' - ' + IntToStr(DBGridModules.Columns[i].Width));
+  }
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
   DragAcceptFiles(Self.Handle, True);
-
-  // for DBGrid Columns Width adjust
-  SetLength(DBGridModulesColumnsWidth, DBGridModules.Columns.Count);
-  for var i := 0 to DBGridModules.Columns.Count - 1 do
-    DBGridModulesColumnsWidth[i] := DBGridModules.Columns[i].Width;
 
 end;
 

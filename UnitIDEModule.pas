@@ -56,7 +56,7 @@ begin
   DateTimeRegexp := TPerlRegEx.Create;
   try
     with DateTimeRegexp do begin
-      RegEx := '(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4}) (\d{1,2}):(\d{1,2}):(\d{1,2})(?:\s*([\S]{2}))?';
+      RegEx := '(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4}) (\d{1,2})[\:\.](\d{1,2})[\:\.](\d{1,2})(?:\s*([\S]{2}))?';
       Subject := str;
       if Match
       then

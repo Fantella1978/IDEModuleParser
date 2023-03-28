@@ -11,6 +11,7 @@ object frmModulesEditor: TfrmModulesEditor
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poMainFormCenter
+  OnClose = FormClose
   OnCreate = FormCreate
   OnResize = FormResize
   OnShow = FormShow
@@ -29,7 +30,7 @@ object frmModulesEditor: TfrmModulesEditor
       871
       37)
     object Button1: TButton
-      Left = 778
+      Left = 784
       Top = 6
       Width = 75
       Height = 25
@@ -39,7 +40,6 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
-      ExplicitLeft = 776
     end
   end
   object dbgModules: TDBGrid
@@ -121,43 +121,33 @@ object frmModulesEditor: TfrmModulesEditor
     DesignSize = (
       871
       73)
-    object Label1: TLabel
-      Left = 552
-      Top = 17
-      Width = 34
-      Height = 15
-      Caption = 'Label1'
-      Visible = False
-    end
-    object Label2: TLabel
-      Left = 552
-      Top = 41
-      Width = 34
-      Height = 15
-      Caption = 'Label2'
-      Visible = False
-    end
     object SpeedButton1: TSpeedButton
-      Left = 646
-      Top = 11
+      Left = 652
+      Top = 8
       Width = 207
       Height = 22
       Action = actCopyFileNameAsRegExp
       Anchors = [akTop, akRight]
-      ExplicitLeft = 654
     end
     object GroupBox1: TGroupBox
       Left = 1
       Top = 1
-      Width = 213
+      Width = 366
       Height = 71
       Align = alLeft
       Caption = 'Filter'
       TabOrder = 0
+      object Label1: TLabel
+        Left = 151
+        Top = 19
+        Width = 44
+        Height = 15
+        Caption = 'Package'
+      end
       object lbedFilterFileName: TLabeledEdit
         Left = 7
         Top = 37
-        Width = 198
+        Width = 138
         Height = 23
         EditLabel.Width = 53
         EditLabel.Height = 15
@@ -166,19 +156,26 @@ object frmModulesEditor: TfrmModulesEditor
         Text = ''
         OnChange = lbedFilterFileNameChange
       end
+      object cbFilterPackages: TComboBox
+        Left = 151
+        Top = 37
+        Width = 202
+        Height = 23
+        TabOrder = 1
+        OnChange = cbFilterPackagesChange
+      end
     end
     object DBNavigator1: TDBNavigator
-      Left = 613
-      Top = 39
+      Left = 619
+      Top = 36
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
-      ExplicitLeft = 611
     end
     object Button2: TButton
-      Left = 221
+      Left = 373
       Top = 8
       Width = 114
       Height = 25
@@ -186,7 +183,7 @@ object frmModulesEditor: TfrmModulesEditor
       TabOrder = 2
     end
     object Button3: TButton
-      Left = 221
+      Left = 373
       Top = 39
       Width = 114
       Height = 25
@@ -194,7 +191,7 @@ object frmModulesEditor: TfrmModulesEditor
       TabOrder = 3
     end
     object Button4: TButton
-      Left = 341
+      Left = 493
       Top = 8
       Width = 114
       Height = 25

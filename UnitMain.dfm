@@ -76,7 +76,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsSettings
+    ActivePage = tsModulesList
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -188,9 +188,7 @@ object frmMain: TfrmMain
             OnDrawColumnCell = DBGridModulesDrawColumnCell
             OnEnter = DBGridModulesEnter
             OnExit = DBGridModulesExit
-            OnKeyPress = DBGridModulesKeyPress
             OnKeyUp = DBGridModulesKeyUp
-            OnMouseActivate = DBGridModulesMouseActivate
             OnMouseDown = DBGridModulesMouseDown
             OnMouseUp = DBGridModulesMouseUp
             OnTitleClick = DBGridModulesTitleClick
@@ -3506,8 +3504,6 @@ object frmMain: TfrmMain
     Width = 994
     Height = 19
     Panels = <>
-    ExplicitTop = 497
-    ExplicitWidth = 992
   end
   object ActionList1: TActionList
     Left = 352
