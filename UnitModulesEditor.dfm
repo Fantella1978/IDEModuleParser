@@ -29,7 +29,7 @@ object frmModulesEditor: TfrmModulesEditor
       871
       37)
     object Button1: TButton
-      Left = 782
+      Left = 778
       Top = 6
       Width = 75
       Height = 25
@@ -39,7 +39,7 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
-      ExplicitLeft = 780
+      ExplicitLeft = 776
     end
   end
   object dbgModules: TDBGrid
@@ -56,6 +56,7 @@ object frmModulesEditor: TfrmModulesEditor
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
     OnDrawColumnCell = dbgModulesDrawColumnCell
+    OnTitleClick = dbgModulesTitleClick
     Columns = <
       item
         Expanded = False
@@ -137,7 +138,7 @@ object frmModulesEditor: TfrmModulesEditor
       Visible = False
     end
     object SpeedButton1: TSpeedButton
-      Left = 650
+      Left = 646
       Top = 11
       Width = 207
       Height = 22
@@ -167,14 +168,14 @@ object frmModulesEditor: TfrmModulesEditor
       end
     end
     object DBNavigator1: TDBNavigator
-      Left = 617
+      Left = 613
       Top = 39
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
-      ExplicitLeft = 615
+      ExplicitLeft = 611
     end
     object Button2: TButton
       Left = 221

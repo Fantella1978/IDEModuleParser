@@ -933,6 +933,7 @@ begin
   if frmMain.WindowState = wsMaximized
     then frmModulesEditor.WindowState := TWindowState.wsMaximized
     else frmModulesEditor.WindowState := TWindowState.wsNormal;
+  DM1.fdtModules.IndexFieldNames := 'FileName:DN';
   if IsAdminModeEnabled then frmModulesEditor.ShowModal;
 end;
 
@@ -1031,6 +1032,12 @@ end;
 procedure TfrmMain.actPackagesEditorExecute(Sender: TObject);
 begin
   // Show Packages Editor
+  DM1.fdtPackages.Filtered := false;
+  DM1.fdtPackages.Filter := '';
+  // DM1.fdtPackages.IndexName := 'NameSubNameIndex';
+  // DM1.fdtPackages.IndexFieldNames := '';
+  // DM1.fdtPackages.IndexName := '';
+  DM1.fdtPackages.IndexFieldNames := 'Name:DN';
   if IsAdminModeEnabled then frmPackagesEditor.ShowModal;
 end;
 

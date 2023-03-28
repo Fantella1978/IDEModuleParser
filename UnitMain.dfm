@@ -169,8 +169,6 @@ object frmMain: TfrmMain
           Align = alClient
           Caption = 'Modules List'
           TabOrder = 1
-          ExplicitWidth = 779
-          ExplicitHeight = 320
           object DBGridModules: TDBGrid
             Left = 2
             Top = 19
@@ -336,7 +334,6 @@ object frmMain: TfrmMain
             ReadOnly = True
             TabOrder = 0
             Text = ''
-            ExplicitWidth = 477
           end
         end
       end

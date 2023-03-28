@@ -181,6 +181,8 @@ object DM1: TDM1
     AfterRefresh = fdtModulesAfterRefresh
     IndexFieldNames = 'Num'
     Connection = fdcSQLite
+    FetchOptions.AssignedValues = [evCursorKind]
+    FetchOptions.CursorKind = ckStatic
     FormatOptions.AssignedValues = [fvSortLocale, fvSortOptions]
     FormatOptions.SortLocale = 0
     FormatOptions.SortOptions = [soNoCase]
@@ -246,6 +248,8 @@ object DM1: TDM1
     AfterRefresh = fdtPackagesAfterRefresh
     Connection = fdcSQLite
     UpdateTransaction = FDTransaction1
+    FetchOptions.AssignedValues = [evCursorKind]
+    FetchOptions.CursorKind = ckStatic
     FormatOptions.AssignedValues = [fvSortLocale, fvSortOptions]
     FormatOptions.SortLocale = 0
     FormatOptions.SortOptions = [soNoCase]

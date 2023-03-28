@@ -230,8 +230,8 @@ begin
   DM1.fdtPackages.DisableControls;
   DM1.fdtPackages.Filtered := false;
   DM1.fdtPackages.Filter := '';
-  // DM1.fdtPackages.IndexName := 'NameSubNameIndex';
-  DM1.fdtPackages.IndexFieldNames := 'Name;SubName';
+  DM1.fdtPackages.IndexName := 'NameSubNameIndex';
+  // DM1.fdtPackages.IndexFieldNames := 'Name;SubName';
   DM1.fdtPackages.First;
   for i := 0 to DM1.fdtPackages.RecordCount - 1 do
   begin

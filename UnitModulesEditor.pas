@@ -1,4 +1,4 @@
-unit UnitModulesEditor;
+﻿unit UnitModulesEditor;
 
 interface
 
@@ -41,11 +41,13 @@ type
     procedure actFindAndDeleteDuplicatesExecute(Sender: TObject);
     procedure actCopyFileNameAsRegExpExecute(Sender: TObject);
     procedure FormResize(Sender: TObject);
+    procedure dbgModulesTitleClick(Column: TColumn);
   private
     FFindNext : boolean;
     FFindNextNum : integer;
     FFindNextBookmark : TBookmark;
     dbgModulesColumnsWidth : TDBGridColumnsWidthArray;
+    dbgModules_PrevIndexColumn : integer;
     function FindModuleDuplicate() : integer;
     function FindModuleFullDuplicates(id : integer) : integer;
     { Private declarations }
@@ -163,6 +165,7 @@ begin
   for var i := 0 to dbgModules.Columns.Count - 1 do
     dbgModulesColumnsWidth[i] := dbgModules.Columns[i].Width;
 
+  dbgModulesTitleClick(dbgModules.Columns[1]);
 end;
 
 procedure TfrmModulesEditor.actCopyFileNameAsRegExpExecute(Sender: TObject);
@@ -312,6 +315,7 @@ begin
       begin
         actFindDuplicatesNext.Visible := false;
         actFindDuplicates.Enabled := true;
+        actFindAndDeleteDuplicates.Enabled := true;
         lbedFilterFileName.Text := '';
         DM1.fdtModules.First;
         ShowMessage('Duplicates not found.');
@@ -344,6 +348,49 @@ procedure TfrmModulesEditor.dbgModulesDrawColumnCell(Sender: TObject;
 begin
   // Rize Column width if text is a long
   AutoCalcDBGridColumnsWidth(dbgModules, Column, dbgModulesColumnsWidth);
+end;
+
+procedure TfrmModulesEditor.dbgModulesTitleClick(Column: TColumn);
+var
+  ci : integer;
+  CurrentBookMark : TBookmark;
+begin
+  with DM1.fdtModules do
+    try
+      CurrentBookMark := GetBookmark;
+      DisableControls;
+      ci:= Column.Index;
+      if ci <> dbgModules_PrevIndexColumn
+      then
+        begin
+          dbgModules.Columns[dbgModules_PrevIndexColumn].Title.Font.Style :=
+            dbgModules.Columns[dbgModules_PrevIndexColumn].Title.Font.Style - [fsBold];
+          dbgModules.Columns[dbgModules_PrevIndexColumn].Title.Caption := dbgModules.Columns[dbgModules_PrevIndexColumn].FieldName;
+        end;
+      Column.Title.Font.Style := Column.Title.Font.Style + [fsBold];
+      dbgModules_PrevIndexColumn := ci;
+
+      if (IndexFieldNames = Column.FieldName + ':DN') OR
+         (IndexFieldNames = '')
+        then IndexFieldNames := Column.FieldName + ':AN'
+        else IndexFieldNames := Column.FieldName + ':DN';
+
+      var colCaption := Column.Title.Caption;
+      if (pos(' ˅', colCaption, Length(colCaption) - 2) <> 0) or
+        (pos(' ˄', colCaption, Length(colCaption) - 2) <> 0)
+      then
+        colCaption := copy(colCaption, 1, Length(colCaption) - 2);
+      Column.Title.Caption := colCaption;
+
+      if IndexFieldNames = Column.FieldName + ':DN'
+        then Column.Title.Caption := Column.Title.Caption + ' ˄'
+        else Column.Title.Caption := Column.Title.Caption + ' ˅';
+
+    finally
+      GotoBookmark(CurrentBookMark);
+      FreeBookMark(CurrentBookMark);
+      EnableControls;
+    end;
 end;
 
 procedure TfrmModulesEditor.lbedFilterFileNameChange(Sender: TObject);

@@ -66,6 +66,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     TitleFont.Style = []
     OnDrawColumnCell = dbgPackagesDrawColumnCell
     OnDblClick = dbgPackagesDblClick
+    OnTitleClick = dbgPackagesTitleClick
     Columns = <
       item
         Expanded = False

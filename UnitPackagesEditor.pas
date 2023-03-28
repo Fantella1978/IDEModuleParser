@@ -1,4 +1,4 @@
-unit UnitPackagesEditor;
+﻿unit UnitPackagesEditor;
 
 interface
 
@@ -43,8 +43,10 @@ type
     procedure dbgPackagesDblClick(Sender: TObject);
     procedure lbedFilterFileNameChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure dbgPackagesTitleClick(Column: TColumn);
   private
     dbgPackagesColumnsWidth: TDBGridColumnsWidthArray;
+    dbgPackages_PrevIndexColumn : integer;
     { Private declarations }
   public
     { Public declarations }
@@ -117,6 +119,49 @@ begin
   AutoCalcDBGridColumnsWidth(dbgPackages, Column, dbgPackagesColumnsWidth);
 end;
 
+procedure TfrmPackagesEditor.dbgPackagesTitleClick(Column: TColumn);
+var
+  ci : integer;
+  CurrentBookMark : TBookmark;
+begin
+  with DM1.fdtPackages do
+    try
+      CurrentBookMark := GetBookmark;
+      DisableControls;
+      ci:= Column.Index;
+      if ci <> dbgPackages_PrevIndexColumn
+      then
+        begin
+          dbgPackages.Columns[dbgPackages_PrevIndexColumn].Title.Font.Style :=
+            dbgPackages.Columns[dbgPackages_PrevIndexColumn].Title.Font.Style - [fsBold];
+          dbgPackages.Columns[dbgPackages_PrevIndexColumn].Title.Caption := dbgPackages.Columns[dbgPackages_PrevIndexColumn].FieldName;
+        end;
+      Column.Title.Font.Style := Column.Title.Font.Style + [fsBold];
+      dbgPackages_PrevIndexColumn := ci;
+
+      if (IndexFieldNames = Column.FieldName + ':DN') OR
+         (IndexFieldNames = '')
+        then IndexFieldNames := Column.FieldName + ':AN'
+        else IndexFieldNames := Column.FieldName + ':DN';
+
+      var colCaption := Column.Title.Caption;
+      if (pos(' ˅', colCaption, Length(colCaption) - 2) <> 0) or
+        (pos(' ˄', colCaption, Length(colCaption) - 2) <> 0)
+      then
+        colCaption := copy(colCaption, 1, Length(colCaption) - 2);
+      Column.Title.Caption := colCaption;
+
+      if IndexFieldNames = Column.FieldName + ':DN'
+        then Column.Title.Caption := Column.Title.Caption + ' ˄'
+        else Column.Title.Caption := Column.Title.Caption + ' ˅';
+
+    finally
+      GotoBookmark(CurrentBookMark);
+      FreeBookMark(CurrentBookMark);
+      EnableControls;
+    end;
+end;
+
 procedure TfrmPackagesEditor.DBNavigator1Click(Sender: TObject; Button: TNavigateBtn);
 begin
   if Button = nbInsert then actPackageAddExecute(Sender);
@@ -139,6 +184,8 @@ begin
   SetLength(dbgPackagesColumnsWidth, dbgPackages.Columns.Count);
   for var i := 0 to dbgPackages.Columns.Count - 1 do
     dbgPackagesColumnsWidth[i] := dbgPackages.Columns[i].Width;
+
+  dbgPackagesTitleClick(dbgPackages.Columns[1]);
 end;
 
 procedure TfrmPackagesEditor.lbedFilterFileNameChange(Sender: TObject);
@@ -151,10 +198,7 @@ begin
       DM1.fdtPackages.Filtered := true;
     end
   else
-    begin
-      DM1.fdtPackages.Filtered := false;
-    end;
-
+    DM1.fdtPackages.Filtered := false;
 end;
 
 end.
