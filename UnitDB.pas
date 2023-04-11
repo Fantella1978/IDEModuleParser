@@ -53,16 +53,17 @@ type
     fdtModulesVersionRegExp: TStringField;
     fdtModulesFileNameRegExp: TStringField;
     procedure cdsModulesAfterScroll(DataSet: TDataSet);
-    procedure fdtPackagesAfterCancel(DataSet: TDataSet);
-    procedure fdtPackagesAfterEdit(DataSet: TDataSet);
-    procedure fdtPackagesAfterOpen(DataSet: TDataSet);
     procedure fdtPackagesAfterRefresh(DataSet: TDataSet);
-    procedure dsPackagesStateChange(Sender: TObject);
     procedure fdtPackagesAfterInsert(DataSet: TDataSet);
     procedure fdtModulesAfterScroll(DataSet: TDataSet);
     procedure fdtModulesAfterRefresh(DataSet: TDataSet);
     procedure fdtModulesFileNameRegExpValidate(Sender: TField);
+    procedure DataModuleCreate(Sender: TObject);
+    procedure fdtPackagesAfterScroll(DataSet: TDataSet);
+    procedure dsPackagesStateChange(Sender: TObject);
   private
+    procedure UpdatePackagesActions;
+    procedure UpdateModulesActions;
     { Private declarations }
   public
     { Public declarations }
@@ -155,6 +156,16 @@ begin
   cdsModules.EnableControls;
 end;
 
+procedure TDM1.DataModuleCreate(Sender: TObject);
+begin
+  fdcSQLite.Close;
+end;
+
+procedure TDM1.dsPackagesStateChange(Sender: TObject);
+begin
+  UpdatePackagesActions();
+end;
+
 function TDM1.FindPackageTypeIDByName(name : string) : integer;
 begin
   fdtPackageTypes.First;
@@ -171,39 +182,17 @@ begin
   Result := -1;
 end;
 
-procedure TDM1.dsPackagesStateChange(Sender: TObject);
-begin
-  if (frmPackagesEditor = nil) OR not frmPackagesEditor.Visible then Exit;
-  if dsPackages.State in [dsEdit, dsInsert]
-    then
-      begin
-        frmPackagesEditor.actPackageAdd.Enabled := false;
-        frmPackagesEditor.actPackageEdit.Enabled := false;
-        frmPackagesEditor.actPackageDelete.Enabled := false;
-      end;
-  if dsPackages.State in [dsBrowse]
-    then
-      begin
-        frmPackagesEditor.actPackageAdd.Enabled := true;
-        frmPackagesEditor.actPackageEdit.Enabled := true;
-        if dsPackages.DataSet.RecordCount > 0
-          then frmPackagesEditor.actPackageDelete.Enabled := true
-          else frmPackagesEditor.actPackageDelete.Enabled := false;
-      end;
-end;
-
 procedure TDM1.fdtModulesAfterRefresh(DataSet: TDataSet);
 begin
-  if frmModulesEditor <> nil
-   then
-    begin
-      if DM1.fdtModules.FieldByName('FileNameRegExp').AsString = ''
-        then frmModulesEditor.actCopyFileNameAsRegExp.Enabled := true
-        else frmModulesEditor.actCopyFileNameAsRegExp.Enabled := false;
-    end;
+  UpdateModulesActions();
 end;
 
 procedure TDM1.fdtModulesAfterScroll(DataSet: TDataSet);
+begin
+  UpdateModulesActions();
+end;
+
+procedure TDM1.UpdateModulesActions();
 begin
   if frmModulesEditor <> nil
    then
@@ -234,43 +223,48 @@ begin
     then raise Exception.Create('Incorrect Regular Expression');
 end;
 
-procedure TDM1.fdtPackagesAfterCancel(DataSet: TDataSet);
-begin
-  frmPackagesEditor.actPackageAdd.Enabled := true;
-  frmPackagesEditor.actPackageEdit.Enabled := true;
-  frmPackagesEditor.actPackageDelete.Enabled := true;
-end;
-
-procedure TDM1.fdtPackagesAfterEdit(DataSet: TDataSet);
-begin
-  frmPackagesEditor.actPackageAdd.Enabled := true;
-  frmPackagesEditor.actPackageEdit.Enabled := true;
-  frmPackagesEditor.actPackageDelete.Enabled := true;
-end;
-
 procedure TDM1.fdtPackagesAfterInsert(DataSet: TDataSet);
 begin
   fdtPackages.FieldByName('Type').AsInteger := 1; // Default Package Type
 end;
 
-procedure TDM1.fdtPackagesAfterOpen(DataSet: TDataSet);
-begin
-  if (frmPackagesEditor = nil) OR not frmPackagesEditor.Visible then Exit;
-  frmPackagesEditor.actPackageAdd.Enabled := true;
-  frmPackagesEditor.actPackageEdit.Enabled := false;
-  frmPackagesEditor.actPackageDelete.Enabled := false;
-end;
-
 procedure TDM1.fdtPackagesAfterRefresh(DataSet: TDataSet);
 begin
+  UpdatePackagesActions();
+end;
+
+procedure TDM1.fdtPackagesAfterScroll(DataSet: TDataSet);
+begin
+  UpdatePackagesActions();
+end;
+
+procedure TDM1.UpdatePackagesActions();
+begin
   if (frmPackagesEditor = nil) OR not frmPackagesEditor.Visible then Exit;
-  frmPackagesEditor.actPackageAdd.Enabled := true;
-  if DataSet.RecordCount > 0
-  then
-    begin
-      frmPackagesEditor.actPackageEdit.Enabled := false;
-      frmPackagesEditor.actPackageDelete.Enabled := false;
-    end;
+
+  if dsPackages.State in [dsEdit, dsInsert]
+    then
+      begin
+        frmPackagesEditor.actPackageAdd.Enabled := false;
+        frmPackagesEditor.actPackageEdit.Enabled := false;
+        frmPackagesEditor.actPackageDelete.Enabled := false;
+      end;
+  if dsPackages.State in [dsBrowse]
+    then
+      begin
+        frmPackagesEditor.actPackageAdd.Enabled := true;
+        if fdtPackages.RecordCount > 0
+        then
+          begin
+            frmPackagesEditor.actPackageEdit.Enabled := true;
+            frmPackagesEditor.actPackageDelete.Enabled := true;
+          end
+        else
+          begin
+            frmPackagesEditor.actPackageEdit.Enabled := false;
+            frmPackagesEditor.actPackageDelete.Enabled := false;
+          end;
+      end;
 end;
 
 end.

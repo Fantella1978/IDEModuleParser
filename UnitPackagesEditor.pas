@@ -47,6 +47,7 @@ type
   private
     dbgPackagesColumnsWidth: TDBGridColumnsWidthArray;
     dbgPackages_PrevIndexColumn : integer;
+    procedure SetdbgPackagesDefaultColumnsWidth(Sender: TObject);
     { Private declarations }
   public
     { Public declarations }
@@ -65,6 +66,14 @@ uses
 
 {$R *.dfm}
 
+procedure TfrmPackagesEditor.SetdbgPackagesDefaultColumnsWidth(Sender: TObject);
+begin
+  // Set DBGridModules Default Columns Width
+  SetLength(dbgPackagesColumnsWidth, dbgPackages.Columns.Count);
+  dbgPackagesColumnsWidth := [-1, 120, 150, 150, 200, 50];
+  for var i := 0 to dbgPackages.Columns.Count - 1 do
+    dbgPackages.Columns[i].Width := dbgPackagesColumnsWidth[i];
+end;
 
 procedure TfrmPackagesEditor.actPackageAddExecute(Sender: TObject);
 begin
@@ -85,9 +94,9 @@ procedure TfrmPackagesEditor.actPackageEditExecute(Sender: TObject);
 begin
   // Package Edit
   DM1.fdtPackages.Edit;
-  actPackageAdd.Enabled     := false;
-  actPackageEdit.Enabled    := false;
-  actPackageDelete.Enabled  := false;
+  // actPackageAdd.Enabled     := false;
+  // actPackageEdit.Enabled    := false;
+  // actPackageDelete.Enabled  := false;
   frmPackageEditor.ShowModal;
 end;
 
@@ -181,11 +190,17 @@ end;
 
 procedure TfrmPackagesEditor.FormShow(Sender: TObject);
 begin
-  SetLength(dbgPackagesColumnsWidth, dbgPackages.Columns.Count);
-  for var i := 0 to dbgPackages.Columns.Count - 1 do
-    dbgPackagesColumnsWidth[i] := dbgPackages.Columns[i].Width;
-
+  // DM1.fdtPackages.IndexName := 'NameSubNameIndex';
+  // DM1.fdtPackages.IndexName := '';
+  lbedFilterFileName.Text := '';
+  DM1.fdtPackages.DisableControls;
+  DM1.fdtPackages.IndexFieldNames := 'Name:DN';
+  DM1.fdtPackages.Filtered := false;
   dbgPackagesTitleClick(dbgPackages.Columns[1]);
+  DM1.fdtPackages.First;
+  DM1.fdtPackages.EnableControls;
+  SetdbgPackagesDefaultColumnsWidth(Sender);
+  AutoStretchDBGridColumns(dbgPackages, dbgPackagesColumnsWidth);
 end;
 
 procedure TfrmPackagesEditor.lbedFilterFileNameChange(Sender: TObject);

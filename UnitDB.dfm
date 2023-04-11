@@ -1,4 +1,5 @@
 object DM1: TDM1
+  OnCreate = DataModuleCreate
   Height = 480
   Width = 830
   object cdsModules: TClientDataSet
@@ -241,10 +242,8 @@ object DM1: TDM1
     Top = 184
   end
   object fdtPackages: TFDTable
-    AfterOpen = fdtPackagesAfterOpen
     AfterInsert = fdtPackagesAfterInsert
-    AfterEdit = fdtPackagesAfterEdit
-    AfterCancel = fdtPackagesAfterCancel
+    AfterScroll = fdtPackagesAfterScroll
     AfterRefresh = fdtPackagesAfterRefresh
     Connection = fdcSQLite
     UpdateTransaction = FDTransaction1

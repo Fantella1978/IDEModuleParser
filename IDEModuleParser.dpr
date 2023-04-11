@@ -19,7 +19,8 @@ uses
   UnitAddModules in 'UnitAddModules.pas' {frmAddModules},
   UnitEnableAdminMode in 'UnitEnableAdminMode.pas' {frmEnableAdminMode},
   UnitPackageEditor in 'UnitPackageEditor.pas' {frmPackageEditor},
-  UnitProgressWindow in 'UnitProgressWindow.pas' {frmProgress};
+  UnitProgressWindow in 'UnitProgressWindow.pas' {frmProgress},
+  UnitDisplayPackagesList in 'UnitDisplayPackagesList.pas' {frmPackagesList};
 
 {$R *.res}
 
@@ -34,7 +35,7 @@ begin
 
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  TStyleManager.TrySetStyle('Amethyst Kamri');
+  Application.Title := 'IDE Module Parser';
   Application.CreateForm(TDM1, DM1);
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TfrmParse, frmParse);
@@ -45,5 +46,7 @@ begin
   Application.CreateForm(TfrmEnableAdminMode, frmEnableAdminMode);
   Application.CreateForm(TfrmPackageEditor, frmPackageEditor);
   Application.CreateForm(TfrmProgress, frmProgress);
+  Application.CreateForm(TfrmPackagesList, frmPackagesList);
+  TStyleManager.TrySetStyle('Amethyst Kamri');
   Application.Run;
 end.

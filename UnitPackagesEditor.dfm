@@ -102,6 +102,7 @@ object frmPackagesEditor: TfrmPackagesEditor
         Expanded = False
         FieldName = 'VersionRegExp'
         Title.Caption = 'Version RegExp'
+        Width = 100
         Visible = True
       end>
   end

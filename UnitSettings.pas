@@ -40,7 +40,7 @@ const
   Def_LogCreate = true; // default value for LogCreate
   Def_MaximizeOnStartup = false; // default value for MaximizeOnStartup
   Def_ParseOnFileOpen = true; // default value for ParseOnFileOpen
-  Def_ModulesCompareLevel2 = true; // default value for ModulesCompareLevel2
+  Def_ModulesCompareLevel2 = false; // default value for ModulesCompareLevel2
   Def_ModulesCompareLevel3 = true; // default value for ModulesCompareLevel3
   Def_VCLStyle_const = 'Amethyst Kamri'; // default value (constant) for VCLStyle
 
@@ -129,8 +129,11 @@ begin
         then Def_VCLStyle := Def_VCLStyle_const
         else Def_VCLStyle := TStyleManager.ActiveStyle.Name;
       GlobalVCLStyle := LoadStringValue('VCLStyle', Def_VCLStyle);
-
-      GlobalAdminMode := true;
+      {$IFDEF DEBUG}
+        GlobalAdminMode := true;
+      {$ELSE}
+        GlobalAdminMode := false;
+      {$ENDIF}
       reg.CloseKey;
       Result := true;
     end
@@ -157,7 +160,7 @@ begin
     then GlobalVCLStyle := Def_VCLStyle_const
     else GlobalVCLStyle := Def_VCLStyle;
 
-  GlobalAdminMode := true;
+  GlobalAdminMode := false;
 end;
 
 end.

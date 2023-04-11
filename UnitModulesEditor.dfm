@@ -2,9 +2,11 @@ object frmModulesEditor: TfrmModulesEditor
   Left = 0
   Top = 0
   Caption = 'Modules Editor'
-  ClientHeight = 486
-  ClientWidth = 871
+  ClientHeight = 482
+  ClientWidth = 869
   Color = clBtnFace
+  Constraints.MinHeight = 480
+  Constraints.MinWidth = 880
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
@@ -18,19 +20,17 @@ object frmModulesEditor: TfrmModulesEditor
   TextHeight = 15
   object pnlBottom: TPanel
     Left = 0
-    Top = 449
-    Width = 871
+    Top = 445
+    Width = 869
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 445
-    ExplicitWidth = 869
     DesignSize = (
-      871
+      869
       37)
     object Button1: TButton
-      Left = 784
+      Left = 774
       Top = 6
       Width = 75
       Height = 25
@@ -40,13 +40,14 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
+      ExplicitLeft = 776
     end
   end
   object dbgModules: TDBGrid
     Left = 0
     Top = 73
-    Width = 871
-    Height = 376
+    Width = 869
+    Height = 372
     Align = alClient
     DataSource = DM1.dsModules
     TabOrder = 1
@@ -74,11 +75,6 @@ object frmModulesEditor: TfrmModulesEditor
         FieldName = 'Version'
         Width = 100
         Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'Package'
-        Visible = False
       end
       item
         Expanded = False
@@ -113,21 +109,21 @@ object frmModulesEditor: TfrmModulesEditor
   object pnlTop: TPanel
     Left = 0
     Top = 0
-    Width = 871
+    Width = 869
     Height = 73
     Align = alTop
     TabOrder = 2
-    ExplicitWidth = 869
     DesignSize = (
-      871
+      869
       73)
     object SpeedButton1: TSpeedButton
-      Left = 652
+      Left = 642
       Top = 8
       Width = 207
       Height = 22
       Action = actCopyFileNameAsRegExp
       Anchors = [akTop, akRight]
+      ExplicitLeft = 652
     end
     object GroupBox1: TGroupBox
       Left = 1
@@ -166,13 +162,14 @@ object frmModulesEditor: TfrmModulesEditor
       end
     end
     object DBNavigator1: TDBNavigator
-      Left = 619
+      Left = 609
       Top = 36
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
+      ExplicitLeft = 611
     end
     object Button2: TButton
       Left = 373

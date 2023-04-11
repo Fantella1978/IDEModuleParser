@@ -49,14 +49,15 @@ type
     FFindNext : boolean;
     FFindNextNum : integer;
     FFindNextBookmark : TBookmark;
+    FFilterFileNameStr: string;
+    FFilterPackageStr: string;
     dbgModulesColumnsWidth : TDBGridColumnsWidthArray;
     dbgModules_PrevIndexColumn : integer;
     PackageIDs : TStringList;
-    FFilterFileNameStr: string;
-    FFilterPackageStr: string;
     function FindModuleDuplicate() : integer;
     function FindModuleFullDuplicates(id : integer) : integer;
     procedure ApplyAllFiltres();
+    procedure SetDBGridModulesDefaultColumnsWidth(Sender: TObject);
     { Private declarations }
   public
     { Public declarations }
@@ -72,9 +73,19 @@ implementation
 uses
     UnitDB
   , UnitProgressWindow
-//   , UnitLogger
+  // , UnitLogger
   , UnitMain
+  , System.UITypes
   ;
+
+procedure TfrmModulesEditor.SetDBGridModulesDefaultColumnsWidth(Sender: TObject);
+begin
+  // Set DBGridModules Default Columns Width
+  SetLength(dbgModulesColumnsWidth, dbgModules.Columns.Count);
+  dbgModulesColumnsWidth := [30, 150, 100, 150, 100, 100, 50, 20];
+  for var i := 0 to dbgModules.Columns.Count - 1 do
+    dbgModules.Columns[i].Width := dbgModulesColumnsWidth[i];
+end;
 
 function TfrmModulesEditor.FindModuleDuplicate() : integer;
 var
@@ -152,7 +163,7 @@ end;
 procedure TfrmModulesEditor.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-  PackageIDs.Free;
+  FreeAndNil(PackageIDs);
 end;
 
 procedure TfrmModulesEditor.FormCreate(Sender: TObject);
@@ -169,18 +180,21 @@ end;
 
 procedure TfrmModulesEditor.FormShow(Sender: TObject);
 begin
+  lbedFilterFileName.Text := '';
+  DM1.fdtModules.DisableControls;
+  DM1.fdtModules.IndexFieldNames := 'FileName:DN';
+  DM1.fdtModules.Filtered := false;
+  dbgModulesTitleClick(dbgModules.Columns[1]);
+  DM1.fdtModules.First;
+  DM1.fdtModules.EnableControls;
+  UpdatePackagesInfo();
   if DM1.fdtModules.RecordCount > 2
     then frmModulesEditor.actFindDuplicates.Enabled := true
     else frmModulesEditor.actFindDuplicates.Enabled := false;
-
   // for DBGrid Columns Width adjust
-  SetLength(dbgModulesColumnsWidth, dbgModules.Columns.Count);
-  for var i := 0 to dbgModules.Columns.Count - 1 do
-    dbgModulesColumnsWidth[i] := dbgModules.Columns[i].Width;
+  SetDBGridModulesDefaultColumnsWidth(Sender);
+  AutoStretchDBGridColumns(dbgModules, dbgModulesColumnsWidth);
 
-  dbgModulesTitleClick(dbgModules.Columns[1]);
-
-  UpdatePackagesInfo();
   FFindNext := false;
   FFindNextNum := 0;
 end;
@@ -410,7 +424,7 @@ end;
 
 procedure TfrmModulesEditor.cbFilterPackagesChange(Sender: TObject);
 var
-  FilterPackageID : integer;
+  // FilterPackageID : integer;
   FilterPackageIDStr : string;
 begin
   //
@@ -418,7 +432,7 @@ begin
   then
     begin
       FilterPackageIDStr := PackageIDs[cbFilterPackages.ItemIndex];
-      FilterPackageID := StrToInt(FilterPackageIDStr);
+      // FilterPackageID := StrToInt(FilterPackageIDStr);
       FFilterPackageStr := 'PackageID = ' + FilterPackageIDStr;
     end
   else FFilterPackageStr := '';
@@ -490,7 +504,8 @@ var
   i : integer;
   PackageName : string;
 begin
-  if not Assigned(PackageIDs) then PackageIDs := TStringList.Create;
+  if PackageIDs = nil
+    then PackageIDs := TStringList.Create;
   PackageIDs.Clear;
   cbFilterPackages.Clear;
   DM1.fdtPackages.DisableControls;

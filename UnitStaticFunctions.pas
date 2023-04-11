@@ -20,6 +20,7 @@ uses
   Winapi.Windows
   , System.SysUtils
   , System.Math
+  , System.Classes
   ;
 
 function GetFileVersionStr(const AFileName: string): string;
@@ -55,49 +56,58 @@ end;
 
 function AutoCalcDBGridColumnsWidth(Grid: TDBGrid; Column: TColumn;
    var WidthArray: TDBGridColumnsWidthArray) : boolean;
+{
 Var
-  TextWidth, sw, i : Integer;
-  DBGridColumnsWidthArray : TDBGridColumnsWidthArray;
+  i, TextWidth, AllColumnsWidth : Integer;
+}
 begin
-  // DBGridColumnsWidthArray := [];
-  // SetLength(DBGridColumnsWidthArray, DBGrid.Columns.Count);
-  TextWidth := 10 + Grid.Canvas.TextExtent(Column.Field.DisplayText).cx;
+  {
+  if length(WidthArray) <> Grid.Columns.Count then Exit;
+  TextWidth := 5 + Grid.Canvas.TextExtent(Column.Field.DisplayText).cx;
   if TextWidth > Column.Width
   then
     begin
-      sw := 0;
+      AllColumnsWidth := 0;
       for i := 0 to Grid.Columns.Count - 1 do
-        if Grid.Columns[i].Visible AND (Grid.Columns[i].FieldName <> Column.FieldName)
-          then sw := sw + Grid.Columns[i].Width;
+        if Grid.Columns[i].Visible
+          then inc(AllColumnsWidth, Grid.Columns[i].Width + 1);
+      if dgIndicator in Grid.Options
+        then inc(AllColumnsWidth, IndicatorWidth);
       for i := 0 to Grid.Columns.Count - 1 do
-        if Grid.Columns[i].FieldName = Column.FieldName
-          then WidthArray[i] := TextWidth;
+        if (Grid.Columns[i].FieldName = Column.FieldName) AND Grid.Columns[i].Visible
+          then WidthArray[i] := Max(TextWidth, WidthArray[i]);
     end;
+  }
   Result := true;
 end;
 
 procedure AutoStretchDBGridColumns(Grid: TDBGrid; MinWidths: Array of integer);
 var
-  x, i, ww: integer;
-  ColumnsCount : integer;
+  i, delta, AllColumnsWidth: integer;
+  VisibleColumnsCount : integer;
 begin
   // Stretches TDBGrid columns
   // Columns contains columns to stretch
   // MinWidths contains columns minimum widhts
-  ColumnsCount := Grid.Columns.Count;
   // Assert(ColumnsCount = Length(MinWidths), 'ColumnsCount <> Length(MinWidths)');
-  ww := 0;
+  VisibleColumnsCount := 0;
+  AllColumnsWidth := 0;
   for i := 0 to Grid.Columns.Count - 1 do
   begin
-    if Grid.Columns[i].Visible then
-      ww := ww + Grid.Columns[i].Width + 1;
+    if Grid.Columns[i].Visible
+    then
+      begin
+        inc(VisibleColumnsCount);
+        inc(AllColumnsWidth, Grid.Columns[i].Width + 1);
+      end;
   end;
-  if dgIndicator in Grid.Options then ww := ww + IndicatorWidth;
-  x := (Grid.ClientWidth - ww) div ColumnsCount;
-  for i := 0 to  ColumnsCount - 1 do
-  begin
-    Grid.Columns[i].Width := Max(Grid.Columns[i].Width + x, MinWidths[i]);
-  end;
+  if length(MinWidths) <> Grid.Columns.Count then Exit;
+  if dgIndicator in Grid.Options
+    then inc(AllColumnsWidth, IndicatorWidth);
+  delta := (Grid.ClientWidth - AllColumnsWidth) div VisibleColumnsCount;
+  for i := 0 to Grid.Columns.Count - 1 do
+    if Grid.Columns[i].Visible
+      then Grid.Columns[i].Width := Max(Grid.Columns[i].Width + delta, MinWidths[i]);
 end;
 
 end.

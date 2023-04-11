@@ -3,29 +3,26 @@
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions, Vcl.ActnList,
-  Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ExtDlgs, Vcl.Buttons
-  , System.ImageList, System.UITypes, Vcl.Grids, Vcl.ImgList, Vcl.Graphics
-  , Vcl.Mask, System.IOUtils
-  , Winapi.ShellAPI
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants
+  , System.Classes, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Actions
+  , Vcl.ActnList, Vcl.ComCtrls, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ExtDlgs
+  , Vcl.Buttons, System.ImageList, System.UITypes, Vcl.Grids, Vcl.ImgList
+  , Vcl.Graphics, Vcl.Mask, System.IOUtils, Clipbrd, System.Zip
+  , System.StrUtils, Data.DB, Vcl.DBGrids, Winapi.ShellAPI, Generics.Defaults
+  , Vcl.Themes, Vcl.Menus, Vcl.CheckLst
+  , UnitDB
+  , UnitDBGrid
   , UnitLogger
   , UnitParser
-  , UnitIDEModule
-  , System.Zip
-  , System.StrUtils, Data.DB, Vcl.DBGrids
-  , UnitDB
-  , UnitStaticFunctions, Vcl.Menus
-  , UnitPackagesEditor
-  , Vcl.Themes
-  , Clipbrd
-  , UnitCopyAsText
-  , UnitDBGrid
   , UnitSettings
+  , UnitIDEModule
+  , UnitAddModules
+  , UnitCopyAsText
   , UnitModulesEditor
-  , UnitAddModules, Vcl.CheckLst
+  , UnitPackagesEditor
+  , UnitStaticFunctions
   , UnitEnableAdminMode
-  , Generics.Defaults
+  , UnitDisplayPackagesList
   ;
 
 type
@@ -177,6 +174,20 @@ type
     N4: TMenuItem;
     SpeedButton8: TSpeedButton;
     cbParseLevel3: TCheckBox;
+    actDisplayPackagesList: TAction;
+    SpeedButton9: TSpeedButton;
+    SpeedButton10: TSpeedButton;
+    actFilterPackagesTypesSelectOnlyEmpty: TAction;
+    actFilterPackagesTypesSelectOnlyEmpty1: TMenuItem;
+    actFilterPackagesSelectOnlyEmpty: TAction;
+    SpeedButton11: TSpeedButton;
+    SelectonlyEmpty1: TMenuItem;
+    SelectonlyEmpty2: TMenuItem;
+    SelectonlyEmpty3: TMenuItem;
+    N5: TMenuItem;
+    ClearFilters2: TMenuItem;
+    N6: TMenuItem;
+    ClearFilters3: TMenuItem;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -300,6 +311,9 @@ type
     procedure cbParseLevel3Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure SetDBGridModulesDefaultColumnsWidth(Sender: TObject);
+    procedure actDisplayPackagesListExecute(Sender: TObject);
+    procedure actFilterPackagesTypesSelectOnlyEmptyExecute(Sender: TObject);
+    procedure actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -346,6 +360,12 @@ begin
   Logger.AddToLog('Admin Mode disabled.');
   actEnableAdminMode.Enabled := true;
   actDisableAdminMode.Enabled := false;
+end;
+
+procedure TfrmMain.actDisplayPackagesListExecute(Sender: TObject);
+begin
+  // Display Packages List window
+  frmPackagesList.ShowModal;
 end;
 
 procedure TfrmMain.actEnableAdminModeExecute(Sender: TObject);
@@ -399,6 +419,19 @@ procedure TfrmMain.actFilterPackagesSelectAllExecute(Sender: TObject);
 begin
   clbVisiblePackages.CheckAll(cbChecked, false, false);
   clbVisiblePackagesClickCheck(Sender);
+end;
+
+procedure TfrmMain.actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
+var
+  i: integer;
+begin
+  //
+  clbVisiblePackages.CheckAll(cbUnchecked, false, false);
+  for i := 0 to clbVisiblePackages.Items.Count - 1 do
+    if clbVisiblePackages.Items[i] = '<Empty>'
+      then clbVisiblePackages.Checked[i] := true;
+  clbVisiblePackagesClickCheck(Sender);
+
 end;
 
 procedure TfrmMain.actFilterPackagesUnSelectAllExecute(Sender: TObject);
@@ -926,12 +959,11 @@ end;
 procedure TfrmMain.actModulesEditorExecute(Sender: TObject);
 begin
   // Show Modules Editor
-  frmModulesEditor.lbedFilterFileName.Text := '';
+  if not IsAdminModeEnabled then Exit;
   if frmMain.WindowState = wsMaximized
     then frmModulesEditor.WindowState := TWindowState.wsMaximized
     else frmModulesEditor.WindowState := TWindowState.wsNormal;
-  DM1.fdtModules.IndexFieldNames := 'FileName:DN';
-  if IsAdminModeEnabled then frmModulesEditor.ShowModal;
+  frmModulesEditor.ShowModal;
 end;
 
 procedure TfrmMain.actModulesSelectAllExecute(Sender: TObject);
@@ -976,7 +1008,8 @@ begin
   // Open Module file (ModuleList.txt)
   if OpenTextFileDialog1.InitialDir = ''
     then OpenTextFileDialog1.InitialDir := TPath.GetDirectoryName(Application.ExeName);
-  if OpenTextFileDialog1.Execute AND ConfirmNewModuleListFileLoad(false)
+  if OpenTextFileDialog1.Execute
+     // AND ConfirmNewModuleListFileLoad(false)
     then
       begin
         OpenTextModuleListFile(OpenTextFileDialog1.FileName);
@@ -1029,18 +1062,26 @@ end;
 procedure TfrmMain.actPackagesEditorExecute(Sender: TObject);
 begin
   // Show Packages Editor
-  DM1.fdtPackages.Filtered := false;
-  DM1.fdtPackages.Filter := '';
-  // DM1.fdtPackages.IndexName := 'NameSubNameIndex';
-  // DM1.fdtPackages.IndexFieldNames := '';
-  // DM1.fdtPackages.IndexName := '';
-  DM1.fdtPackages.IndexFieldNames := 'Name:DN';
-  if IsAdminModeEnabled then frmPackagesEditor.ShowModal;
+  if not IsAdminModeEnabled then Exit;
+  frmPackagesEditor.ShowModal;
 end;
 
 procedure TfrmMain.actFilterPackagesTypesSelectAllExecute(Sender: TObject);
 begin
   clbVisiblePackagesTypes.CheckAll(cbChecked, false, false);
+  clbVisiblePackagesTypesClickCheck(Sender);
+end;
+
+procedure TfrmMain.actFilterPackagesTypesSelectOnlyEmptyExecute(
+  Sender: TObject);
+var
+  i: integer;
+begin
+  //
+  clbVisiblePackagesTypes.CheckAll(cbUnchecked, false, false);
+  for i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
+    if clbVisiblePackagesTypes.Items[i] = '<Empty>'
+      then clbVisiblePackagesTypes.Checked[i] := true;
   clbVisiblePackagesTypesClickCheck(Sender);
 end;
 
@@ -1488,14 +1529,6 @@ begin
       lblStartMessageMain.Margins.Top;
 
   AutoStretchDBGridColumns(DBGridModules, DBGridModulesColumnsWidth);
-  {
-  if (tsModulesList.Visible = true) AND (PageControl1.ActivePage = tsModulesList)
-    then AutoStretchDBGridColumns(DBGridModules, DBGridModulesColumnsWidth);
-  }
-  {
-  for var i := 0 to DBGridModules.Columns.Count - 1 do
-    Memo1.Lines.Add(IntToStr(i) + ' - ' + IntToStr(DBGridModules.Columns[i].Width));
-  }
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);

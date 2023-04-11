@@ -161,6 +161,8 @@ object frmMain: TfrmMain
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
+        ExplicitWidth = 779
+        ExplicitHeight = 425
         object gbModulesList: TGroupBox
           Left = 0
           Top = 105
@@ -169,6 +171,8 @@ object frmMain: TfrmMain
           Align = alClient
           Caption = 'Modules List'
           TabOrder = 1
+          ExplicitWidth = 779
+          ExplicitHeight = 320
           object DBGridModules: TDBGrid
             Left = 2
             Top = 19
@@ -248,6 +252,7 @@ object frmMain: TfrmMain
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
+          ExplicitWidth = 779
           DesignSize = (
             781
             105)
@@ -280,6 +285,14 @@ object frmMain: TfrmMain
             Anchors = [akTop, akRight]
             ParentShowHint = False
             ShowHint = True
+          end
+          object SpeedButton9: TSpeedButton
+            Left = 679
+            Top = 49
+            Width = 91
+            Height = 22
+            Action = actDisplayPackagesList
+            Anchors = [akTop, akRight]
           end
           object ledtBDSBuild: TLabeledEdit
             Left = 110
@@ -332,6 +345,7 @@ object frmMain: TfrmMain
             ReadOnly = True
             TabOrder = 0
             Text = ''
+            ExplicitWidth = 477
           end
         end
       end
@@ -345,6 +359,7 @@ object frmMain: TfrmMain
         Constraints.MaxWidth = 600
         Constraints.MinWidth = 200
         TabOrder = 0
+        ExplicitHeight = 425
         object GroupBox5: TGroupBox
           Left = 0
           Top = 105
@@ -355,6 +370,7 @@ object frmMain: TfrmMain
           Constraints.MinWidth = 100
           PopupMenu = ppmFilters
           TabOrder = 0
+          ExplicitHeight = 320
           DesignSize = (
             200
             324)
@@ -374,7 +390,7 @@ object frmMain: TfrmMain
             Caption = 'Packages Types'
           end
           object SpeedButton4: TSpeedButton
-            Left = 151
+            Left = 149
             Top = 77
             Width = 17
             Height = 17
@@ -396,7 +412,7 @@ object frmMain: TfrmMain
             ShowHint = True
           end
           object SpeedButton6: TSpeedButton
-            Left = 151
+            Left = 150
             Top = 197
             Width = 17
             Height = 17
@@ -418,13 +434,37 @@ object frmMain: TfrmMain
             ShowHint = True
           end
           object SpeedButton8: TSpeedButton
-            Left = 128
+            Left = 127
             Top = 77
             Width = 17
             Height = 17
             Action = actFilterPackagesCopyToClipboard
             Anchors = [akTop, akRight]
             Caption = 'C'
+            Margin = 4
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object SpeedButton10: TSpeedButton
+            Left = 128
+            Top = 197
+            Width = 17
+            Height = 17
+            Action = actFilterPackagesTypesSelectOnlyEmpty
+            Anchors = [akRight, akBottom]
+            Caption = 'E'
+            Margin = 4
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object SpeedButton11: TSpeedButton
+            Left = 105
+            Top = 77
+            Width = 17
+            Height = 17
+            Action = actFilterPackagesSelectOnlyEmpty
+            Anchors = [akTop, akRight]
+            Caption = 'E'
             Margin = 4
             ParentShowHint = False
             ShowHint = True
@@ -440,6 +480,7 @@ object frmMain: TfrmMain
             Sorted = True
             TabOrder = 0
             OnClickCheck = clbVisiblePackagesClickCheck
+            ExplicitHeight = 90
           end
           object lbedFilterFileName: TLabeledEdit
             Left = 10
@@ -470,6 +511,7 @@ object frmMain: TfrmMain
             PopupMenu = ppmFilterPackagesTypes
             TabOrder = 2
             OnClickCheck = clbVisiblePackagesTypesClickCheck
+            ExplicitTop = 212
           end
         end
         object GroupBox4: TGroupBox
@@ -3171,7 +3213,6 @@ object frmMain: TfrmMain
           Top = 10
           Width = 875
           Height = 25
-          Cursor = crHandPoint
           Anchors = [akLeft, akTop, akRight, akBottom]
           EditLabel.Width = 90
           EditLabel.Height = 25
@@ -3372,7 +3413,6 @@ object frmMain: TfrmMain
         Action = actSettingsRestoreDefaults
         Anchors = [akLeft, akBottom]
         TabOrder = 3
-        ExplicitTop = 397
       end
       object GroupBox6: TGroupBox
         Left = 3
@@ -3482,8 +3522,8 @@ object frmMain: TfrmMain
           986
           41)
         object lbedLogPath: TLabeledEdit
-          Left = 56
-          Top = 9
+          Left = 58
+          Top = 6
           Width = 923
           Height = 25
           Anchors = [akLeft, akTop, akRight]
@@ -3504,6 +3544,8 @@ object frmMain: TfrmMain
     Width = 994
     Height = 19
     Panels = <>
+    ExplicitTop = 497
+    ExplicitWidth = 992
   end
   object ActionList1: TActionList
     Left = 352
@@ -3583,11 +3625,13 @@ object frmMain: TfrmMain
     object actFilterPackagesTypesSelectAll: TAction
       Category = 'Filter Packages Types'
       Caption = 'Select All Types'
+      Hint = 'Select All Types'
       OnExecute = actFilterPackagesTypesSelectAllExecute
     end
     object actFilterPackagesTypesUnselectAll: TAction
       Category = 'Filter Packages Types'
       Caption = 'Unselect All Types'
+      Hint = 'Unselect All Types'
       OnExecute = actFilterPackagesTypesUnselectAllExecute
     end
     object actFilterPackagesSelectAll: TAction
@@ -3617,6 +3661,23 @@ object frmMain: TfrmMain
       Caption = 'Copy to Clipboard'
       Hint = 'Copy packages list to clipboard'
       OnExecute = actFilterPackagesCopyToClipboardExecute
+    end
+    object actDisplayPackagesList: TAction
+      Category = 'Modules Grid'
+      Caption = 'Packages List'
+      OnExecute = actDisplayPackagesListExecute
+    end
+    object actFilterPackagesTypesSelectOnlyEmpty: TAction
+      Category = 'Filter Packages Types'
+      Caption = 'Select only <Empty>'
+      Hint = 'Select only <Empty> type'
+      OnExecute = actFilterPackagesTypesSelectOnlyEmptyExecute
+    end
+    object actFilterPackagesSelectOnlyEmpty: TAction
+      Category = 'Filter Packages'
+      Caption = 'Select only <Empty>'
+      Hint = 'Select only <Empty>'
+      OnExecute = actFilterPackagesSelectOnlyEmptyExecute
     end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
@@ -3662,8 +3723,17 @@ object frmMain: TfrmMain
     object SelectAll1: TMenuItem
       Action = actFilterPackagesTypesSelectAll
     end
+    object actFilterPackagesTypesSelectOnlyEmpty1: TMenuItem
+      Action = actFilterPackagesTypesSelectOnlyEmpty
+    end
     object actPackagesTypesUnselectAll1: TMenuItem
       Action = actFilterPackagesTypesUnselectAll
+    end
+    object N6: TMenuItem
+      Caption = '-'
+    end
+    object ClearFilters3: TMenuItem
+      Action = actFiltersClear
     end
   end
   object ppmFilterPackages: TPopupMenu
@@ -3675,11 +3745,20 @@ object frmMain: TfrmMain
     object UnselectAll2: TMenuItem
       Action = actFilterPackagesUnSelectAll
     end
+    object SelectonlyEmpty1: TMenuItem
+      Action = actFilterPackagesSelectOnlyEmpty
+    end
     object N4: TMenuItem
       Caption = '-'
     end
     object actFilterPackagesCopyToClipboard1: TMenuItem
       Action = actFilterPackagesCopyToClipboard
+    end
+    object N5: TMenuItem
+      Caption = '-'
+    end
+    object ClearFilters2: TMenuItem
+      Action = actFiltersClear
     end
   end
   object ppmFilters: TPopupMenu
@@ -3687,6 +3766,9 @@ object frmMain: TfrmMain
     Top = 208
     object SelectAllPackages1: TMenuItem
       Action = actFilterPackagesSelectAll
+    end
+    object SelectonlyEmpty2: TMenuItem
+      Action = actFilterPackagesSelectOnlyEmpty
     end
     object UnselectAllPackages1: TMenuItem
       Action = actFilterPackagesUnSelectAll
@@ -3696,6 +3778,9 @@ object frmMain: TfrmMain
     end
     object SelectAll3: TMenuItem
       Action = actFilterPackagesTypesSelectAll
+    end
+    object SelectonlyEmpty3: TMenuItem
+      Action = actFilterPackagesTypesSelectOnlyEmpty
     end
     object UnselectAll3: TMenuItem
       Action = actFilterPackagesTypesUnselectAll
