@@ -171,8 +171,7 @@ object frmAddModules: TfrmAddModules
         Align = alClient
         Caption = 'Options'
         TabOrder = 1
-        ExplicitLeft = 1
-        ExplicitTop = 69
+        ExplicitWidth = 680
         DesignSize = (
           682
           74)

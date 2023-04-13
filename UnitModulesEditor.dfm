@@ -26,11 +26,13 @@ object frmModulesEditor: TfrmModulesEditor
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitTop = 441
+    ExplicitWidth = 867
     DesignSize = (
       869
       37)
     object Button1: TButton
-      Left = 774
+      Left = 772
       Top = 6
       Width = 75
       Height = 25
@@ -40,7 +42,7 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
-      ExplicitLeft = 776
+      ExplicitLeft = 770
     end
   end
   object dbgModules: TDBGrid
@@ -113,16 +115,19 @@ object frmModulesEditor: TfrmModulesEditor
     Height = 73
     Align = alTop
     TabOrder = 2
+    ExplicitWidth = 867
     DesignSize = (
       869
       73)
     object SpeedButton1: TSpeedButton
-      Left = 642
+      Left = 640
       Top = 8
       Width = 207
       Height = 22
       Action = actCopyFileNameAsRegExp
       Anchors = [akTop, akRight]
+      ParentShowHint = False
+      ShowHint = True
       ExplicitLeft = 652
     end
     object GroupBox1: TGroupBox
@@ -162,14 +167,14 @@ object frmModulesEditor: TfrmModulesEditor
       end
     end
     object DBNavigator1: TDBNavigator
-      Left = 609
+      Left = 607
       Top = 36
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
-      ExplicitLeft = 611
+      ExplicitLeft = 605
     end
     object Button2: TButton
       Left = 373
@@ -214,6 +219,7 @@ object frmModulesEditor: TfrmModulesEditor
     end
     object actCopyFileNameAsRegExp: TAction
       Caption = 'Copy FileName to FileNameRegExp'
+      Hint = 'Copy FileName to FileNameRegExp [Ctrl+R]'
       ShortCut = 16466
       OnExecute = actCopyFileNameAsRegExpExecute
     end
