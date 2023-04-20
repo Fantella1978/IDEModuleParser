@@ -296,7 +296,6 @@ type
     procedure cbParseLevel2Click(Sender: TObject);
     procedure actEnableAdminModeExecute(Sender: TObject);
     procedure actDisableAdminModeExecute(Sender: TObject);
-    procedure cbxStylesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbedFilterFileNameChange(Sender: TObject);
     procedure clbVisiblePackagesClickCheck(Sender: TObject);
@@ -315,6 +314,7 @@ type
     procedure actFilterPackagesTypesSelectOnlyEmptyExecute(Sender: TObject);
     procedure actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure cbxStylesChange(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -328,6 +328,7 @@ type
     procedure ModulesStatisticDisplay;
     procedure PackagesFilterCreate(Sender: TObject);
     procedure ApplyAllFiltres;
+    procedure StylesChange;
   public
     FModulesPackages : TArray<TModulesPackage>;
     // FModulesPackages : TList;
@@ -474,9 +475,15 @@ end;
 
 procedure TfrmMain.cbxStylesChange(Sender: TObject);
 begin
-  TStyleManager.SetStyle(cbxStyles.Text);
+  if GlobalVCLStyle <> cbxStyles.Text then StylesChange();
+end;
+
+procedure TfrmMain.StylesChange();
+begin
+  TStyleManager.TrySetStyle(cbxStyles.Text);
   GlobalVCLStyle := TStyleManager.ActiveStyle.Name;
-  Logger.AddToLog('Application VCL Style applied: ' + TStyleManager.ActiveStyle.Name)
+  if TStyleManager.ActiveStyle.Name = cbxStyles.Text
+    then Logger.AddToLog('Application VCL Style applied: ' + TStyleManager.ActiveStyle.Name);
 end;
 
 function TfrmMain.CheckZipReportFile(Sender: TObject): boolean;
@@ -1835,8 +1842,9 @@ begin
         if cbxStyles.Items.IndexOf(GlobalVCLStyle) > -1
           then cbxStyles.ItemIndex := cbxStyles.Items.IndexOf(GlobalVCLStyle)
           else cbxStyles.ItemIndex := 0;
-        if GlobalVCLStyle <> TStyleManager.ActiveStyle.Name
-          then cbxStylesChange(frmMain);
+        if (GlobalVCLStyle <> cbxStyles.Text) OR
+           (GlobalVCLStyle <> TStyleManager.ActiveStyle.Name)
+          then StylesChange();
       end;
   // cbCreateLogClick(frmMain);
 
