@@ -4,8 +4,8 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ControlList,
-  Vcl.ExtCtrls
+  Vcl.ExtCtrls,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ControlList
   , FireDAC.Comp.Client
   ;
 
@@ -60,24 +60,26 @@ begin
       begin
         lblURL.Caption := 'URL: ' + FPackagesQuery.FieldByName('URL').AsString;
         lblURL.Visible := true;
-        lblURL.Left := lblName.Left + lblName.Width + 10;
         clbURL.Visible := true;
+        lblDescr.Top := lblURL.Top + lblURL.Height + 5; // 42
       end
     else
       begin
         lblURL.Visible := false;
         clbURL.Visible := false;
+        lblDescr.Top := lblName.Top + lblName.Height + 5; // 24
       end;
 
   lblGetIt.Visible := FPackagesQuery.FieldByName('InGetIt').AsBoolean;
+  lblGetIt.Left := lblName.Left + lblName.Width + 10;
   if FPackagesQuery.FieldByName('InGetIt').AsBoolean = true
     then
       begin
-        lblDescr.Top := lblGetIt.Top + lblGetIt.Height + 5; // 42
+        lblDescr.Height := 15;
       end
     else
       begin
-        lblDescr.Top := lblName.Top + lblName.Height + 5; // 24
+        lblDescr.Height := 30;
       end;
 
   if FPackagesQuery.FieldByName('Description').AsString <> ''

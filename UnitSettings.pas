@@ -42,11 +42,10 @@ const
   Def_ParseOnFileOpen = true; // default value for ParseOnFileOpen
   Def_ModulesCompareLevel2 = false; // default value for ModulesCompareLevel2
   Def_ModulesCompareLevel3 = true; // default value for ModulesCompareLevel3
-  Def_VCLStyle_const = 'Amethyst Kamri'; // default value (constant) for VCLStyle
+  Def_VCLStyle = 'Amethyst Kamri'; // default value (constant) for VCLStyle
 
 var
   reg: TRegistry;
-  Def_VCLStyle : string; // default value for VCLStyle
 
 function LoadIntegerValue(name: string; defValue: integer): integer;
 begin
@@ -125,9 +124,6 @@ begin
       GlobalParseOnFileOpen := LoadBooleanValue('ParseOnFileOpen', Def_ParseOnFileOpen);
       GlobalModulesCompareLevel2 := LoadBooleanValue('ModulesCompareLevel2', Def_ModulesCompareLevel2);
       GlobalModulesCompareLevel3 := LoadBooleanValue('ModulesCompareLevel3', Def_ModulesCompareLevel3);
-      if Def_VCLStyle_const = TStyleManager.ActiveStyle.Name
-        then Def_VCLStyle := Def_VCLStyle_const
-        else Def_VCLStyle := TStyleManager.ActiveStyle.Name;
       GlobalVCLStyle := LoadStringValue('VCLStyle', Def_VCLStyle);
       {$IFDEF DEBUG}
         GlobalAdminMode := true;
@@ -153,12 +149,12 @@ begin
   GlobalParseOnFileOpen := Def_ParseOnFileOpen;
   GlobalModulesCompareLevel2 := Def_ModulesCompareLevel2;
   GlobalModulesCompareLevel3 := Def_ModulesCompareLevel3;
+  {
   if Def_VCLStyle_const = TStyleManager.ActiveStyle.Name
     then Def_VCLStyle := Def_VCLStyle_const
     else Def_VCLStyle := TStyleManager.ActiveStyle.Name;
-  if Def_VCLStyle_const = Def_VCLStyle
-    then GlobalVCLStyle := Def_VCLStyle_const
-    else GlobalVCLStyle := Def_VCLStyle;
+  }
+  GlobalVCLStyle := Def_VCLStyle;
 
   GlobalAdminMode := false;
 end;

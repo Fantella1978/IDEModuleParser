@@ -314,6 +314,7 @@ type
     procedure actDisplayPackagesListExecute(Sender: TObject);
     procedure actFilterPackagesTypesSelectOnlyEmptyExecute(Sender: TObject);
     procedure actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
+    procedure FormActivate(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -1440,6 +1441,12 @@ begin
   end;
 end;
 
+procedure TfrmMain.FormActivate(Sender: TObject);
+begin
+  if GlobalVCLStyle <> TStyleManager.ActiveStyle.Name
+    then cbxStylesChange(Sender);
+end;
+
 procedure TfrmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   // Close the Application
@@ -1481,10 +1488,10 @@ begin
   lbedLogPath.Text := Logger.LogFile;
   Logger.Clear;
 
-  var loadSettingsRes := LoadSattingsFromRegistry();
-
   for var StyleName in TStyleManager.StyleNames do
     cbxStyles.Items.Add(StyleName);
+
+  var loadSettingsRes := LoadSattingsFromRegistry();
 
   Logger.LogEnabled := cbCreateLog.Checked;
   Logger.AddToLog('Application started');
@@ -1534,7 +1541,6 @@ end;
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
   DragAcceptFiles(Self.Handle, True);
-
 end;
 
 procedure TfrmMain.ModulesGridSelectionChanged(Sender: TObject);
@@ -1829,7 +1835,8 @@ begin
         if cbxStyles.Items.IndexOf(GlobalVCLStyle) > -1
           then cbxStyles.ItemIndex := cbxStyles.Items.IndexOf(GlobalVCLStyle)
           else cbxStyles.ItemIndex := 0;
-        cbxStylesChange(frmMain);
+        if GlobalVCLStyle <> TStyleManager.ActiveStyle.Name
+          then cbxStylesChange(frmMain);
       end;
   // cbCreateLogClick(frmMain);
 

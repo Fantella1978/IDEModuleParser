@@ -55,63 +55,86 @@ object frmPackagesList: TfrmPackagesList
     ItemSelectionOptions.HotColorAlpha = 50
     ItemSelectionOptions.SelectedColorAlpha = 70
     ItemSelectionOptions.FocusedColorAlpha = 80
+    ItemSelectionOptions.UseFontColorForLabels = True
     ParentColor = False
     TabOrder = 1
     OnBeforeDrawItem = ControlList1BeforeDrawItem
     OnClick = ControlList1Click
-    ExplicitWidth = 987
-    ExplicitHeight = 404
+    ExplicitTop = 8
     object lblName: TLabel
       Left = 10
       Top = 6
-      Width = 32
-      Height = 13
+      Width = 35
+      Height = 16
       Caption = 'Name'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clHighlight
-      Font.Height = -11
+      Font.Color = clBtnText
+      Font.Height = -13
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Transparent = True
-      StyleElements = [seClient, seBorder]
     end
     object lblURL: TLabel
-      Left = 48
-      Top = 5
+      Left = 10
+      Top = 23
       Width = 34
       Height = 15
       Caption = 'lblURL'
-    end
-    object clbURL: TControlListButton
-      Left = 904
-      Top = 11
-      Width = 52
-      Height = 25
-      Caption = 'Open'
-      LinkHotColor = clHighlight
-      OnClick = clbURLClick
-    end
-    object lblDescr: TLabel
-      Left = 10
-      Top = 42
-      Width = 42
-      Height = 15
-      Caption = 'lblDescr'
-    end
-    object lblGetIt: TLabel
-      Left = 10
-      Top = 24
-      Width = 96
-      Height = 15
-      Caption = 'Available in GetIt'
-      Color = clWindow
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clGreen
+      Font.Color = clHighlight
       Font.Height = -12
       Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      StyleElements = [seClient, seBorder]
+    end
+    object clbURL: TControlListButton
+      AlignWithMargins = True
+      Left = 906
+      Top = 20
+      Width = 52
+      Height = 25
+      Margins.Left = 5
+      Margins.Top = 20
+      Margins.Right = 27
+      Margins.Bottom = 20
+      Align = alRight
+      Caption = 'Open'
+      LinkHotColor = clHighlight
+      ExplicitLeft = 908
+      ExplicitTop = 23
+    end
+    object lblDescr: TLabel
+      AlignWithMargins = True
+      Left = 10
+      Top = 42
+      Width = 890
+      Height = 15
+      Anchors = [akLeft, akTop, akRight, akBottom]
+      AutoSize = False
+      Caption = 'lblDescr'
+      Constraints.MaxHeight = 15
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowFrame
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = []
+      ParentFont = False
+      WordWrap = True
+      StyleElements = [seClient, seBorder]
+    end
+    object lblGetIt: TLabel
+      Left = 50
+      Top = 5
+      Width = 107
+      Height = 17
+      Caption = 'Available in GetIt'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clPurple
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
-      ParentColor = False
       ParentFont = False
       StyleElements = [seClient, seBorder]
     end
