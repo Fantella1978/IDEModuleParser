@@ -47,7 +47,7 @@ object frmPackagesList: TfrmPackagesList
     Width = 989
     Height = 408
     Align = alClient
-    ItemHeight = 50
+    ItemHeight = 65
     ItemMargins.Left = 0
     ItemMargins.Top = 0
     ItemMargins.Right = 0
@@ -61,35 +61,59 @@ object frmPackagesList: TfrmPackagesList
     OnClick = ControlList1Click
     ExplicitWidth = 987
     ExplicitHeight = 404
-    object lblTitle: TLabel
+    object lblName: TLabel
       Left = 10
       Top = 6
-      Width = 25
+      Width = 32
       Height = 13
-      Caption = 'Title'
+      Caption = 'Name'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
+      Font.Color = clHighlight
       Font.Height = -11
       Font.Name = 'Tahoma'
       Font.Style = [fsBold]
       ParentFont = False
       Transparent = True
+      StyleElements = [seClient, seBorder]
     end
-    object Label1: TLabel
-      Left = 10
-      Top = 25
+    object lblURL: TLabel
+      Left = 48
+      Top = 5
       Width = 34
       Height = 15
-      Caption = 'Label1'
+      Caption = 'lblURL'
     end
-    object ControlListButton1: TControlListButton
+    object clbURL: TControlListButton
       Left = 904
       Top = 11
       Width = 52
       Height = 25
       Caption = 'Open'
       LinkHotColor = clHighlight
-      OnClick = ControlListButton1Click
+      OnClick = clbURLClick
+    end
+    object lblDescr: TLabel
+      Left = 10
+      Top = 42
+      Width = 42
+      Height = 15
+      Caption = 'lblDescr'
+    end
+    object lblGetIt: TLabel
+      Left = 10
+      Top = 24
+      Width = 96
+      Height = 15
+      Caption = 'Available in GetIt'
+      Color = clWindow
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clGreen
+      Font.Height = -12
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      StyleElements = [seClient, seBorder]
     end
   end
 end

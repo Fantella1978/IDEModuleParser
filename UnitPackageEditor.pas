@@ -27,6 +27,9 @@ type
     actSave: TAction;
     actCancel: TAction;
     lblType: TLabel;
+    dbcbGetIt: TDBCheckBox;
+    DBMemo1: TDBMemo;
+    Label1: TLabel;
     procedure dbeNameChange(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure actSaveExecute(Sender: TObject);
@@ -40,9 +43,11 @@ type
   private
     { Private declarations }
     FPackageChanged : boolean;
+    procedure dbcbGetItSetEnableState;
   public
     { Public declarations }
   end;
+
 
 var
   frmPackageEditor: TfrmPackageEditor;
@@ -108,10 +113,32 @@ begin
   actSave.Enabled := true;
 end;
 
+procedure TfrmPackageEditor.dbcbGetItSetEnableState;
+begin
+  if (DBLookupComboBox1.KeyValue = THIRDPARTY_PACKAGES_TYPE_ID)
+  then
+    begin
+      dbcbGetIt.Enabled := true;
+      if DM1.fdtPackagesInGetIt.AsBoolean = true
+        then dbcbGetIt.Checked := true
+        else dbcbGetIt.Checked := false;
+    end
+  else
+    begin
+      dbcbGetIt.Enabled := false;
+      if DBLookupComboBox1.KeyValue = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID
+      then
+        begin
+          dbcbGetIt.Checked := true;
+        end
+    end;
+end;
+
 procedure TfrmPackageEditor.DBLookupComboBox1CloseUp(Sender: TObject);
 begin
   FPackageChanged := true;
   actSave.Enabled := true;
+  dbcbGetItSetEnableState();
 end;
 
 procedure TfrmPackageEditor.FormCloseQuery(Sender: TObject;
@@ -140,6 +167,7 @@ begin
   FPackageChanged := false;
   actSave.Enabled := false;
   dbeName.SetFocus;
+  dbcbGetItSetEnableState();
 end;
 
 end.

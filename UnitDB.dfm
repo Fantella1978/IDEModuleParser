@@ -245,6 +245,7 @@ object DM1: TDM1
     AfterInsert = fdtPackagesAfterInsert
     AfterScroll = fdtPackagesAfterScroll
     AfterRefresh = fdtPackagesAfterRefresh
+    IndexFieldNames = 'Num'
     Connection = fdcSQLite
     UpdateTransaction = FDTransaction1
     FetchOptions.AssignedValues = [evCursorKind]
@@ -293,6 +294,15 @@ object DM1: TDM1
     object fdtPackagesType: TIntegerField
       FieldName = 'Type'
       Origin = 'Type'
+    end
+    object fdtPackagesInGetIt: TBooleanField
+      FieldName = 'InGetIt'
+      Origin = 'InGetIt'
+    end
+    object fdtPackagesDescription: TWideMemoField
+      FieldName = 'Description'
+      Origin = 'Description'
+      BlobType = ftWideMemo
     end
   end
   object dsPackages: TDataSource

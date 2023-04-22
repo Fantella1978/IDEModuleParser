@@ -49,7 +49,6 @@ type
 var
   frmAddModules: TfrmAddModules;
   PackageIDs : TStringList;
-  // FieldNums : TStringList;
 
 implementation
 
@@ -67,8 +66,13 @@ uses
 procedure TfrmAddModules.btnAddClick(Sender: TObject);
 begin
   //
+  if cbPackages.ItemIndex = -1
+    then
+      begin
+        frmAddModules.SetFocusedControl(cbPackages);
+        Exit
+      end;
   AddAllSelectedModulesToDB();
-  Sleep(50);
   Close;
   if MessageDlg('ReParse recomended. ReParse ModulesList file?', mtConfirmation, [mbYes, mbNo], 0) in [mrYes]
     then
@@ -133,6 +137,7 @@ begin
     DM1.cdsModules.GotoBookmark(CurrentBookMark);
     DM1.cdsModules.FreeBookMark(CurrentBookMark);
   end;
+  Sleep(100);
   Result := true;
 end;
 

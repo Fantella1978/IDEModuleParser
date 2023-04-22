@@ -14,14 +14,16 @@ type
     Button1: TButton;
     Panel1: TPanel;
     ControlList1: TControlList;
-    lblTitle: TLabel;
-    Label1: TLabel;
-    ControlListButton1: TControlListButton;
+    lblName: TLabel;
+    lblURL: TLabel;
+    clbURL: TControlListButton;
+    lblDescr: TLabel;
+    lblGetIt: TLabel;
     procedure FormShow(Sender: TObject);
     procedure ControlList1BeforeDrawItem(AIndex: Integer; ACanvas: TCanvas;
       ARect: TRect; AState: TOwnerDrawState);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure ControlListButton1Click(Sender: TObject);
+    procedure clbURLClick(Sender: TObject);
     procedure ControlList1Click(Sender: TObject);
   private
     FPackagesQuery: TFDQuery;
@@ -47,31 +49,57 @@ procedure TfrmPackagesList.ControlList1BeforeDrawItem(AIndex: Integer;
   ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
 begin
   FPackagesQuery.RecNo := AIndex + 1;
-  lblTitle.Caption := FPackagesQuery.FieldByName('Name').AsString;
+  lblName.Caption := FPackagesQuery.FieldByName('Name').AsString;
   if FPackagesQuery.FieldByName('SubName').AsString <> ''
-    then lblTitle.Caption := lblTitle.Caption + ' ' + FPackagesQuery.FieldByName('SubName').AsString;
+    then lblName.Caption := lblName.Caption + ' ' + FPackagesQuery.FieldByName('SubName').AsString;
   if FPackagesQuery.FieldByName('Version').AsString <> ''
-    then lblTitle.Caption := lblTitle.Caption  + ' ' + FPackagesQuery.FieldByName('Version').AsString;
+    then lblName.Caption := lblName.Caption  + ' ' + FPackagesQuery.FieldByName('Version').AsString;
 
   if FPackagesQuery.FieldByName('URL').AsString <> ''
     then
       begin
-        Label1.Caption := 'URL: ' + FPackagesQuery.FieldByName('URL').AsString;
-        ControlListButton1.Visible := true;
+        lblURL.Caption := 'URL: ' + FPackagesQuery.FieldByName('URL').AsString;
+        lblURL.Visible := true;
+        lblURL.Left := lblName.Left + lblName.Width + 10;
+        clbURL.Visible := true;
       end
     else
       begin
-        Label1.Caption := 'URL: none';
-        ControlListButton1.Visible := false;
+        lblURL.Visible := false;
+        clbURL.Visible := false;
       end;
+
+  lblGetIt.Visible := FPackagesQuery.FieldByName('InGetIt').AsBoolean;
+  if FPackagesQuery.FieldByName('InGetIt').AsBoolean = true
+    then
+      begin
+        lblDescr.Top := lblGetIt.Top + lblGetIt.Height + 5; // 42
+      end
+    else
+      begin
+        lblDescr.Top := lblName.Top + lblName.Height + 5; // 24
+      end;
+
+  if FPackagesQuery.FieldByName('Description').AsString <> ''
+    then
+      begin
+        lblDescr.Caption := FPackagesQuery.FieldByName('Description').AsString;
+        lblDescr.Visible := true;
+        lblDescr.Constraints.MaxWidth := clbURL.Left - lblDescr.Left - 10;
+      end
+    else
+      begin
+        lblDescr.Visible := false;
+      end;
+
 end;
 
 procedure TfrmPackagesList.ControlList1Click(Sender: TObject);
 begin
-  ControlListButton1Click(Sender);
+  clbURLClick(Sender);
 end;
 
-procedure TfrmPackagesList.ControlListButton1Click(Sender: TObject);
+procedure TfrmPackagesList.clbURLClick(Sender: TObject);
 var
   LURL : string;
 begin

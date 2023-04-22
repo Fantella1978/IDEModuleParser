@@ -52,6 +52,8 @@ type
     fdtModulesPathRegExp: TStringField;
     fdtModulesVersionRegExp: TStringField;
     fdtModulesFileNameRegExp: TStringField;
+    fdtPackagesInGetIt: TBooleanField;
+    fdtPackagesDescription: TWideMemoField;
     procedure cdsModulesAfterScroll(DataSet: TDataSet);
     procedure fdtPackagesAfterRefresh(DataSet: TDataSet);
     procedure fdtPackagesAfterInsert(DataSet: TDataSet);
@@ -82,6 +84,9 @@ type
   private
   end;
 
+const
+  THIRDPARTY_PACKAGES_TYPE_ID = 3;
+  THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID = 4;
 
 var
   DM1: TDM1;

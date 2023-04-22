@@ -164,6 +164,7 @@ procedure TfrmModulesEditor.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
   FreeAndNil(PackageIDs);
+  lbedFilterFileName.Text := '';
 end;
 
 procedure TfrmModulesEditor.FormCreate(Sender: TObject);
@@ -180,7 +181,6 @@ end;
 
 procedure TfrmModulesEditor.FormShow(Sender: TObject);
 begin
-  lbedFilterFileName.Text := '';
   DM1.fdtModules.DisableControls;
   DM1.fdtModules.IndexFieldNames := 'FileName:DN';
   DM1.fdtModules.Filtered := false;
@@ -188,6 +188,7 @@ begin
   DM1.fdtModules.First;
   DM1.fdtModules.EnableControls;
   UpdatePackagesInfo();
+  ApplyAllFiltres();
   if DM1.fdtModules.RecordCount > 2
     then frmModulesEditor.actFindDuplicates.Enabled := true
     else frmModulesEditor.actFindDuplicates.Enabled := false;

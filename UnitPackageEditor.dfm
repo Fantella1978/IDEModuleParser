@@ -3,8 +3,8 @@ object frmPackageEditor: TfrmPackageEditor
   Top = 0
   BorderStyle = bsDialog
   Caption = 'Package Editor'
-  ClientHeight = 195
-  ClientWidth = 771
+  ClientHeight = 382
+  ClientWidth = 688
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,8 +15,8 @@ object frmPackageEditor: TfrmPackageEditor
   OnCloseQuery = FormCloseQuery
   OnShow = FormShow
   DesignSize = (
-    771
-    195)
+    688
+    382)
   TextHeight = 15
   object lblName: TLabel
     Left = 36
@@ -60,19 +60,28 @@ object frmPackageEditor: TfrmPackageEditor
     Height = 15
     Caption = 'Type:'
   end
+  object Label1: TLabel
+    Left = 8
+    Top = 159
+    Width = 63
+    Height = 15
+    Caption = 'Description:'
+  end
   object Panel1: TPanel
     Left = 0
-    Top = 158
-    Width = 771
+    Top = 345
+    Width = 688
     Height = 37
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 6
+    ExplicitTop = 341
+    ExplicitWidth = 686
     DesignSize = (
-      771
+      688
       37)
     object Button1: TButton
-      Left = 599
+      Left = 510
       Top = 6
       Width = 75
       Height = 25
@@ -80,10 +89,10 @@ object frmPackageEditor: TfrmPackageEditor
       Anchors = [akTop, akRight]
       Default = True
       TabOrder = 0
-      ExplicitLeft = 601
+      ExplicitLeft = 508
     end
     object Button2: TButton
-      Left = 686
+      Left = 597
       Top = 6
       Width = 75
       Height = 25
@@ -91,7 +100,7 @@ object frmPackageEditor: TfrmPackageEditor
       Anchors = [akTop, akRight]
       Cancel = True
       TabOrder = 1
-      ExplicitLeft = 688
+      ExplicitLeft = 595
     end
   end
   object dbeName: TDBEdit
@@ -127,31 +136,31 @@ object frmPackageEditor: TfrmPackageEditor
   object dbeURL: TDBEdit
     Left = 77
     Top = 127
-    Width = 682
+    Width = 593
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'Url'
     DataSource = DM1.dsPackages
     TabOrder = 5
     OnChange = dbeURLChange
-    ExplicitWidth = 684
+    ExplicitWidth = 591
   end
   object dbeVersioRgExp: TDBEdit
     Left = 341
     Top = 69
-    Width = 418
+    Width = 329
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'VersionRegExp'
     DataSource = DM1.dsPackages
     TabOrder = 3
     OnChange = dbeVersioRgExpChange
-    ExplicitWidth = 420
+    ExplicitWidth = 327
   end
   object DBLookupComboBox1: TDBLookupComboBox
     Left = 77
     Top = 98
-    Width = 491
+    Width = 356
     Height = 23
     DataField = 'Type'
     DataSource = DM1.dsPackages
@@ -160,6 +169,29 @@ object frmPackageEditor: TfrmPackageEditor
     ListSource = DM1.dsPackageTypes
     TabOrder = 4
     OnCloseUp = DBLookupComboBox1CloseUp
+  end
+  object dbcbGetIt: TDBCheckBox
+    Left = 447
+    Top = 104
+    Width = 121
+    Height = 17
+    Caption = 'Available in GetIt'
+    DataField = 'InGetIt'
+    DataSource = DM1.dsPackages
+    TabOrder = 7
+  end
+  object DBMemo1: TDBMemo
+    Left = 77
+    Top = 156
+    Width = 593
+    Height = 183
+    Anchors = [akLeft, akTop, akRight, akBottom]
+    DataField = 'Description'
+    DataSource = DM1.dsPackages
+    ScrollBars = ssVertical
+    TabOrder = 8
+    ExplicitWidth = 591
+    ExplicitHeight = 179
   end
   object ActionList1: TActionList
     Left = 624

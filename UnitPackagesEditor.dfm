@@ -77,13 +77,13 @@ object frmPackagesEditor: TfrmPackagesEditor
         Expanded = False
         FieldName = 'Name'
         Title.Caption = 'Package Name'
-        Width = 250
+        Width = 150
         Visible = True
       end
       item
         Expanded = False
         FieldName = 'SubName'
-        Width = 250
+        Width = 150
         Visible = True
       end
       item
