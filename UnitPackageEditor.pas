@@ -132,6 +132,12 @@ begin
           dbcbGetIt.Checked := true;
         end
     end;
+  if (DBLookupComboBox1.KeyValue <> THIRDPARTY_PACKAGES_TYPE_ID) AND
+     (DBLookupComboBox1.KeyValue <> THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
+  then
+    begin
+      dbcbGetIt.Checked := false;
+    end
 end;
 
 procedure TfrmPackageEditor.DBLookupComboBox1CloseUp(Sender: TObject);

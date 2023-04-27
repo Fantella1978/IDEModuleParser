@@ -276,17 +276,10 @@ type
     procedure actModulesEditorExecute(Sender: TObject);
     procedure actModulesCopySelectedAsTextExecute(Sender: TObject);
     procedure actModulesSelectAllExecute(Sender: TObject);
-    procedure DBGridModulesMouseDown(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
     procedure ModelsGridSelectRange;
-    procedure DBGridModulesMouseUp(Sender: TObject; Button: TMouseButton;
-      Shift: TShiftState; X, Y: Integer);
     procedure actModulesUnSelectAllExecute(Sender: TObject);
     procedure ModulesSelectedCountDisplay();
-    procedure DBGridModulesEnter(Sender: TObject);
-    procedure DBGridModulesExit(Sender: TObject);
     procedure UpdateActionsWithSelectedModels();
-    procedure DBGridModulesKeyUp(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure UpdateObjectsAccordingSettings();
     procedure actSettingsRestoreDefaultsExecute(Sender: TObject);
     procedure FormResize(Sender: TObject);
@@ -1295,40 +1288,6 @@ procedure TfrmMain.DBGridModulesDrawColumnCell(Sender: TObject; const Rect: TRec
 begin
   // Rize Column width if text is a long
   AutoCalcDBGridColumnsWidth(DBGridModules, Column, DBGridModulesColumnsWidth);
-end;
-
-procedure TfrmMain.DBGridModulesEnter(Sender: TObject);
-begin
-  // ShowMessage('DBGridModules Enter');
-  // UpdateActionsWithSelectedModels();
-end;
-
-procedure TfrmMain.DBGridModulesExit(Sender: TObject);
-begin
-  // ShowMessage('DBGridModules Exit');
-  // ModulesSelectedCountDisplay();
-  // UpdateActionsWithSelectedModels();
-end;
-
-procedure TfrmMain.DBGridModulesKeyUp(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-begin
-  // ShowMessage('DBGrid1 KeyUp');
-  // UpdateActionsWithSelectedModels();
-end;
-
-procedure TfrmMain.DBGridModulesMouseDown(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
-begin
-  // ShowMessage('DBGrid1 MouseDown');
-end;
-
-procedure TfrmMain.DBGridModulesMouseUp(Sender: TObject; Button: TMouseButton;
-  Shift: TShiftState; X, Y: Integer);
-begin
-  // ShowMessage('DBGrid1 MouseUp');
-  // ModulesSelectedCountDisplay();
-  // inherited;
 end;
 
 procedure TfrmMain.DBGridModulesTitleClick(Column: TColumn);

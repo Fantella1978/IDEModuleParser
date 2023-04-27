@@ -5,8 +5,8 @@ object frmMain: TfrmMain
   ClientHeight = 520
   ClientWidth = 994
   Color = clBtnFace
-  Constraints.MinHeight = 480
-  Constraints.MinWidth = 640
+  Constraints.MinHeight = 520
+  Constraints.MinWidth = 950
   DefaultMonitor = dmDesktop
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -77,7 +77,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsSettings
+    ActivePage = tsModulesList
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -146,7 +146,7 @@ object frmMain: TfrmMain
       Caption = 'Modules'
       ImageIndex = 1
       object Splitter1: TSplitter
-        Left = 200
+        Left = 245
         Top = 0
         Width = 5
         Height = 429
@@ -155,29 +155,29 @@ object frmMain: TfrmMain
         ExplicitHeight = 468
       end
       object Panel11Right: TPanel
-        Left = 205
+        Left = 250
         Top = 0
-        Width = 781
+        Width = 736
         Height = 429
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 779
+        ExplicitWidth = 734
         ExplicitHeight = 425
         object gbModulesList: TGroupBox
           Left = 0
           Top = 105
-          Width = 781
+          Width = 736
           Height = 324
           Align = alClient
           Caption = 'Modules List'
           TabOrder = 1
-          ExplicitWidth = 779
+          ExplicitWidth = 734
           ExplicitHeight = 320
           object DBGridModules: TDBGrid
             Left = 2
             Top = 19
-            Width = 777
+            Width = 732
             Height = 303
             Align = alClient
             DataSource = DM1.DataSource1
@@ -191,11 +191,6 @@ object frmMain: TfrmMain
             TitleFont.Name = 'Segoe UI'
             TitleFont.Style = []
             OnDrawColumnCell = DBGridModulesDrawColumnCell
-            OnEnter = DBGridModulesEnter
-            OnExit = DBGridModulesExit
-            OnKeyUp = DBGridModulesKeyUp
-            OnMouseDown = DBGridModulesMouseDown
-            OnMouseUp = DBGridModulesMouseUp
             OnTitleClick = DBGridModulesTitleClick
             Columns = <
               item
@@ -248,17 +243,17 @@ object frmMain: TfrmMain
         object Panel9Top: TPanel
           Left = 0
           Top = 0
-          Width = 781
+          Width = 736
           Height = 105
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 779
+          ExplicitWidth = 734
           DesignSize = (
-            781
+            736
             105)
           object SpeedButton1: TSpeedButton
-            Left = 679
+            Left = 634
             Top = 77
             Width = 94
             Height = 22
@@ -266,9 +261,10 @@ object frmMain: TfrmMain
             Anchors = [akTop, akRight]
             ParentShowHint = False
             ShowHint = True
+            ExplicitLeft = 679
           end
           object SpeedButton3: TSpeedButton
-            Left = 496
+            Left = 451
             Top = 77
             Width = 177
             Height = 22
@@ -276,9 +272,10 @@ object frmMain: TfrmMain
             Anchors = [akTop, akRight]
             ParentShowHint = False
             ShowHint = True
+            ExplicitLeft = 496
           end
           object SpeedButton2: TSpeedButton
-            Left = 417
+            Left = 372
             Top = 77
             Width = 73
             Height = 22
@@ -286,14 +283,16 @@ object frmMain: TfrmMain
             Anchors = [akTop, akRight]
             ParentShowHint = False
             ShowHint = True
+            ExplicitLeft = 417
           end
           object SpeedButton9: TSpeedButton
-            Left = 679
+            Left = 634
             Top = 49
             Width = 91
             Height = 22
             Action = actDisplayPackagesList
             Anchors = [akTop, akRight]
+            ExplicitLeft = 679
           end
           object ledtBDSBuild: TLabeledEdit
             Left = 110
@@ -326,7 +325,7 @@ object frmMain: TfrmMain
           object ledtBDSPath: TLabeledEdit
             Left = 110
             Top = 14
-            Width = 479
+            Width = 434
             Height = 25
             Anchors = [akLeft, akTop, akRight]
             Constraints.MaxWidth = 600
@@ -346,14 +345,14 @@ object frmMain: TfrmMain
             ReadOnly = True
             TabOrder = 0
             Text = ''
-            ExplicitWidth = 477
+            ExplicitWidth = 432
           end
         end
       end
       object Panel10Left: TPanel
         Left = 0
         Top = 0
-        Width = 200
+        Width = 245
         Height = 429
         Align = alLeft
         BevelOuter = bvNone
@@ -364,7 +363,7 @@ object frmMain: TfrmMain
         object GroupBox5: TGroupBox
           Left = 0
           Top = 105
-          Width = 200
+          Width = 245
           Height = 324
           Align = alClient
           Caption = 'Filters'
@@ -373,7 +372,7 @@ object frmMain: TfrmMain
           TabOrder = 0
           ExplicitHeight = 320
           DesignSize = (
-            200
+            245
             324)
           object Label1: TLabel
             Left = 11
@@ -391,7 +390,7 @@ object frmMain: TfrmMain
             Caption = 'Packages Types'
           end
           object SpeedButton4: TSpeedButton
-            Left = 149
+            Left = 194
             Top = 77
             Width = 17
             Height = 17
@@ -400,9 +399,10 @@ object frmMain: TfrmMain
             Caption = '+'
             ParentShowHint = False
             ShowHint = True
+            ExplicitLeft = 149
           end
           object SpeedButton5: TSpeedButton
-            Left = 172
+            Left = 217
             Top = 77
             Width = 17
             Height = 17
@@ -411,9 +411,10 @@ object frmMain: TfrmMain
             Caption = '-'
             ParentShowHint = False
             ShowHint = True
+            ExplicitLeft = 172
           end
           object SpeedButton6: TSpeedButton
-            Left = 150
+            Left = 195
             Top = 197
             Width = 17
             Height = 17
@@ -422,9 +423,10 @@ object frmMain: TfrmMain
             Caption = '+'
             ParentShowHint = False
             ShowHint = True
+            ExplicitLeft = 150
           end
           object SpeedButton7: TSpeedButton
-            Left = 172
+            Left = 217
             Top = 197
             Width = 17
             Height = 17
@@ -433,9 +435,10 @@ object frmMain: TfrmMain
             Caption = '-'
             ParentShowHint = False
             ShowHint = True
+            ExplicitLeft = 172
           end
           object SpeedButton8: TSpeedButton
-            Left = 127
+            Left = 172
             Top = 77
             Width = 17
             Height = 17
@@ -445,9 +448,10 @@ object frmMain: TfrmMain
             Margin = 4
             ParentShowHint = False
             ShowHint = True
+            ExplicitLeft = 127
           end
           object SpeedButton10: TSpeedButton
-            Left = 128
+            Left = 173
             Top = 197
             Width = 17
             Height = 17
@@ -457,9 +461,10 @@ object frmMain: TfrmMain
             Margin = 4
             ParentShowHint = False
             ShowHint = True
+            ExplicitLeft = 128
           end
           object SpeedButton11: TSpeedButton
-            Left = 105
+            Left = 150
             Top = 77
             Width = 17
             Height = 17
@@ -469,11 +474,12 @@ object frmMain: TfrmMain
             Margin = 4
             ParentShowHint = False
             ShowHint = True
+            ExplicitLeft = 105
           end
           object clbVisiblePackages: TCheckListBox
             Left = 9
             Top = 96
-            Width = 182
+            Width = 227
             Height = 94
             Anchors = [akLeft, akTop, akRight, akBottom]
             ItemHeight = 17
@@ -486,7 +492,7 @@ object frmMain: TfrmMain
           object lbedFilterFileName: TLabeledEdit
             Left = 10
             Top = 43
-            Width = 182
+            Width = 227
             Height = 25
             Anchors = [akLeft, akTop, akRight]
             EditLabel.Width = 58
@@ -501,7 +507,7 @@ object frmMain: TfrmMain
             AlignWithMargins = True
             Left = 9
             Top = 216
-            Width = 182
+            Width = 227
             Height = 99
             Margins.Left = 7
             Margins.Top = 7
@@ -518,40 +524,43 @@ object frmMain: TfrmMain
         object GroupBox4: TGroupBox
           Left = 0
           Top = 0
-          Width = 200
+          Width = 245
           Height = 105
           Align = alTop
           Caption = 'Statistic'
           TabOrder = 1
           DesignSize = (
-            200
+            245
             105)
           object lblModulesSelectedCount: TLabel
-            Left = 160
+            Left = 205
             Top = 48
             Width = 32
             Height = 17
             Alignment = taRightJustify
             Anchors = [akTop, akRight]
             Caption = #1061#1061#1061'X'
+            ExplicitLeft = 160
           end
           object lblModulesCount: TLabel
-            Left = 160
+            Left = 205
             Top = 25
             Width = 32
             Height = 17
             Alignment = taRightJustify
             Anchors = [akTop, akRight]
             Caption = #1061#1061#1061'X'
+            ExplicitLeft = 160
           end
           object lblModulesFilteredCount: TLabel
-            Left = 160
+            Left = 205
             Top = 71
             Width = 32
             Height = 17
             Alignment = taRightJustify
             Anchors = [akTop, akRight]
             Caption = #1061#1061#1061'X'
+            ExplicitLeft = 160
           end
           object Label2: TLabel
             Left = 11
