@@ -335,9 +335,9 @@ type
     procedure StylesChange;
     function GetPackageTypeIDByName(name: string): integer;
   public
+    { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
     // FModulesPackages : TList;
-    { Public declarations }
   end;
 
 var

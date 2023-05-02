@@ -214,13 +214,13 @@ var
   CompileResult : boolean;
 begin
   if Sender.Value = '' then Exit;
-
+  // Check FileNameRegExp Regular Expression
   CompileResult := false;
   regexp := TPerlRegEx.Create;
   try
     regexp.RegEx := Sender.Value;
-    regexp.Compile;
-    CompileResult := true;
+    regexp.Subject := fdtModulesFileName.AsString;
+    if regexp.Match then CompileResult := true;
   finally
     regexp.Free;
   end;

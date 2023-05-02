@@ -32,7 +32,7 @@ object frmModulesEditor: TfrmModulesEditor
       869
       37)
     object Button1: TButton
-      Left = 786
+      Left = 784
       Top = 6
       Width = 75
       Height = 25
@@ -42,6 +42,7 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
+      ExplicitLeft = 782
     end
   end
   object dbgModules: TDBGrid
@@ -119,7 +120,7 @@ object frmModulesEditor: TfrmModulesEditor
       869
       73)
     object SpeedButton1: TSpeedButton
-      Left = 654
+      Left = 652
       Top = 11
       Width = 207
       Height = 22
@@ -127,6 +128,7 @@ object frmModulesEditor: TfrmModulesEditor
       Anchors = [akTop, akRight]
       ParentShowHint = False
       ShowHint = True
+      ExplicitLeft = 654
     end
     object GroupBox1: TGroupBox
       Left = 1
@@ -165,13 +167,14 @@ object frmModulesEditor: TfrmModulesEditor
       end
     end
     object DBNavigator1: TDBNavigator
-      Left = 621
+      Left = 619
       Top = 39
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
+      ExplicitLeft = 617
     end
     object Button2: TButton
       Left = 373

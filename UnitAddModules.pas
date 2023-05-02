@@ -96,8 +96,10 @@ end;
 
 procedure TfrmAddModules.clbFieldsClickCheck(Sender: TObject);
 begin
-  if (clbFields.Items.Count > 0) AND (clbFields.ItemIndex < 0) then clbFields.ItemIndex := 0;
-  if clbFields.Items[clbFields.ItemIndex] = 'File Name' then clbFields.Checked[clbFields.ItemIndex] := true;
+  if (clbFields.Items.Count > 0) AND (clbFields.ItemIndex < 0)
+    then clbFields.ItemIndex := 0;
+  if clbFields.Items[clbFields.ItemIndex] = 'File Name'
+    then clbFields.Checked[clbFields.ItemIndex] := true;
   GetModulesListItems();
   {
   if lbxModules.Items.Count = 0
@@ -156,27 +158,30 @@ end;
 function TfrmAddModules.AddCurrentModuleToKnown: boolean;
 begin
   //
-  DM1.fdtModules.Append;
-  DM1.fdtModules.FieldByName('FileName').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
-  DM1.fdtModules.FieldByName('PackageID').AsInteger := StrToInt(PackageIDs[cbPackages.ItemIndex]);
-  if clbFields.Checked[1]
-    then DM1.fdtModules.FieldByName('Version').AsString := DM1.cdsModules.FieldByName('Version').AsString
-    else DM1.fdtModules.FieldByName('Version').AsString := '';
-  {
-  if clbFields.Checked[2]
-    then DM1.fdtModules.FieldByName('DateAndTime').AsDateTime := DM1.cdsModules.FieldByName('DateAndTime').AsDateTime
-    else DM1.fdtModules.FieldByName('DateAndTime').AsString := '';
-  if clbFields.Checked[3]
-    then DM1.fdtModules.FieldByName('Path').AsString := DM1.cdsModules.FieldByName('Path').AsString
-    else DM1.fdtModules.FieldByName('Path').AsString := '';
-  }
-  if clbFields.Checked[2]
-    then DM1.fdtModules.FieldByName('Hash').AsString := DM1.cdsModules.FieldByName('Hash').AsString
-    else DM1.fdtModules.FieldByName('Hash').AsString := '';
-  if cbOptionsFileNameRegExp.Checked
-    then DM1.fdtModules.FieldByName('FileNameRegExp').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
+  with DM1.fdtModules do
+  begin
+    Append;
+    FieldByName('FileName').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
+    FieldByName('PackageID').AsInteger := StrToInt(PackageIDs[cbPackages.ItemIndex]);
+    if clbFields.Checked[1]
+      then FieldByName('Version').AsString := DM1.cdsModules.FieldByName('Version').AsString
+      else FieldByName('Version').AsString := '';
+    {
+    if clbFields.Checked[2]
+      then FieldByName('DateAndTime').AsDateTime := DM1.cdsModules.FieldByName('DateAndTime').AsDateTime
+      else FieldByName('DateAndTime').AsString := '';
+    if clbFields.Checked[3]
+      then FieldByName('Path').AsString := DM1.cdsModules.FieldByName('Path').AsString
+      else FieldByName('Path').AsString := '';
+    }
+    if clbFields.Checked[2]
+      then FieldByName('Hash').AsString := DM1.cdsModules.FieldByName('Hash').AsString
+      else FieldByName('Hash').AsString := '';
+    if cbOptionsFileNameRegExp.Checked
+      then FieldByName('FileNameRegExp').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
 
-  DM1.fdtModules.Post;
+    DM1.fdtModules.Post;
+  end;
   // ShowMessage('Module ' + DM1.cdsModules.FieldByName('Name').AsString + ' successfuly added to DB.');
   ProgressBarAddModules.Position := ProgressBarAddModules.Position + 1;
   Application.ProcessMessages;
@@ -211,24 +216,27 @@ begin
   // Get Selected Modules as List
   DM1.cdsModules.DisableControls;
   lbxModules.Columns := 0;
-  for i := 0 to frmMain.DBGridModules.SelectedRows.Count - 1 do
+  with frmMain.DBGridModules do
   begin
-    s := '';
-    frmMain.DBGridModules.DataSource.DataSet.GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
-    for k := 0 to frmMain.DBGridModules.Columns.Count - 1 do
+    for i := 0 to SelectedRows.Count - 1 do
     begin
-      if ((frmMain.DBGridModules.Columns[k].FieldName = 'FileName') AND clbFields.Checked[0]) OR
-         ((frmMain.DBGridModules.Columns[k].FieldName = 'Version') AND clbFields.Checked[1]) OR
-        { ((frmMain.DBGrid1.Columns[k].FieldName = 'DateAndTime') AND clbFields.Checked[2]) OR}
-        { ((frmMain.DBGrid1.Columns[k].FieldName = 'Path') AND clbFields.Checked[3]) OR         }
-         ((frmMain.DBGridModules.Columns[k].FieldName = 'Hash') AND clbFields.Checked[2])
-        then
-          begin
-            if s <> '' then s := s + #9;
-            s := s + frmMain.DBGridModules.Columns[k].Field.asString;
-          end;
+      s := '';
+      DataSource.DataSet.GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
+      for k := 0 to Columns.Count - 1 do
+      begin
+        if ((Columns[k].FieldName = 'FileName') AND clbFields.Checked[0]) OR
+           ((Columns[k].FieldName = 'Version') AND clbFields.Checked[1]) OR
+          { ((Columns[k].FieldName = 'DateAndTime') AND clbFields.Checked[2]) OR}
+          { ((Columns[k].FieldName = 'Path') AND clbFields.Checked[3]) OR }
+           ((Columns[k].FieldName = 'Hash') AND clbFields.Checked[2])
+          then
+            begin
+              if s <> '' then s := s + #9;
+              s := s + Columns[k].Field.asString;
+            end;
+      end;
+      if s <> '' then lbxModules.Items.Add(s);
     end;
-    if s <> '' then lbxModules.Items.Add(s);
   end;
   DM1.cdsModules.EnableControls;
   lbxModules.TabWidth := 8;
@@ -244,26 +252,28 @@ begin
   if not Assigned(PackageIDs) then PackageIDs := TStringList.Create;
   PackageIDs.Clear;
   cbPackages.Clear;
-  DM1.fdtPackages.DisableControls;
-  DM1.fdtPackages.Filtered := false;
-  DM1.fdtPackages.Filter := '';
-  DM1.fdtPackages.IndexName := 'NameSubNameIndex';
-  // DM1.fdtPackages.IndexFieldNames := 'Name;SubName';
-  DM1.fdtPackages.First;
-  for i := 0 to DM1.fdtPackages.RecordCount - 1 do
+  with DM1.fdtPackages do
   begin
-    if DM1.fdtPackages.FieldByName('SubName').AsString = ''
-      then PackageName := DM1.fdtPackages.FieldByName('Name').AsString
-      else PackageName := DM1.fdtPackages.FieldByName('Name').AsString + ' ' +
-        DM1.fdtPackages.FieldByName('SubName').AsString;
-    if DM1.fdtPackages.FieldByName('Version').AsString <> ''
-      then PackageName := PackageName + ' ' + DM1.fdtPackages.FieldByName('Version').AsString;
-    cbPackages.Items.Add(PackageName);
-    PackageIDs.Add(DM1.fdtPackages.FieldByName('Num').AsString);
-    DM1.fdtPackages.Next;
+    DisableControls;
+    Filtered := false;
+    Filter := '';
+    IndexName := 'NameSubNameIndex';
+    // IndexFieldNames := 'Name;SubName';
+    First;
+    for i := 0 to RecordCount - 1 do
+    begin
+      PackageName := FieldByName('Name').AsString;
+      if FieldByName('SubName').AsString <> ''
+        then PackageName := PackageName + ' ' + FieldByName('SubName').AsString;
+      if FieldByName('Version').AsString <> ''
+        then PackageName := PackageName + ' ' + FieldByName('Version').AsString;
+      cbPackages.Items.Add(PackageName);
+      PackageIDs.Add(FieldByName('Num').AsString);
+      Next;
+    end;
+    if cbPackages.Items.Count > 0 then cbPackages.ItemIndex := 0;
+    EnableControls;
   end;
-  if cbPackages.Items.Count > 0 then cbPackages.ItemIndex := 0;
-  DM1.fdtPackages.EnableControls;
 
   Result := true;
 end;

@@ -275,24 +275,22 @@ object frmMain: TfrmMain
             ExplicitLeft = 496
           end
           object SpeedButton2: TSpeedButton
-            Left = 372
-            Top = 77
-            Width = 73
+            Left = 634
+            Top = 49
+            Width = 94
             Height = 22
             Action = actModulesSelectAll
             Anchors = [akTop, akRight]
             ParentShowHint = False
             ShowHint = True
-            ExplicitLeft = 417
           end
           object SpeedButton9: TSpeedButton
-            Left = 634
+            Left = 534
             Top = 49
-            Width = 91
+            Width = 94
             Height = 22
             Action = actDisplayPackagesList
             Anchors = [akTop, akRight]
-            ExplicitLeft = 679
           end
           object ledtBDSBuild: TLabeledEdit
             Left = 110
@@ -489,9 +487,9 @@ object frmMain: TfrmMain
             ShowHint = True
           end
           object SpeedButton13: TSpeedButton
-            Left = 120
+            Left = 113
             Top = 77
-            Width = 24
+            Width = 31
             Height = 17
             Action = actFilterPackagesSelectOnly3rdParty
             Anchors = [akTop, akRight]
@@ -511,7 +509,6 @@ object frmMain: TfrmMain
             Sorted = True
             TabOrder = 0
             OnClickCheck = clbVisiblePackagesClickCheck
-            ExplicitHeight = 90
           end
           object lbedFilterFileName: TLabeledEdit
             Left = 10
@@ -542,7 +539,6 @@ object frmMain: TfrmMain
             PopupMenu = ppmFilterPackagesTypes
             TabOrder = 2
             OnClickCheck = clbVisiblePackagesTypesClickCheck
-            ExplicitTop = 212
           end
         end
         object GroupBox4: TGroupBox

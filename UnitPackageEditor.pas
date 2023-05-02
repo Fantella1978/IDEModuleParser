@@ -115,29 +115,22 @@ end;
 
 procedure TfrmPackageEditor.dbcbGetItSetEnableState;
 begin
+  dbcbGetIt.Checked := DM1.fdtPackagesInGetIt.AsBoolean;
   if (DBLookupComboBox1.KeyValue = THIRDPARTY_PACKAGES_TYPE_ID)
-  then
-    begin
-      dbcbGetIt.Enabled := true;
-      if DM1.fdtPackagesInGetIt.AsBoolean = true
-        then dbcbGetIt.Checked := true
-        else dbcbGetIt.Checked := false;
-    end
-  else
-    begin
-      dbcbGetIt.Enabled := false;
-      if DBLookupComboBox1.KeyValue = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID
-      then
-        begin
-          dbcbGetIt.Checked := true;
-        end
-    end;
+    then dbcbGetIt.Enabled := true
+    else
+      begin
+        dbcbGetIt.Enabled := false;
+        if DBLookupComboBox1.KeyValue = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID
+          then dbcbGetIt.Checked := true;
+      end;
   if (DBLookupComboBox1.KeyValue <> THIRDPARTY_PACKAGES_TYPE_ID) AND
      (DBLookupComboBox1.KeyValue <> THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
   then
     begin
       dbcbGetIt.Checked := false;
-    end
+      DM1.fdtPackagesInGetIt.AsBoolean := false;
+    end;
 end;
 
 procedure TfrmPackageEditor.DBLookupComboBox1CloseUp(Sender: TObject);
