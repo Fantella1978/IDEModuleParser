@@ -3753,6 +3753,9 @@ object frmMain: TfrmMain
     object FindInKnownModulesDB1: TMenuItem
       Action = actModulesFindSelectedInKnownDB
     end
+    object PackagesList1: TMenuItem
+      Action = actDisplayPackagesList
+    end
     object N1: TMenuItem
       Caption = '-'
     end
@@ -3769,11 +3772,14 @@ object frmMain: TfrmMain
     object SelectAll1: TMenuItem
       Action = actFilterPackagesTypesSelectAll
     end
+    object actPackagesTypesUnselectAll1: TMenuItem
+      Action = actFilterPackagesTypesUnselectAll
+    end
     object actFilterPackagesTypesSelectOnlyEmpty1: TMenuItem
       Action = actFilterPackagesTypesSelectOnlyEmpty
     end
-    object actPackagesTypesUnselectAll1: TMenuItem
-      Action = actFilterPackagesTypesUnselectAll
+    object Selectonly3rdparty1: TMenuItem
+      Action = actFilterPackagesTypesSelectOnly3rdParty
     end
     object N6: TMenuItem
       Caption = '-'
@@ -3793,6 +3799,9 @@ object frmMain: TfrmMain
     end
     object SelectonlyEmpty1: TMenuItem
       Action = actFilterPackagesSelectOnlyEmpty
+    end
+    object Selectonly3rdpartypackages1: TMenuItem
+      Action = actFilterPackagesSelectOnly3rdParty
     end
     object N4: TMenuItem
       Caption = '-'
@@ -3816,6 +3825,9 @@ object frmMain: TfrmMain
     object SelectonlyEmpty2: TMenuItem
       Action = actFilterPackagesSelectOnlyEmpty
     end
+    object Selectonly3rdpartypackages2: TMenuItem
+      Action = actFilterPackagesSelectOnly3rdParty
+    end
     object UnselectAllPackages1: TMenuItem
       Action = actFilterPackagesUnSelectAll
     end
@@ -3827,6 +3839,9 @@ object frmMain: TfrmMain
     end
     object SelectonlyEmpty3: TMenuItem
       Action = actFilterPackagesTypesSelectOnlyEmpty
+    end
+    object Selectonly3rdparty2: TMenuItem
+      Action = actFilterPackagesTypesSelectOnly3rdParty
     end
     object UnselectAll3: TMenuItem
       Action = actFilterPackagesTypesUnselectAll

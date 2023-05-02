@@ -192,6 +192,11 @@ type
     SpeedButton13: TSpeedButton;
     actFilterPackagesTypesSelectOnly3rdParty: TAction;
     actFilterPackagesSelectOnly3rdParty: TAction;
+    Selectonly3rdpartypackages1: TMenuItem;
+    Selectonly3rdparty1: TMenuItem;
+    PackagesList1: TMenuItem;
+    Selectonly3rdpartypackages2: TMenuItem;
+    Selectonly3rdparty2: TMenuItem;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
