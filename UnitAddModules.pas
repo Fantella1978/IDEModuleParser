@@ -107,10 +107,22 @@ begin
 end;
 
 procedure TfrmAddModules.actPackagesEditorExecute(Sender: TObject);
+var
+  PackageID : integer;
+  i : integer;
 begin
   // Run Packages Editor
   frmPackagesEditor.ShowModal;
+  // Set Packages ComboBox item index
+  PackageID := DM1.fdtPackages.FieldByName('Num').AsInteger;
   UpdatePackagesInfo();
+  for i := 0 to PackageIDs.Count - 1 do
+    if PackageIDs[i].ToInteger = PackageID
+      then
+        begin
+          cbPackages.ItemIndex := i;
+          Break;
+        end;
 end;
 
 function TfrmAddModules.AddAllSelectedModulesToDB: boolean;
@@ -127,15 +139,15 @@ begin
   with DM1.cdsModules do
   begin
     CurrentBookMark := GetBookmark;
-    DM1.cdsModules.DisableControls;
+    DisableControls;
     for i := 0 to frmMain.DBGridModules.SelectedRows.Count - 1 do
     begin
-      DM1.cdsModules.GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
+      GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
       AddCurrentModuleToKnown();
     end;
-    DM1.cdsModules.EnableControls;
-    DM1.cdsModules.GotoBookmark(CurrentBookMark);
-    DM1.cdsModules.FreeBookMark(CurrentBookMark);
+    EnableControls;
+    GotoBookmark(CurrentBookMark);
+    FreeBookMark(CurrentBookMark);
   end;
   Sleep(100);
   Result := true;

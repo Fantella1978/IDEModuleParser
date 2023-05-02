@@ -60,7 +60,8 @@ object frmPackagesList: TfrmPackagesList
     TabOrder = 1
     OnBeforeDrawItem = ControlList1BeforeDrawItem
     OnClick = ControlList1Click
-    ExplicitTop = 8
+    ExplicitWidth = 987
+    ExplicitHeight = 404
     object lblName: TLabel
       Left = 10
       Top = 6
@@ -131,7 +132,7 @@ object frmPackagesList: TfrmPackagesList
       Height = 17
       Caption = 'Available in GetIt'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clPurple
+      Font.Color = clLime
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]
