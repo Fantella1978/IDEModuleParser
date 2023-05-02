@@ -447,6 +447,7 @@ begin
        then clbVisiblePackages.Checked[i] := true
        else clbVisiblePackages.Checked[i] := false;
     end;
+  clbVisiblePackagesClickCheck(Sender);
 end;
 
 procedure TfrmMain.actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
@@ -459,7 +460,6 @@ begin
     if clbVisiblePackages.Items[i] = '<Empty>'
       then clbVisiblePackages.Checked[i] := true;
   clbVisiblePackagesClickCheck(Sender);
-
 end;
 
 procedure TfrmMain.actFilterPackagesUnSelectAllExecute(Sender: TObject);
