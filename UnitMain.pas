@@ -188,6 +188,10 @@ type
     ClearFilters2: TMenuItem;
     N6: TMenuItem;
     ClearFilters3: TMenuItem;
+    SpeedButton12: TSpeedButton;
+    SpeedButton13: TSpeedButton;
+    actFilterPackagesTypesSelectOnly3rdParty: TAction;
+    actFilterPackagesSelectOnly3rdParty: TAction;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -308,6 +312,8 @@ type
     procedure actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure cbxStylesChange(Sender: TObject);
+    procedure actFilterPackagesTypesSelectOnly3rdPartyExecute(Sender: TObject);
+    procedure actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -322,6 +328,7 @@ type
     procedure PackagesFilterCreate(Sender: TObject);
     procedure ApplyAllFiltres;
     procedure StylesChange;
+    function GetPackageTypeIDByName(name: string): integer;
   public
     FModulesPackages : TArray<TModulesPackage>;
     // FModulesPackages : TList;
@@ -402,6 +409,7 @@ begin
     cl := TClipboard.Create;
     try
       cl.AsText := pl.Text;
+      if pl.Text <> '' then ShowMessage('Packages list copied to clipboard');
     finally
       cl.Free;
     end;
@@ -414,6 +422,31 @@ procedure TfrmMain.actFilterPackagesSelectAllExecute(Sender: TObject);
 begin
   clbVisiblePackages.CheckAll(cbChecked, false, false);
   clbVisiblePackagesClickCheck(Sender);
+end;
+
+function TfrmMain.GetPackageTypeIDByName(name: string): integer;
+begin
+  for var i := 0 to Length(FModulesPackages) - 1 do
+  if FModulesPackages[i].PackageName = name
+    then
+      begin
+        Result := FModulesPackages[i].PackageTypeID;
+        Exit;
+      end;
+  Result := -1;
+end;
+
+procedure TfrmMain.actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
+begin
+  // Select only 3rd-party packages
+  for var i := 0 to clbVisiblePackages.Items.Count - 1 do
+    begin
+      var tempPackageId := GetPackageTypeIDByName(clbVisiblePackages.Items[i]);
+      if (tempPackageId = THIRDPARTY_PACKAGES_TYPE_ID) OR
+        (tempPackageId = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
+       then clbVisiblePackages.Checked[i] := true
+       else clbVisiblePackages.Checked[i] := false;
+    end;
 end;
 
 procedure TfrmMain.actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
@@ -1070,6 +1103,22 @@ end;
 procedure TfrmMain.actFilterPackagesTypesSelectAllExecute(Sender: TObject);
 begin
   clbVisiblePackagesTypes.CheckAll(cbChecked, false, false);
+  clbVisiblePackagesTypesClickCheck(Sender);
+end;
+
+procedure TfrmMain.actFilterPackagesTypesSelectOnly3rdPartyExecute(
+  Sender: TObject);
+var
+  i : integer;
+begin
+  for i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
+  begin
+    var PackageTypeID := DM1.FindPackageTypeIDByName(clbVisiblePackagesTypes.Items[i]);
+    if (PackageTypeID = THIRDPARTY_PACKAGES_TYPE_ID) OR
+      (PackageTypeID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
+      then clbVisiblePackagesTypes.Checked[i] := true
+      else clbVisiblePackagesTypes.Checked[i] := false;
+  end;
   clbVisiblePackagesTypesClickCheck(Sender);
 end;
 

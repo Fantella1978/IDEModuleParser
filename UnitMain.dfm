@@ -476,6 +476,30 @@ object frmMain: TfrmMain
             ShowHint = True
             ExplicitLeft = 105
           end
+          object SpeedButton12: TSpeedButton
+            Left = 136
+            Top = 196
+            Width = 31
+            Height = 17
+            Action = actFilterPackagesTypesSelectOnly3rdParty
+            Anchors = [akRight, akBottom]
+            Caption = '3rd'
+            Margin = 4
+            ParentShowHint = False
+            ShowHint = True
+          end
+          object SpeedButton13: TSpeedButton
+            Left = 120
+            Top = 77
+            Width = 24
+            Height = 17
+            Action = actFilterPackagesSelectOnly3rdParty
+            Anchors = [akTop, akRight]
+            Caption = '3rd'
+            Margin = 4
+            ParentShowHint = False
+            ShowHint = True
+          end
           object clbVisiblePackages: TCheckListBox
             Left = 9
             Top = 96
@@ -3688,6 +3712,18 @@ object frmMain: TfrmMain
       Caption = 'Select only <Empty>'
       Hint = 'Select only <Empty>'
       OnExecute = actFilterPackagesSelectOnlyEmptyExecute
+    end
+    object actFilterPackagesTypesSelectOnly3rdParty: TAction
+      Category = 'Filter Packages Types'
+      Caption = 'Select only 3rd-party'
+      Hint = 'Select only 3rd-party types'
+      OnExecute = actFilterPackagesTypesSelectOnly3rdPartyExecute
+    end
+    object actFilterPackagesSelectOnly3rdParty: TAction
+      Category = 'Filter Packages'
+      Caption = 'Select only 3rd-party packages'
+      Hint = 'Select only 3rd-party packages'
+      OnExecute = actFilterPackagesSelectOnly3rdPartyExecute
     end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
