@@ -81,7 +81,7 @@ object frmPackageEditor: TfrmPackageEditor
       688
       37)
     object Button1: TButton
-      Left = 508
+      Left = 506
       Top = 6
       Width = 75
       Height = 25
@@ -89,10 +89,10 @@ object frmPackageEditor: TfrmPackageEditor
       Anchors = [akTop, akRight]
       Default = True
       TabOrder = 0
-      ExplicitLeft = 506
+      ExplicitLeft = 504
     end
     object Button2: TButton
-      Left = 595
+      Left = 593
       Top = 6
       Width = 75
       Height = 25
@@ -100,7 +100,7 @@ object frmPackageEditor: TfrmPackageEditor
       Anchors = [akTop, akRight]
       Cancel = True
       TabOrder = 1
-      ExplicitLeft = 593
+      ExplicitLeft = 591
     end
   end
   object dbeName: TDBEdit
@@ -136,35 +136,35 @@ object frmPackageEditor: TfrmPackageEditor
   object dbeURL: TDBEdit
     Left = 77
     Top = 127
-    Width = 591
+    Width = 589
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'Url'
     DataSource = DM1.dsPackages
     TabOrder = 5
     OnChange = dbeURLChange
-    ExplicitWidth = 589
+    ExplicitWidth = 587
   end
   object dbeVersioRgExp: TDBEdit
     Left = 341
     Top = 69
-    Width = 327
+    Width = 325
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'VersionRegExp'
     DataSource = DM1.dsPackages
     TabOrder = 3
     OnChange = dbeVersioRgExpChange
-    ExplicitWidth = 325
+    ExplicitWidth = 323
   end
   object DBLookupComboBox1: TDBLookupComboBox
     Left = 77
     Top = 98
     Width = 356
     Height = 23
-    DataField = 'Type'
+    DataField = 'Type_ID'
     DataSource = DM1.dsPackages
-    KeyField = 'ID'
+    KeyField = 'Type_ID'
     ListField = 'Name'
     ListSource = DM1.dsPackageTypes
     TabOrder = 4
@@ -183,14 +183,14 @@ object frmPackageEditor: TfrmPackageEditor
   object DBMemo1: TDBMemo
     Left = 77
     Top = 156
-    Width = 591
+    Width = 589
     Height = 183
     Anchors = [akLeft, akTop, akRight, akBottom]
     DataField = 'Description'
     DataSource = DM1.dsPackages
     ScrollBars = ssVertical
     TabOrder = 8
-    ExplicitWidth = 589
+    ExplicitWidth = 587
     ExplicitHeight = 179
   end
   object ActionList1: TActionList

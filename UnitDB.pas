@@ -16,7 +16,7 @@ type
     cdsModules: TClientDataSet;
     DataSource1: TDataSource;
     DataSetProvider1: TDataSetProvider;
-    cdsModulesNum: TIntegerField;
+    cdsModulesModule_ID: TIntegerField;
     cdsModulesPath: TStringField;
     cdsModulesVersion: TStringField;
     cdsModulesDateAndTime: TDateTimeField;
@@ -28,25 +28,25 @@ type
     fdtPackages: TFDTable;
     dsPackages: TDataSource;
     dsModulesFromQuery: TDataSource;
-    cdsModulesPackageID: TIntegerField;
+    cdsModulesPackage_ID: TIntegerField;
     cdsModulesPackageName: TStringField;
     FDUpdateSQL1: TFDUpdateSQL;
     cdsModulesFileName: TStringField;
-    fdtModulesNum: TFDAutoIncField;
+    fdtModulesModule_ID: TFDAutoIncField;
     fdtModulesFileName: TStringField;
     fdtModulesHash: TStringField;
     fdtModulesVersion: TStringField;
-    fdtModulesPackageID: TIntegerField;
+    fdtModulesPackage_ID: TIntegerField;
     fdtPackageTypes: TFDTable;
     dsPackageTypes: TDataSource;
-    fdtPackagesNum: TFDAutoIncField;
+    fdtPackagesPackage_ID: TFDAutoIncField;
     fdtPackagesName: TStringField;
     fdtPackagesSubName: TStringField;
     fdtPackagesUrl: TStringField;
     fdtPackagesVersionRegExp: TStringField;
     fdtPackagesVersion: TStringField;
-    fdtPackagesType: TIntegerField;
-    cdsModulesPackageTypeID: TIntegerField;
+    fdtPackagesType_ID: TIntegerField;
+    cdsModulesPackageType_ID: TIntegerField;
     cdsModulesPackageVersion: TStringField;
     FDTransaction1: TFDTransaction;
     fdtModulesPathRegExp: TStringField;
@@ -70,14 +70,14 @@ type
   public
     { Public declarations }
     procedure ClearModulesDB;
-    function FindPackageTypeIDByName(name: string): integer;
+    function FindPackageType_IDByName(name: string): integer;
   end;
 
   PModulesPackage = ^TModulesPackage;
   TModulesPackage = record
-    PackageID : integer;
+    Package_ID : integer;
     PackageName : string;
-    PackageTypeID : integer;
+    PackageType_ID : integer;
     PackageVersion : string;
     class function FindSame(const value: TModulesPackage; const MyArr: array of TModulesPackage): boolean; static;
     // class function IndexOfArray<T:Class>(const value: T; const Things: array of T): Integer; static;
@@ -114,7 +114,7 @@ var
 
 begin
   for i := 0 to High(MyArr) do
-    if // (value.PackageID = MyArr[i].PackageID) AND
+    if // (value.Package_ID = MyArr[i].Package_ID) AND
        (value.PackageName = MyArr[i].PackageName)
       then Exit(true);
   Result := false;
@@ -148,7 +148,7 @@ begin
   if cdsModules.RecordCount = 0 then Exit;
   cdsModules.DisableControls;
   oldIndex := DM1.cdsModules.IndexName;
-  DM1.cdsModules.IndexName := 'cdsModulesNumIndexUNIQ';
+  DM1.cdsModules.IndexName := 'cdsModulesModule_IDIndexUNIQ';
   DM1.cdsModules.Filtered := false;
   cdsModules.First;
   while not cdsModules.Eof do
@@ -171,7 +171,7 @@ begin
   UpdatePackagesActions();
 end;
 
-function TDM1.FindPackageTypeIDByName(name : string) : integer;
+function TDM1.FindPackageType_IDByName(name : string) : integer;
 begin
   fdtPackageTypes.First;
   while not fdtPackageTypes.Eof do
@@ -179,7 +179,7 @@ begin
     if fdtPackageTypes.FieldByName('Name').AsString = name
       then
         begin
-          Result := fdtPackageTypes.FieldByName('ID').AsInteger;
+          Result := fdtPackageTypes.FieldByName('Type_ID').AsInteger;
           Exit;
         end;
     fdtPackageTypes.Next;
@@ -230,7 +230,7 @@ end;
 
 procedure TDM1.fdtPackagesAfterInsert(DataSet: TDataSet);
 begin
-  fdtPackages.FieldByName('Type').AsInteger := 1; // Default Package Type
+  fdtPackages.FieldByName('Type_ID').AsInteger := 1; // Default Package Type_ID
 end;
 
 procedure TDM1.fdtPackagesAfterRefresh(DataSet: TDataSet);

@@ -35,9 +35,9 @@ type
     procedure SetCurrentTaskPositionsMinMax(PosMin, PosMax : integer);
   private
     { Private declarations }
-    FCurrentModulePackageID: Integer;
+    FCurrentModulePackage_ID: Integer;
     FCurrentModulePackageName: string;
-    FCurrentModulePackageTypeID: Integer;
+    FCurrentModulePackageType_ID: Integer;
     function GetOverallTaskPosition(): Integer;
     function DetermineCurrentModule: boolean;
     function GetKnownModulesForFileName: boolean;
@@ -190,7 +190,7 @@ begin
       // sleep(1); // Sleep
       tempIDEModule := @ModulesArray[i]^;
       DM1.cdsModules.Append;
-      DM1.cdsModules.FieldByName('Num').AsInteger := i;
+      DM1.cdsModules.FieldByName('Module_ID').AsInteger := i;
       DM1.cdsModules.FieldByName('FileName').AsString :=
         // UpperCase(TPath.GetFileNameWithoutExtension(tempIDEModule.FileName)) +
         // LowerCase(TPath.GetExtension(tempIDEModule.FileName));
@@ -201,9 +201,9 @@ begin
       DM1.cdsModules.FieldByName('Version').AsString := tempIDEModule.Version;
       DM1.cdsModules.FieldByName('DateAndTime').AsDateTime := tempIDEModule.DateTime;
       DM1.cdsModules.FieldByName('Hash').AsString := tempIDEModule.Hash;
-      DM1.cdsModules.FieldByName('PackageID').AsInteger := -1;
+      DM1.cdsModules.FieldByName('Package_ID').AsInteger := -1;
       DM1.cdsModules.FieldByName('PackageName').AsString := '';
-      DM1.cdsModules.FieldByName('PackageTypeID').AsInteger := -1;
+      DM1.cdsModules.FieldByName('PackageType_ID').AsInteger := -1;
 
       DM1.cdsModules.Post;
       SetCurrentTaskPosition(i);
@@ -228,8 +228,8 @@ end;
 function TfrmParse.GetKnownModulesForFileName() : boolean;
 begin
   {
-    SELECT m.*, p.Num AS PackageID, p.Name AS PackageName
-    FROM Modules AS m LEFT OUTER JOIN Packages AS p ON m.Package=p.Num
+    SELECT m.*, p.Package_ID AS Package_ID, p.Name AS PackageName
+    FROM Modules AS m LEFT OUTER JOIN Packages AS p ON m.Package_ID=p.Package_ID
     WHERE lower(m.FileName)="bds.exe"
   }
   with DM1.fdqModulesFromQuery do
@@ -237,11 +237,11 @@ begin
     if Active then Close;
     SQL.Clear;
     SQL.Add(
-      'SELECT m.*, p.Num AS PackageID, p.Name AS PackageName, p.SubName AS PackageSubName, pt.ID AS PackageTypeID, ' +
+      'SELECT m.*, p.Package_ID AS Package_ID, p.Name AS PackageName, p.SubName AS PackageSubName, pt.Type_ID AS PackageType_ID, ' +
       'p.Version AS PackageVersion ' +
       'FROM Modules AS m ' +
-      'LEFT JOIN Packages AS p ON m.PackageID=p.Num ' +
-      'LEFT JOIN PackageTypes AS pt ON p.Type=pt.ID ' +
+      'LEFT JOIN Packages AS p ON m.Package_ID=p.Package_ID ' +
+      'LEFT JOIN PackageTypes AS pt ON p.Type_ID=pt.Type_ID ' +
       'WHERE lower(m.FileName)="' +
       LowerCase(DM1.cdsModules.FieldByName('FileName').AsString) +
       '"' +
@@ -257,9 +257,9 @@ begin
   if DM1.fdqModulesFromQuery.RecordCount > 0
   then
     begin
-      FCurrentModulePackageID := DM1.fdqModulesFromQuery.FieldByName('PackageID').AsInteger;
+      FCurrentModulePackage_ID := DM1.fdqModulesFromQuery.FieldByName('Package_ID').AsInteger;
       FCurrentModulePackageName := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
-      FCurrentModulePackageTypeID := DM1.fdqModulesFromQuery.FieldByName('PackageTypeID').AsInteger;
+      FCurrentModulePackageType_ID := DM1.fdqModulesFromQuery.FieldByName('PackageType_ID').AsInteger;
     end;
 
   Result := true;
@@ -267,7 +267,7 @@ end;
 
 function TfrmParse.SaveCurrentModuleData() : boolean;
 begin
-  if (FCurrentModulePackageID = -1) AND (FCurrentModulePackageName = '')
+  if (FCurrentModulePackage_ID = -1) AND (FCurrentModulePackageName = '')
   then
     begin
       Result := false;
@@ -275,9 +275,9 @@ begin
     end;
 
   DM1.cdsModules.Edit;
-  DM1.cdsModules.FieldByName('PackageID').AsInteger := FCurrentModulePackageID;
+  DM1.cdsModules.FieldByName('Package_ID').AsInteger := FCurrentModulePackage_ID;
   DM1.cdsModules.FieldByName('PackageName').AsString := FCurrentModulePackageName;
-  DM1.cdsModules.FieldByName('PackageTypeID').AsInteger := FCurrentModulePackageTypeID;
+  DM1.cdsModules.FieldByName('PackageType_ID').AsInteger := FCurrentModulePackageType_ID;
 
   Result := true;
 end;
@@ -293,8 +293,8 @@ begin
     if DM1.cdsModules.FieldByName('Version').AsString = DM1.fdqModulesFromQuery.FieldByName('Version').AsString
       then
         begin
-          FCurrentModulePackageID := DM1.fdqModulesFromQuery.FieldByName('PackageID').AsInteger;
-          FCurrentModulePackageTypeID := DM1.fdqModulesFromQuery.FieldByName('PackageTypeID').AsInteger;
+          FCurrentModulePackage_ID := DM1.fdqModulesFromQuery.FieldByName('Package_ID').AsInteger;
+          FCurrentModulePackageType_ID := DM1.fdqModulesFromQuery.FieldByName('PackageType_ID').AsInteger;
           FCurrentModulePackageName := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
           if DM1.fdqModulesFromQuery.FieldByName('PackageSubName').AsString <> ''
             then FCurrentModulePackageName := FCurrentModulePackageName + ' ' +
@@ -309,13 +309,13 @@ end;
 
 function TfrmParse.DetermineCurrentModule() : boolean;
 begin
-  FCurrentModulePackageID := -1;
+  FCurrentModulePackage_ID := -1;
   FCurrentModulePackageName := '';
-  FCurrentModulePackageTypeID := -1;
+  FCurrentModulePackageType_ID := -1;
 
   GetKnownModulesForFileName();
   if GlobalModulesCompareLevel2 then DetermineCurrentModuleLevel2();
-  if FCurrentModulePackageID = -1 then DetermineCurrentModuleLevel1();
+  if FCurrentModulePackage_ID = -1 then DetermineCurrentModuleLevel1();
   SaveCurrentModuleData();
 
   Result := true;
@@ -331,7 +331,7 @@ begin
   regexp := TPerlRegEx.Create;
   try
     // var count1 := DM1.cdsModules.RecordCount;
-    DM1.cdsModules.Filter := 'PackageID = -1';
+    DM1.cdsModules.Filter := 'Package_ID = -1';
     DM1.cdsModules.Filtered := true;
     DM1.cdsModules.First;
     // var count2 := DM1.cdsModules.RecordCount;
@@ -348,9 +348,9 @@ begin
           begin
             // Module File Name Match RegExp
             DM1.cdsModules.Edit;
-            DM1.cdsModulesPackageID.AsInteger := DM1.fdqModulesFromQuery.FieldByName('PackageID').AsInteger;
+            DM1.cdsModulesPackage_ID.AsInteger := DM1.fdqModulesFromQuery.FieldByName('Package_ID').AsInteger;
             DM1.cdsModulesPackageName.AsString := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
-            DM1.cdsModulesPackageTypeID.AsInteger := DM1.fdqModulesFromQuery.FieldByName('PackageTypeID').AsInteger;
+            DM1.cdsModulesPackageType_ID.AsInteger := DM1.fdqModulesFromQuery.FieldByName('PackageType_ID').AsInteger;
 
             // ShowMessage('Found module ' + Subject + ' by RegExp: ' + RegEx);
             Logger.AddToLog('Module found by FileNameRegExp: ' + Subject);
@@ -381,10 +381,10 @@ begin
     {
     SQL.Add(
       'SELECT m.FileNameRegExp as FileNameRegExp, ' +
-      'p.Num AS PackageID, p.Name AS PackageName, pt.ID AS PackageTypeID ' +
+      'p.Package_ID AS Package_ID, p.Name AS PackageName, pt.Type_ID AS PackageType_ID ' +
       'FROM Modules AS m ' +
-      'LEFT JOIN Packages AS p ON m.PackageID=p.Num ' +
-      'LEFT JOIN PackageTypes AS pt ON p.Type=pt.ID ' +
+      'LEFT JOIN Packages AS p ON m.Package_ID=p.Package_ID ' +
+      'LEFT JOIN PackageTypes AS pt ON p.Type_ID=pt.Type_ID ' +
       'WHERE m.FileNameRegExp<>""' +
       ';');
     }
@@ -430,7 +430,7 @@ begin
   DM1.cdsModules.DisableControls;
   DM1.cdsModules.First;
   var i := -1;
-  DM1.cdsModules.Filter := 'PackageID is not NULL';
+  DM1.cdsModules.Filter := 'Package_ID is not NULL';
   DM1.cdsModules.Filtered := true;
   frmMain.FModulesPackages := [];
   while not DM1.cdsModules.Eof do
@@ -440,12 +440,12 @@ begin
     inc(i);
     SetCurrentTaskPosition(i);
 
-    if DM1.cdsModules.FieldByName('PackageID').AsInteger <> -1
+    if DM1.cdsModules.FieldByName('Package_ID').AsInteger <> -1
     then
       begin
-        tmpPackage.PackageID := DM1.cdsModules.FieldByName('PackageID').AsInteger;
+        tmpPackage.Package_ID := DM1.cdsModules.FieldByName('Package_ID').AsInteger;
         tmpPackage.PackageName := string(DM1.cdsModules.FieldByName('PackageName').AsString);
-        tmpPackage.PackageTypeID := DM1.cdsModules.FieldByName('PackageTypeID').AsInteger;
+        tmpPackage.PackageType_ID := DM1.cdsModules.FieldByName('PackageType_ID').AsInteger;
         tmpPackage.PackageVersion := string(DM1.cdsModules.FieldByName('PackageVersion').AsString);
 
         {if not TModulesPackage.FindSame<TModulesPackage>(tmpPackage, frmMain.FModulesPackages)

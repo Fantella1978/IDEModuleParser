@@ -50,8 +50,8 @@ var
   AHour, AMinute, ASecond, AMilliSecond : word;
 begin
   //
-  // \d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4}    // date Groups[4]
-  // \d{1,2}:\d{1,2}:\d{1,2}(?:\s*([\S]{2}))?     // time Groups[5]
+  // (\d{1,4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,4})               // date Groups[4]
+  // (\d{1,2})[\:\.](\d{1,2})[\:\.](\d{1,2})(?:\s*([\S]{2}))?  // time Groups[5]
   //
   DateTimeRegexp := TPerlRegEx.Create;
   try
@@ -81,23 +81,17 @@ begin
           AHour := StrToInt(Groups[4]);
           AMinute := StrToInt(Groups[5]);
           ASecond := StrToInt(Groups[6]);
-          if Groups[7] = 'PM' then AHour := AHour + 12;
+          if (Groups[7] = 'PM') AND (AHour < 12)
+            then AHour := AHour + 12;
+          //
           if AHour >= 24 then AHour := AHour - 24;
+          //
           AMilliSecond := 0;
         end
       else
         begin
           Logger.AddToLog('[Error] Can''t convert string to DateTime: ' + str);
           DecodeDateTime( 0 , AYear, AMonth, ADay, AHour, AMinute, ASecond, AMilliSecond);
-          {
-          AYear := 0;
-          AMonth := 0;
-          ADay := 0;
-          AHour := 0;
-          AMinute := 0;
-          ASecond := 0;
-          AMilliSecond := 0;
-          }
         end;
     end;
   finally

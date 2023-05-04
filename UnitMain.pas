@@ -333,7 +333,7 @@ type
     procedure PackagesFilterCreate(Sender: TObject);
     procedure ApplyAllFiltres;
     procedure StylesChange;
-    function GetPackageTypeIDByName(name: string): integer;
+    function GetPackageType_IDByName(name: string): integer;
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
@@ -429,13 +429,13 @@ begin
   clbVisiblePackagesClickCheck(Sender);
 end;
 
-function TfrmMain.GetPackageTypeIDByName(name: string): integer;
+function TfrmMain.GetPackageType_IDByName(name: string): integer;
 begin
   for var i := 0 to Length(FModulesPackages) - 1 do
   if FModulesPackages[i].PackageName = name
     then
       begin
-        Result := FModulesPackages[i].PackageTypeID;
+        Result := FModulesPackages[i].PackageType_ID;
         Exit;
       end;
   Result := -1;
@@ -446,9 +446,9 @@ begin
   // Select only 3rd-party packages
   for var i := 0 to clbVisiblePackages.Items.Count - 1 do
     begin
-      var tempPackageId := GetPackageTypeIDByName(clbVisiblePackages.Items[i]);
-      if (tempPackageId = THIRDPARTY_PACKAGES_TYPE_ID) OR
-        (tempPackageId = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
+      var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
+      if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
+        (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
        then clbVisiblePackages.Checked[i] := true
        else clbVisiblePackages.Checked[i] := false;
     end;
@@ -633,15 +633,15 @@ begin
               then tempFilterString := tempFilterString + '-1'
               else
                 begin
-                  var PackageTypeID := DM1.FindPackageTypeIDByName(clbVisiblePackagesTypes.Items[i]);
-                  if PackageTypeID >= 0
-                    then tempFilterString := tempFilterString + IntToStr(PackageTypeID);
+                  var PackageType_ID := DM1.FindPackageType_IDByName(clbVisiblePackagesTypes.Items[i]);
+                  if PackageType_ID >= 0
+                    then tempFilterString := tempFilterString + IntToStr(PackageType_ID);
                 end;
           end
         else inc(checkedCount);
     end;
   if tempFilterString <> ''
-    then FModulesFilterPackagesTypesString := 'NOT PackageTypeID IN (' + tempFilterString + ')'
+    then FModulesFilterPackagesTypesString := 'NOT PackageType_ID IN (' + tempFilterString + ')'
     else FModulesFilterPackagesTypesString := '';
   if checkedCount = clbVisiblePackagesTypes.Items.Count
     then actFilterPackagesTypesSelectAll.Enabled := false
@@ -1118,9 +1118,9 @@ var
 begin
   for i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
   begin
-    var PackageTypeID := DM1.FindPackageTypeIDByName(clbVisiblePackagesTypes.Items[i]);
-    if (PackageTypeID = THIRDPARTY_PACKAGES_TYPE_ID) OR
-      (PackageTypeID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
+    var PackageType_ID := DM1.FindPackageType_IDByName(clbVisiblePackagesTypes.Items[i]);
+    if (PackageType_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
+      (PackageType_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
       then clbVisiblePackagesTypes.Checked[i] := true
       else clbVisiblePackagesTypes.Checked[i] := false;
   end;
@@ -1166,7 +1166,7 @@ begin
   for i := 0 to L - 1 do
     begin
       clbVisiblePackages.Items.Add(string(FModulesPackages[i].PackageName));
-      // clbVisiblePackages.Items.AddPair(FModulesPackages[i].PackageName, IntToStr(FModulesPackages[i].PackageID));
+      // clbVisiblePackages.Items.AddPair(FModulesPackages[i].PackageName, IntToStr(FModulesPackages[i].Package_ID));
     end;
   clbVisiblePackages.Items.Add('<Empty>');
   actFilterPackagesSelectAllExecute(Sender);
@@ -1216,7 +1216,7 @@ begin
   DM1.cdsModules.DisableControls;
 
   oldIndex := DM1.cdsModules.IndexName;
-  DM1.cdsModules.IndexName := 'cdsModulesNumIndexUNIQ'; // Set Num Index
+  DM1.cdsModules.IndexName := 'cdsModulesModule_IDIndexUNIQ'; // Set Module_ID Index
   DM1.cdsModules.Filtered := false;
   lbedFilterFileName.Text := '';
 

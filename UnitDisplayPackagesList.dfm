@@ -29,7 +29,7 @@ object frmPackagesList: TfrmPackagesList
       989
       37)
     object Button1: TButton
-      Left = 897
+      Left = 895
       Top = 6
       Width = 75
       Height = 25
@@ -38,7 +38,7 @@ object frmPackagesList: TfrmPackagesList
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 895
+      ExplicitLeft = 893
     end
   end
   object ControlList1: TControlList

@@ -124,7 +124,7 @@ begin
   PackagesIDsListString := '';
   for i := 0 to Length(frmMain.FModulesPackages) - 1 do
     begin
-      PackagesIDsListString := PackagesIDsListString + IntToStr(frmMain.FModulesPackages[i].PackageID);
+      PackagesIDsListString := PackagesIDsListString + IntToStr(frmMain.FModulesPackages[i].Package_ID);
       if i <> Length(frmMain.FModulesPackages) - 1
         then PackagesIDsListString := PackagesIDsListString + ', ';
     end;
@@ -135,8 +135,8 @@ begin
   FPackagesQuery.SQL.Text := '' +
     'SELECT p.*, pt.* ' +
     'FROM Packages AS p ' +
-    'LEFT JOIN PackageTypes AS pt ON p.Type=pt.ID ' +
-    'WHERE p.Num IN (' + PackagesIDsListString + ') ' +
+    'LEFT JOIN PackageTypes AS pt ON p.Type_ID=pt.Type_ID ' +
+    'WHERE p.Package_ID IN (' + PackagesIDsListString + ') ' +
     'ORDER BY p.Name ASC, p.SubName ASC';
    FPackagesQuery.Open;
    ControlList1.ItemCount := FPackagesQuery.RecordCount;

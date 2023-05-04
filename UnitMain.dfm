@@ -235,7 +235,7 @@ object frmMain: TfrmMain
               end
               item
                 Expanded = False
-                FieldName = 'PackageTypeID'
+                FieldName = 'PackageType_ID'
                 Visible = False
               end>
           end

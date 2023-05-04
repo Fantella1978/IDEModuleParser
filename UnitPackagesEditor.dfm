@@ -70,7 +70,7 @@ object frmPackagesEditor: TfrmPackagesEditor
     Columns = <
       item
         Expanded = False
-        FieldName = 'Num'
+        FieldName = 'Package_ID'
         Visible = False
       end
       item

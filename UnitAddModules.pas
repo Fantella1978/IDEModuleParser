@@ -48,7 +48,7 @@ type
 
 var
   frmAddModules: TfrmAddModules;
-  PackageIDs : TStringList;
+  Package_IDs : TStringList;
 
 implementation
 
@@ -110,16 +110,16 @@ end;
 
 procedure TfrmAddModules.actPackagesEditorExecute(Sender: TObject);
 var
-  PackageID : integer;
+  Package_ID : integer;
   i : integer;
 begin
   // Run Packages Editor
   frmPackagesEditor.ShowModal;
   // Set Packages ComboBox item index
-  PackageID := DM1.fdtPackages.FieldByName('Num').AsInteger;
+  Package_ID := DM1.fdtPackages.FieldByName('Package_ID').AsInteger;
   UpdatePackagesInfo();
-  for i := 0 to PackageIDs.Count - 1 do
-    if PackageIDs[i].ToInteger = PackageID
+  for i := 0 to Package_IDs.Count - 1 do
+    if Package_IDs[i].ToInteger = Package_ID
       then
         begin
           cbPackages.ItemIndex := i;
@@ -162,7 +162,7 @@ begin
   begin
     Append;
     FieldByName('FileName').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
-    FieldByName('PackageID').AsInteger := StrToInt(PackageIDs[cbPackages.ItemIndex]);
+    FieldByName('Package_ID').AsInteger := StrToInt(Package_IDs[cbPackages.ItemIndex]);
     if clbFields.Checked[1]
       then FieldByName('Version').AsString := DM1.cdsModules.FieldByName('Version').AsString
       else FieldByName('Version').AsString := '';
@@ -196,7 +196,7 @@ end;
 procedure TfrmAddModules.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   ProgressBarAddModules.Visible := false;
-  FreeAndNil(PackageIDs);
+  FreeAndNil(Package_IDs);
 end;
 
 procedure TfrmAddModules.FormShow(Sender: TObject);
@@ -249,8 +249,8 @@ var
   i : integer;
   PackageName : string;
 begin
-  if not Assigned(PackageIDs) then PackageIDs := TStringList.Create;
-  PackageIDs.Clear;
+  if not Assigned(Package_IDs) then Package_IDs := TStringList.Create;
+  Package_IDs.Clear;
   cbPackages.Clear;
   with DM1.fdtPackages do
   begin
@@ -268,7 +268,7 @@ begin
       if FieldByName('Version').AsString <> ''
         then PackageName := PackageName + ' ' + FieldByName('Version').AsString;
       cbPackages.Items.Add(PackageName);
-      PackageIDs.Add(FieldByName('Num').AsString);
+      Package_IDs.Add(FieldByName('Package_ID').AsString);
       Next;
     end;
     if cbPackages.Items.Count > 0 then cbPackages.ItemIndex := 0;

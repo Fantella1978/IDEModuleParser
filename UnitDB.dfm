@@ -6,7 +6,7 @@ object DM1: TDM1
     Aggregates = <>
     FieldDefs = <
       item
-        Name = 'Num'
+        Name = 'Module_ID'
         Attributes = [faRequired]
         DataType = ftInteger
       end
@@ -35,7 +35,7 @@ object DM1: TDM1
         Size = 40
       end
       item
-        Name = 'PackageID'
+        Name = 'Package_ID'
         DataType = ftInteger
       end
       item
@@ -44,7 +44,7 @@ object DM1: TDM1
         Size = 120
       end
       item
-        Name = 'PackageTypeID'
+        Name = 'PackageType_ID'
         DataType = ftInteger
       end
       item
@@ -101,8 +101,8 @@ object DM1: TDM1
         Options = [ixDescending]
       end
       item
-        Name = 'cdsModulesNumIndexUNIQ'
-        Fields = 'Num'
+        Name = 'cdsModulesModule_IDIndexUNIQ'
+        Fields = 'Module_ID'
         Options = [ixPrimary, ixUnique]
       end>
     Params = <>
@@ -110,9 +110,9 @@ object DM1: TDM1
     AfterScroll = cdsModulesAfterScroll
     Left = 64
     Top = 56
-    object cdsModulesNum: TIntegerField
+    object cdsModulesModule_ID: TIntegerField
       AutoGenerateValue = arAutoInc
-      FieldName = 'Num'
+      FieldName = 'Module_ID'
       ProviderFlags = [pfInUpdate, pfInWhere, pfInKey]
       Required = True
     end
@@ -135,15 +135,15 @@ object DM1: TDM1
       FieldName = 'Hash'
       Size = 40
     end
-    object cdsModulesPackageID: TIntegerField
-      FieldName = 'PackageID'
+    object cdsModulesPackage_ID: TIntegerField
+      FieldName = 'Package_ID'
     end
     object cdsModulesPackageName: TStringField
       FieldName = 'PackageName'
       Size = 120
     end
-    object cdsModulesPackageTypeID: TIntegerField
-      FieldName = 'PackageTypeID'
+    object cdsModulesPackageType_ID: TIntegerField
+      FieldName = 'PackageType_ID'
     end
     object cdsModulesPackageVersion: TStringField
       FieldName = 'PackageVersion'
@@ -164,6 +164,7 @@ object DM1: TDM1
     Params.Strings = (
       'Database=Z:\IDE Module Parser\IDEModuleParser.db3'
       'DriverID=SQLite')
+    Connected = True
     LoginPrompt = False
     Left = 280
     Top = 56
@@ -173,14 +174,14 @@ object DM1: TDM1
     SQL.Strings = (
       
         'SELECT m.FileName, p.Name as PackageName, p.Url FROM Modules m L' +
-        'EFT OUTER JOIN Packages p ON p.Num = m.PackageID')
+        'EFT OUTER JOIN Packages p ON p.Package_ID = m.Package_ID')
     Left = 232
     Top = 248
   end
   object fdtModules: TFDTable
     AfterScroll = fdtModulesAfterScroll
     AfterRefresh = fdtModulesAfterRefresh
-    IndexFieldNames = 'Num'
+    IndexFieldNames = 'Module_ID'
     Connection = fdcSQLite
     FetchOptions.AssignedValues = [evCursorKind]
     FetchOptions.CursorKind = ckStatic
@@ -189,12 +190,13 @@ object DM1: TDM1
     FormatOptions.SortOptions = [soNoCase]
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     UpdateOptions.AssignedValues = [uvAutoCommitUpdates]
+    UpdateOptions.KeyFields = 'Module_ID'
     TableName = 'Modules'
     Left = 232
     Top = 120
-    object fdtModulesNum: TFDAutoIncField
-      FieldName = 'Num'
-      Origin = 'Num'
+    object fdtModulesModule_ID: TFDAutoIncField
+      FieldName = 'Module_ID'
+      Origin = 'Module_ID'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
@@ -215,9 +217,9 @@ object DM1: TDM1
       Origin = 'Version'
       Size = 27
     end
-    object fdtModulesPackageID: TIntegerField
-      FieldName = 'PackageID'
-      Origin = 'PackageID'
+    object fdtModulesPackage_ID: TIntegerField
+      FieldName = 'Package_ID'
+      Origin = 'Package_ID'
     end
     object fdtModulesPathRegExp: TStringField
       FieldName = 'PathRegExp'
@@ -245,7 +247,7 @@ object DM1: TDM1
     AfterInsert = fdtPackagesAfterInsert
     AfterScroll = fdtPackagesAfterScroll
     AfterRefresh = fdtPackagesAfterRefresh
-    IndexFieldNames = 'Num'
+    IndexFieldNames = 'Package_ID'
     Connection = fdcSQLite
     UpdateTransaction = FDTransaction1
     FetchOptions.AssignedValues = [evCursorKind]
@@ -255,13 +257,13 @@ object DM1: TDM1
     FormatOptions.SortOptions = [soNoCase]
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     UpdateOptions.AssignedValues = [uvUpdateNonBaseFields, uvAutoCommitUpdates]
-    UpdateOptions.KeyFields = 'Num'
+    UpdateOptions.KeyFields = 'Package_ID'
     TableName = 'Packages'
     Left = 336
     Top = 120
-    object fdtPackagesNum: TFDAutoIncField
-      FieldName = 'Num'
-      Origin = 'Num'
+    object fdtPackagesPackage_ID: TFDAutoIncField
+      FieldName = 'Package_ID'
+      Origin = 'Package_ID'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
@@ -291,9 +293,9 @@ object DM1: TDM1
       Origin = 'Version'
       Size = 27
     end
-    object fdtPackagesType: TIntegerField
-      FieldName = 'Type'
-      Origin = 'Type'
+    object fdtPackagesType_ID: TIntegerField
+      FieldName = 'Type_ID'
+      Origin = 'Type_ID'
     end
     object fdtPackagesInGetIt: TBooleanField
       FieldName = 'InGetIt'
@@ -322,7 +324,7 @@ object DM1: TDM1
     Top = 248
   end
   object fdtPackageTypes: TFDTable
-    IndexFieldNames = 'ID'
+    IndexFieldNames = 'Type_ID'
     Connection = fdcSQLite
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     TableName = 'PackageTypes'
