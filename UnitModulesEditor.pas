@@ -203,6 +203,10 @@ end;
 procedure TfrmModulesEditor.actCopyFileNameAsRegExpExecute(Sender: TObject);
 begin
   // Copy FileName to FileNameRegExp
+  if (DM1.fdtModulesFileNameRegExp.AsString <> '') AND
+    (MessageDlg('FileNameRegExp is not empty. Replace?', mtConfirmation, [mbYes, mbNo], 0) <> mrYes)
+    then Exit;
+
   if DM1.fdtModules.State in [dsBrowse]
     then DM1.fdtModules.Edit;
   if DM1.fdtModules.State in [dsInsert, dsEdit]

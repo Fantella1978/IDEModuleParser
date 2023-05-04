@@ -388,7 +388,7 @@ object frmMain: TfrmMain
             Caption = 'Packages Types'
           end
           object SpeedButton4: TSpeedButton
-            Left = 194
+            Left = 195
             Top = 77
             Width = 17
             Height = 17
@@ -397,7 +397,6 @@ object frmMain: TfrmMain
             Caption = '+'
             ParentShowHint = False
             ShowHint = True
-            ExplicitLeft = 149
           end
           object SpeedButton5: TSpeedButton
             Left = 217
@@ -436,7 +435,7 @@ object frmMain: TfrmMain
             ExplicitLeft = 172
           end
           object SpeedButton8: TSpeedButton
-            Left = 172
+            Left = 112
             Top = 77
             Width = 17
             Height = 17
@@ -446,7 +445,6 @@ object frmMain: TfrmMain
             Margin = 4
             ParentShowHint = False
             ShowHint = True
-            ExplicitLeft = 127
           end
           object SpeedButton10: TSpeedButton
             Left = 173
@@ -462,7 +460,7 @@ object frmMain: TfrmMain
             ExplicitLeft = 128
           end
           object SpeedButton11: TSpeedButton
-            Left = 150
+            Left = 173
             Top = 77
             Width = 17
             Height = 17
@@ -472,11 +470,10 @@ object frmMain: TfrmMain
             Margin = 4
             ParentShowHint = False
             ShowHint = True
-            ExplicitLeft = 105
           end
           object SpeedButton12: TSpeedButton
             Left = 136
-            Top = 196
+            Top = 197
             Width = 31
             Height = 17
             Action = actFilterPackagesTypesSelectOnly3rdParty
@@ -487,7 +484,7 @@ object frmMain: TfrmMain
             ShowHint = True
           end
           object SpeedButton13: TSpeedButton
-            Left = 113
+            Left = 136
             Top = 77
             Width = 31
             Height = 17
@@ -509,6 +506,7 @@ object frmMain: TfrmMain
             Sorted = True
             TabOrder = 0
             OnClickCheck = clbVisiblePackagesClickCheck
+            ExplicitHeight = 90
           end
           object lbedFilterFileName: TLabeledEdit
             Left = 10
@@ -539,6 +537,7 @@ object frmMain: TfrmMain
             PopupMenu = ppmFilterPackagesTypes
             TabOrder = 2
             OnClickCheck = clbVisiblePackagesTypesClickCheck
+            ExplicitTop = 212
           end
         end
         object GroupBox4: TGroupBox
