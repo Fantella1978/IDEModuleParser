@@ -164,7 +164,6 @@ object DM1: TDM1
     Params.Strings = (
       'Database=Z:\IDE Module Parser\IDEModuleParser.db3'
       'DriverID=SQLite')
-    Connected = True
     LoginPrompt = False
     Left = 280
     Top = 56
