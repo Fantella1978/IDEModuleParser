@@ -276,7 +276,7 @@ object frmMain: TfrmMain
           end
           object SpeedButton2: TSpeedButton
             Left = 634
-            Top = 49
+            Top = 46
             Width = 94
             Height = 22
             Action = actModulesSelectAll
@@ -286,7 +286,7 @@ object frmMain: TfrmMain
           end
           object SpeedButton9: TSpeedButton
             Left = 534
-            Top = 49
+            Top = 46
             Width = 94
             Height = 22
             Action = actDisplayPackagesList
@@ -295,7 +295,7 @@ object frmMain: TfrmMain
           object ledtBDSBuild: TLabeledEdit
             Left = 110
             Top = 45
-            Width = 192
+            Width = 179
             Height = 25
             Alignment = taCenter
             EditLabel.Width = 78
@@ -309,7 +309,7 @@ object frmMain: TfrmMain
           object ledtBDSInstDate: TLabeledEdit
             Left = 110
             Top = 74
-            Width = 192
+            Width = 179
             Height = 25
             Alignment = taCenter
             EditLabel.Width = 94
@@ -344,6 +344,17 @@ object frmMain: TfrmMain
             TabOrder = 0
             Text = ''
             ExplicitWidth = 432
+          end
+          object edRSBuild: TEdit
+            Left = 295
+            Top = 45
+            Width = 233
+            Height = 25
+            Alignment = taCenter
+            Anchors = [akLeft, akTop, akRight]
+            Constraints.MaxWidth = 400
+            ReadOnly = True
+            TabOrder = 3
           end
         end
       end

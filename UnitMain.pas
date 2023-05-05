@@ -197,6 +197,7 @@ type
     PackagesList1: TMenuItem;
     Selectonly3rdpartypackages2: TMenuItem;
     Selectonly3rdparty2: TMenuItem;
+    edRSBuild: TEdit;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -319,6 +320,8 @@ type
     procedure cbxStylesChange(Sender: TObject);
     procedure actFilterPackagesTypesSelectOnly3rdPartyExecute(Sender: TObject);
     procedure actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
+    procedure DisplayRSBuild(module: TIDEModule);
+    function FindRSBuildName(build: string): string;
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -1233,6 +1236,7 @@ begin
           ledtBDSPath.Text := BDSIDEModule.Path;
           ledtBDSBuild.Text := BDSIDEModule.Version;
           ledtBDSInstDate.Text := DateTimeToStr(BDSIDEModule.DateTime);
+          DisplayRSBuild(BDSIDEModule);
         end
       else BDSIDEModule := nil;
 
@@ -1414,6 +1418,14 @@ begin
   edtFontSize.Enabled := false;
 end;
 
+procedure TfrmMain.DisplayRSBuild(module: TIDEModule);
+begin
+  edRSBuild.Text := FindRSBuildName(module.Version);
+  if edRSBuild.Text <> ''
+  then edRSBuild.Visible := true
+  else edRSBuild.Visible := false;
+end;
+
 procedure TfrmMain.EnableFontSizeChange;
 begin
   // Enable Font Size Change
@@ -1459,6 +1471,24 @@ begin
         Break;
       end;
   end;
+end;
+
+function TfrmMain.FindRSBuildName(build: string): string;
+begin
+  Result := '';
+  DM1.fdtPackages.DisableControls;
+  DM1.fdtPackages.Filtered := false;
+  DM1.fdtPackages.Filter := 'Version = ''' + build +'''';
+  DM1.fdtPackages.Filtered := true;
+  if DM1.fdtPackages.RecordCount = 1
+    then
+      begin
+        Result := DM1.fdtPackages.FieldByName('Name').AsString;
+        if DM1.fdtPackages.FieldByName('SubName').AsString <> ''
+          then Result := Result + ' ' +
+            DM1.fdtPackages.FieldByName('SubName').AsString;
+      end;
+  DM1.fdtPackages.EnableControls;
 end;
 
 procedure TfrmMain.FormActivate(Sender: TObject);
