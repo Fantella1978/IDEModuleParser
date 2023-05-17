@@ -295,7 +295,7 @@ object frmMain: TfrmMain
           object ledtBDSBuild: TLabeledEdit
             Left = 110
             Top = 45
-            Width = 179
+            Width = 163
             Height = 25
             Alignment = taCenter
             EditLabel.Width = 78
@@ -309,7 +309,7 @@ object frmMain: TfrmMain
           object ledtBDSInstDate: TLabeledEdit
             Left = 110
             Top = 74
-            Width = 179
+            Width = 163
             Height = 25
             Alignment = taCenter
             EditLabel.Width = 94
@@ -323,9 +323,8 @@ object frmMain: TfrmMain
           object ledtBDSPath: TLabeledEdit
             Left = 110
             Top = 14
-            Width = 434
+            Width = 419
             Height = 25
-            Anchors = [akLeft, akTop, akRight]
             Constraints.MaxWidth = 600
             Constraints.MinWidth = 200
             EditLabel.Width = 51
@@ -343,16 +342,15 @@ object frmMain: TfrmMain
             ReadOnly = True
             TabOrder = 0
             Text = ''
-            ExplicitWidth = 432
           end
           object edRSBuild: TEdit
-            Left = 295
+            Left = 279
             Top = 45
-            Width = 233
+            Width = 249
             Height = 25
             Alignment = taCenter
-            Anchors = [akLeft, akTop, akRight]
             Constraints.MaxWidth = 400
+            Constraints.MinWidth = 200
             ReadOnly = True
             TabOrder = 3
           end
