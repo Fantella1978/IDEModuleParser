@@ -1,1 +1,0 @@
-I just made a code change by removing the class name scope from a public class variable reference and the IDE errored with Access Violation OK/Details and the error repeats as soon as hitting OK so I could not save my work.

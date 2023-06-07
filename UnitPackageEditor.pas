@@ -40,6 +40,7 @@ type
     procedure DBLookupComboBox1CloseUp(Sender: TObject);
     procedure dbeURLChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure DBMemo1Change(Sender: TObject);
   private
     { Private declarations }
     FPackageChanged : boolean;
@@ -138,6 +139,12 @@ begin
   FPackageChanged := true;
   actSave.Enabled := true;
   dbcbGetItSetEnableState();
+end;
+
+procedure TfrmPackageEditor.DBMemo1Change(Sender: TObject);
+begin
+  FPackageChanged := true;
+  actSave.Enabled := true;
 end;
 
 procedure TfrmPackageEditor.FormCloseQuery(Sender: TObject;

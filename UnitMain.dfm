@@ -77,7 +77,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsModulesList
+    ActivePage = tsSettings
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText

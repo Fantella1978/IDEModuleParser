@@ -81,7 +81,7 @@ object frmPackageEditor: TfrmPackageEditor
       688
       37)
     object Button1: TButton
-      Left = 506
+      Left = 504
       Top = 6
       Width = 75
       Height = 25
@@ -89,10 +89,10 @@ object frmPackageEditor: TfrmPackageEditor
       Anchors = [akTop, akRight]
       Default = True
       TabOrder = 0
-      ExplicitLeft = 504
+      ExplicitLeft = 502
     end
     object Button2: TButton
-      Left = 593
+      Left = 591
       Top = 6
       Width = 75
       Height = 25
@@ -100,7 +100,7 @@ object frmPackageEditor: TfrmPackageEditor
       Anchors = [akTop, akRight]
       Cancel = True
       TabOrder = 1
-      ExplicitLeft = 591
+      ExplicitLeft = 589
     end
   end
   object dbeName: TDBEdit
@@ -136,26 +136,26 @@ object frmPackageEditor: TfrmPackageEditor
   object dbeURL: TDBEdit
     Left = 77
     Top = 127
-    Width = 589
+    Width = 587
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'Url'
     DataSource = DM1.dsPackages
     TabOrder = 5
     OnChange = dbeURLChange
-    ExplicitWidth = 587
+    ExplicitWidth = 585
   end
   object dbeVersioRgExp: TDBEdit
     Left = 341
     Top = 69
-    Width = 325
+    Width = 323
     Height = 23
     Anchors = [akLeft, akTop, akRight]
     DataField = 'VersionRegExp'
     DataSource = DM1.dsPackages
     TabOrder = 3
     OnChange = dbeVersioRgExpChange
-    ExplicitWidth = 323
+    ExplicitWidth = 321
   end
   object DBLookupComboBox1: TDBLookupComboBox
     Left = 77
@@ -183,14 +183,15 @@ object frmPackageEditor: TfrmPackageEditor
   object DBMemo1: TDBMemo
     Left = 77
     Top = 156
-    Width = 589
+    Width = 587
     Height = 183
     Anchors = [akLeft, akTop, akRight, akBottom]
     DataField = 'Description'
     DataSource = DM1.dsPackages
     ScrollBars = ssVertical
     TabOrder = 8
-    ExplicitWidth = 587
+    OnChange = DBMemo1Change
+    ExplicitWidth = 585
     ExplicitHeight = 179
   end
   object ActionList1: TActionList

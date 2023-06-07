@@ -181,9 +181,9 @@ end;
 
 procedure TfrmModulesEditor.FormShow(Sender: TObject);
 begin
-  DM1.fdtModules.DisableControls;
   DM1.fdtModules.IndexFieldNames := 'FileName:DN';
   DM1.fdtModules.Filtered := false;
+  DM1.fdtModules.DisableControls;
   dbgModulesTitleClick(dbgModules.Columns[1]);
   DM1.fdtModules.First;
   DM1.fdtModules.EnableControls;

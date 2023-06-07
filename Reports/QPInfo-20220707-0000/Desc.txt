@@ -1,1 +1,0 @@
-Was trying to debug FMX app (https://github.com/zoomicon/READCOM_App) on MacOS-X Intel 64-bit (iMac mini on the cloud) and pressing Pause probably a 2nd time (while it was saying Stopping on the Delphi titlebar) caused exception
