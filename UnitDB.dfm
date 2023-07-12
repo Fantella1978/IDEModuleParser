@@ -175,7 +175,7 @@ object DM1: TDM1
         'SELECT m.FileName, p.Name as PackageName, p.Url FROM Modules m L' +
         'EFT OUTER JOIN Packages p ON p.Package_ID = m.Package_ID')
     Left = 232
-    Top = 248
+    Top = 256
   end
   object fdtModules: TFDTable
     AfterScroll = fdtModulesAfterScroll

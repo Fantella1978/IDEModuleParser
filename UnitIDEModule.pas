@@ -50,20 +50,39 @@ var
   AHour, AMinute, ASecond, AMilliSecond : word;
 begin
   //
-  // (\d{1,4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,4})               // date Groups[4]
+  // (\d{1,4})[\/\-\.](?:\d{1,2}|[A-Z,a-z]{3})[\/\-\.](\d{1,4})               // date Groups[4]
   // (\d{1,2})[\:\.](\d{1,2})[\:\.](\d{1,2})(?:\s*([\S]{2}))?  // time Groups[5]
   //
   DateTimeRegexp := TPerlRegEx.Create;
   try
     with DateTimeRegexp do begin
-      RegEx := '(\d{1,4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,4})\s*' +
+      RegEx := '(\d{1,4})[\/\-\.](\d{1,2}|[A-Z,a-z]{3})[\/\-\.](\d{1,4})\s*' +
         '(?:\s*[\S]{2}\s*)?(\d{1,2})[\:\.](\d{1,2})[\:\.](\d{1,2})(?:\s*([\S]{2}))?';
       Subject := str;
       if Match
       then
         begin
           AYear := StrToInt(Groups[3]);
-          AMonth := StrToInt(Groups[2]);
+          if AYear < 100 then AYear := 2000 + AYear;
+          if Length(Groups[2]) = 3
+            then
+              begin
+                AMonth := 1;
+                var tempG2 := lowercase(Groups[2]);
+                if tempG2 = 'jan' then AMonth := 1;
+                if tempG2 = 'feb' then AMonth := 2;
+                if tempG2 = 'mar' then AMonth := 3;
+                if tempG2 = 'apr' then AMonth := 4;
+                if tempG2 = 'may' then AMonth := 5;
+                if tempG2 = 'jun' then AMonth := 6;
+                if tempG2 = 'jul' then AMonth := 7;
+                if tempG2 = 'aug' then AMonth := 8;
+                if tempG2 = 'sep' then AMonth := 9;
+                if tempG2 = 'oct' then AMonth := 10;
+                if tempG2 = 'nov' then AMonth := 11;
+                if tempG2 = 'dec' then AMonth := 12;
+              end
+            else AMonth := StrToInt(Groups[2]);
           ADay := StrToInt(Groups[1]);
           if (ADay > 31) AND (AYear <= 31)
           then
