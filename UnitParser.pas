@@ -53,6 +53,7 @@ type
     parseSuccess: boolean;
     Tasks: Integer;
     currentTask: Integer;
+    MFListIsVIList : boolean; // Modules File List copied from the RS Version Information text
   end;
 
 var
@@ -99,15 +100,30 @@ end;
 function TfrmParse.GetModuleLineRegExp: string;
 begin
 
-  // (.*)\t\(\d{1}x[0-9A-F]{8}\)\t([^\t]*)\t(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})[\.]?\s*(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[\S]{2})?)\t([\dA-F]{40})
+  case MFListIsVIList of
+    false:
+      // Modules File List opened from crash report
+      //
+      // (.*)\t\(\d{1}x[0-9A-F]{8}\)\t([^\t]*)\t(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?(\d{1,2}[\/\-\.]\d{1,2}[\/\-\.]\d{2,4})[\.]?\s*(\d{1,2}:\d{1,2}:\d{1,2}(?:\s*[\S]{2})?)\t([\dA-F]{40})
 
-  Result := '(.*)\t' +                                // file name Groups[1]
-    '\(\d{1}x[0-9A-F]{8}\)\t' +                        //
-    '([^\t]*)\t' +                                    // path Groups[2]
-    '(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?' +   // version Groups[3]
-    '(\d{1,4}[\/\-\.](?:\d{1,2}|[A-Z,a-z]{3})[\/\-\.]\d{1,4})[\.]?\s*' +    // date Groups[4]
-    '((?:\s*[\S]{2}\s*)?\d{1,2}[\:\.]\d{1,2}[\:\.]\d{1,2}(?:\s*[\S]{2})?|)\t' +    // time Groups[5]
-    '([\dA-F]{40})';                                  // hash Groups[6]
+      Result := '(.*)\t' +                                // Groups[1] - file name
+        '\(\d{1}x[0-9A-F]{8}\)\t' +                       //
+        '([^\t]*)\t' +                                    // Groups[2] - path
+        '(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?' +   // Groups[3] - version
+        '(\d{1,4}[\/\-\.](?:\d{1,2}|[A-Z,a-z]{3})[\/\-\.]\d{1,4})[\.]?\s*' +          // Groups[4] - date
+        '((?:\s*[\S]{2}\s*)?\d{1,2}[\:\.]\d{1,2}[\:\.]\d{1,2}(?:\s*[\S]{2})?|)\t' +   // Groups[5] - time
+        '([\dA-F]{40})';                                  // Groups[6] - hash
+
+    true:
+      // Modules File List copied from the RS Version Information text
+      //
+      // (.*),\s(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6}|),\s(.*)
+
+      Result := '(.*),\s' +                               // Groups[1] - file name
+        '(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6}|),\s' +      // Groups[2] - version
+        '(.*)';                                           // Groups[3] - path
+  end;
+
 
 end;
 
@@ -543,8 +559,15 @@ begin
                 Groups[4] - date
                 Groups[5] - time
                 Groups[6] - hash
+
+                or
+
+                Groups[1] - file name
+                Groups[2] - version
+                Groups[3] - path
               }
               tempIDEModule := TIDEModule.Create;
+              tempIDEModule.isVIList := MFListIsVIList;
               tempIDEModule.AssignFromRegExpGroups(regexp);
               SetLength(ModulesArray, Length(ModulesArray) + 1);
               ModulesArray[Length(ModulesArray) - 1] := Pointer(tempIDEModule);

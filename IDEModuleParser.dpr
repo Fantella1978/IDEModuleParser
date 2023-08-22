@@ -20,7 +20,8 @@ uses
   UnitEnableAdminMode in 'UnitEnableAdminMode.pas' {frmEnableAdminMode},
   UnitPackageEditor in 'UnitPackageEditor.pas' {frmPackageEditor},
   UnitProgressWindow in 'UnitProgressWindow.pas' {frmProgress},
-  UnitDisplayPackagesList in 'UnitDisplayPackagesList.pas' {frmPackagesList};
+  UnitDisplayPackagesList in 'UnitDisplayPackagesList.pas' {frmPackagesList},
+  UnitCopyVersionInfo in 'UnitCopyVersionInfo.pas' {frmCopyVersionInfo};
 
 {$R *.res}
 
@@ -47,6 +48,7 @@ begin
   Application.CreateForm(TfrmPackageEditor, frmPackageEditor);
   Application.CreateForm(TfrmProgress, frmProgress);
   Application.CreateForm(TfrmPackagesList, frmPackagesList);
+  Application.CreateForm(TfrmCopyVersionInfo, frmCopyVersionInfo);
   TStyleManager.TrySetStyle('Amethyst Kamri');
   Application.Run;
 end.

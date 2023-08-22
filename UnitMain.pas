@@ -20,6 +20,7 @@ uses
   , UnitCopyAsText
   , UnitModulesEditor
   , UnitPackagesEditor
+  , UnitCopyVersionInfo
   , UnitStaticFunctions
   , UnitEnableAdminMode
   , UnitDisplayPackagesList
@@ -198,6 +199,8 @@ type
     Selectonly3rdpartypackages2: TMenuItem;
     Selectonly3rdparty2: TMenuItem;
     edRSBuild: TEdit;
+    actCopyFromVersionInfo: TAction;
+    Button9: TButton;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -322,6 +325,8 @@ type
     procedure actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
     procedure DisplayRSBuild(module: TIDEModule);
     function FindRSBuildName(build: string): string;
+    procedure actCopyFromVersionInfoExecute(Sender: TObject);
+    procedure GetMemoTxtModuleFileFromVersionInfo(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -337,6 +342,7 @@ type
     procedure ApplyAllFiltres;
     procedure StylesChange;
     function GetPackageType_IDByName(name: string): integer;
+    function DeleteTempFolder: boolean;
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
@@ -351,11 +357,14 @@ var
   spfFileName : TFileName;  // Step.txt filename
   defFileName : TFileName;  // Desc.txt filename
   mzfFileName : TFileName;  // QPInfo-XXXXXXXX-XXXX.zip filename
+  vifFileName : TFileName;  // Version Info temp filename (for Version Information parse)
   Logger : TMyLogger;       // Logger
   ModulesArray : TModulesArray;   // IDE Modules Array
+  ModulesFileListIsVersionInfoList : boolean;
   BDSIDEModule : TIDEModule;      // BDS IDE Module
   ReportFolder : string;          // Report folder for unpack Report Zip
   ReportFilesInZip: TArray<string>;
+  TempFolder : string;          // Temp folder for paste Version Info text
   ConfirmOpenForAll: TModalResult;   // Confirm Open for All files
   AskConfirmOpenForAll: boolean;     // Ask confirm Open for All files
 
@@ -482,6 +491,70 @@ begin
   lbedFilterFileNameChange(Sender);
   actFilterPackagesSelectAllExecute(Sender);
   actFilterPackagesTypesSelectAllExecute(Sender);
+end;
+
+function TfrmMain.DeleteTempFolder: boolean;
+begin
+  // Delete temp Report folder
+  if (TempFolder <> '') and TDirectory.Exists(TempFolder, true)
+  then
+    begin
+      try
+        TDirectory.Delete(TempFolder, true);
+        Logger.AddToLog('Temp folder deleted: ' + TempFolder);
+      except
+        Logger.AddToLog('[Error] Can''t delete temp folder: ' + TempFolder);
+        Result := false;
+        Exit;
+      end;
+    end;
+  Result := true;
+end;
+
+procedure TfrmMain.GetMemoTxtModuleFileFromVersionInfo(Sender: TObject);
+begin
+  //
+
+  try
+    // Delete old temp Report folder
+    DeleteTempFolder();
+    // Create a new temp Report folder
+    TempFolder := TPath.GetTempPath() + 'TempFolder_' + TPath.GetGUIDFileName(false);
+    if not TDirectory.Exists(TempFolder, true)
+    then
+      begin
+        TDirectory.CreateDirectory(TempFolder);
+        Logger.AddToLog('Create temp folder: ' + TempFolder);
+      end
+    else
+      Logger.AddToLog('Temp folder already exists: ' + TempFolder);
+
+    vifFileName := TempFolder + TPath.DirectorySeparatorChar + 'VersionInfo.txt';
+    try
+      frmCopyVersionInfo.memVersionInformation.Lines.SaveToFile(vifFileName);
+      Logger.AddToLog('The ' + vifFileName + ' file created.');
+    finally
+
+    end;
+    OpenTextModuleListFile(vifFileName);
+    ModulesFileListIsVersionInfoList := true;
+  finally
+  end;
+
+end;
+
+procedure TfrmMain.actCopyFromVersionInfoExecute(Sender: TObject);
+begin
+  // Copy modules info from Version Info
+  if frmCopyVersionInfo.ShowModal = mrOk
+  then
+    begin
+      if frmCopyVersionInfo.memVersionInformation.Text <> ''
+        then GetMemoTxtModuleFileFromVersionInfo(Sender);
+      PageControl1.ActivePage := tsModuleListFile;
+      if actParseModuleFile.Enabled
+        then actParseModuleFileExecute(Sender);
+    end;
 end;
 
 procedure TfrmMain.actModulesFindSelectedInKnownDBExecute(Sender: TObject);
@@ -1055,6 +1128,7 @@ begin
     then
       begin
         OpenTextModuleListFile(OpenTextFileDialog1.FileName);
+        ModulesFileListIsVersionInfoList := false;
         PageControl1.ActivePage := tsModuleListFile;
         if actParseModuleFile.Enabled
           then actParseModuleFileExecute(Sender);
@@ -1224,6 +1298,7 @@ begin
   lbedFilterFileName.Text := '';
 
   frmParse.parseSuccess := false;
+  frmParse.MFListIsVIList := ModulesFileListIsVersionInfoList;
   frmParse.Show;
   frmParse.ParseModuleListFile();
 
@@ -1502,6 +1577,7 @@ begin
   // Close the Application
   DragAcceptFiles(Self.Handle, False);
   ModulesArrayClear();
+  DeleteTempFolder();
   DeleteTempReportFolder();
   if SaveSattingsToRegistry()
     then Logger.AddToLog('Application settings successfuly saved')
@@ -1742,6 +1818,7 @@ begin
   then
     begin
       OpenTextModuleListFile(tempFileName);
+      ModulesFileListIsVersionInfoList := false;
       Result := true;
     end
   else Result := false;

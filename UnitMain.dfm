@@ -55,7 +55,7 @@ object frmMain: TfrmMain
       ExplicitLeft = 909
     end
     object Button3: TButton
-      Left = 299
+      Left = 455
       Top = 6
       Width = 75
       Height = 25
@@ -71,13 +71,21 @@ object frmMain: TfrmMain
       Caption = 'Open Report in Zip'
       TabOrder = 1
     end
+    object Button9: TButton
+      Left = 299
+      Top = 6
+      Width = 150
+      Height = 25
+      Action = actCopyFromVersionInfo
+      TabOrder = 4
+    end
   end
   object PageControl1: TPageControl
     Left = 0
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsSettings
+    ActivePage = tsModuleListFile
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -162,8 +170,6 @@ object frmMain: TfrmMain
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 734
-        ExplicitHeight = 425
         object gbModulesList: TGroupBox
           Left = 0
           Top = 105
@@ -172,8 +178,6 @@ object frmMain: TfrmMain
           Align = alClient
           Caption = 'Modules List'
           TabOrder = 1
-          ExplicitWidth = 734
-          ExplicitHeight = 320
           object DBGridModules: TDBGrid
             Left = 2
             Top = 19
@@ -248,7 +252,6 @@ object frmMain: TfrmMain
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 734
           DesignSize = (
             736
             105)
@@ -366,7 +369,6 @@ object frmMain: TfrmMain
         Constraints.MaxWidth = 600
         Constraints.MinWidth = 200
         TabOrder = 0
-        ExplicitHeight = 425
         object GroupBox5: TGroupBox
           Left = 0
           Top = 105
@@ -377,7 +379,6 @@ object frmMain: TfrmMain
           Constraints.MinWidth = 100
           PopupMenu = ppmFilters
           TabOrder = 0
-          ExplicitHeight = 320
           DesignSize = (
             245
             324)
@@ -515,7 +516,6 @@ object frmMain: TfrmMain
             Sorted = True
             TabOrder = 0
             OnClickCheck = clbVisiblePackagesClickCheck
-            ExplicitHeight = 90
           end
           object lbedFilterFileName: TLabeledEdit
             Left = 10
@@ -546,7 +546,6 @@ object frmMain: TfrmMain
             PopupMenu = ppmFilterPackagesTypes
             TabOrder = 2
             OnClickCheck = clbVisiblePackagesTypesClickCheck
-            ExplicitTop = 212
           end
         end
         object GroupBox4: TGroupBox
@@ -3451,6 +3450,7 @@ object frmMain: TfrmMain
         Action = actSettingsRestoreDefaults
         Anchors = [akLeft, akBottom]
         TabOrder = 3
+        ExplicitTop = 397
       end
       object GroupBox6: TGroupBox
         Left = 3
@@ -3728,6 +3728,11 @@ object frmMain: TfrmMain
       Caption = 'Select only 3rd-party packages'
       Hint = 'Select only 3rd-party packages'
       OnExecute = actFilterPackagesSelectOnly3rdPartyExecute
+    end
+    object actCopyFromVersionInfo: TAction
+      Caption = 'Copy from Version Info'
+      Hint = 'Copy modules info from RS Version Info'
+      OnExecute = actCopyFromVersionInfoExecute
     end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog

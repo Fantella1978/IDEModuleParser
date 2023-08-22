@@ -15,6 +15,7 @@ type
   private
     function DateAndTimeStrToDateTime(str : string): TDateTime;
   public
+    isVIList : boolean;
     FileName : string;
     Path : string;
     Version : string;
@@ -35,6 +36,7 @@ uses
 
 constructor TIDEModule.Create;
 begin
+  isVIList := false;
   FileName := '';
   Path := '';
   Version := '';
@@ -126,14 +128,27 @@ var
 begin
   with regexp do
   begin
-    FileName := Groups[1];
-    Path := Groups[2];
-    Version := Groups[3];
-    str := Groups[4] + ' ' + Groups[5];
-    if TryStrToDateTime(str, DateTime) = false
-    then
-      DateTime := DateAndTimeStrToDateTime(str);
-    Hash := Groups[6];
+    case isVIList of
+      false:
+        begin
+          FileName := Groups[1];
+          Path := Groups[2];
+          Version := Groups[3];
+          str := Groups[4] + ' ' + Groups[5];
+          if TryStrToDateTime(str, DateTime) = false
+          then
+            DateTime := DateAndTimeStrToDateTime(str);
+          Hash := Groups[6];
+        end;
+      true:
+        begin
+          FileName := Groups[1];
+          Version := Groups[2];
+          Path := Groups[3];
+          // DateTime := DateAndTimeStrToDateTime(str);
+          // Hash := '';
+        end;
+    end;
   end;
 end;
 
