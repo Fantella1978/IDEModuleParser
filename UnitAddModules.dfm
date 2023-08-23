@@ -94,6 +94,8 @@ object frmAddModules: TfrmAddModules
       ItemHeight = 17
       ParentFont = False
       TabOrder = 0
+      ExplicitWidth = 806
+      ExplicitHeight = 188
     end
   end
   object Panel2: TPanel
@@ -158,6 +160,7 @@ object frmAddModules: TfrmAddModules
           ExtendedUI = True
           TabOrder = 1
           OnCloseUp = cbPackagesCloseUp
+          ExplicitWidth = 485
         end
       end
       object GroupBox4: TGroupBox

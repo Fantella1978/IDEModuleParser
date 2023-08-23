@@ -52,8 +52,8 @@ var
   AHour, AMinute, ASecond, AMilliSecond : word;
 begin
   //
-  // (\d{1,4})[\/\-\.](?:\d{1,2}|[A-Z,a-z]{3})[\/\-\.](\d{1,4})               // date Groups[4]
-  // (\d{1,2})[\:\.](\d{1,2})[\:\.](\d{1,2})(?:\s*([\S]{2}))?  // time Groups[5]
+  // (\d{1,4})[\/\-\.](?:\d{1,2}|[A-Z,a-z]{3})[\/\-\.](\d{1,4})   // Groups[4] - date
+  // (\d{1,2})[\:\.](\d{1,2})[\:\.](\d{1,2})(?:\s*([\S]{2}))?     // Groups[5] - time
   //
   DateTimeRegexp := TPerlRegEx.Create;
   try
@@ -145,8 +145,6 @@ begin
           FileName := Groups[1];
           Version := Groups[2];
           Path := Groups[3];
-          // DateTime := DateAndTimeStrToDateTime(str);
-          // Hash := '';
         end;
     end;
   end;

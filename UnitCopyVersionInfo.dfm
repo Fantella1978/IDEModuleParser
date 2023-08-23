@@ -2,7 +2,7 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
   Left = 0
   Top = 0
   BorderStyle = bsDialog
-  Caption = 'Copy modules info from RS Version Info'
+  Caption = 'Copy modules information from RS Version Information'
   ClientHeight = 478
   ClientWidth = 644
   Color = clBtnFace
@@ -24,13 +24,13 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 404
-    ExplicitWidth = 626
+    ExplicitTop = 437
+    ExplicitWidth = 642
     DesignSize = (
       644
       37)
     object Button1: TButton
-      Left = 476
+      Left = 474
       Top = 6
       Width = 75
       Height = 25
@@ -39,10 +39,10 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 458
+      ExplicitLeft = 472
     end
     object Button2: TButton
-      Left = 563
+      Left = 561
       Top = 6
       Width = 75
       Height = 25
@@ -51,7 +51,7 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 545
+      ExplicitLeft = 559
     end
   end
   object memVersionInformation: TMemo
@@ -62,6 +62,7 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
     Align = alClient
     Lines.Strings = (
       'memVersionInformation')
+    ScrollBars = ssBoth
     TabOrder = 1
     OnChange = memVersionInformationChange
   end
@@ -73,16 +74,14 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitLeft = 280
-    ExplicitTop = 48
-    ExplicitWidth = 185
+    ExplicitWidth = 642
     DesignSize = (
       644
       41)
     object Label1: TLabel
       Left = 8
       Top = 13
-      Width = 623
+      Width = 603
       Height = 15
       Anchors = [akLeft, akTop, akRight]
       Caption = 

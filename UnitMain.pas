@@ -513,13 +513,13 @@ end;
 
 procedure TfrmMain.GetMemoTxtModuleFileFromVersionInfo(Sender: TObject);
 begin
-  //
-
   try
-    // Delete old temp Report folder
+    // Delete old temp folder
     DeleteTempFolder();
-    // Create a new temp Report folder
     TempFolder := TPath.GetTempPath() + 'TempFolder_' + TPath.GetGUIDFileName(false);
+    vifFileName := TempFolder + TPath.DirectorySeparatorChar + 'VersionInfo.txt';
+
+    // Create a new temp folder
     if not TDirectory.Exists(TempFolder, true)
     then
       begin
@@ -529,23 +529,21 @@ begin
     else
       Logger.AddToLog('Temp folder already exists: ' + TempFolder);
 
-    vifFileName := TempFolder + TPath.DirectorySeparatorChar + 'VersionInfo.txt';
-    try
-      frmCopyVersionInfo.memVersionInformation.Lines.SaveToFile(vifFileName);
-      Logger.AddToLog('The ' + vifFileName + ' file created.');
-    finally
+    // Save Version Info text to file
+    frmCopyVersionInfo.memVersionInformation.Lines.SaveToFile(vifFileName);
+    Logger.AddToLog('The ' + vifFileName + ' file created.');
 
-    end;
+    // Open saved Version Info text file as a Module List file
     OpenTextModuleListFile(vifFileName);
     ModulesFileListIsVersionInfoList := true;
   finally
-  end;
 
+  end;
 end;
 
 procedure TfrmMain.actCopyFromVersionInfoExecute(Sender: TObject);
 begin
-  // Copy modules info from Version Info
+  // Copy modules information from RS Version Information
   if frmCopyVersionInfo.ShowModal = mrOk
   then
     begin
@@ -1288,6 +1286,7 @@ begin
   ledtBDSPath.Text := '';
   ledtBDSBuild.Text := '';
   ledtBDSInstDate.Text := '';
+  edRSBuild.Text := '';
 
   SetDBGridModulesDefaultColumnsWidth(Sender);
   DM1.cdsModules.DisableControls;
