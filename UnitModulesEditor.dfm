@@ -80,8 +80,7 @@ object frmModulesEditor: TfrmModulesEditor
       end
       item
         Expanded = False
-        FieldName = 'Hash'
-        Width = 200
+        FieldName = 'Package_FullName'
         Visible = True
       end
       item
@@ -104,7 +103,8 @@ object frmModulesEditor: TfrmModulesEditor
       end
       item
         Expanded = False
-        FieldName = 'Package_ID'
+        FieldName = 'Hash'
+        Width = 200
         Visible = True
       end>
   end

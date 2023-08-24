@@ -93,16 +93,23 @@ object frmPackagesEditor: TfrmPackagesEditor
       end
       item
         Expanded = False
-        FieldName = 'Url'
-        Title.Caption = 'URL'
-        Width = 300
+        FieldName = 'VersionRegExp'
+        Title.Caption = 'Version RegExp'
+        Width = 100
         Visible = True
       end
       item
         Expanded = False
-        FieldName = 'VersionRegExp'
-        Title.Caption = 'Version RegExp'
-        Width = 100
+        FieldName = 'Package_Type'
+        Title.Caption = 'Type'
+        Width = 120
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Url'
+        Title.Caption = 'URL'
+        Width = 220
         Visible = True
       end>
   end
@@ -170,8 +177,8 @@ object frmPackagesEditor: TfrmPackagesEditor
     end
   end
   object ActionList1: TActionList
-    Left = 656
-    Top = 56
+    Left = 648
+    Top = 152
     object actPackageAdd: TAction
       Caption = 'Add'
       OnExecute = actPackageAddExecute
@@ -186,8 +193,8 @@ object frmPackagesEditor: TfrmPackagesEditor
     end
   end
   object ppmPackagesEditor: TPopupMenu
-    Left = 560
-    Top = 56
+    Left = 552
+    Top = 152
     object Add1: TMenuItem
       Action = actPackageAdd
       Caption = 'Add new package'

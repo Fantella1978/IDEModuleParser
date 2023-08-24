@@ -54,6 +54,9 @@ type
     fdtModulesFileNameRegExp: TStringField;
     fdtPackagesInGetIt: TBooleanField;
     fdtPackagesDescription: TWideMemoField;
+    fdtPackagesPackage_Type: TStringField;
+    fdtModulesPackage_Name: TStringField;
+    fdtPackagesFullName: TStringField;
     procedure cdsModulesAfterScroll(DataSet: TDataSet);
     procedure fdtPackagesAfterRefresh(DataSet: TDataSet);
     procedure fdtPackagesAfterInsert(DataSet: TDataSet);
@@ -63,6 +66,7 @@ type
     procedure DataModuleCreate(Sender: TObject);
     procedure fdtPackagesAfterScroll(DataSet: TDataSet);
     procedure dsPackagesStateChange(Sender: TObject);
+    procedure fdtPackagesCalcFields(DataSet: TDataSet);
   private
     procedure UpdatePackagesActions;
     procedure UpdateModulesActions;
@@ -241,6 +245,17 @@ end;
 procedure TDM1.fdtPackagesAfterScroll(DataSet: TDataSet);
 begin
   UpdatePackagesActions();
+end;
+
+procedure TDM1.fdtPackagesCalcFields(DataSet: TDataSet);
+begin
+  DataSet.FieldByName('FullName').AsString := DataSet.FieldByName('Name').AsString;
+  if DataSet.FieldByName('SubName').AsString <> ''
+    then DataSet.FieldByName('FullName').AsString := DataSet.FieldByName('FullName').AsString + ' ' +
+      DataSet.FieldByName('SubName').AsString;
+  if DataSet.FieldByName('Version').AsString <> ''
+    then DataSet.FieldByName('FullName').AsString := DataSet.FieldByName('FullName').AsString + ' ' +
+      DataSet.FieldByName('Version').AsString;
 end;
 
 procedure TDM1.UpdatePackagesActions();

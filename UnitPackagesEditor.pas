@@ -70,7 +70,7 @@ procedure TfrmPackagesEditor.SetdbgPackagesDefaultColumnsWidth(Sender: TObject);
 begin
   // Set DBGridModules Default Columns Width
   SetLength(dbgPackagesColumnsWidth, dbgPackages.Columns.Count);
-  dbgPackagesColumnsWidth := [-1, 120, 150, 150, 200, 50];
+  dbgPackagesColumnsWidth := [-1, 150, 100, 150, 50, 150, 220];
   for var i := 0 to dbgPackages.Columns.Count - 1 do
     dbgPackages.Columns[i].Width := dbgPackagesColumnsWidth[i];
 end;
@@ -132,7 +132,13 @@ procedure TfrmPackagesEditor.dbgPackagesTitleClick(Column: TColumn);
 var
   ci : integer;
   CurrentBookMark : TBookmark;
+  CurrentColumnFieldName : string;
 begin
+
+  CurrentColumnFieldName := column.FieldName;   // for Ordering by Lookup field Package_Type
+  if column.FieldName = 'Package_Type'
+    then CurrentColumnFieldName := 'Type_ID';
+
   with DM1.fdtPackages do
     try
       CurrentBookMark := GetBookmark;
@@ -148,10 +154,10 @@ begin
       Column.Title.Font.Style := Column.Title.Font.Style + [fsBold];
       dbgPackages_PrevIndexColumn := ci;
 
-      if (IndexFieldNames = Column.FieldName + ':DN') OR
+      if (IndexFieldNames = CurrentColumnFieldName + ':DN') OR
          (IndexFieldNames = '')
-        then IndexFieldNames := Column.FieldName + ':AN'
-        else IndexFieldNames := Column.FieldName + ':DN';
+        then IndexFieldNames := CurrentColumnFieldName + ':AN'
+        else IndexFieldNames := CurrentColumnFieldName + ':DN';
 
       var colCaption := Column.Title.Caption;
       if (pos(' ˅', colCaption, Length(colCaption) - 2) <> 0) or
@@ -160,7 +166,7 @@ begin
         colCaption := copy(colCaption, 1, Length(colCaption) - 2);
       Column.Title.Caption := colCaption;
 
-      if IndexFieldNames = Column.FieldName + ':DN'
+      if IndexFieldNames = CurrentColumnFieldName + ':DN'
         then Column.Title.Caption := Column.Title.Caption + ' ˄'
         else Column.Title.Caption := Column.Title.Caption + ' ˅';
 

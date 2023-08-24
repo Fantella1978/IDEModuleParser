@@ -82,7 +82,7 @@ procedure TfrmModulesEditor.SetDBGridModulesDefaultColumnsWidth(Sender: TObject)
 begin
   // Set DBGridModules Default Columns Width
   SetLength(dbgModulesColumnsWidth, dbgModules.Columns.Count);
-  dbgModulesColumnsWidth := [30, 150, 100, 150, 100, 100, 50, 20];
+  dbgModulesColumnsWidth := [45, 150, 80, 120, 80, 100, 50, 105];
   for var i := 0 to dbgModules.Columns.Count - 1 do
     dbgModules.Columns[i].Width := dbgModulesColumnsWidth[i];
 end;
@@ -456,7 +456,15 @@ procedure TfrmModulesEditor.dbgModulesTitleClick(Column: TColumn);
 var
   ci : integer;
   CurrentBookMark : TBookmark;
+  CurrentColumnFieldName : string;
 begin
+  // if column.FieldName = 'Hash' then Exit;
+  // if column.FieldName = 'Package_FullName' then Exit;
+
+  CurrentColumnFieldName := column.FieldName;   // for Ordering by Calculated field Package_FullName
+  if column.FieldName = 'Package_FullName'
+    then CurrentColumnFieldName := 'Package_ID';
+
   with DM1.fdtModules do
     try
       CurrentBookMark := GetBookmark;
@@ -472,10 +480,10 @@ begin
       Column.Title.Font.Style := Column.Title.Font.Style + [fsBold];
       dbgModules_PrevIndexColumn := ci;
 
-      if (IndexFieldNames = Column.FieldName + ':DN') OR
+      if (IndexFieldNames = CurrentColumnFieldName + ':DN') OR
          (IndexFieldNames = '')
-        then IndexFieldNames := Column.FieldName + ':AN'
-        else IndexFieldNames := Column.FieldName + ':DN';
+        then IndexFieldNames := CurrentColumnFieldName + ':AN'
+        else IndexFieldNames := CurrentColumnFieldName + ':DN';
 
       var colCaption := Column.Title.Caption;
       if (pos(' ˅', colCaption, Length(colCaption) - 2) <> 0) or
@@ -484,7 +492,7 @@ begin
         colCaption := copy(colCaption, 1, Length(colCaption) - 2);
       Column.Title.Caption := colCaption;
 
-      if IndexFieldNames = Column.FieldName + ':DN'
+      if IndexFieldNames = CurrentColumnFieldName + ':DN'
         then Column.Title.Caption := Column.Title.Caption + ' ˄'
         else Column.Title.Caption := Column.Title.Caption + ' ˅';
 

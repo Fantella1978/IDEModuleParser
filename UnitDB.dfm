@@ -194,12 +194,14 @@ object DM1: TDM1
     Left = 232
     Top = 120
     object fdtModulesModule_ID: TFDAutoIncField
+      DisplayLabel = 'Module Id'
       FieldName = 'Module_ID'
       Origin = 'Module_ID'
       ProviderFlags = [pfInWhere, pfInKey]
       ReadOnly = True
     end
     object fdtModulesFileName: TStringField
+      DisplayLabel = 'File Name'
       FieldName = 'FileName'
       Origin = 'FileName'
       Required = True
@@ -217,24 +219,40 @@ object DM1: TDM1
       Size = 27
     end
     object fdtModulesPackage_ID: TIntegerField
+      DisplayLabel = 'Package Id'
       FieldName = 'Package_ID'
       Origin = 'Package_ID'
     end
     object fdtModulesPathRegExp: TStringField
+      DisplayLabel = 'Path RegExp'
       FieldName = 'PathRegExp'
       Origin = 'PathRegExp'
       Size = 100
     end
     object fdtModulesVersionRegExp: TStringField
+      DisplayLabel = 'Version RegExp'
       FieldName = 'VersionRegExp'
       Origin = 'VersionRegExp'
       Size = 100
     end
     object fdtModulesFileNameRegExp: TStringField
+      DisplayLabel = 'File Name RegExp'
       FieldName = 'FileNameRegExp'
       Origin = 'FileNameRegExp'
       OnValidate = fdtModulesFileNameRegExpValidate
       Size = 120
+    end
+    object fdtModulesPackage_Name: TStringField
+      DisplayLabel = 'Package Name'
+      FieldKind = fkLookup
+      FieldName = 'Package_FullName'
+      LookupDataSet = fdtPackages
+      LookupKeyFields = 'Package_ID'
+      LookupResultField = 'FullName'
+      KeyFields = 'Package_ID'
+      LookupCache = True
+      Size = 60
+      Lookup = True
     end
   end
   object dsModules: TDataSource
@@ -246,6 +264,7 @@ object DM1: TDM1
     AfterInsert = fdtPackagesAfterInsert
     AfterScroll = fdtPackagesAfterScroll
     AfterRefresh = fdtPackagesAfterRefresh
+    OnCalcFields = fdtPackagesCalcFields
     IndexFieldNames = 'Package_ID'
     Connection = fdcSQLite
     UpdateTransaction = FDTransaction1
@@ -304,6 +323,21 @@ object DM1: TDM1
       FieldName = 'Description'
       Origin = 'Description'
       BlobType = ftWideMemo
+    end
+    object fdtPackagesPackage_Type: TStringField
+      FieldKind = fkLookup
+      FieldName = 'Package_Type'
+      LookupDataSet = fdtPackageTypes
+      LookupKeyFields = 'Type_ID'
+      LookupResultField = 'Name'
+      KeyFields = 'Type_ID'
+      Size = 50
+      Lookup = True
+    end
+    object fdtPackagesFullName: TStringField
+      FieldKind = fkInternalCalc
+      FieldName = 'FullName'
+      Size = 149
     end
   end
   object dsPackages: TDataSource
