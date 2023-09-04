@@ -331,6 +331,7 @@ object DM1: TDM1
       LookupKeyFields = 'Type_ID'
       LookupResultField = 'Name'
       KeyFields = 'Type_ID'
+      LookupCache = True
       Size = 50
       Lookup = True
     end
