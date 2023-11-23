@@ -23,8 +23,6 @@ object frmPackagesList: TfrmPackagesList
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 404
-    ExplicitWidth = 987
     DesignSize = (
       989
       37)
@@ -38,7 +36,6 @@ object frmPackagesList: TfrmPackagesList
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 893
     end
   end
   object ControlList1: TControlList
@@ -60,8 +57,6 @@ object frmPackagesList: TfrmPackagesList
     TabOrder = 1
     OnBeforeDrawItem = ControlList1BeforeDrawItem
     OnClick = ControlList1Click
-    ExplicitWidth = 987
-    ExplicitHeight = 404
     object lblName: TLabel
       Left = 10
       Top = 6
@@ -102,7 +97,6 @@ object frmPackagesList: TfrmPackagesList
       Margins.Bottom = 20
       Align = alRight
       Caption = 'Open'
-      LinkHotColor = clHighlight
       ExplicitLeft = 908
       ExplicitTop = 23
     end

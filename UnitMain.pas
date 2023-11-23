@@ -1807,6 +1807,7 @@ begin
   // Change Font Size
   GlobalDefaultFontSize := tbFontSize.Position;
   edtFontSize.Text := IntToStr(GlobalDefaultFontSize);
+
   MemoTxtModuleFile.Font.Size := GlobalDefaultFontSize;
   memoStackTrace.Font.Size := GlobalDefaultFontSize;
   memoDescription.Font.Size := GlobalDefaultFontSize;
@@ -1814,6 +1815,7 @@ begin
   memoSteps.Font.Size := GlobalDefaultFontSize;
   memoLog.Font.Size := GlobalDefaultFontSize;
   DBGridModules.Font.Size := GlobalDefaultFontSize;
+  if Assigned(frmCopyVersionInfo) then frmCopyVersionInfo.memVersionInformation.Font.Size := GlobalDefaultFontSize;
 
   actSettingsRestoreDefaults.Enabled := true;
 end;

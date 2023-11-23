@@ -65,8 +65,15 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
     Width = 644
     Height = 400
     Align = alClient
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Monoid'
+    Font.Pitch = fpFixed
+    Font.Style = []
     Lines.Strings = (
       'memVersionInformation')
+    ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 1
     OnChange = memVersionInformationChange

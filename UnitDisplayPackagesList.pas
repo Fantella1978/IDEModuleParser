@@ -43,6 +43,7 @@ uses
     UnitMain
   , UnitDB
   , Winapi.ShellAPI
+  , UnitSettings
   ;
 
 procedure TfrmPackagesList.ControlList1BeforeDrawItem(AIndex: Integer;
@@ -52,7 +53,7 @@ begin
   lblName.Caption := FPackagesQuery.FieldByName('Name').AsString;
   if FPackagesQuery.FieldByName('SubName').AsString <> ''
     then lblName.Caption := lblName.Caption + ' ' + FPackagesQuery.FieldByName('SubName').AsString;
-  if FPackagesQuery.FieldByName('Version').AsString <> ''
+  if GlobalModulesCompareLevel2 AND (FPackagesQuery.FieldByName('Version').AsString <> '')
     then lblName.Caption := lblName.Caption  + ' ' + FPackagesQuery.FieldByName('Version').AsString;
 
   if FPackagesQuery.FieldByName('URL').AsString <> ''
