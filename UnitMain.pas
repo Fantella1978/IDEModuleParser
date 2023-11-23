@@ -201,6 +201,8 @@ type
     edRSBuild: TEdit;
     actCopyFromVersionInfo: TAction;
     Button9: TButton;
+    actExploreHere: TAction;
+    actExploreHere1: TMenuItem;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -327,6 +329,8 @@ type
     function FindRSBuildName(build: string): string;
     procedure actCopyFromVersionInfoExecute(Sender: TObject);
     procedure GetMemoTxtModuleFileFromVersionInfo(Sender: TObject);
+    procedure actExploreHereExecute(Sender: TObject);
+    procedure DBGridModulesDblClick(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -405,6 +409,18 @@ begin
 end;
 
 
+procedure TfrmMain.actExploreHereExecute(Sender: TObject);
+var
+   sFilename : string;
+begin
+  // Explore Here (Open Explorer and show the module in folder)
+  sFilename := DM1.cdsModules.FieldByName('Path').AsString +
+    // TPath.DirectorySeparatorChar +
+    DM1.cdsModules.FieldByName('FileName').AsString;
+  ShellExecute(Application.Handle, 'open', 'explorer.exe',
+    PChar(Format('/select,"%s"', [sFilename])), nil, SW_NORMAL);
+end;
+
 procedure TfrmMain.actFilterPackagesCopyToClipboardExecute(Sender: TObject);
 var
   i : integer;
@@ -454,17 +470,32 @@ begin
 end;
 
 procedure TfrmMain.actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
+var
+  ThirdPartyPackagesFound: boolean;
 begin
   // Select only 3rd-party packages
+  ThirdPartyPackagesFound := false;
   for var i := 0 to clbVisiblePackages.Items.Count - 1 do
     begin
       var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
       if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
         (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
-       then clbVisiblePackages.Checked[i] := true
+       then
+         begin
+           clbVisiblePackages.Checked[i] := true;
+           ThirdPartyPackagesFound := true;
+         end
        else clbVisiblePackages.Checked[i] := false;
     end;
-  clbVisiblePackagesClickCheck(Sender);
+  if ThirdPartyPackagesFound then
+    begin
+      clbVisiblePackagesClickCheck(Sender);
+    end
+  else
+    begin
+      if MessageDlg('No 3rd-party packages found. Show <Empty> packages?', TMsgDlgType.mtConfirmation, [mbYes, mbNo], 0) = mrYes
+        then actFilterPackagesSelectOnlyEmptyExecute(Sender);
+    end;
 end;
 
 procedure TfrmMain.actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
@@ -1415,6 +1446,12 @@ begin
   ModulesFilteredCountDisplay();
 end;
 
+procedure TfrmMain.DBGridModulesDblClick(Sender: TObject);
+begin
+  if actExploreHere.Enabled
+    then actExploreHereExecute(Sender);
+end;
+
 procedure TfrmMain.DBGridModulesDrawColumnCell(Sender: TObject; const Rect: TRect;
   DataCol: Integer; Column: TColumn; State: TGridDrawState);
 begin
@@ -1886,6 +1923,19 @@ begin
   if (DBGridModules.DataSource.DataSet.RecordCount > 0) AND
     (DBGridModules.SelectedRows.Count > 0)
     then frmMain.actModulesAddSelectedToDB.Enabled := true;
+  // Enable action - Modules Explore here...
+  if (DBGridModules.DataSource.DataSet.RecordCount > 0) AND
+    (DBGridModules.SelectedRows.Count = 1)
+    then
+      begin
+        var sFilename : string := DM1.cdsModules.FieldByName('Path').AsString +
+          // TPath.DirectorySeparatorChar +
+          DM1.cdsModules.FieldByName('FileName').AsString;
+        if FileExists(sFilename)
+          then actExploreHere.Enabled := true
+          else actExploreHere.Enabled := false;
+      end
+    else actExploreHere.Enabled := false;
   // Enable action - Modules Find current Module in Known Modules DB
   if (DBGridModules.DataSource.DataSet.RecordCount > 0) AND
     (DBGridModules.SelectedRows.Count = 1)

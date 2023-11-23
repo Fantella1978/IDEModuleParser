@@ -32,6 +32,7 @@ begin
   FormatSettings.ShortDateFormat := 'yyyy/mm/dd';
   FormatSettings.LongTimeFormat := 'hh:nn:ss';
 
+  // Memory Leaks
   ReportMemoryLeaksOnShutdown := true;
 
   Application.Initialize;

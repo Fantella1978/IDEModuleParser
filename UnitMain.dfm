@@ -28,7 +28,6 @@ object frmMain: TfrmMain
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 992
     DesignSize = (
       994
       37)
@@ -52,7 +51,6 @@ object frmMain: TfrmMain
       Cancel = True
       ModalResult = 2
       TabOrder = 3
-      ExplicitLeft = 909
     end
     object Button3: TButton
       Left = 455
@@ -96,8 +94,6 @@ object frmMain: TfrmMain
     Style = tsFlatButtons
     TabOrder = 1
     OnChange = PageControl1Change
-    ExplicitWidth = 992
-    ExplicitHeight = 460
     object tsHome: TTabSheet
       Caption = 'Home'
       ImageIndex = 8
@@ -170,8 +166,6 @@ object frmMain: TfrmMain
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 734
-        ExplicitHeight = 425
         object gbModulesList: TGroupBox
           Left = 0
           Top = 105
@@ -180,8 +174,6 @@ object frmMain: TfrmMain
           Align = alClient
           Caption = 'Modules List'
           TabOrder = 1
-          ExplicitWidth = 734
-          ExplicitHeight = 320
           object DBGridModules: TDBGrid
             Left = 2
             Top = 19
@@ -199,6 +191,7 @@ object frmMain: TfrmMain
             TitleFont.Name = 'Segoe UI'
             TitleFont.Style = []
             OnDrawColumnCell = DBGridModulesDrawColumnCell
+            OnDblClick = DBGridModulesDblClick
             OnTitleClick = DBGridModulesTitleClick
             Columns = <
               item
@@ -256,7 +249,6 @@ object frmMain: TfrmMain
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 0
-          ExplicitWidth = 734
           DesignSize = (
             736
             105)
@@ -374,7 +366,6 @@ object frmMain: TfrmMain
         Constraints.MaxWidth = 600
         Constraints.MinWidth = 200
         TabOrder = 0
-        ExplicitHeight = 425
         object GroupBox5: TGroupBox
           Left = 0
           Top = 105
@@ -385,7 +376,6 @@ object frmMain: TfrmMain
           Constraints.MinWidth = 100
           PopupMenu = ppmFilters
           TabOrder = 0
-          ExplicitHeight = 320
           DesignSize = (
             245
             324)
@@ -523,7 +513,6 @@ object frmMain: TfrmMain
             Sorted = True
             TabOrder = 0
             OnClickCheck = clbVisiblePackagesClickCheck
-            ExplicitHeight = 90
           end
           object lbedFilterFileName: TLabeledEdit
             Left = 10
@@ -554,7 +543,6 @@ object frmMain: TfrmMain
             PopupMenu = ppmFilterPackagesTypes
             TabOrder = 2
             OnClickCheck = clbVisiblePackagesTypesClickCheck
-            ExplicitTop = 212
           end
         end
         object GroupBox4: TGroupBox
@@ -3590,8 +3578,6 @@ object frmMain: TfrmMain
     Width = 994
     Height = 19
     Panels = <>
-    ExplicitTop = 497
-    ExplicitWidth = 992
   end
   object ActionList1: TActionList
     Left = 352
@@ -3742,6 +3728,13 @@ object frmMain: TfrmMain
       Hint = 'Copy modules info from RS Version Info'
       OnExecute = actCopyFromVersionInfoExecute
     end
+    object actExploreHere: TAction
+      Category = 'Modules Grid'
+      Caption = 'Explore here...'
+      Enabled = False
+      Hint = 'Explore here'
+      OnExecute = actExploreHereExecute
+    end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
     DefaultExt = '.txt'
@@ -3769,6 +3762,9 @@ object frmMain: TfrmMain
     end
     object FindInKnownModulesDB1: TMenuItem
       Action = actModulesFindSelectedInKnownDB
+    end
+    object actExploreHere1: TMenuItem
+      Action = actExploreHere
     end
     object PackagesList1: TMenuItem
       Action = actDisplayPackagesList

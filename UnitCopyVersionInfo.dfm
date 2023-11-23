@@ -14,6 +14,7 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
   Font.Name = 'Segoe UI'
   Font.Style = []
   Position = poMainFormCenter
+  OnActivate = FormActivate
   OnShow = FormShow
   TextHeight = 15
   object Panel1: TPanel
@@ -24,12 +25,10 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 437
-    ExplicitWidth = 642
     DesignSize = (
       644
       37)
-    object Button1: TButton
+    object btnOK: TButton
       Left = 474
       Top = 6
       Width = 75
@@ -39,9 +38,8 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
       Default = True
       ModalResult = 1
       TabOrder = 0
-      ExplicitLeft = 472
     end
-    object Button2: TButton
+    object btnCancel: TButton
       Left = 561
       Top = 6
       Width = 75
@@ -51,7 +49,14 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
-      ExplicitLeft = 559
+    end
+    object Button3: TButton
+      Left = 393
+      Top = 6
+      Width = 75
+      Height = 25
+      Action = actPasteFromClipboard
+      TabOrder = 2
     end
   end
   object memVersionInformation: TMemo
@@ -74,20 +79,27 @@ object frmCopyVersionInfo: TfrmCopyVersionInfo
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitWidth = 642
     DesignSize = (
       644
       41)
     object Label1: TLabel
       Left = 8
       Top = 13
-      Width = 603
+      Width = 605
       Height = 15
       Anchors = [akLeft, akTop, akRight]
       Caption = 
         'Paste text Version Information from Help > About Embarcadero'#174' RA' +
         'D Studio > Version Info... and press OK button'
-      ExplicitWidth = 605
+    end
+  end
+  object ActionList1: TActionList
+    Left = 376
+    Top = 32
+    object actPasteFromClipboard: TAction
+      Caption = 'Paste'
+      Hint = 'Paste text from clipboard'
+      OnExecute = actPasteFromClipboardExecute
     end
   end
 end
