@@ -83,7 +83,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsSettings
+    ActivePage = tsModulesList
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -394,7 +394,7 @@ object frmMain: TfrmMain
             Anchors = [akLeft, akBottom]
             Caption = 'Packages Types'
           end
-          object SpeedButton4: TSpeedButton
+          object sbPackagesPlus: TSpeedButton
             Left = 195
             Top = 77
             Width = 17
@@ -405,7 +405,7 @@ object frmMain: TfrmMain
             ParentShowHint = False
             ShowHint = True
           end
-          object SpeedButton5: TSpeedButton
+          object sbPackagesMinus: TSpeedButton
             Left = 217
             Top = 77
             Width = 17
@@ -441,7 +441,7 @@ object frmMain: TfrmMain
             ShowHint = True
             ExplicitLeft = 172
           end
-          object SpeedButton8: TSpeedButton
+          object sbPackagesC: TSpeedButton
             Left = 112
             Top = 77
             Width = 17
@@ -466,7 +466,7 @@ object frmMain: TfrmMain
             ShowHint = True
             ExplicitLeft = 128
           end
-          object SpeedButton11: TSpeedButton
+          object sbPackagesE: TSpeedButton
             Left = 173
             Top = 77
             Width = 17
@@ -490,7 +490,7 @@ object frmMain: TfrmMain
             ParentShowHint = False
             ShowHint = True
           end
-          object SpeedButton13: TSpeedButton
+          object sbPackages3rd: TSpeedButton
             Left = 136
             Top = 77
             Width = 31

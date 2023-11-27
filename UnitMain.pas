@@ -155,8 +155,8 @@ type
     actFilterPackagesUnSelectAll: TAction;
     SelectAll2: TMenuItem;
     UnselectAll2: TMenuItem;
-    SpeedButton4: TSpeedButton;
-    SpeedButton5: TSpeedButton;
+    sbPackagesPlus: TSpeedButton;
+    sbPackagesMinus: TSpeedButton;
     SpeedButton6: TSpeedButton;
     SpeedButton7: TSpeedButton;
     ppmFilters: TPopupMenu;
@@ -173,7 +173,7 @@ type
     actFilterPackagesCopyToClipboard: TAction;
     actFilterPackagesCopyToClipboard1: TMenuItem;
     N4: TMenuItem;
-    SpeedButton8: TSpeedButton;
+    sbPackagesC: TSpeedButton;
     cbParseLevel3: TCheckBox;
     actDisplayPackagesList: TAction;
     SpeedButton9: TSpeedButton;
@@ -181,7 +181,7 @@ type
     actFilterPackagesTypesSelectOnlyEmpty: TAction;
     actFilterPackagesTypesSelectOnlyEmpty1: TMenuItem;
     actFilterPackagesSelectOnlyEmpty: TAction;
-    SpeedButton11: TSpeedButton;
+    sbPackagesE: TSpeedButton;
     SelectonlyEmpty1: TMenuItem;
     SelectonlyEmpty2: TMenuItem;
     SelectonlyEmpty3: TMenuItem;
@@ -190,7 +190,7 @@ type
     N6: TMenuItem;
     ClearFilters3: TMenuItem;
     SpeedButton12: TSpeedButton;
-    SpeedButton13: TSpeedButton;
+    sbPackages3rd: TSpeedButton;
     actFilterPackagesTypesSelectOnly3rdParty: TAction;
     actFilterPackagesSelectOnly3rdParty: TAction;
     Selectonly3rdpartypackages1: TMenuItem;
@@ -480,21 +480,26 @@ begin
       var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
       if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
         (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
-       then
+      then
          begin
            clbVisiblePackages.Checked[i] := true;
            ThirdPartyPackagesFound := true;
          end
-       else clbVisiblePackages.Checked[i] := false;
+      else clbVisiblePackages.Checked[i] := false;
     end;
-  if ThirdPartyPackagesFound then
+  if ThirdPartyPackagesFound
+  then
     begin
       clbVisiblePackagesClickCheck(Sender);
     end
   else
     begin
       if MessageDlg('No 3rd-party packages found. Show <Empty> packages?', TMsgDlgType.mtConfirmation, [mbYes, mbNo], 0) = mrYes
-        then actFilterPackagesSelectOnlyEmptyExecute(Sender);
+      then
+        begin
+        actFilterPackagesSelectOnlyEmptyExecute(Sender);
+        actFilterPackagesTypesSelectOnlyEmptyExecute(Sender);
+        end;
     end;
 end;
 
@@ -1592,13 +1597,13 @@ begin
   DM1.fdtPackages.Filter := 'Version = ''' + build +'''';
   DM1.fdtPackages.Filtered := true;
   if DM1.fdtPackages.RecordCount = 1
-    then
-      begin
-        Result := DM1.fdtPackages.FieldByName('Name').AsString;
-        if DM1.fdtPackages.FieldByName('SubName').AsString <> ''
-          then Result := Result + ' ' +
-            DM1.fdtPackages.FieldByName('SubName').AsString;
-      end;
+  then
+    begin
+      Result := DM1.fdtPackages.FieldByName('Name').AsString;
+      if DM1.fdtPackages.FieldByName('SubName').AsString <> ''
+        then Result := Result + ' ' +
+          DM1.fdtPackages.FieldByName('SubName').AsString;
+    end;
   DM1.fdtPackages.EnableControls;
 end;
 
