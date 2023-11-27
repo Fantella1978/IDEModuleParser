@@ -201,7 +201,7 @@ end;
 
 procedure TfrmAddModules.FormShow(Sender: TObject);
 begin
-  lbxModules.Font.Size := UnitSettings.GlobalDefaultFontSize;
+  lbxModules.Font.Size := UnitSettings.GlobalFontSize;
   UpdatePackagesInfo();
   clbFieldsAllCheck();
   clbFieldsClickCheck(Sender);

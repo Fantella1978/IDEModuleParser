@@ -83,7 +83,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsModulesList
+    ActivePage = tsSettings
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -3382,7 +3382,7 @@ object frmMain: TfrmMain
         Left = 3
         Top = 72
         Width = 278
-        Height = 106
+        Height = 161
         Caption = 'Settings'
         TabOrder = 1
         object cbCreateLog: TCheckBox
@@ -3413,6 +3413,30 @@ object frmMain: TfrmMain
           Caption = 'Parse on file open'
           TabOrder = 2
           OnClick = cbParseFileOnOpenClick
+        end
+        object cbAfterParsingView: TCheckBox
+          Left = 14
+          Top = 96
+          Width = 195
+          Height = 17
+          Caption = 'After parsing view packages'
+          TabOrder = 3
+          OnClick = cbAfterParsingViewClick
+        end
+        object combobAfterParsing: TComboBox
+          Left = 32
+          Top = 119
+          Width = 233
+          Height = 25
+          Style = csDropDownList
+          Enabled = False
+          TabOrder = 4
+          OnChange = combobAfterParsingChange
+          Items.Strings = (
+            'Only 3rd-party'
+            'Only <Empty>'
+            '3rd-party & <Empty>'
+            'All')
         end
       end
       object GroupBox3: TGroupBox
@@ -3450,7 +3474,7 @@ object frmMain: TfrmMain
       end
       object GroupBox6: TGroupBox
         Left = 3
-        Top = 184
+        Top = 239
         Width = 278
         Height = 90
         Caption = 'ModulesList file parse Level'
@@ -3735,6 +3759,16 @@ object frmMain: TfrmMain
       Hint = 'Explore here'
       OnExecute = actExploreHereExecute
     end
+    object actFilterPackagesSelect3rdPartyAndEmpty: TAction
+      Category = 'Filter Packages'
+      Caption = 'actFilterPackagesSelect3rdPartyAndEmpty'
+      OnExecute = actFilterPackagesSelect3rdPartyAndEmptyExecute
+    end
+    object actFilterPackagesTypesSelect3rdPartyAndEmpty: TAction
+      Category = 'Filter Packages Types'
+      Caption = 'actFilterPackagesTypesSelect3rdPartyAndEmpty'
+      OnExecute = actFilterPackagesTypesSelect3rdPartyAndEmptyExecute
+    end
   end
   object OpenTextFileDialog1: TOpenTextFileDialog
     DefaultExt = '.txt'
@@ -3830,7 +3864,7 @@ object frmMain: TfrmMain
     end
   end
   object ppmFilters: TPopupMenu
-    Left = 248
+    Left = 256
     Top = 208
     object SelectAllPackages1: TMenuItem
       Action = actFilterPackagesSelectAll

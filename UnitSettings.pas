@@ -14,10 +14,12 @@ procedure RestoreSettingsToDefaults();
 
 var
   // Global Settings
-  GlobalDefaultFontSize: integer; // DefaultFontSize
+  GlobalFontSize: integer; // DefaultFontSize
   GlobalLogCreate: boolean; // Create a Logging to file
   GlobalMaximizeOnStartup: boolean; // Maximize Application window on Startup
-  GlobalParseOnFileOpen: boolean; // Parese on ModulesList file open
+  GlobalParseOnFileOpen: boolean; // Parse on ModulesList file open
+  GlobalAfterParsingView: boolean; // After Parsing View enabled
+  GlobalAfterParsingViewOption: integer; // After Parsing View active option
   GlobalVCLStyle: string; // Application VCL Style
 
   GlobalModulesCompareLevel2: boolean; // Modules Compare Level 2 enabled (Compare with Module Version)
@@ -36,10 +38,12 @@ uses
 const
   RegGlobalKey = 'SOFTWARE\IDEModuleParser';
 
-  Def_DefaultFontSize = 10; // default value for DefaultFontSize
+  Def_FontSize = 10; // default value for DefaultFontSize
   Def_LogCreate = true; // default value for LogCreate
   Def_MaximizeOnStartup = false; // default value for MaximizeOnStartup
   Def_ParseOnFileOpen = true; // default value for ParseOnFileOpen
+  Def_AfterParsingView = true; // default value for AfterParsingView
+  Def_AfterParsingViewOption = 0; // default value for AfterParsingViewOption
   Def_ModulesCompareLevel2 = false; // default value for ModulesCompareLevel2
   Def_ModulesCompareLevel3 = true; // default value for ModulesCompareLevel3
   Def_VCLStyle = 'Amethyst Kamri'; // default value (constant) for VCLStyle
@@ -91,10 +95,12 @@ begin
     then
     begin
       // Save each global setting
-      reg.WriteInteger('DefaultFontSize', GlobalDefaultFontSize);
+      reg.WriteInteger('FontSize', GlobalFontSize);
+      reg.WriteInteger('AfterParsingViewOption', GlobalAfterParsingViewOption);
       reg.WriteBool('LogCreate', GlobalLogCreate);
       reg.WriteBool('MaximizeOnStartup', GlobalMaximizeOnStartup);
       reg.WriteBool('ParseOnFileOpen', GlobalParseOnFileOpen);
+      reg.WriteBool('AfterParsingView', GlobalAfterParsingView);
       reg.WriteBool('ModulesCompareLevel2', GlobalModulesCompareLevel2);
       reg.WriteBool('ModulesCompareLevel3', GlobalModulesCompareLevel3);
       reg.WriteString('VCLStyle', GlobalVCLStyle);
@@ -118,10 +124,12 @@ begin
     then
     begin
       // Load each global setting
-      GlobalDefaultFontSize := LoadIntegerValue('DefaultFontSize', Def_DefaultFontSize);
+      GlobalFontSize := LoadIntegerValue('FontSize', Def_FontSize);
+      GlobalAfterParsingViewOption := LoadIntegerValue('AfterParsingViewOption', Def_AfterParsingViewOption);
       GlobalLogCreate       := LoadBooleanValue('LogCreate', Def_LogCreate);
       GlobalMaximizeOnStartup := LoadBooleanValue('MaximizeOnStartup', Def_MaximizeOnStartup);
       GlobalParseOnFileOpen := LoadBooleanValue('ParseOnFileOpen', Def_ParseOnFileOpen);
+      GlobalAfterParsingView := LoadBooleanValue('AfterParsingView', Def_AfterParsingView);
       GlobalModulesCompareLevel2 := LoadBooleanValue('ModulesCompareLevel2', Def_ModulesCompareLevel2);
       GlobalModulesCompareLevel3 := LoadBooleanValue('ModulesCompareLevel3', Def_ModulesCompareLevel3);
       GlobalVCLStyle := LoadStringValue('VCLStyle', Def_VCLStyle);
@@ -143,10 +151,12 @@ end;
 procedure RestoreSettingsToDefaults();
 begin
   // Restore Global Sattings To Defaults
-  GlobalDefaultFontSize := Def_DefaultFontSize;
-  GlobalLogCreate       := Def_LogCreate;
+  GlobalFontSize          := Def_FontSize;
+  GlobalLogCreate         := Def_LogCreate;
   GlobalMaximizeOnStartup := Def_MaximizeOnStartup;
-  GlobalParseOnFileOpen := Def_ParseOnFileOpen;
+  GlobalParseOnFileOpen   := Def_ParseOnFileOpen;
+  GlobalAfterParsingView  := Def_AfterParsingView;
+  GlobalAfterParsingViewOption := Def_AfterParsingViewOption;
   GlobalModulesCompareLevel2 := Def_ModulesCompareLevel2;
   GlobalModulesCompareLevel3 := Def_ModulesCompareLevel3;
   {

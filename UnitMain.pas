@@ -203,6 +203,10 @@ type
     Button9: TButton;
     actExploreHere: TAction;
     actExploreHere1: TMenuItem;
+    cbAfterParsingView: TCheckBox;
+    combobAfterParsing: TComboBox;
+    actFilterPackagesSelect3rdPartyAndEmpty: TAction;
+    actFilterPackagesTypesSelect3rdPartyAndEmpty: TAction;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -331,6 +335,11 @@ type
     procedure GetMemoTxtModuleFileFromVersionInfo(Sender: TObject);
     procedure actExploreHereExecute(Sender: TObject);
     procedure DBGridModulesDblClick(Sender: TObject);
+    procedure cbAfterParsingViewClick(Sender: TObject);
+    procedure combobAfterParsingChange(Sender: TObject);
+    procedure actFilterPackagesSelect3rdPartyAndEmptyExecute(Sender: TObject);
+    procedure actFilterPackagesTypesSelect3rdPartyAndEmptyExecute(
+      Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -347,6 +356,7 @@ type
     procedure StylesChange;
     function GetPackageType_IDByName(name: string): integer;
     function DeleteTempFolder: boolean;
+    procedure AfterParsingView(Sender: TObject);
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
@@ -449,6 +459,28 @@ begin
   finally
     pl.Free;
   end;
+end;
+
+procedure TfrmMain.actFilterPackagesSelect3rdPartyAndEmptyExecute(
+  Sender: TObject);
+begin
+  // Select 3rd-party and Empty packages
+  clbVisiblePackages.CheckAll(cbUnchecked, false, false);
+  for var i := 0 to clbVisiblePackages.Items.Count - 1 do
+    begin
+      var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
+      if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
+        (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
+      then
+         begin
+           clbVisiblePackages.Checked[i] := true;
+         end
+      else
+      if clbVisiblePackages.Items[i] = '<Empty>'
+        then clbVisiblePackages.Checked[i] := true
+        else clbVisiblePackages.Checked[i] := false;
+    end;
+  clbVisiblePackagesClickCheck(Sender);
 end;
 
 procedure TfrmMain.actFilterPackagesSelectAllExecute(Sender: TObject);
@@ -761,6 +793,11 @@ begin
     else actFilterPackagesTypesUnSelectAll.Enabled := true;
 
   ApplyAllFiltres();
+end;
+
+procedure TfrmMain.combobAfterParsingChange(Sender: TObject);
+begin
+  GlobalAfterParsingViewOption := combobAfterParsing.ItemIndex;
 end;
 
 function TfrmMain.ConfirmNewStackTraceFileLoad(AskForAll: boolean): boolean;
@@ -1216,6 +1253,25 @@ begin
   frmPackagesEditor.ShowModal;
 end;
 
+procedure TfrmMain.actFilterPackagesTypesSelect3rdPartyAndEmptyExecute(
+  Sender: TObject);
+begin
+  // Select 3rd-party and Empty packages types
+  clbVisiblePackagesTypes.CheckAll(cbUnchecked, false, false);
+  for var i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
+  begin
+    var PackageType_ID := DM1.FindPackageType_IDByName(clbVisiblePackagesTypes.Items[i]);
+    if (PackageType_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
+      (PackageType_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
+      then clbVisiblePackagesTypes.Checked[i] := true
+      else
+        if clbVisiblePackagesTypes.Items[i] = '<Empty>'
+          then clbVisiblePackagesTypes.Checked[i] := true
+          else clbVisiblePackagesTypes.Checked[i] := false;
+  end;
+  clbVisiblePackagesTypesClickCheck(Sender);
+end;
+
 procedure TfrmMain.actFilterPackagesTypesSelectAllExecute(Sender: TObject);
 begin
   clbVisiblePackagesTypes.CheckAll(cbChecked, false, false);
@@ -1363,11 +1419,39 @@ begin
       ModulesStatisticDisplay();
       PackagesFilterCreate(Sender);
 
+      if GlobalAfterParsingView then AfterParsingView(Sender);
+
       DBGridModules.SelectedRows.Clear;
       DM1.cdsModules.EnableControls;
       DM1.cdsModules.First;
     end;
 
+end;
+
+procedure TfrmMain.AfterParsingView(Sender: TObject);
+begin
+  case GlobalAfterParsingViewOption of
+    0:
+      begin
+        actFilterPackagesSelectOnly3rdPartyExecute(Sender);
+        actFilterPackagesTypesSelectOnly3rdPartyExecute(Sender);
+      end;
+    1:
+      begin
+        actFilterPackagesSelectOnlyEmptyExecute(Sender);
+        actFilterPackagesTypesSelectOnlyEmptyExecute(Sender);
+      end;
+    2:
+      begin
+        actFilterPackagesSelect3rdPartyAndEmptyExecute(Sender);
+        actFilterPackagesTypesSelect3rdPartyAndEmptyExecute(Sender);
+      end;
+    3:
+      begin
+        actFilterPackagesSelectAllExecute(Sender);
+        actFilterPackagesTypesSelectAllExecute(Sender);
+      end;
+  end;
 end;
 
 procedure TfrmMain.actSettingsRestoreDefaultsExecute(Sender: TObject);
@@ -1401,6 +1485,12 @@ begin
   DM1.cdsModules.GotoBookmark(CurrentBookMark);
   DM1.cdsModules.FreeBookMark(CurrentBookMark);
   DM1.cdsModules.EnableControls;
+end;
+
+procedure TfrmMain.cbAfterParsingViewClick(Sender: TObject);
+begin
+  GlobalAfterParsingView := cbAfterParsingView.Checked;
+  combobAfterParsing.Enabled := cbAfterParsingView.Checked;
 end;
 
 procedure TfrmMain.cbCreateLogClick(Sender: TObject);
@@ -1810,17 +1900,18 @@ end;
 procedure TfrmMain.tbFontSizeChange(Sender: TObject);
 begin
   // Change Font Size
-  GlobalDefaultFontSize := tbFontSize.Position;
-  edtFontSize.Text := IntToStr(GlobalDefaultFontSize);
+  GlobalFontSize := tbFontSize.Position;
+  edtFontSize.Text := IntToStr(GlobalFontSize);
 
-  MemoTxtModuleFile.Font.Size := GlobalDefaultFontSize;
-  memoStackTrace.Font.Size := GlobalDefaultFontSize;
-  memoDescription.Font.Size := GlobalDefaultFontSize;
-  memoDXDiagLog.Font.Size := GlobalDefaultFontSize;
-  memoSteps.Font.Size := GlobalDefaultFontSize;
-  memoLog.Font.Size := GlobalDefaultFontSize;
-  DBGridModules.Font.Size := GlobalDefaultFontSize;
-  if Assigned(frmCopyVersionInfo) then frmCopyVersionInfo.memVersionInformation.Font.Size := GlobalDefaultFontSize;
+  MemoTxtModuleFile.Font.Size := GlobalFontSize;
+  memoStackTrace.Font.Size := GlobalFontSize;
+  memoDescription.Font.Size := GlobalFontSize;
+  memoDXDiagLog.Font.Size := GlobalFontSize;
+  memoSteps.Font.Size := GlobalFontSize;
+  memoLog.Font.Size := GlobalFontSize;
+  DBGridModules.Font.Size := GlobalFontSize;
+  if Assigned(frmCopyVersionInfo)
+    then frmCopyVersionInfo.memVersionInformation.Font.Size := GlobalFontSize;
 
   actSettingsRestoreDefaults.Enabled := true;
 end;
@@ -2004,10 +2095,19 @@ end;
 procedure TfrmMain.UpdateObjectsAccordingSettings;
 begin
   // Update Objects according loaded global Settings
-  tbFontSize.Position := GlobalDefaultFontSize;
+  tbFontSize.Position := GlobalFontSize;
   cbCreateLog.Checked := GlobalLogCreate;
   cbMaximizeOnStartup.Checked := GlobalMaximizeOnStartup;
   cbParseFileOnOpen.Checked := GlobalParseOnFileOpen;
+  cbAfterParsingView.Checked := GlobalAfterParsingView;
+  if (GlobalAfterParsingViewOption >= 0) AND
+    (GlobalAfterParsingViewOption <= combobAfterParsing.Items.Count - 1)
+  then combobAfterParsing.ItemIndex := GlobalAfterParsingViewOption
+  else
+    begin
+      combobAfterParsing.ItemIndex := 0;
+      GlobalAfterParsingViewOption := 0;
+    end;
   cbParseLevel2.Checked := GlobalModulesCompareLevel2;
   cbParseLevel3.Checked := GlobalModulesCompareLevel3;
   if cbxStyles.Items.Count <= 1
