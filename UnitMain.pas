@@ -328,7 +328,7 @@ type
     procedure FormActivate(Sender: TObject);
     procedure cbxStylesChange(Sender: TObject);
     procedure actFilterPackagesTypesSelectOnly3rdPartyExecute(Sender: TObject);
-    procedure actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
+    function FilterPackagesSelectOnly3rdParty : boolean;
     procedure DisplayRSBuild(module: TIDEModule);
     function FindRSBuildName(build: string): string;
     procedure actCopyFromVersionInfoExecute(Sender: TObject);
@@ -340,6 +340,7 @@ type
     procedure actFilterPackagesSelect3rdPartyAndEmptyExecute(Sender: TObject);
     procedure actFilterPackagesTypesSelect3rdPartyAndEmptyExecute(
       Sender: TObject);
+    procedure actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -501,7 +502,7 @@ begin
   Result := -1;
 end;
 
-procedure TfrmMain.actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
+function TfrmMain.FilterPackagesSelectOnly3rdParty : boolean;
 var
   ThirdPartyPackagesFound: boolean;
 begin
@@ -520,19 +521,34 @@ begin
       else clbVisiblePackages.Checked[i] := false;
     end;
   if ThirdPartyPackagesFound
-  then
-    begin
-      clbVisiblePackagesClickCheck(Sender);
-    end
-  else
+    then
+      begin
+        result := true;
+        clbVisiblePackagesClickCheck(frmMain);
+      end
+    else result := false;
+
+
+  if GlobalAfterParsingView and not ThirdPartyPackagesFound then
     begin
       if MessageDlg('No 3rd-party packages found. Show <Empty> packages?', TMsgDlgType.mtConfirmation, [mbYes, mbNo], 0) = mrYes
       then
         begin
-        actFilterPackagesSelectOnlyEmptyExecute(Sender);
-        actFilterPackagesTypesSelectOnlyEmptyExecute(Sender);
+          actFilterPackagesSelectOnlyEmptyExecute(frmMain);
+          actFilterPackagesTypesSelectOnlyEmptyExecute(frmMain);
+        end
+      else
+        begin
+          actFilterPackagesSelectAllExecute(frmMain);
+          actFilterPackagesTypesSelectAllExecute(frmMain);
         end;
     end;
+end;
+
+procedure TfrmMain.actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
+begin
+  //
+  FilterPackagesSelectOnly3rdParty();
 end;
 
 procedure TfrmMain.actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
@@ -1308,6 +1324,8 @@ begin
 end;
 
 procedure TfrmMain.actFilterPackagesTypesUnselectAllExecute(Sender: TObject);
+var
+  i: integer;
 begin
   clbVisiblePackagesTypes.CheckAll(cbUnchecked, false, false);
   clbVisiblePackagesTypesClickCheck(Sender);
@@ -1336,6 +1354,7 @@ begin
       // clbVisiblePackages.Items.AddPair(FModulesPackages[i].PackageName, IntToStr(FModulesPackages[i].Package_ID));
     end;
   clbVisiblePackages.Items.Add('<Empty>');
+  // if not GlobalAfterParsingView then actFilterPackagesSelectAllExecute(Sender);
   actFilterPackagesSelectAllExecute(Sender);
 
   clbVisiblePackagesTypes.Clear;
@@ -1346,6 +1365,7 @@ begin
       DM1.fdtPackageTypes.Next;
     end;
   clbVisiblePackagesTypes.Items.Add('<Empty>');
+  // if not GlobalAfterParsingView then actFilterPackagesTypesSelectAllExecute(Sender);
   actFilterPackagesTypesSelectAllExecute(Sender);
 end;
 
@@ -1433,8 +1453,8 @@ begin
   case GlobalAfterParsingViewOption of
     0:
       begin
-        actFilterPackagesSelectOnly3rdPartyExecute(Sender);
-        actFilterPackagesTypesSelectOnly3rdPartyExecute(Sender);
+        if FilterPackagesSelectOnly3rdParty
+          then actFilterPackagesTypesSelectOnly3rdPartyExecute(Sender);
       end;
     1:
       begin
