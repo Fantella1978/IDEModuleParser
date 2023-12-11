@@ -64,7 +64,24 @@ begin
       if Match
       then
         begin
-          AYear := StrToInt(Groups[3]);
+          if (StrToInt(Groups[1]) > 31) AND (StrToInt(Groups[3]) <= 99)
+            then
+              begin
+                ADay := StrToInt(Groups[3]);
+                AYear := StrToInt(Groups[1]);
+              end
+            else
+              begin
+                ADay := StrToInt(Groups[1]);
+                AYear := StrToInt(Groups[3]);
+              end;
+          if (ADay > 31) AND (AYear <= 31)
+          then
+            begin
+              var t := AYear;
+              AYear := ADay;
+              ADay := t;
+            end;
           if AYear < 100 then AYear := 2000 + AYear;
           if Length(Groups[2]) = 3
             then
@@ -85,14 +102,6 @@ begin
                 if tempG2 = 'dec' then AMonth := 12;
               end
             else AMonth := StrToInt(Groups[2]);
-          ADay := StrToInt(Groups[1]);
-          if (ADay > 31) AND (AYear <= 31)
-          then
-            begin
-              var t := AYear;
-              AYear := ADay;
-              ADay := t;
-            end;
           if (AMonth > 12) AND (ADay <= 12)
           then
             begin
