@@ -112,32 +112,36 @@ var
 begin
   // Get Selected Modules as Text
   DM1.cdsModules.DisableControls;
-  ml    := TStringList.Create;
-  for i := 0 to frmMain.DBGridModules.SelectedRows.Count - 1 do
-  begin
-    s  := '';
-    kc := 0;
-    frmMain.DBGridModules.DataSource.DataSet.GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
-    for k := 0 to frmMain.DBGridModules.Columns.Count - 1 do
+  ml := TStringList.Create;
+  try
+    for i := 0 to frmMain.DBGridModules.SelectedRows.Count - 1 do
     begin
-      if not frmMain.DBGridModules.Columns[k].Visible
-      then
-        continue;
-      if frmMain.DBGridModules.Columns[k].Visible and CheckListBox1.Checked[kc]
-      then
+      s  := '';
+      kc := 0;
+      frmMain.DBGridModules.DataSource.DataSet.GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
+      for k := 0 to frmMain.DBGridModules.Columns.Count - 1 do
       begin
-        if s <> '' then s := s + #9;
-        s := s + frmMain.DBGridModules.Columns[k].Field.asString;
+        if not frmMain.DBGridModules.Columns[k].Visible
+        then
+          continue;
+        if frmMain.DBGridModules.Columns[k].Visible and CheckListBox1.Checked[kc]
+        then
+        begin
+          if s <> '' then s := s + #9;
+          s := s + frmMain.DBGridModules.Columns[k].Field.asString;
+        end;
+        if frmMain.DBGridModules.Columns[k].Visible then
+          inc(kc);
       end;
-      if frmMain.DBGridModules.Columns[k].Visible then
-        inc(kc);
+      if s <> '' then
+        ml.Add(s);
     end;
-    if s <> '' then
-      ml.Add(s);
-  end;
-  DM1.cdsModules.EnableControls;
+    DM1.cdsModules.EnableControls;
 
-  Result := ml.GetText;
+    Result := ml.GetText;
+  finally
+    ml.Free;
+  end;
 end;
 
 procedure TfrmCopyAsText.btnOkClick(Sender: TObject);

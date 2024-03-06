@@ -46,7 +46,6 @@ object frmCopyAsText: TfrmCopyAsText
       ModalResult = 1
       TabOrder = 0
       OnClick = btnOkClick
-      ExplicitLeft = 688
     end
     object btnCancel: TButton
       Left = 815
@@ -59,7 +58,6 @@ object frmCopyAsText: TfrmCopyAsText
       ModalResult = 2
       TabOrder = 1
       OnClick = btnCancelClick
-      ExplicitLeft = 817
     end
   end
   object GroupBox2: TGroupBox
@@ -80,8 +78,8 @@ object frmCopyAsText: TfrmCopyAsText
       AlignWithMargins = True
       Left = 5
       Top = 20
-      Width = 686
-      Height = 359
+      Width = 684
+      Height = 355
       TabStop = False
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -116,7 +114,7 @@ object frmCopyAsText: TfrmCopyAsText
       Left = 5
       Top = 20
       Width = 183
-      Height = 359
+      Height = 355
       Align = alClient
       Color = clBtnFace
       Items.Strings = (

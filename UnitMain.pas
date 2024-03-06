@@ -34,6 +34,7 @@ type
   TDBGrid=Class(Vcl.DBGrids.TDBGrid)
   private
     FOnSelectionChanged: TNotifyEvent;
+  protected
     procedure LinkActive(Value: Boolean); override;
     procedure KeyDown(var Key: Word; Shift: TShiftState);override;
     procedure MouseDown(Button: TMouseButton; Shift: TShiftState; X, Y: Integer); override;
@@ -1324,8 +1325,8 @@ begin
 end;
 
 procedure TfrmMain.actFilterPackagesTypesUnselectAllExecute(Sender: TObject);
-var
-  i: integer;
+{var
+  i: integer;}
 begin
   clbVisiblePackagesTypes.CheckAll(cbUnchecked, false, false);
   clbVisiblePackagesTypesClickCheck(Sender);
@@ -2329,7 +2330,6 @@ begin
 end;
 
 { TDBGrid }
-
 
 procedure TDBGrid.KeyDown(var Key: Word; Shift: TShiftState);
 begin
