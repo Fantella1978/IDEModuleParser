@@ -97,6 +97,7 @@ object frmPackagesList: TfrmPackagesList
       Margins.Bottom = 20
       Align = alRight
       Caption = 'Open'
+      OnClick = clbURLClick
       ExplicitLeft = 908
       ExplicitTop = 23
     end

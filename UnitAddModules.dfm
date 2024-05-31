@@ -25,8 +25,6 @@ object frmAddModules: TfrmAddModules
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 350
-    ExplicitWidth = 816
     DesignSize = (
       818
       37)
@@ -41,7 +39,6 @@ object frmAddModules: TfrmAddModules
       ModalResult = 1
       TabOrder = 0
       OnClick = btnAddClick
-      ExplicitLeft = 649
     end
     object btnCancel: TButton
       Left = 734
@@ -54,7 +51,6 @@ object frmAddModules: TfrmAddModules
       ModalResult = 2
       TabOrder = 1
       OnClick = btnCancelClick
-      ExplicitLeft = 732
     end
     object ProgressBarAddModules: TProgressBar
       Left = 6
@@ -64,7 +60,6 @@ object frmAddModules: TfrmAddModules
       Anchors = [akLeft, akTop, akRight]
       TabOrder = 2
       Visible = False
-      ExplicitWidth = 632
     end
   end
   object GroupBox3: TGroupBox
@@ -76,8 +71,6 @@ object frmAddModules: TfrmAddModules
     Caption = 'Modules'
     Constraints.MinHeight = 100
     TabOrder = 1
-    ExplicitWidth = 816
-    ExplicitHeight = 213
     object lbxModules: TListBox
       AlignWithMargins = True
       Left = 5
@@ -105,7 +98,6 @@ object frmAddModules: TfrmAddModules
     Anchors = []
     BevelOuter = bvNone
     TabOrder = 2
-    ExplicitWidth = 816
     object Panel3: TPanel
       Left = 136
       Top = 0
@@ -114,7 +106,6 @@ object frmAddModules: TfrmAddModules
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 1
-      ExplicitWidth = 680
       object GroupBox1: TGroupBox
         Left = 0
         Top = 0
@@ -124,7 +115,6 @@ object frmAddModules: TfrmAddModules
         Caption = 'Package'
         ParentBackground = False
         TabOrder = 0
-        ExplicitWidth = 680
         DesignSize = (
           682
           63)
@@ -143,7 +133,6 @@ object frmAddModules: TfrmAddModules
           Action = actPackagesEditor
           Anchors = [akTop, akRight]
           TabOrder = 0
-          ExplicitLeft = 554
         end
         object cbPackages: TComboBox
           Left = 63
@@ -168,7 +157,6 @@ object frmAddModules: TfrmAddModules
         Align = alClient
         Caption = 'Options'
         TabOrder = 1
-        ExplicitWidth = 680
         DesignSize = (
           682
           74)
@@ -184,7 +172,6 @@ object frmAddModules: TfrmAddModules
           Checked = True
           State = cbChecked
           TabOrder = 0
-          ExplicitWidth = 408
         end
         object cbOptionsFileNameRegExp: TCheckBox
           Left = 10
@@ -194,7 +181,6 @@ object frmAddModules: TfrmAddModules
           Anchors = [akLeft, akTop, akRight]
           Caption = 'Add File Name also as a File Name RegExp'
           TabOrder = 1
-          ExplicitWidth = 408
         end
       end
     end

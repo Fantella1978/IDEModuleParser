@@ -110,9 +110,10 @@ begin
         '\(\d{1}x[0-9A-F]{8}\)\t' +                       //
         '([^\t]*)\t' +                                    // Groups[2] - path
         '(?:(\d{1,6}\.\d{1,6}\.\d{1,6}\.\d{1,6})\t)?' +   // Groups[3] - version
-        '(\d{1,4}[\/\-\.](?:\d{1,2}|[A-Z,a-z]{3})[\/\-\.]\d{1,4})[\.]?\s*' +          // Groups[4] - date
-        '((?:\s*[\S]{2}\s*)?\d{1,2}[\:\.]\d{1,2}[\:\.]\d{1,2}(?:\s*[\S]{2})?|)\t' +   // Groups[5] - time
-        '([\dA-F]{40})';                                  // Groups[6] - hash
+//        '(\d{1,4}[\/\-\.](?:\d{1,2}|[A-Z,a-z]{3})[\/\-\.]\d{1,4})[\.]?\s*' +          // Groups[4] - date
+//        '((?:\s*[\S]{2}\s*)?\d{1,2}[\:\.]\d{1,2}[\:\.]\d{1,2}(?:\s*[\S]{2})?|)\t' +   // Groups[5] - time
+        '(.*)\t' + // Groups[4] - date & time
+        '([\dA-F]{40})';                                  // Groups[5] - hash
 
     true:
       // Modules File List copied from the RS Version Information text
@@ -556,9 +557,8 @@ begin
                 Groups[1] - file name
                 Groups[2] - path
                 Groups[3] - version
-                Groups[4] - date
-                Groups[5] - time
-                Groups[6] - hash
+                Groups[4] - date & time
+                Groups[5] - hash
 
                 or
 

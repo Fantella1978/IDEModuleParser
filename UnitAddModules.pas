@@ -259,6 +259,7 @@ begin
     Filter := '';
     IndexName := 'NameSubNameIndex';
     // IndexFieldNames := 'Name;SubName';
+    Refresh;
     First;
     for i := 0 to RecordCount - 1 do
     begin

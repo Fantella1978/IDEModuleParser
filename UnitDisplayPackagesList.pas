@@ -99,7 +99,7 @@ end;
 
 procedure TfrmPackagesList.ControlList1Click(Sender: TObject);
 begin
-  clbURLClick(Sender);
+  // clbURLClick(Sender);
 end;
 
 procedure TfrmPackagesList.clbURLClick(Sender: TObject);
