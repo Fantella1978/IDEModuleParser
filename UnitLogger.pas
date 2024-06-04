@@ -44,32 +44,29 @@ var
 begin
   Result := true;
   if not FileExists(aFileName)
-  then
-    aMode := fmCreate
-  else
-    aMode := fmOpenWrite;
-  fs      := TFileStream.Create(aFileName, { mode } aMode, fmShareDenyWrite);
+    then aMode := fmCreate
+    else aMode := fmOpenWrite;
+  fs := TFileStream.Create(aFileName, { mode } aMode, fmShareDenyWrite);
   { sharing mode allows read during our writes }
   try
     { internal Char (UTF16) codepoint, to UTF8 encoding conversion: }
     tempString := Utf8Encode(aText); // this converts UnicodeString to WideString, sadly.
     if aMode = fmCreate
-    then
-    begin
-      preamble := TEncoding.UTF8.GetPreamble;
-      try
-        fs.WriteBuffer(PAnsiChar(preamble)^, Length(preamble));
-      except
-        Result := False;
-      end;
-    end
+      then
+        begin
+          preamble := TEncoding.UTF8.GetPreamble;
+          try
+            fs.WriteBuffer(PAnsiChar(preamble)^, Length(preamble));
+          except
+            Result := False;
+          end;
+        end
     else
-    begin
-      fs.Seek(fs.Size, 0); { go to the end, append }
-    end;
+      begin
+        fs.Seek(fs.Size, 0); { go to the end, append }
+      end;
     if AddCRLF // Add CRLF line end
-    then
-      tempString := tempString + AnsiChar(#13) + AnsiChar(#10);
+      then tempString := tempString + AnsiChar(#13) + AnsiChar(#10);
     try
       fs.WriteBuffer(PAnsiChar(tempString)^, Length(tempString));
     except
@@ -85,9 +82,9 @@ begin
   // Add line to log file
   if not AddTextToFile(FLogFileName, line, true)
   then
-  begin
-    FLogFileName := '';
-  end;
+    begin
+      FLogFileName := '';
+    end;
 end;
 
 function TMyLogger.AddToLog(s: string): boolean;
@@ -96,28 +93,28 @@ var
   dts: string;
   LogString: string;
 begin
-  // Add line to log
+  // Add line to log file
   Result := true;
-  if not FLogEnabled then
-    Exit;
+  if not FLogEnabled
+    then Exit;
   dt := Now();
   DateTimeToString(dts, 'dd-mm-yyyy hh:nn:ss', dt);
   LogString := dts + ' - ' + s;
 
   Add(LogString);
-  if FLogFileName <> '' then
-    AddLineToLogFile(LogString);
-  if FLogMemo <> nil then
-    FLogMemo.Lines.Add(LogString);
+  if FLogFileName <> ''
+    then AddLineToLogFile(LogString);
+  if FLogMemo <> nil
+    then FLogMemo.Lines.Add(LogString);
 end;
 
 procedure TMyLogger.Clear;
 begin
   inherited;
-  if not FLogEnabled then
-    Exit;
-  if FLogMemo <> nil then
-    FLogMemo.Clear;
+  if not FLogEnabled
+    then Exit;
+  if FLogMemo <> nil
+    then FLogMemo.Clear;
 end;
 
 constructor TMyLogger.Create;

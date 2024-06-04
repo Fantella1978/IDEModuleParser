@@ -115,7 +115,6 @@ uses
 class function TModulesPackage.FindSame(const value: TModulesPackage; const MyArr: array of TModulesPackage): boolean;
 var
   i: Integer;
-
 begin
   for i := 0 to High(MyArr) do
     if // (value.Package_ID = MyArr[i].Package_ID) AND

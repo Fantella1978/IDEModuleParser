@@ -28,8 +28,6 @@ object frmPackagesEditor: TfrmPackagesEditor
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 5
-    ExplicitTop = 596
-    ExplicitWidth = 951
     DesignSize = (
       953
       37)
@@ -44,7 +42,6 @@ object frmPackagesEditor: TfrmPackagesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = ButtonOKClick
-      ExplicitLeft = 866
     end
   end
   object dbgPackages: TDBGrid
@@ -123,7 +120,6 @@ object frmPackagesEditor: TfrmPackagesEditor
     Anchors = [akTop, akRight]
     TabOrder = 4
     OnClick = DBNavigator1Click
-    ExplicitLeft = 269
   end
   object btnAdd: TButton
     Left = 706
@@ -133,7 +129,6 @@ object frmPackagesEditor: TfrmPackagesEditor
     Action = actPackageAdd
     Anchors = [akTop, akRight]
     TabOrder = 1
-    ExplicitLeft = 704
   end
   object btnDelete: TButton
     Left = 868
@@ -143,7 +138,6 @@ object frmPackagesEditor: TfrmPackagesEditor
     Action = actPackageDelete
     Anchors = [akTop, akRight]
     TabOrder = 3
-    ExplicitLeft = 866
   end
   object Button2: TButton
     Left = 787
@@ -153,7 +147,6 @@ object frmPackagesEditor: TfrmPackagesEditor
     Action = actPackageEdit
     Anchors = [akTop, akRight]
     TabOrder = 2
-    ExplicitLeft = 785
   end
   object GroupBox1: TGroupBox
     Left = 0

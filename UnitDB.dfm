@@ -198,7 +198,6 @@ object DM1: TDM1
       FieldName = 'Module_ID'
       Origin = 'Module_ID'
       ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
     end
     object fdtModulesFileName: TStringField
       DisplayLabel = 'File Name'
@@ -283,7 +282,6 @@ object DM1: TDM1
       FieldName = 'Package_ID'
       Origin = 'Package_ID'
       ProviderFlags = [pfInWhere, pfInKey]
-      ReadOnly = True
     end
     object fdtPackagesName: TStringField
       FieldName = 'Name'

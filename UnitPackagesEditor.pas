@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.Grids, Vcl.DBGrids,
   Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, System.Actions,
   Vcl.ActnList, Vcl.Menus
-  , UnitStaticFunctions
+  , UnitStaticFunctions, Vcl.Buttons
   ;
 
 type

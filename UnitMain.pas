@@ -489,6 +489,8 @@ procedure TfrmMain.actFilterPackagesSelectAllExecute(Sender: TObject);
 begin
   clbVisiblePackages.CheckAll(cbChecked, false, false);
   clbVisiblePackagesClickCheck(Sender);
+  clbVisiblePackagesTypes.CheckAll(cbChecked, false, false);
+  clbVisiblePackagesTypesClickCheck(Sender);
 end;
 
 function TfrmMain.GetPackageType_IDByName(name: string): integer;
@@ -506,10 +508,11 @@ end;
 function TfrmMain.FilterPackagesSelectOnly3rdParty : boolean;
 var
   ThirdPartyPackagesFound: boolean;
+  i : integer;
 begin
   // Select only 3rd-party packages
   ThirdPartyPackagesFound := false;
-  for var i := 0 to clbVisiblePackages.Items.Count - 1 do
+  for i := 0 to clbVisiblePackages.Items.Count - 1 do
     begin
       var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
       if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
@@ -521,6 +524,15 @@ begin
          end
       else clbVisiblePackages.Checked[i] := false;
     end;
+  for i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
+  begin
+    var PackageType_ID := DM1.FindPackageType_IDByName(clbVisiblePackagesTypes.Items[i]);
+    if (PackageType_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
+      (PackageType_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
+      then clbVisiblePackagesTypes.Checked[i] := true;
+  end;
+  clbVisiblePackagesTypesClickCheck(frmMain);
+
   if ThirdPartyPackagesFound
     then
       begin
@@ -528,7 +540,6 @@ begin
         clbVisiblePackagesClickCheck(frmMain);
       end
     else result := false;
-
 
   if GlobalAfterParsingView and not ThirdPartyPackagesFound then
     begin
@@ -561,7 +572,11 @@ begin
   for i := 0 to clbVisiblePackages.Items.Count - 1 do
     if clbVisiblePackages.Items[i] = '<Empty>'
       then clbVisiblePackages.Checked[i] := true;
+  for i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
+    if clbVisiblePackagesTypes.Items[i] = '<Empty>'
+      then clbVisiblePackagesTypes.Checked[i] := true;
   clbVisiblePackagesClickCheck(Sender);
+  clbVisiblePackagesTypesClickCheck(Sender);
 end;
 
 procedure TfrmMain.actFilterPackagesUnSelectAllExecute(Sender: TObject);
@@ -1293,6 +1308,8 @@ procedure TfrmMain.actFilterPackagesTypesSelectAllExecute(Sender: TObject);
 begin
   clbVisiblePackagesTypes.CheckAll(cbChecked, false, false);
   clbVisiblePackagesTypesClickCheck(Sender);
+  clbVisiblePackages.CheckAll(cbChecked, false, false);
+  clbVisiblePackagesClickCheck(Sender);
 end;
 
 procedure TfrmMain.actFilterPackagesTypesSelectOnly3rdPartyExecute(
@@ -1308,7 +1325,15 @@ begin
       then clbVisiblePackagesTypes.Checked[i] := true
       else clbVisiblePackagesTypes.Checked[i] := false;
   end;
+  for i := 0 to clbVisiblePackages.Items.Count - 1 do
+    begin
+      var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
+      if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
+        (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
+      then clbVisiblePackages.Checked[i] := true;
+    end;
   clbVisiblePackagesTypesClickCheck(Sender);
+  clbVisiblePackagesClickCheck(frmMain);
 end;
 
 procedure TfrmMain.actFilterPackagesTypesSelectOnlyEmptyExecute(
@@ -1321,7 +1346,11 @@ begin
   for i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
     if clbVisiblePackagesTypes.Items[i] = '<Empty>'
       then clbVisiblePackagesTypes.Checked[i] := true;
+  for i := 0 to clbVisiblePackages.Items.Count - 1 do
+    if clbVisiblePackages.Items[i] = '<Empty>'
+      then clbVisiblePackages.Checked[i] := true;
   clbVisiblePackagesTypesClickCheck(Sender);
+  clbVisiblePackagesClickCheck(Sender);
 end;
 
 procedure TfrmMain.actFilterPackagesTypesUnselectAllExecute(Sender: TObject);

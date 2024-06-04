@@ -117,7 +117,6 @@ object frmCopyAsText: TfrmCopyAsText
       Height = 355
       Align = alClient
       Color = clBtnFace
-      ItemHeight = 15
       Items.Strings = (
         'Item 1'
         'Item 2'
