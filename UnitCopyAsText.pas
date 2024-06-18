@@ -22,7 +22,7 @@ type
     procedure CheckListBox1ClickCheck(Sender: TObject);
   private
     procedure CopyModulesToClipboard();
-    function ModulesGetText: PWideChar;
+    function ModulesGetText: string;
     { Private declarations }
   public
     { Public declarations }
@@ -102,7 +102,8 @@ begin
     else btnOk.Enabled := true;
 end;
 
-function TfrmCopyAsText.ModulesGetText: PWideChar;
+//function TfrmCopyAsText.ModulesGetText: PWideChar;
+function TfrmCopyAsText.ModulesGetText: string;
 var
   i, k, kc: integer;
   ml: TStringList;
@@ -136,7 +137,7 @@ begin
     end;
     DM1.cdsModules.EnableControls;
 
-    Result := ml.GetText;
+    Result := ml.Text;
   finally
     ml.Free;
   end;

@@ -10,6 +10,7 @@ uses
   , System.RegularExpressionsCore
   , UnitIDEModule
   , Data.DB
+  , FireDAC.Stan.Param
   , System.Generics.Collections
   ;
 
@@ -259,10 +260,9 @@ begin
       'FROM Modules AS m ' +
       'LEFT JOIN Packages AS p ON m.Package_ID=p.Package_ID ' +
       'LEFT JOIN PackageTypes AS pt ON p.Type_ID=pt.Type_ID ' +
-      'WHERE lower(m.FileName)="' +
-      LowerCase(DM1.cdsModules.FieldByName('FileName').AsString) +
-      '"' +
+      'WHERE lower(m.FileName)= :FileName' +
       ';');
+    ParamByName('FileName').AsString := LowerCase(DM1.cdsModules.FieldByName('FileName').AsString);
     Open;
   end;
 
