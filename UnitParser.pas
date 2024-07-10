@@ -383,10 +383,12 @@ begin
 end;
 
 function TfrmParse.TaskFindModulesByFileNameRegExp() : boolean;
+var
+  id: integer;
 begin
   Result := false;
   if parseCanceled then Exit;
-  StartTask('Find known modules in DB...');
+  StartTask('Find known modules in DB (RegExp method) ...');
   Logger.AddToLog('Find known modules by FileName RegExp in DB started.');
   DM1.cdsModules.DisableControls;
 
@@ -406,21 +408,22 @@ begin
       ';');
     }
     Open;
+
+    Last;
+    SetCurrentTaskPositionsMinMax(0, RecordCount - 1);
+    First;
+
+    id := -1;
+    while not Eof do
+    begin
+      if parseCanceled then Break;
+      inc(id);
+      SetCurrentTaskPosition(id);
+      DetermineModulesByFileNameRegExp();
+      Next;
+    end;
   end;
-  SetCurrentTaskPositionsMinMax(0, DM1.fdqModulesFromQuery.RecordCount - 1);
 
-  var i := -1;
-  while not DM1.fdqModulesFromQuery.Eof do
-  begin
-    if parseCanceled then Break;
-
-    inc(i);
-    SetCurrentTaskPosition(i);
-
-    DetermineModulesByFileNameRegExp();
-
-    DM1.fdqModulesFromQuery.Next;
-  end;
 
   DM1.cdsModules.Filter := '';
   DM1.cdsModules.Filtered := false;
