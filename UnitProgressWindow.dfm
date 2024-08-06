@@ -29,12 +29,10 @@ object frmProgress: TfrmProgress
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 404
-    ExplicitWidth = 626
     DesignSize = (
       542
       37)
-    object Button2: TButton
+    object btnCancel: TButton
       Left = 461
       Top = 6
       Width = 75
@@ -44,8 +42,7 @@ object frmProgress: TfrmProgress
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 0
-      OnClick = Button2Click
-      ExplicitLeft = 545
+      OnClick = btnCancelClick
     end
   end
   object pbProgress: TProgressBar

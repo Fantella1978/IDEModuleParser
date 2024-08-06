@@ -348,6 +348,7 @@ type
     FModulesFilterFileNameString : string;
     FModulesFilterPackagesString : string;
     FModulesFilterPackagesTypesString: string;
+    FFileName : TFileName;
     DBGridModulesColumnsWidth: TDBGridColumnsWidthArray;
     procedure ModulesCountDisplay;
     function IsAdminModeEnabled: boolean;
@@ -359,6 +360,7 @@ type
     function GetPackageType_IDByName(name: string): integer;
     function DeleteTempFolder: boolean;
     procedure AfterParsingView(Sender: TObject);
+    procedure SetFileName(const FileName: String);
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
@@ -387,6 +389,13 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TfrmMain.SetFileName(const FileName: String);
+begin
+  FFileName := FileName;
+  Caption := Format('%s - %s', [ExtractFileName(FileName), Application.Title]);
+end;
+
 
 procedure TfrmMain.actDisableAdminModeExecute(Sender: TObject);
 begin
@@ -650,6 +659,7 @@ begin
       if frmCopyVersionInfo.memVersionInformation.Text <> ''
         then GetMemoTxtModuleFileFromVersionInfo(Sender);
       PageControl1.ActivePage := tsModuleListFile;
+      SetFileName(vifFileName);
       if actParseModuleFile.Enabled
         then actParseModuleFileExecute(Sender);
     end;
@@ -1155,6 +1165,7 @@ begin
         zip.Extract(ReportFilesInZip[i], ReportFolder);
         Logger.AddToLog('The ' + ReportFilesInZip[i] + ' file unpacked form Zip.');
       end;
+    SetFileName(mzfFileName);
   finally
     zip.Free;
   end;
@@ -1231,6 +1242,7 @@ begin
     then
       begin
         OpenTextModuleListFile(OpenTextFileDialog1.FileName);
+        SetFileName(OpenTextFileDialog1.FileName);
         ModulesFileListIsVersionInfoList := false;
         PageControl1.ActivePage := tsModuleListFile;
         if actParseModuleFile.Enabled
@@ -1809,7 +1821,9 @@ begin
   if GlobalMaximizeOnStartup
     then frmMain.WindowState := TWindowState.wsMaximized
     else frmMain.WindowState := TWindowState.wsNormal;
-  Caption := 'IDE Module Parser' + ' ' + GetFileVersionStr(Application.ExeName);
+
+  Application.Title := 'IDE Module Parser' + ' ' + GetFileVersionStr(Application.ExeName);
+  Caption := Application.Title;
 
   UpdateObjectsAccordingSettings();
 

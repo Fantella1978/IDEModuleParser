@@ -8,11 +8,11 @@ uses
 
 type
   TfrmProgress = class(TForm)
-    Button2: TButton;
+    btnCancel: TButton;
     Panel1: TPanel;
     pbProgress: TProgressBar;
     lblProgress: TLabel;
-    procedure Button2Click(Sender: TObject);
+    procedure btnCancelClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
@@ -29,7 +29,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TfrmProgress.Button2Click(Sender: TObject);
+procedure TfrmProgress.btnCancelClick(Sender: TObject);
 begin
   FCanceled := true;
   Close;
