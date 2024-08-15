@@ -165,6 +165,7 @@ procedure TfrmModulesEditor.FormClose(Sender: TObject;
 begin
   FreeAndNil(Package_IDs);
   lbedFilterFileName.Text := '';
+  FFilterPackageStr := '';
 end;
 
 procedure TfrmModulesEditor.FormCreate(Sender: TObject);
@@ -181,13 +182,18 @@ end;
 
 procedure TfrmModulesEditor.FormShow(Sender: TObject);
 begin
-  DM1.fdtModules.IndexFieldNames := 'FileName:DN';
-  DM1.fdtModules.Filtered := false;
   DM1.fdtModules.DisableControls;
-  dbgModulesTitleClick(dbgModules.Columns[1]);
+  if (DM1.fdtModules.IndexFieldNames = '') or (DM1.fdtModules.IndexFieldNames = 'Module_ID')
+    then
+      begin
+        DM1.fdtModules.IndexFieldNames := 'Module_ID:AN';
+        dbgModulesTitleClick(dbgModules.Columns[0]);
+      end;
+  DM1.fdtModules.Filtered := false;
+  if DM1.fdtModules.Active then DM1.fdtModules.Refresh;
   DM1.fdtModules.First;
-  DM1.fdtModules.EnableControls;
   UpdatePackagesInfo();
+  if cbFilterPackages.ItemIndex = 0 then FFilterPackageStr := '';
   ApplyAllFiltres();
   if DM1.fdtModules.RecordCount > 2
     then frmModulesEditor.actFindDuplicates.Enabled := true
@@ -195,6 +201,7 @@ begin
   // for DBGrid Columns Width adjust
   SetDBGridModulesDefaultColumnsWidth(Sender);
   AutoStretchDBGridColumns(dbgModules, dbgModulesColumnsWidth);
+  DM1.fdtModules.EnableControls;
 
   FFindNext := false;
   FFindNextModule_ID := 0;
@@ -525,6 +532,7 @@ begin
   DM1.fdtPackages.Filtered := false;
   DM1.fdtPackages.Filter := '';
   DM1.fdtPackages.IndexName := 'NameSubNameIndex';
+  if DM1.fdtPackages.Active then DM1.fdtPackages.Refresh;
   DM1.fdtPackages.First;
   for i := 0 to DM1.fdtPackages.RecordCount - 1 do
   begin

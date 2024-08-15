@@ -1,0 +1,57 @@
+# --------- Table Packages -------------------
+CREATE TABLE Packages (
+    Package_ID    INTEGER       NOT NULL
+                                PRIMARY KEY AUTOINCREMENT
+                                UNIQUE,
+    Name          VARCHAR (60)  NOT NULL
+                                COLLATE NOCASE,
+    SubName       VARCHAR (60)  COLLATE NOCASE,
+    Url           VARCHAR (255),
+    VersionRegExp VARCHAR (100),
+    Version       VARCHAR (27),
+    Type_ID       INTEGER,
+    InGetIt       BOOL          DEFAULT (0),
+    Description   TEXT,
+    FOREIGN KEY (
+        Type_ID
+    )
+    REFERENCES PackageTypes (ID) 
+);
+# --------- Table Modules -------------------
+CREATE TABLE Modules (
+    Module_ID      INTEGER       PRIMARY KEY AUTOINCREMENT
+                                 UNIQUE
+                                 NOT NULL,
+    FileName       VARCHAR (100) NOT NULL,
+    Package_ID     INTEGER,
+    Version        VARCHAR (27),
+    Hash           CHAR (40),
+    PathRegExp     VARCHAR (100),
+    VersionRegExp  VARCHAR (100),
+    FileNameRegExp VARCHAR (120),
+    FOREIGN KEY (
+        Package_ID
+    )
+    REFERENCES Packages (Num) 
+);
+# --------- Table PackageTypes --------------
+CREATE TABLE PackageTypes (
+    Type_ID INTEGER      NOT NULL
+                         UNIQUE
+                         PRIMARY KEY AUTOINCREMENT,
+    Name    VARCHAR (50) NOT NULL
+);
+
+# ---------- View ModulesWithFileNameRegExp ---------------
+SELECT m.FileNameRegExp AS FileNameRegExp, p.Package_ID AS Package_ID, p.Name AS PackageName, pt.Type_ID AS PackageType_ID 
+	FROM Modules AS m 
+	LEFT JOIN Packages AS p ON m.Package_ID = p.Package_ID 
+	LEFT JOIN PackageTypes AS pt ON p.Type_ID = pt.Type_ID 
+	WHERE m.FileNameRegExp <> ""
+
+
+
+SELECT m.*, p.Package_ID AS PackageID, p.Name AS PackageName FROM Modules AS m LEFT OUTER JOIN Packages AS p ON m.Package_ID=p.Package_ID WHERE lower(m.FileName)="bds.exe" LIMIT 0,1
+
+
+

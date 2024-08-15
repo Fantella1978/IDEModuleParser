@@ -26,8 +26,6 @@ object frmModulesEditor: TfrmModulesEditor
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitTop = 441
-    ExplicitWidth = 867
     DesignSize = (
       869
       37)
@@ -42,7 +40,6 @@ object frmModulesEditor: TfrmModulesEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = Button1Click
-      ExplicitLeft = 776
     end
   end
   object dbgModules: TDBGrid
@@ -115,7 +112,6 @@ object frmModulesEditor: TfrmModulesEditor
     Height = 73
     Align = alTop
     TabOrder = 2
-    ExplicitWidth = 867
     DesignSize = (
       869
       73)
@@ -174,7 +170,6 @@ object frmModulesEditor: TfrmModulesEditor
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
-      ExplicitLeft = 611
     end
     object Button2: TButton
       Left = 373

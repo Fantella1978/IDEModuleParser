@@ -24,7 +24,7 @@ type
     ActionList1: TActionList;
     actPackagesEditor: TAction;
     ProgressBarAddModules: TProgressBar;
-    CheckBox1: TCheckBox;
+    cbReplaceModule: TCheckBox;
     cbOptionsFileNameRegExp: TCheckBox;
     Panel3: TPanel;
     GroupBox4: TGroupBox;
@@ -41,6 +41,9 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure clbFieldsAllCheck();
   private
+    function ReplaceModuleInKnown: boolean;
+    function FindModuleInDB(AFileName: string; AVersion: string): boolean;
+    procedure FillModuleFields;
     { Private declarations }
   public
     { Public declarations }
@@ -127,10 +130,78 @@ begin
         end;
 end;
 
+function TfrmAddModules.FindModuleInDB(AFileName: string; AVersion: string): boolean;
+begin
+
+  { DONE : DO Module Search }
+
+  with DM1.fdtModules do
+  begin
+    Filter := 'FileName = ' + QuotedStr(AFileName);
+    if clbFields.Checked[1]
+      then Filter := Filter + ' and Version = ' + QuotedStr(AVersion);
+    if FindFirst
+      then
+        begin
+          result := true;
+          exit;
+        end;
+  end;
+  result := false;
+end;
+
+procedure TfrmAddModules.FillModuleFields();
+begin
+  with DM1.fdtModules do
+  begin
+    FieldByName('Package_ID').AsInteger := StrToInt(Package_IDs[cbPackages.ItemIndex]);
+    FieldByName('FileName').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
+    if clbFields.Checked[1]
+      then FieldByName('Version').AsString := DM1.cdsModules.FieldByName('Version').AsString
+      else FieldByName('Version').AsString := '';
+    {
+    if clbFields.Checked[3]
+      then FieldByName('DateAndTime').AsDateTime := DM1.cdsModules.FieldByName('DateAndTime').AsDateTime
+      else FieldByName('DateAndTime').AsString := '';
+    if clbFields.Checked[4]
+      then FieldByName('Path').AsString := DM1.cdsModules.FieldByName('Path').AsString
+      else FieldByName('Path').AsString := '';
+    }
+    if clbFields.Checked[2]
+      then FieldByName('Hash').AsString := DM1.cdsModules.FieldByName('Hash').AsString
+      else FieldByName('Hash').AsString := '';
+    if cbOptionsFileNameRegExp.Checked
+      then FieldByName('FileNameRegExp').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
+  end;
+end;
+
+function TfrmAddModules.ReplaceModuleInKnown(): boolean;
+var
+  AFileName : string;
+  AVersion : string;
+begin
+  AFileName := DM1.cdsModules.FieldByName('FileName').AsString;
+  if clbFields.Checked[1]
+    then AVersion := DM1.cdsModules.FieldByName('Version').AsString
+    else AVersion := '';
+  with DM1.fdtModules do
+  begin
+    Edit;
+    FillModuleFields();
+    Post;
+  end;
+  Logger.AddToLog('Module "' + AFileName + '" replaced in DB.');
+  ProgressBarAddModules.Position := ProgressBarAddModules.Position + 1;
+  Application.ProcessMessages;
+  result := true;
+end;
+
 function TfrmAddModules.AddAllSelectedModulesToDB: boolean;
 var
   i : integer;
   CurrentBookMark: TBookmark;
+  AFileName : string;
+  AVersion : string;
 begin
   //
   ProgressBarAddModules.Min := 0;
@@ -145,7 +216,13 @@ begin
     for i := 0 to frmMain.DBGridModules.SelectedRows.Count - 1 do
     begin
       GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
-      AddCurrentModuleToKnown();
+      AFileName := FieldByName('FileName').AsString;
+      if clbFields.Checked[1]
+        then AVersion := FieldByName('Version').AsString
+        else AVersion := '';
+      if cbReplaceModule.Checked and FindModuleInDB(AFileName, AVersion)
+        then ReplaceModuleInKnown()
+        else AddCurrentModuleToKnown();
     end;
     EnableControls;
     GotoBookmark(CurrentBookMark);
@@ -156,33 +233,21 @@ begin
 end;
 
 function TfrmAddModules.AddCurrentModuleToKnown: boolean;
+var
+  AFileName : string;
+  AVersion : string;
 begin
-  //
+  AFileName := DM1.cdsModules.FieldByName('FileName').AsString;
+  if clbFields.Checked[1]
+    then AVersion := DM1.cdsModules.FieldByName('Version').AsString
+    else AVersion := '';
   with DM1.fdtModules do
   begin
     Append;
-    FieldByName('FileName').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
-    FieldByName('Package_ID').AsInteger := StrToInt(Package_IDs[cbPackages.ItemIndex]);
-    if clbFields.Checked[1]
-      then FieldByName('Version').AsString := DM1.cdsModules.FieldByName('Version').AsString
-      else FieldByName('Version').AsString := '';
-    {
-    if clbFields.Checked[2]
-      then FieldByName('DateAndTime').AsDateTime := DM1.cdsModules.FieldByName('DateAndTime').AsDateTime
-      else FieldByName('DateAndTime').AsString := '';
-    if clbFields.Checked[3]
-      then FieldByName('Path').AsString := DM1.cdsModules.FieldByName('Path').AsString
-      else FieldByName('Path').AsString := '';
-    }
-    if clbFields.Checked[2]
-      then FieldByName('Hash').AsString := DM1.cdsModules.FieldByName('Hash').AsString
-      else FieldByName('Hash').AsString := '';
-    if cbOptionsFileNameRegExp.Checked
-      then FieldByName('FileNameRegExp').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
-
-    DM1.fdtModules.Post;
+    FillModuleFields();
+    Post;
   end;
-  // ShowMessage('Module ' + DM1.cdsModules.FieldByName('Name').AsString + ' successfuly added to DB.');
+  Logger.AddToLog('Module "' + AFileName + '" added to DB.');
   ProgressBarAddModules.Position := ProgressBarAddModules.Position + 1;
   Application.ProcessMessages;
   Result := true;
@@ -226,8 +291,8 @@ begin
       begin
         if ((Columns[k].FieldName = 'FileName') AND clbFields.Checked[0]) OR
            ((Columns[k].FieldName = 'Version') AND clbFields.Checked[1]) OR
-          { ((Columns[k].FieldName = 'DateAndTime') AND clbFields.Checked[2]) OR}
-          { ((Columns[k].FieldName = 'Path') AND clbFields.Checked[3]) OR }
+          { ((Columns[k].FieldName = 'DateAndTime') AND clbFields.Checked[3]) OR}
+          { ((Columns[k].FieldName = 'Path') AND clbFields.Checked[4]) OR }
            ((Columns[k].FieldName = 'Hash') AND clbFields.Checked[2])
           then
             begin
@@ -247,7 +312,7 @@ end;
 function TfrmAddModules.UpdatePackagesInfo: boolean;
 var
   i : integer;
-  PackageName : string;
+  // PackageName : string;
 begin
   if not Assigned(Package_IDs) then Package_IDs := TStringList.Create;
   Package_IDs.Clear;
@@ -258,17 +323,21 @@ begin
     Filtered := false;
     Filter := '';
     IndexName := 'NameSubNameIndex';
-    // IndexFieldNames := 'Name;SubName';
+    IndexFieldNames := '';
     Refresh;
+    // Close;
+    // Open;
     First;
     for i := 0 to RecordCount - 1 do
     begin
+      {
       PackageName := FieldByName('Name').AsString;
       if FieldByName('SubName').AsString <> ''
         then PackageName := PackageName + ' ' + FieldByName('SubName').AsString;
       if FieldByName('Version').AsString <> ''
         then PackageName := PackageName + ' ' + FieldByName('Version').AsString;
-      cbPackages.Items.Add(PackageName);
+      }
+      cbPackages.Items.Add(FieldByName('FullName').AsString);
       Package_IDs.Add(FieldByName('Package_ID').AsString);
       Next;
     end;

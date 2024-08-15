@@ -160,7 +160,7 @@ object frmAddModules: TfrmAddModules
         DesignSize = (
           682
           74)
-        object CheckBox1: TCheckBox
+        object cbReplaceModule: TCheckBox
           Left = 10
           Top = 24
           Width = 410
@@ -200,7 +200,6 @@ object frmAddModules: TfrmAddModules
         Height = 112
         Align = alClient
         Color = clBtnFace
-        ItemHeight = 15
         Items.Strings = (
           'File Name'
           'Version'

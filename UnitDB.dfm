@@ -270,7 +270,6 @@ object DM1: TDM1
     FetchOptions.AssignedValues = [evCursorKind]
     FetchOptions.CursorKind = ckStatic
     FormatOptions.AssignedValues = [fvSortLocale, fvSortOptions]
-    FormatOptions.SortLocale = 0
     FormatOptions.SortOptions = [soNoCase]
     ResourceOptions.AssignedValues = [rvEscapeExpand]
     UpdateOptions.AssignedValues = [uvUpdateNonBaseFields, uvAutoCommitUpdates]

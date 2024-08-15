@@ -1366,8 +1366,6 @@ begin
 end;
 
 procedure TfrmMain.actFilterPackagesTypesUnselectAllExecute(Sender: TObject);
-{var
-  i: integer;}
 begin
   clbVisiblePackagesTypes.CheckAll(cbUnchecked, false, false);
   clbVisiblePackagesTypesClickCheck(Sender);
