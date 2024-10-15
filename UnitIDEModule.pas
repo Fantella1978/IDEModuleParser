@@ -105,19 +105,19 @@ begin
                 if Length(Groups[2]) = 3
                   then
                     begin
-                      AMonth := 1;
                       var tempG2 := lowercase(Groups[2]);
-                      if tempG2 = 'jan' then AMonth := 1;
-                      if tempG2 = 'feb' then AMonth := 2;
-                      if tempG2 = 'mar' then AMonth := 3;
-                      if tempG2 = 'apr' then AMonth := 4;
-                      if tempG2 = 'may' then AMonth := 5;
-                      if tempG2 = 'jun' then AMonth := 6;
-                      if tempG2 = 'jul' then AMonth := 7;
-                      if tempG2 = 'aug' then AMonth := 8;
-                      if tempG2 = 'sep' then AMonth := 9;
-                      if tempG2 = 'oct' then AMonth := 10;
-                      if tempG2 = 'nov' then AMonth := 11;
+                      AMonth := 1;
+                      if tempG2 = 'jan' then else
+                      if tempG2 = 'feb' then AMonth := 2 else
+                      if tempG2 = 'mar' then AMonth := 3 else
+                      if tempG2 = 'apr' then AMonth := 4 else
+                      if tempG2 = 'may' then AMonth := 5 else
+                      if tempG2 = 'jun' then AMonth := 6 else
+                      if tempG2 = 'jul' then AMonth := 7 else
+                      if tempG2 = 'aug' then AMonth := 8 else
+                      if tempG2 = 'sep' then AMonth := 9 else
+                      if tempG2 = 'oct' then AMonth := 10 else
+                      if tempG2 = 'nov' then AMonth := 11 else
                       if tempG2 = 'dec' then AMonth := 12;
                     end
                   else AMonth := StrToInt(Groups[2]);

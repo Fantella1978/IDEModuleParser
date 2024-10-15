@@ -1,2 +1,2 @@
 # IDEModuleParser
-IDE Module Parser for RS
+IDE Module Parser for Embarcadero RAD Studio

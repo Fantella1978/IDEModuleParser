@@ -20,11 +20,41 @@ EditViewName=Z:\SiteMapExplorer\UnitScan.pas
 
 [ClosedView_WjpcSURFIE1vZHVsZSBQYXJzZXIgMTIgW29yaWdpbmFsXVxVbml0TWFpbi5wYXM=]
 Module=Z:\IDE Module Parser 12 [original]\UnitMain.pas
-CursorX=1
-CursorY=1236
-TopLine=1210
+CursorX=44
+CursorY=387
+TopLine=384
 LeftCol=1
 Elisions=
 Bookmarks=
 EditViewName=Z:\IDE Module Parser 12 [original]\UnitMain.pas
+
+[ClosedView_WjpcSURFIE1vZHVsZSBQYXJzZXIgMTIgW29yaWdpbmFsXVxVbml0QWRkTW9kdWxlcy5wYXM=]
+Module=Z:\IDE Module Parser 12 [original]\UnitAddModules.pas
+CursorX=10
+CursorY=137
+TopLine=117
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=Z:\IDE Module Parser 12 [original]\UnitAddModules.pas
+
+[ClosedView_YzpcZW1iXHN0dWRpb1wyMy4wXHNvdXJjZVxydGxcd2luXFdpbmFwaS5TaGVsbEFQSS5wYXM=]
+Module=c:\emb\studio\23.0\source\rtl\win\Winapi.ShellAPI.pas
+CursorX=1
+CursorY=1746
+TopLine=1722
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+
+[ClosedView_WjpcSURFIE1vZHVsZSBQYXJzZXIgMTIgW29yaWdpbmFsXVxVbml0SURFTW9kdWxlLnBhcw==]
+Module=Z:\IDE Module Parser 12 [original]\UnitIDEModule.pas
+CursorX=32
+CursorY=176
+TopLine=152
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=Z:\IDE Module Parser 12 [original]\UnitIDEModule.pas
 
