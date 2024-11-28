@@ -9,7 +9,7 @@ uses
   , Vcl.Buttons, System.ImageList, System.UITypes, Vcl.Grids, Vcl.ImgList
   , Vcl.Graphics, Vcl.Mask, System.IOUtils, Clipbrd, System.Zip
   , System.StrUtils, Data.DB, Vcl.DBGrids, Winapi.ShellAPI, Generics.Defaults
-  , Vcl.Themes, Vcl.Menus, Vcl.CheckLst
+  , Vcl.Themes, Vcl.Menus, Vcl.CheckLst, System.Types
   , UnitDB
   , UnitDBGrid
   , UnitLogger
@@ -996,7 +996,11 @@ begin
   DM1.cdsScreenshots.RecNo := ControlListScreenshots.ItemIndex + 1;
   FilePath := DM1.cdsScreenshots.FieldByName('FilePath').AsString;
   if FilePath <> ''
-    then ShellExecute(0, nil, PChar(FilePath), nil, nil, SW_SHOWNOACTIVATE);
+    then
+      begin
+        ShellExecute(0, nil, PChar(FilePath), nil, nil, SW_SHOWNOACTIVATE);
+        Logger.AddToLog('Open screenshot in external browser: ' + FilePath);
+      end;
 end;
 
 function TfrmMain.ConfirmNewDxDiagLogFileLoad(AskForAll: boolean): boolean;
@@ -1838,14 +1842,21 @@ end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  if (tsModulesList.TabVisible or
+  if ((tsModulesList.TabVisible or
       tsModuleListFile.TabVisible or
       tsScreenshots.TabVisible or
       tsDXDiagLogFile.TabVisible or
       tsStackTraceFile.TabVisible or
       tsStepsFile.TabVisible or
       tsDescriptionFile.TabVisible) AND
-    (MessageDlg('Close the application?', mtConfirmation, [mbYes, mbNo], 0) = mrYes)
+    (MessageDlg('Close the application?', mtConfirmation, [mbYes, mbNo], 0) = mrYes)) OR
+    ( not tsModulesList.TabVisible and
+      not tsModuleListFile.TabVisible and
+      not tsScreenshots.TabVisible and
+      not tsDXDiagLogFile.TabVisible and
+      not tsStackTraceFile.TabVisible and
+      not tsStepsFile.TabVisible and
+      not tsDescriptionFile.TabVisible)
   then CanClose := true
   else CanClose := false;
 end;
@@ -1971,8 +1982,8 @@ procedure TfrmMain.LoadScreenshotFilesSuccess;
 begin
   HideStartMessage;
   ControlListScreenshots.ItemCount := DM1.cdsScreenshots.RecordCount;
-  if DM1.cdsScreenshots.RecordCount > 1 then
-    tsScreenshots.Caption := 'Screenshots [' + DM1.cdsScreenshots.RecordCount.ToString + ']'
+  if DM1.cdsScreenshots.RecordCount > 1
+    then tsScreenshots.Caption := 'Screenshots [' + DM1.cdsScreenshots.RecordCount.ToString + ']'
     else tsScreenshots.Caption := 'Screenshot';
   tsScreenshots.TabVisible := true;
   PageControl1.ActivePage := tsScreenshots;
@@ -2082,16 +2093,20 @@ function TfrmMain.TryOpenScreenshotFilesInReport: boolean;
 var
   i : integer;
   tempFileName : string;
+  tempFilePath: string;
   ScreenshotFound : boolean;
+  FilesArr: TStringDynArray;
 begin
   // Trying to open 9 screenshots if they exist
   DM1.cdsScreenshots.EmptyDataSet;
   ImageCollectionScreenshots.Images.Clear;
   tsScreenshots.TabVisible := false;
   ScreenshotFound := false;
-  for I := 0 to 9 do
+  // FilesArr := TDirectory.GetFiles(ReportFolder, '*.png');
+  FilesArr := GetFilesByMask(ReportFolder, '*.png;*.jpg;*.jpeg');
+  for tempFilePath in FilesArr do
   begin
-    tempFileName := 'Screen' + i.ToString + '.png';
+    tempFileName := ExtractFileName(tempFilePath);
     if TryOpenScreenshotFile(tempFileName)
       then ScreenshotFound := true;
   end;

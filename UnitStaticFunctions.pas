@@ -3,7 +3,11 @@ unit UnitStaticFunctions;
 interface
 
 uses
-  Vcl.DBGrids
+    Vcl.DBGrids
+  , System.Types
+  , System.IOUtils
+  , System.StrUtils
+  , System.Masks
   ;
 
 type
@@ -13,6 +17,7 @@ type
   function AutoCalcDBGridColumnsWidth(Grid: TDBGrid; Column: TColumn;
    var WidthArray: TDBGridColumnsWidthArray) : boolean;
   procedure AutoStretchDBGridColumns(Grid: TDBGrid; MinWidths: Array of integer);
+  function GetFilesByMask(const Path, Masks: string): TStringDynArray;
 
 implementation
 
@@ -52,6 +57,26 @@ begin
     end;
   end;
 
+end;
+
+/// <summary>Get all files by Mask</summary>
+function GetFilesByMask(const Path, Masks: string): TStringDynArray;
+var
+  MaskArray: TStringDynArray;
+  Predicate: TDirectory.TFilterPredicate;
+begin
+  MaskArray := SplitString(Masks, ';');
+  Predicate :=
+    function(const Path: string; const SearchRec: TSearchRec): Boolean
+    var
+      Mask: string;
+    begin
+      for Mask in MaskArray do
+        if MatchesMask(SearchRec.Name, Mask) then
+          exit(True);
+      exit(False);
+    end;
+  Result := TDirectory.GetFiles(Path, Predicate);
 end;
 
 function AutoCalcDBGridColumnsWidth(Grid: TDBGrid; Column: TColumn;

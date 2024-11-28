@@ -3192,20 +3192,17 @@ object frmMain: TfrmMain
         ParentColor = False
         TabOrder = 0
         OnBeforeDrawItem = ControlListScreenshotsBeforeDrawItem
-        ExplicitLeft = -16
-        ExplicitTop = 32
         object clbViewImage: TControlListButton
-          Left = 182
-          Top = 59
+          Left = 184
+          Top = 63
           Width = 105
           Height = 25
-          Anchors = [akTop, akRight]
           Caption = 'View Image'
           OnClick = clbViewImageClick
         end
         object lblImageName: TLabel
           Left = 184
-          Top = 4
+          Top = 6
           Width = 79
           Height = 16
           Caption = 'Image Name'
@@ -3220,10 +3217,9 @@ object frmMain: TfrmMain
         object lblImagePath: TLabel
           AlignWithMargins = True
           Left = 184
-          Top = 30
+          Top = 33
           Width = 60
           Height = 15
-          Anchors = [akLeft, akTop, akRight, akBottom]
           Caption = 'Image Path'
           Constraints.MaxHeight = 15
           Font.Charset = DEFAULT_CHARSET
