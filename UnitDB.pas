@@ -57,6 +57,11 @@ type
     fdtPackagesPackage_Type: TStringField;
     fdtModulesPackage_Name: TStringField;
     fdtPackagesFullName: TStringField;
+    cdsScreenshots: TClientDataSet;
+    dsScreenshots: TDataSource;
+    dspScreenshots: TDataSetProvider;
+    cdsScreenshotsFilePath: TStringField;
+    cdsScreenshotsFileName: TStringField;
     procedure cdsModulesAfterScroll(DataSet: TDataSet);
     procedure fdtPackagesAfterRefresh(DataSet: TDataSet);
     procedure fdtPackagesAfterInsert(DataSet: TDataSet);

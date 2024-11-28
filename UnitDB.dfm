@@ -372,4 +372,41 @@ object DM1: TDM1
     Left = 336
     Top = 312
   end
+  object cdsScreenshots: TClientDataSet
+    Aggregates = <>
+    FieldDefs = <
+      item
+        Name = 'FilePath'
+        DataType = ftString
+        Size = 255
+      end
+      item
+        Name = 'FileName'
+        DataType = ftString
+        Size = 255
+      end>
+    IndexDefs = <>
+    Params = <>
+    StoreDefs = True
+    Left = 560
+    Top = 64
+    object cdsScreenshotsFilePath: TStringField
+      FieldName = 'FilePath'
+      Size = 255
+    end
+    object cdsScreenshotsFileName: TStringField
+      FieldName = 'FileName'
+      Size = 255
+    end
+  end
+  object dsScreenshots: TDataSource
+    DataSet = cdsScreenshots
+    Left = 560
+    Top = 120
+  end
+  object dspScreenshots: TDataSetProvider
+    DataSet = cdsScreenshots
+    Left = 560
+    Top = 184
+  end
 end

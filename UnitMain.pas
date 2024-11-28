@@ -23,7 +23,8 @@ uses
   , UnitCopyVersionInfo
   , UnitStaticFunctions
   , UnitEnableAdminMode
-  , UnitDisplayPackagesList
+  , UnitDisplayPackagesList, Vcl.ControlList, Vcl.BaseImageCollection,
+  Vcl.ImageCollection, Vcl.VirtualImage
   ;
 
 type
@@ -208,6 +209,13 @@ type
     combobAfterParsing: TComboBox;
     actFilterPackagesSelect3rdPartyAndEmpty: TAction;
     actFilterPackagesTypesSelect3rdPartyAndEmpty: TAction;
+    tsScreenshots: TTabSheet;
+    ControlListScreenshots: TControlList;
+    clbViewImage: TControlListButton;
+    lblImageName: TLabel;
+    lblImagePath: TLabel;
+    VirtualImage1: TVirtualImage;
+    ImageCollectionScreenshots: TImageCollection;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -342,6 +350,11 @@ type
     procedure actFilterPackagesTypesSelect3rdPartyAndEmptyExecute(
       Sender: TObject);
     procedure actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
+    procedure clbViewImageClick(Sender: TObject);
+    procedure ControlListScreenshotsBeforeDrawItem(AIndex: Integer;
+      ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
+    procedure VirtualImage1Click(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -361,6 +374,9 @@ type
     function DeleteTempFolder: boolean;
     procedure AfterParsingView(Sender: TObject);
     procedure SetFileName(const FileName: String);
+    function TryOpenScreenshotFilesInReport: boolean;
+    function TryOpenScreenshotFile(FileName: string): boolean;
+    procedure LoadScreenshotFilesSuccess;
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
@@ -428,7 +444,6 @@ procedure TfrmMain.actExitExecute(Sender: TObject);
 begin
   Close;
 end;
-
 
 procedure TfrmMain.actExploreHereExecute(Sender: TObject);
 var
@@ -952,6 +967,8 @@ begin
     DM1.fdtPackages.Active := true;
     DM1.fdtPackageTypes.Active := true;
     DM1.fdtModules.Active := true;
+    DM1.cdsScreenshots.CreateDataSet;
+    DM1.cdsScreenshots.Active := true;
   except
     on E:Exception do
     begin
@@ -961,6 +978,25 @@ begin
     end;
   end;
   Result := true;
+end;
+
+procedure TfrmMain.ControlListScreenshotsBeforeDrawItem(AIndex: Integer;
+  ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
+begin
+  DM1.cdsScreenshots.RecNo := AIndex + 1;
+  lblImageName.Caption := DM1.cdsScreenshots.FieldByName('FileName').AsString;
+  lblImagePath.Caption := DM1.cdsScreenshots.FieldByName('FilePath').AsString;
+  VirtualImage1.ImageIndex := AIndex;
+end;
+
+procedure TfrmMain.clbViewImageClick(Sender: TObject);
+var
+  FilePath : string;
+begin
+  DM1.cdsScreenshots.RecNo := ControlListScreenshots.ItemIndex + 1;
+  FilePath := DM1.cdsScreenshots.FieldByName('FilePath').AsString;
+  if FilePath <> ''
+    then ShellExecute(0, nil, PChar(FilePath), nil, nil, SW_SHOWNOACTIVATE);
 end;
 
 function TfrmMain.ConfirmNewDxDiagLogFileLoad(AskForAll: boolean): boolean;
@@ -1086,6 +1122,24 @@ begin
   LoadTxtDescriptionFile();
 end;
 
+function TfrmMain.TryOpenScreenshotFile(FileName: string) : boolean;
+var
+  FilePath : string;
+begin
+  // Add Screenshot to the Screenshots List
+  Result := false;
+  // if not FileExists(FileName) OR not ConfirmNewDxDiagLogFileLoad(AskConfirmOpenForAll) then Exit;
+  FilePath := ReportFolder + TPath.DirectorySeparatorChar + FileName;
+  if not FileExists(FilePath) then Exit;
+  ImageCollectionScreenshots.Add(FileName, FilePath);
+  DM1.cdsScreenshots.Append;
+  DM1.cdsScreenshots.FieldByName('FileName').AsString := FileName;
+  DM1.cdsScreenshots.FieldByName('FilePath').AsString := FilePath;
+  DM1.cdsScreenshots.Post;
+  Logger.AddToLog('Screenshot file found: ' + FilePath);
+  Result := true;
+end;
+
 procedure TfrmMain.OpenTextDxDiagLogFile(FileName: string);
 begin
   // Open new text DxDiag_Log.txt file
@@ -1160,11 +1214,15 @@ begin
       end
     else
       Logger.AddToLog('Temp Report folder already exists: ' + ReportFolder);
+    {
     for var i:integer := 0 to Length(ReportFilesInZip) - 1 do
       begin
         zip.Extract(ReportFilesInZip[i], ReportFolder);
         Logger.AddToLog('The ' + ReportFilesInZip[i] + ' file unpacked form Zip.');
       end;
+    }
+    zip.ExtractAll(ReportFolder);
+    Logger.AddToLog('All files unpacked from Zip file ' + mzfFileName + '.');
     SetFileName(mzfFileName);
   finally
     zip.Free;
@@ -1175,6 +1233,7 @@ begin
   TryOpenReportDataFileInReport();
   TryOpenDescFileInReport();
   TryOpenStepsFileInReport();
+  TryOpenScreenshotFilesInReport();
   TryOpenDXDiagFileInReport();
   TryOpenStackTraceFileInReport();
   TryOpenModuleListFileInReport();
@@ -1777,6 +1836,20 @@ begin
   Logger.Free;
 end;
 
+procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  if (tsModulesList.TabVisible or
+      tsModuleListFile.TabVisible or
+      tsScreenshots.TabVisible or
+      tsDXDiagLogFile.TabVisible or
+      tsStackTraceFile.TabVisible or
+      tsStepsFile.TabVisible or
+      tsDescriptionFile.TabVisible) AND
+    (MessageDlg('Close the application?', mtConfirmation, [mbYes, mbNo], 0) = mrYes)
+  then CanClose := true
+  else CanClose := false;
+end;
+
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   //
@@ -1834,6 +1907,7 @@ begin
 
   tsModulesList.TabVisible := false;
   tsModuleListFile.TabVisible := false;
+  tsScreenshots.TabVisible := false;
   tsDXDiagLogFile.TabVisible := false;
   tsStackTraceFile.TabVisible := false;
   tsStepsFile.TabVisible := false;
@@ -1891,6 +1965,18 @@ begin
   tsDescriptionFile.TabVisible := true;
   PageControl1.ActivePage := tsDescriptionFile;
   Logger.AddToLog('New Description file opened: ' + defFileName);
+end;
+
+procedure TfrmMain.LoadScreenshotFilesSuccess;
+begin
+  HideStartMessage;
+  ControlListScreenshots.ItemCount := DM1.cdsScreenshots.RecordCount;
+  if DM1.cdsScreenshots.RecordCount > 1 then
+    tsScreenshots.Caption := 'Screenshots [' + DM1.cdsScreenshots.RecordCount.ToString + ']'
+    else tsScreenshots.Caption := 'Screenshot';
+  tsScreenshots.TabVisible := true;
+  PageControl1.ActivePage := tsScreenshots;
+  Logger.AddToLog('All Screenshots opened.');
 end;
 
 procedure TfrmMain.LoadTxtDxDiagLogFile;
@@ -1990,6 +2076,29 @@ begin
       Result := true;
     end
   else Result := false;
+end;
+
+function TfrmMain.TryOpenScreenshotFilesInReport: boolean;
+var
+  i : integer;
+  tempFileName : string;
+  ScreenshotFound : boolean;
+begin
+  // Trying to open 9 screenshots if they exist
+  DM1.cdsScreenshots.EmptyDataSet;
+  ImageCollectionScreenshots.Images.Clear;
+  tsScreenshots.TabVisible := false;
+  ScreenshotFound := false;
+  for I := 0 to 9 do
+  begin
+    tempFileName := 'Screen' + i.ToString + '.png';
+    if TryOpenScreenshotFile(tempFileName)
+      then ScreenshotFound := true;
+  end;
+  if ScreenshotFound
+    then LoadScreenshotFilesSuccess
+    else Logger.AddToLog('Screenshots not found.');
+  Result := ScreenshotFound;
 end;
 
 function TfrmMain.TryOpenDXDiagFileInReport: boolean;
@@ -2200,6 +2309,11 @@ begin
 
   actSettingsRestoreDefaults.Enabled := true;
 
+end;
+
+procedure TfrmMain.VirtualImage1Click(Sender: TObject);
+begin
+  clbViewImageClick(Sender);
 end;
 
 procedure TfrmMain.WMDropFiles(var Msg: TWMDropFiles);

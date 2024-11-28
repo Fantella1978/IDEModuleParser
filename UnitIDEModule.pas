@@ -135,6 +135,7 @@ begin
                   else
                     begin
                       {
+
                       AHour := StrToInt(Groups[4]);
                       AMinute := StrToInt(Groups[5]);
                       ASecond := StrToInt(Groups[6]);
@@ -143,6 +144,7 @@ begin
                       //
                       if AHour >= 24 then AHour := AHour - 24;
                       //
+
                       }
                       AHour := 0;
                       AMinute := 0;

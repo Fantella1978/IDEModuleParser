@@ -16,6 +16,7 @@ object frmMain: TfrmMain
   Position = poDesktopCenter
   OnActivate = FormActivate
   OnClose = FormClose
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnResize = FormResize
   OnShow = FormShow
@@ -83,7 +84,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsModulesList
+    ActivePage = tsScreenshots
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -3174,6 +3175,88 @@ object frmMain: TfrmMain
         TabOrder = 1
       end
     end
+    object tsScreenshots: TTabSheet
+      Caption = 'Screenshots'
+      ImageIndex = 4
+      object ControlListScreenshots: TControlList
+        Left = 0
+        Top = 0
+        Width = 986
+        Height = 429
+        Align = alClient
+        ItemHeight = 100
+        ItemMargins.Left = 0
+        ItemMargins.Top = 0
+        ItemMargins.Right = 0
+        ItemMargins.Bottom = 0
+        ParentColor = False
+        TabOrder = 0
+        OnBeforeDrawItem = ControlListScreenshotsBeforeDrawItem
+        ExplicitLeft = -16
+        ExplicitTop = 32
+        object clbViewImage: TControlListButton
+          Left = 182
+          Top = 59
+          Width = 105
+          Height = 25
+          Anchors = [akTop, akRight]
+          Caption = 'View Image'
+          OnClick = clbViewImageClick
+        end
+        object lblImageName: TLabel
+          Left = 184
+          Top = 4
+          Width = 79
+          Height = 16
+          Caption = 'Image Name'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBtnText
+          Font.Height = -13
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
+          Transparent = True
+        end
+        object lblImagePath: TLabel
+          AlignWithMargins = True
+          Left = 184
+          Top = 30
+          Width = 60
+          Height = 15
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          Caption = 'Image Path'
+          Constraints.MaxHeight = 15
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowFrame
+          Font.Height = -12
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+          WordWrap = True
+          StyleElements = [seClient, seBorder]
+        end
+        object VirtualImage1: TVirtualImage
+          AlignWithMargins = True
+          Left = 4
+          Top = 4
+          Width = 163
+          Height = 92
+          Cursor = crHandPoint
+          Margins.Left = 4
+          Margins.Top = 4
+          Margins.Right = 0
+          Margins.Bottom = 4
+          Align = alLeft
+          ImageCollection = ImageCollectionScreenshots
+          ImageWidth = 0
+          ImageHeight = 0
+          ImageIndex = -1
+          ImageName = 'MusicNote'
+          OnClick = VirtualImage1Click
+          ExplicitTop = 8
+        end
+      end
+    end
     object tsDXDiagLogFile: TTabSheet
       Caption = 'DXDiag Log'
       ImageIndex = 2
@@ -3899,5 +3982,10 @@ object frmMain: TfrmMain
     object ClearFilters1: TMenuItem
       Action = actFiltersClear
     end
+  end
+  object ImageCollectionScreenshots: TImageCollection
+    Images = <>
+    Left = 348
+    Top = 348
   end
 end
