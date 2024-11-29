@@ -3194,7 +3194,7 @@ object frmMain: TfrmMain
         OnBeforeDrawItem = ControlListScreenshotsBeforeDrawItem
         object clbViewImage: TControlListButton
           Left = 184
-          Top = 63
+          Top = 71
           Width = 105
           Height = 25
           Caption = 'View Image'
@@ -3202,14 +3202,14 @@ object frmMain: TfrmMain
         end
         object lblImageName: TLabel
           Left = 184
-          Top = 6
-          Width = 79
-          Height = 16
+          Top = 4
+          Width = 78
+          Height = 17
           Caption = 'Image Name'
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clBtnText
+          Font.Color = clWindowText
           Font.Height = -13
-          Font.Name = 'Tahoma'
+          Font.Name = 'Segoe UI'
           Font.Style = [fsBold]
           ParentFont = False
           Transparent = True
@@ -3217,18 +3217,16 @@ object frmMain: TfrmMain
         object lblImagePath: TLabel
           AlignWithMargins = True
           Left = 184
-          Top = 33
-          Width = 60
-          Height = 15
+          Top = 47
+          Width = 65
+          Height = 17
           Caption = 'Image Path'
-          Constraints.MaxHeight = 15
           Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowFrame
-          Font.Height = -12
+          Font.Color = clGray
+          Font.Height = -13
           Font.Name = 'Segoe UI'
           Font.Style = []
           ParentFont = False
-          WordWrap = True
           StyleElements = [seClient, seBorder]
         end
         object VirtualImage1: TVirtualImage
@@ -3250,6 +3248,21 @@ object frmMain: TfrmMain
           ImageName = 'MusicNote'
           OnClick = VirtualImage1Click
           ExplicitTop = 8
+        end
+        object lblImageDimensions: TLabel
+          AlignWithMargins = True
+          Left = 184
+          Top = 25
+          Width = 107
+          Height = 17
+          Caption = 'Image Dimensions'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clNavy
+          Font.Height = -13
+          Font.Name = 'Segoe UI'
+          Font.Style = []
+          ParentFont = False
+          StyleElements = [seClient, seBorder]
         end
       end
     end

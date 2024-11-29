@@ -216,6 +216,7 @@ type
     lblImagePath: TLabel;
     VirtualImage1: TVirtualImage;
     ImageCollectionScreenshots: TImageCollection;
+    lblImageDimensions: TLabel;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -984,9 +985,11 @@ procedure TfrmMain.ControlListScreenshotsBeforeDrawItem(AIndex: Integer;
   ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
 begin
   DM1.cdsScreenshots.RecNo := AIndex + 1;
+  VirtualImage1.ImageIndex := AIndex;
   lblImageName.Caption := DM1.cdsScreenshots.FieldByName('FileName').AsString;
   lblImagePath.Caption := DM1.cdsScreenshots.FieldByName('FilePath').AsString;
-  VirtualImage1.ImageIndex := AIndex;
+  lblImageDimensions.Caption := ImageCollectionScreenshots.Images[AIndex].SourceImages[0].Image.Width.ToString +
+    ' x ' + ImageCollectionScreenshots.Images[AIndex].SourceImages[0].Image.Height.ToString + ' pixels';
 end;
 
 procedure TfrmMain.clbViewImageClick(Sender: TObject);
