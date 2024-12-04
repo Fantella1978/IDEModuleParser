@@ -217,6 +217,7 @@ type
     VirtualImage1: TVirtualImage;
     ImageCollectionScreenshots: TImageCollection;
     lblImageDimensions: TLabel;
+    clbViewInExplorer: TControlListButton;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -356,6 +357,7 @@ type
       ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
     procedure VirtualImage1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure clbViewInExplorerClick(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -1003,6 +1005,20 @@ begin
       begin
         ShellExecute(0, nil, PChar(FilePath), nil, nil, SW_SHOWNOACTIVATE);
         Logger.AddToLog('Open screenshot in external browser: ' + FilePath);
+      end;
+end;
+
+procedure TfrmMain.clbViewInExplorerClick(Sender: TObject);
+var
+  FilePath : string;
+begin
+  DM1.cdsScreenshots.RecNo := ControlListScreenshots.ItemIndex + 1;
+  FilePath := DM1.cdsScreenshots.FieldByName('FilePath').AsString;
+  if FilePath <> ''
+    then
+      begin
+        ShellExecute(Application.Handle, 'open', 'explorer.exe', PChar('/select,"' + FilePath + '"'), nil, SW_NORMAL);
+        Logger.AddToLog('Open explorer and select screenshot file: ' + FilePath);
       end;
 end;
 
@@ -2094,7 +2110,7 @@ end;
 
 function TfrmMain.TryOpenScreenshotFilesInReport: boolean;
 var
-  i : integer;
+  // i : integer;
   tempFileName : string;
   tempFilePath: string;
   ScreenshotFound : boolean;

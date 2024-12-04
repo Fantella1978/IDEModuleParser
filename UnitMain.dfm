@@ -3264,6 +3264,14 @@ object frmMain: TfrmMain
           ParentFont = False
           StyleElements = [seClient, seBorder]
         end
+        object clbViewInExplorer: TControlListButton
+          Left = 295
+          Top = 71
+          Width = 130
+          Height = 25
+          Caption = 'View In Explorer'
+          OnClick = clbViewInExplorerClick
+        end
       end
     end
     object tsDXDiagLogFile: TTabSheet
