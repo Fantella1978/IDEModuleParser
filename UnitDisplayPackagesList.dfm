@@ -76,6 +76,7 @@ object frmPackagesList: TfrmPackagesList
       Top = 23
       Width = 34
       Height = 15
+      Cursor = crHandPoint
       Caption = 'lblURL'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clHighlight
@@ -84,6 +85,7 @@ object frmPackagesList: TfrmPackagesList
       Font.Style = []
       ParentFont = False
       StyleElements = [seClient, seBorder]
+      OnClick = lblURLClick
     end
     object clbURL: TControlListButton
       AlignWithMargins = True

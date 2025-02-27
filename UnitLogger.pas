@@ -89,7 +89,7 @@ end;
 
 function TMyLogger.AddToLog(s: string): boolean;
 var
-  dt: TDateTime;
+  //dt: TDateTime;
   dts: string;
   LogString: string;
 begin
@@ -97,8 +97,8 @@ begin
   Result := true;
   if not FLogEnabled
     then Exit;
-  dt := Now();
-  DateTimeToString(dts, 'dd-mm-yyyy hh:nn:ss', dt);
+  //dt := Now();
+  DateTimeToString(dts, 'dd-mm-yyyy hh:nn:ss', Now);
   LogString := dts + ' - ' + s;
 
   Add(LogString);

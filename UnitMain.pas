@@ -9,7 +9,8 @@ uses
   , Vcl.Buttons, System.ImageList, System.UITypes, Vcl.Grids, Vcl.ImgList
   , Vcl.Graphics, Vcl.Mask, System.IOUtils, Clipbrd, System.Zip
   , System.StrUtils, Data.DB, Vcl.DBGrids, Winapi.ShellAPI, Generics.Defaults
-  , Vcl.Themes, Vcl.Menus, Vcl.CheckLst, System.Types
+  , Vcl.Themes, Vcl.Menus, Vcl.CheckLst, System.Types, Vcl.ControlList
+  , Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.VirtualImage
   , UnitDB
   , UnitDBGrid
   , UnitLogger
@@ -23,8 +24,7 @@ uses
   , UnitCopyVersionInfo
   , UnitStaticFunctions
   , UnitEnableAdminMode
-  , UnitDisplayPackagesList, Vcl.ControlList, Vcl.BaseImageCollection,
-  Vcl.ImageCollection, Vcl.VirtualImage
+  , UnitDisplayPackagesList
   ;
 
 type

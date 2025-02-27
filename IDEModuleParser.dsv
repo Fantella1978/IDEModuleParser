@@ -20,9 +20,9 @@ EditViewName=Z:\SiteMapExplorer\UnitScan.pas
 
 [ClosedView_WjpcSURFIE1vZHVsZSBQYXJzZXIgMTIgW29yaWdpbmFsXVxVbml0TWFpbi5wYXM=]
 Module=Z:\IDE Module Parser 12 [original]\UnitMain.pas
-CursorX=44
-CursorY=387
-TopLine=384
+CursorX=24
+CursorY=1536
+TopLine=1523
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -50,11 +50,81 @@ EditViewName=
 
 [ClosedView_WjpcSURFIE1vZHVsZSBQYXJzZXIgMTIgW29yaWdpbmFsXVxVbml0SURFTW9kdWxlLnBhcw==]
 Module=Z:\IDE Module Parser 12 [original]\UnitIDEModule.pas
-CursorX=32
-CursorY=176
-TopLine=152
+CursorX=1
+CursorY=13
+TopLine=1
 LeftCol=1
 Elisions=
 Bookmarks=
 EditViewName=Z:\IDE Module Parser 12 [original]\UnitIDEModule.pas
+
+[ClosedView_WjpcSURFIE1vZHVsZSBQYXJzZXIgMTIgW29yaWdpbmFsXVxJREVNb2R1bGVQYXJzZXIuZHBy]
+Module=Z:\IDE Module Parser 12 [original]\IDEModuleParser.dpr
+CursorX=1
+CursorY=37
+TopLine=25
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=Z:\IDE Module Parser 12 [original]\IDEModuleParser.dpr
+
+[ClosedView_WjpcSURFIE1vZHVsZSBQYXJzZXIgMTIgW29yaWdpbmFsXVxVbml0TG9nZ2VyLnBhcw==]
+Module=Z:\IDE Module Parser 12 [original]\UnitLogger.pas
+CursorX=9
+CursorY=101
+TopLine=119
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=Z:\IDE Module Parser 12 [original]\UnitLogger.pas
+
+[ClosedView_YzpcZW1iXHN0dWRpb1wyMy4wXHNvdXJjZVxydGxcY29tbW9uXFN5c3RlbS5DbGFzc2VzLnBhcw==]
+Module=c:\emb\studio\23.0\source\rtl\common\System.Classes.pas
+CursorX=23
+CursorY=6831
+TopLine=6816
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=c:\emb\studio\23.0\source\rtl\common\System.Classes.pas
+[ClosedView_YzpcZW1iXHN0dWRpb1wyMy4wXHNvdXJjZVxydGxcY29tbW9uXFN5c3RlbS5HZW5lcmljcy5EZWZh
+dWx0cy5wYXM=]
+Module=c:\emb\studio\23.0\source\rtl\common\System.Generics.Defaults.pas
+CursorX=4
+CursorY=50
+TopLine=50
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+
+[ClosedView_WjpcSURFIE1vZHVsZSBQYXJzZXIgMTIgW29yaWdpbmFsXVxVbml0UGFyc2VyLnBhcw==]
+Module=Z:\IDE Module Parser 12 [original]\UnitParser.pas
+CursorX=33
+CursorY=570
+TopLine=535
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=Z:\IDE Module Parser 12 [original]\UnitParser.pas
+
+[ClosedView_YzpcZW1iXHN0dWRpb1wyMy4wXHNvdXJjZVxydGxcd2luXFdpbmFwaS5XaW5kb3dzLnBhcw==]
+Module=c:\emb\studio\23.0\source\rtl\win\Winapi.Windows.pas
+CursorX=1
+CursorY=4703
+TopLine=4684
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
+
+[ClosedView_YzpcZW1iXHN0dWRpb1wyMy4wXFNPVVJDRVxSVExcU1lTXFN5c3RlbS5TeXNVdGlscy5wYXM=]
+Module=c:\emb\studio\23.0\SOURCE\RTL\SYS\System.SysUtils.pas
+CursorX=1
+CursorY=19865
+TopLine=19846
+LeftCol=1
+Elisions=
+Bookmarks=
+EditViewName=
 

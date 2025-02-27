@@ -25,6 +25,7 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure clbURLClick(Sender: TObject);
     procedure ControlList1Click(Sender: TObject);
+    procedure lblURLClick(Sender: TObject);
   private
     FPackagesQuery: TFDQuery;
     { Private declarations }
@@ -141,6 +142,11 @@ begin
     'ORDER BY p.Name ASC, p.SubName ASC';
    FPackagesQuery.Open;
    ControlList1.ItemCount := FPackagesQuery.RecordCount;
+end;
+
+procedure TfrmPackagesList.lblURLClick(Sender: TObject);
+begin
+  clbURLClick(Sender);
 end;
 
 end.
