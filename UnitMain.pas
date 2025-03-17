@@ -27,6 +27,8 @@ uses
   , UnitDisplayPackagesList
   ;
 
+  // Some changes
+
 type
   TModulesArray = array of PIDEModule;
 

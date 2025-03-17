@@ -22,18 +22,17 @@ var
   GlobalAfterParsingViewOption: integer; // After Parsing View active option
   GlobalVCLStyle: string; // Application VCL Style
 
-  GlobalModulesCompareLevel2: boolean; // Modules Compare Level 2 enabled (Compare with Module Version)
-  GlobalModulesCompareLevel3: boolean; // Modules Compare Level 3 enabled (Compare with Module Name RegExp)
+  GlobalModulesCompareLevel2: boolean;
+  // Modules Compare Level 2 enabled (Compare with Module Version)
+  GlobalModulesCompareLevel3: boolean;
+  // Modules Compare Level 3 enabled (Compare with Module Name RegExp)
 
   GlobalAdminMode: boolean; // Admin Mode
 
 implementation
 
 uses
-  Registry
-    , System.SysUtils
-    , VCL.Themes, Winapi.ActiveX
-    ;
+  Registry, System.SysUtils, VCL.Themes, Winapi.ActiveX;
 
 const
   RegGlobalKey = 'SOFTWARE\IDEModuleParser';
@@ -54,9 +53,10 @@ var
 function LoadIntegerValue(name: string; defValue: integer): integer;
 begin
   try
-    if reg.ValueExists(name)
-      then Result := reg.ReadInteger(name)
-      else Result := defValue;
+    if reg.ValueExists(name) then
+      Result := reg.ReadInteger(name)
+    else
+      Result := defValue;
   except
     Result := defValue;
   end;
@@ -65,9 +65,10 @@ end;
 function LoadBooleanValue(name: string; defValue: boolean): boolean;
 begin
   try
-    if reg.ValueExists(name)
-      then Result := reg.ReadBool(name)
-      else Result := defValue;
+    if reg.ValueExists(name) then
+      Result := reg.ReadBool(name)
+    else
+      Result := defValue;
   except
     Result := defValue;
   end;
@@ -76,9 +77,10 @@ end;
 function LoadStringValue(name: string; defValue: string): string;
 begin
   try
-    if reg.ValueExists(name)
-      then Result := reg.ReadString(name)
-      else Result := defValue;
+    if reg.ValueExists(name) then
+      Result := reg.ReadString(name)
+    else
+      Result := defValue;
   except
     Result := defValue;
   end;
@@ -89,10 +91,9 @@ begin
   // Save Global Sattings To Registry
   Result := false;
   try
-    reg         := TRegistry.Create;
+    reg := TRegistry.Create;
     reg.RootKey := HKEY_CURRENT_USER;
-    if reg.OpenKey(RegGlobalKey, true)
-    then
+    if reg.OpenKey(RegGlobalKey, true) then
     begin
       // Save each global setting
       reg.WriteInteger('FontSize', GlobalFontSize);
@@ -118,26 +119,31 @@ begin
   // Load Global Sattings To Registry
   Result := false;
   try
-    reg         := TRegistry.Create;
+    reg := TRegistry.Create;
     reg.RootKey := HKEY_CURRENT_USER;
-    if reg.OpenKey(RegGlobalKey, false)
-    then
+    if reg.OpenKey(RegGlobalKey, false) then
     begin
       // Load each global setting
       GlobalFontSize := LoadIntegerValue('FontSize', Def_FontSize);
-      GlobalAfterParsingViewOption := LoadIntegerValue('AfterParsingViewOption', Def_AfterParsingViewOption);
-      GlobalLogCreate       := LoadBooleanValue('LogCreate', Def_LogCreate);
-      GlobalMaximizeOnStartup := LoadBooleanValue('MaximizeOnStartup', Def_MaximizeOnStartup);
-      GlobalParseOnFileOpen := LoadBooleanValue('ParseOnFileOpen', Def_ParseOnFileOpen);
-      GlobalAfterParsingView := LoadBooleanValue('AfterParsingView', Def_AfterParsingView);
-      GlobalModulesCompareLevel2 := LoadBooleanValue('ModulesCompareLevel2', Def_ModulesCompareLevel2);
-      GlobalModulesCompareLevel3 := LoadBooleanValue('ModulesCompareLevel3', Def_ModulesCompareLevel3);
+      GlobalAfterParsingViewOption := LoadIntegerValue('AfterParsingViewOption',
+        Def_AfterParsingViewOption);
+      GlobalLogCreate := LoadBooleanValue('LogCreate', Def_LogCreate);
+      GlobalMaximizeOnStartup := LoadBooleanValue('MaximizeOnStartup',
+        Def_MaximizeOnStartup);
+      GlobalParseOnFileOpen := LoadBooleanValue('ParseOnFileOpen',
+        Def_ParseOnFileOpen);
+      GlobalAfterParsingView := LoadBooleanValue('AfterParsingView',
+        Def_AfterParsingView);
+      GlobalModulesCompareLevel2 := LoadBooleanValue('ModulesCompareLevel2',
+        Def_ModulesCompareLevel2);
+      GlobalModulesCompareLevel3 := LoadBooleanValue('ModulesCompareLevel3',
+        Def_ModulesCompareLevel3);
       GlobalVCLStyle := LoadStringValue('VCLStyle', Def_VCLStyle);
-      {$IFDEF DEBUG}
-        GlobalAdminMode := true;
-      {$ELSE}
-        GlobalAdminMode := false;
-      {$ENDIF}
+{$IFDEF DEBUG}
+      GlobalAdminMode := true;
+{$ELSE}
+      GlobalAdminMode := false;
+{$ENDIF}
       reg.CloseKey;
       Result := true;
     end
@@ -151,16 +157,16 @@ end;
 procedure RestoreSettingsToDefaults();
 begin
   // Restore Global Sattings To Defaults
-  GlobalFontSize          := Def_FontSize;
-  GlobalLogCreate         := Def_LogCreate;
+  GlobalFontSize := Def_FontSize;
+  GlobalLogCreate := Def_LogCreate;
   GlobalMaximizeOnStartup := Def_MaximizeOnStartup;
-  GlobalParseOnFileOpen   := Def_ParseOnFileOpen;
-  GlobalAfterParsingView  := Def_AfterParsingView;
+  GlobalParseOnFileOpen := Def_ParseOnFileOpen;
+  GlobalAfterParsingView := Def_AfterParsingView;
   GlobalAfterParsingViewOption := Def_AfterParsingViewOption;
   GlobalModulesCompareLevel2 := Def_ModulesCompareLevel2;
   GlobalModulesCompareLevel3 := Def_ModulesCompareLevel3;
   {
-  if Def_VCLStyle_const = TStyleManager.ActiveStyle.Name
+    if Def_VCLStyle_const = TStyleManager.ActiveStyle.Name
     then Def_VCLStyle := Def_VCLStyle_const
     else Def_VCLStyle := TStyleManager.ActiveStyle.Name;
   }
