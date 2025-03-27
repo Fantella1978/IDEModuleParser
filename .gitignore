@@ -70,3 +70,8 @@ __recovery/
 modules/
 
 IDEModuleParser.log
+
+# Midas.dll
+!dll/x32/*
+!dll/x64/*
+

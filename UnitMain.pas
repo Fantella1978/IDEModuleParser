@@ -525,12 +525,8 @@ end;
 function TfrmMain.GetPackageType_IDByName(name: string): integer;
 begin
   for var i := 0 to Length(FModulesPackages) - 1 do
-  if FModulesPackages[i].PackageName = name
-    then
-      begin
-        Result := FModulesPackages[i].PackageType_ID;
-        Exit;
-      end;
+    if FModulesPackages[i].PackageName = name
+      then Exit(FModulesPackages[i].PackageType_ID);
   Result := -1;
 end;
 
@@ -633,8 +629,7 @@ begin
         Logger.AddToLog('Temp folder deleted: ' + TempFolder);
       except
         Logger.AddToLog('[Error] Can''t delete temp folder: ' + TempFolder);
-        Result := false;
-        Exit;
+        Exit(false);
       end;
     end;
   Result := true;
@@ -869,11 +864,7 @@ begin
   Result := true;
   if (memoStackTrace.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
   if ConfirmOpenForAll in [mrNo, mrNoToAll]
-  then
-    begin
-      Result := false;
-      Exit;
-    end;
+  then Exit(false);
 
   if PageControl1.ActivePage <> tsStackTraceFile then PageControl1.ActivePage := tsStackTraceFile;
   if (not AskForAll)
@@ -893,9 +884,8 @@ begin
   if res in [mrNo, mrNoToAll, mrCancel]
   then
     begin
-      Result := false;
       Logger.AddToLog('The opening of a new StackTrace file has not been confirmed.');
-      Exit;
+      Exit(false);
     end;
 end;
 
@@ -906,11 +896,7 @@ begin
   Result := true;
   if (memoSteps.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
   if ConfirmOpenForAll in [mrNo, mrNoToAll]
-  then
-    begin
-      Result := false;
-      Exit;
-    end;
+    then Exit(false);
 
   if PageControl1.ActivePage <> tsStepsFile then PageControl1.ActivePage := tsStepsFile;
   if (not AskForAll)
@@ -930,9 +916,8 @@ begin
   if res in [mrNo, mrNoToAll, mrCancel]
   then
     begin
-      Result := false;
       Logger.AddToLog('The opening of a new Steps file has not been confirmed.');
-      Exit;
+      Exit(false);
     end;
 end;
 
@@ -962,8 +947,7 @@ begin
                 else
                   begin
                     ShowMessage('DB file ' + DBFileNameWithPath +' not found.');
-                    Result := false;
-                    Exit;
+                    Exit(false);
                   end;
               end
             else
@@ -978,8 +962,7 @@ begin
     on E:Exception do
     begin
       ShowMessage(E.Message);
-      Result := false;
-      Exit;
+      Exit(false);
     end;
   end;
   Result := true;
@@ -1031,11 +1014,7 @@ begin
   Result := true;
   if (memoDxDiagLog.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
   if ConfirmOpenForAll in [mrNo, mrNoToAll]
-  then
-    begin
-      Result := false;
-      Exit;
-    end;
+    then Exit(false);
 
   if PageControl1.ActivePage <> tsDxDiagLogFile then PageControl1.ActivePage := tsDxDiagLogFile;
   if (not AskForAll)
@@ -1055,9 +1034,8 @@ begin
   if res in [mrNo, mrNoToAll, mrCancel]
   then
     begin
-      Result := false;
       Logger.AddToLog('The opening of a new DxDiag_Log file has not been confirmed.');
-      Exit;
+      Exit(false);
     end;
 end;
 
@@ -1068,11 +1046,7 @@ begin
   Result := true;
   if (memoDescription.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
   if ConfirmOpenForAll in [mrNo, mrNoToAll]
-  then
-    begin
-      Result := false;
-      Exit;
-    end;
+    then Exit(false);
 
   if PageControl1.ActivePage <> tsDescriptionFile then PageControl1.ActivePage := tsDescriptionFile;
   if (not AskForAll)
@@ -1092,9 +1066,8 @@ begin
   if res in [mrNo, mrNoToAll, mrCancel]
   then
     begin
-      Result := false;
       Logger.AddToLog('The opening of a new Description file has not been confirmed.');
-      Exit;
+      Exit(false);
     end;
 end;
 
@@ -1105,11 +1078,7 @@ begin
   Result := true;
   if (MemoTxtModuleFile.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
   if ConfirmOpenForAll in [mrNo, mrNoToAll]
-  then
-    begin
-      Result := false;
-      Exit;
-    end;
+  then Exit(false);
 
   if PageControl1.ActivePage <> tsModuleListFile then PageControl1.ActivePage := tsModuleListFile;
   if (not AskForAll)
@@ -1129,9 +1098,8 @@ begin
   if res in [mrNo, mrNoToAll, mrCancel]
   then
     begin
-      Result := false;
       Logger.AddToLog('The opening of a new ModuleList file has not been confirmed.');
-      Exit;
+      Exit(false);
     end;
 end;
 
@@ -1360,8 +1328,7 @@ begin
             TMsgDlgType.mtInformation, [mbOk, mbCancel], 0) = mrOk
             then PageControl1.ActivePage := tsSettings;
           end;
-      Result := false;
-      Exit;
+      Exit(false);
     end;
   Result := true;
 end;
@@ -1753,8 +1720,7 @@ begin
         Logger.AddToLog('Temp Report folder deleted: ' + ReportFolder);
       except
         Logger.AddToLog('[Error] Can''t delete temp Report folder: ' + ReportFolder);
-        Result := false;
-        Exit;
+        Exit(false);
       end;
     end;
   Result := true;
