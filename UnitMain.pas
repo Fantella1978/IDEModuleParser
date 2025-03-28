@@ -73,7 +73,6 @@ type
     OpenDialog1: TOpenDialog;
     Panel5: TPanel;
     lbedStackTraceFile: TLabeledEdit;
-    memoStackTrace: TMemo;
     Panel6: TPanel;
     lbedDXDiagLogFile: TLabeledEdit;
     memoDXDiagLog: TMemo;
@@ -220,6 +219,11 @@ type
     ImageCollectionScreenshots: TImageCollection;
     lblImageDimensions: TLabel;
     clbViewInExplorer: TControlListButton;
+    pcStackTrace: TPageControl;
+    tsStackTraceUnformatted: TTabSheet;
+    tsStackTraceFormatted: TTabSheet;
+    memoStackTrace: TMemo;
+    reStackTrace: TRichEdit;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -385,6 +389,8 @@ type
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
+    procedure REStackTraceAddFormattedText(const AText: string; AStyle: TFontStyles); overload;
+    procedure REStackTraceAddFormattedText(const AText: string; AStyle: TFontStyles; AColor: TColor); overload;
     // FModulesPackages : TList;
   end;
 
@@ -748,6 +754,21 @@ begin
     zip.Free;
   end;
   Result := true;
+end;
+
+procedure TfrmMain.REStackTraceAddFormattedText(const AText: string; AStyle: TFontStyles);
+begin
+  reStackTrace.SelStart := reStackTrace.GetTextLen;
+  reStackTrace.SelLength := 0;
+  reStackTrace.SelAttributes.Style := AStyle;
+  reStackTrace.SelText := AText;
+end;
+
+procedure TfrmMain.REStackTraceAddFormattedText(const AText: string; AStyle: TFontStyles;
+  AColor: TColor);
+begin
+  reStackTrace.SelAttributes.Color := AColor;
+  REStackTraceAddFormattedText(AText, AStyle);
 end;
 
 procedure TfrmMain.ApplyAllFiltres();
@@ -1897,6 +1918,7 @@ begin
   UpdateObjectsAccordingSettings();
 
   MemoTxtModuleFile.Clear;
+  reStackTrace.StyleElements := reStackTrace.StyleElements - [seFont];
 
   lblStartMessageSecondary.Caption := 'QPInfo Report QPInfo-ХХХХХХХХ-ХХХХ.zip file' + #13 +
     'or separately' + #13 +
@@ -2011,10 +2033,13 @@ procedure TfrmMain.LoadTxtStackTraceFile;
 begin
   // Load new text StackTrace file
   memoStackTrace.Lines.LoadFromFile(stfFileName, TEncoding.UTF8);
+  // reStackTrace.Lines.Clear; // RichEdit StackTrace clear
+  reStackTrace.Lines.LoadFromFile(stfFileName, TEncoding.UTF8);
   // Enable Font Size Change
   EnableFontSizeChange();
   tsStackTraceFile.TabVisible := true;
   PageControl1.ActivePage := tsStackTraceFile;
+  pcStackTrace.ActivePage := tsStackTraceUnformatted;
   Logger.AddToLog('New StackTrace file opened: ' + stfFileName);
 end;
 
@@ -2056,6 +2081,7 @@ begin
   memoSteps.Font.Size := GlobalFontSize;
   memoLog.Font.Size := GlobalFontSize;
   DBGridModules.Font.Size := GlobalFontSize;
+  reStackTrace.Font.Size := GlobalFontSize;
   if Assigned(frmCopyVersionInfo)
     then frmCopyVersionInfo.memVersionInformation.Font.Size := GlobalFontSize;
 

@@ -26,14 +26,12 @@ type
     procedure ParseModuleListFile();
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormShow(Sender: TObject);
-    function TaskModuleFileParse(): boolean;
-    function TaskCreateModulesDB(): boolean;
-    function TaskFindAllKnowModules(): boolean;
     function GetModuleLineRegExp(): string;
     procedure ShowCurrentTaskName(name: string);
-    procedure StartTasks(Count: integer);
+    procedure StartAllTasks;
     procedure StartTask(taskName: string);
-    procedure EndTask();
+    procedure EndAllTasks;
+    procedure EndTask;
     procedure SetCurrentTaskPosition(Position: integer);
     procedure SetCurrentTaskPositionsMinMax(PosMin, PosMax : integer);
   private
@@ -44,20 +42,33 @@ type
     Fregexp: TPerlRegEx;
     FTaskName: string;
     FTaskNum: Integer;
+    FTasksCount: Integer;
+    FModules3rdPartyList: TStringList;
+    FModulesUnknownList: TStringList;
     function GetOverallTaskPosition(): Integer;
     function DetermineCurrentModule: boolean;
     function GetKnownModulesForFileName: boolean;
     function DetermineCurrentModuleLevel1() : boolean;
     function DetermineCurrentModuleLevel2() : boolean;
     function SaveCurrentModuleData : boolean;
+    function TaskModuleFileParse(): boolean;
+    function TaskCreateModulesDB(): boolean;
+    function TaskFindAllKnowModules(): boolean;
     function TaskFindAllUsedPackages: boolean;
     function TaskFindModulesByFileNameRegExp: boolean;
+    function TaskCreateFormattedStackTraceView: boolean;
     function DetermineModulesByFileNameRegExp: boolean;
+    procedure SkipTask;
+    function AddStackTraceFormattedLine(Atext: string): string;
+    function GetModules3rdPartyList: TStringList;
+    function GetModulesUnknownList: TStringList;
+    function GetStackTraceLineRegExp: string;
+    function FindModuleIn3rdPartyList(Atext: string): boolean;
+    function FindModuleInUnknownList(Atext: string): boolean;
   public
     { Public declarations }
     parseCanceled: boolean;
     parseSuccess: boolean;
-    Tasks: Integer;
     MFListIsVIList : boolean; // Modules File List copied from the RS Version Information text
     SW: TStopwatch;           // TStopwatch System.Diagnostics - One Task
     SWAll: TStopwatch;        // TStopwatch System.Diagnostics - All Tasks
@@ -100,8 +111,17 @@ procedure TfrmParse.FormShow(Sender: TObject);
 begin
   pBarCurrentTask.Position := 0;
   pBarOverall.Position := 0;
-  if Tasks < 1 then Tasks := 1;
-  if FTaskNum < 1 then Tasks := 1;
+  if FTasksCount < 3 then FTasksCount := 3;
+  if FTaskNum < 1 then FTaskNum := 1;
+end;
+
+function TfrmParse.GetStackTraceLineRegExp: string;
+begin
+  Result := '\[(.*)\]' +                  // Groups[1] - Address
+    '\s*' +
+    '\{(.*?)\s*\}' +                       // Groups[2] - file name
+    '\s*' +
+    '(.*)';                             // Groups[3] - Function
 end;
 
 function TfrmParse.GetModuleLineRegExp: string;
@@ -138,37 +158,27 @@ end;
 function TfrmParse.GetOverallTaskPosition: Integer;
 begin
   //
-  Result := Round(100 / Tasks) * (FTaskNum - 1) +
-          Round(100 / Tasks * pBarCurrentTask.Position / pBarCurrentTask.Max) ;
+  Result := Round(100 / FTasksCount) * (FTaskNum - 1) +
+          Round(100 / FTasksCount * pBarCurrentTask.Position / pBarCurrentTask.Max) ;
 end;
 
 procedure TfrmParse.ParseModuleListFile;
 begin
-  //
-  SWAll := TStopwatch.StartNew;
-  Logger.AddToLog('Parse module list file. Stared.');
-  frmMain.actParseCancel.Enabled := true;
-  parseCanceled := not frmMain.actParseCancel.Enabled;
 
-  if GlobalModulesCompareLevel3
-    then StartTasks(5)    // Start 5 Tasks
-    else StartTasks(4);   // Start 4 Tasks
+  FTasksCount := 4;
+  if GlobalModulesCompareLevel3 then inc(FTasksCount);          // for Task #4
+  if frmMain.tsStackTraceFile.TabVisible then inc(FTasksCount); // for Task #6
 
   // Tasks
-  TaskModuleFileParse();
-  TaskCreateModulesDB();
-  TaskFindAllKnowModules();
-  if GlobalModulesCompareLevel3 then TaskFindModulesByFileNameRegExp();
-  TaskFindAllUsedPackages();
+  StartAllTasks;
+  TaskModuleFileParse();                // Task #1
+  TaskCreateModulesDB();                // Task #2
+  TaskFindAllKnowModules();             // Task #3
+  TaskFindModulesByFileNameRegExp();    // Task #4 - can be skipped
+  TaskFindAllUsedPackages();            // Task #5
+  TaskCreateFormattedStackTraceView();  // Task #6
+  EndAllTasks;
 
-  SWAll.Stop;
-
-  if not parseCanceled
-    then Logger.AddToLog('Parse module list file. Success. [' + format('%f', [SWAll.Elapsed.TotalSeconds]) + ' sec]')
-    else Logger.AddToLog('Parse module list file. Canceled.');
-
-  frmMain.actParseCancel.Enabled := false;
-  parseSuccess := true;
   frmParse.Close;
 end;
 
@@ -177,7 +187,6 @@ begin
   pBarCurrentTask.Position := Position;
   pBarOverall.Position := GetOverallTaskPosition();
   Application.ProcessMessages;
-  // sleep(1); // Sleep
 end;
 
 procedure TfrmParse.SetCurrentTaskPositionsMinMax(PosMin, PosMax: integer);
@@ -201,12 +210,135 @@ begin
   SetCurrentTaskPosition(0);
 end;
 
-procedure TfrmParse.StartTasks(Count: integer);
+procedure TfrmParse.StartAllTasks;
 begin
+  Logger.AddToLog('Parse module list file. Stared.');
+  frmMain.actParseCancel.Enabled := true;
+  parseCanceled := not frmMain.actParseCancel.Enabled;
+
+  SWAll := TStopwatch.StartNew;
   pBarOverall.Max := 100;
   pBarOverall.Position := 0;
-  Tasks := Count;
   FTaskNum := 0;
+end;
+
+function TfrmParse.FindModuleIn3rdPartyList(Atext: string): boolean;
+var
+  ModuleName: string;
+begin
+  Result := false;
+  if (FModules3rdPartyList = nil) then Exit;
+  for ModuleName in FModules3rdPartyList do
+    if ModuleName = Atext then Exit(true);
+end;
+
+function TfrmParse.FindModuleInUnknownList(Atext: string): boolean;
+var
+  ModuleName: string;
+begin
+  Result := false;
+  if (FModulesUnknownList = nil) then Exit;
+  for ModuleName in FModulesUnknownList do
+    if ModuleName = Atext then Exit(true);
+end;
+
+function TfrmParse.AddStackTraceFormattedLine(Atext: string): string;
+var
+  regexp: TPerlRegEx;
+begin
+  with frmMain do
+  begin
+    regexp := TPerlRegEx.Create;
+    try
+      with regexp do begin
+        RegEx := GetStackTraceLineRegExp();
+        Subject := Atext;
+        if Match
+          then
+            begin
+              REStackTraceAddFormattedText('[' + Groups[1] + ']', [], clBlack);
+              REStackTraceAddFormattedText('{', [], clBlack);
+              if FindModuleIn3rdPartyList(Groups[2])
+                then REStackTraceAddFormattedText(Groups[2], [], clRed)
+                else
+                  if FindModuleInUnknownList(Groups[2])
+                    then REStackTraceAddFormattedText(Groups[2], [], clFuchsia)
+                    else REStackTraceAddFormattedText(Groups[2], [], clBlue);
+              REStackTraceAddFormattedText('}', [], clBlack);
+              REStackTraceAddFormattedText(' ' + Groups[3] + sLineBreak, [], clGray);
+            end
+        else
+          REStackTraceAddFormattedText(Atext + sLineBreak, [], clBlack);
+      end;
+    finally
+      regexp.Free;
+    end;
+  end;
+end;
+
+function TfrmParse.GetModules3rdPartyList(): TStringList;
+begin
+  Result := TStringList.Create;
+  with DM1.cdsModules do
+  begin
+    First;
+    while not Eof do
+    begin
+      if FieldByName('PackageType_ID').AsInteger in [THIRDPARTY_PACKAGES_TYPE_ID, THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID]
+        then Result.Add(FieldByName('FileName').AsString);
+      Next;
+    end;
+  end;
+end;
+
+function TfrmParse.GetModulesUnknownList: TStringList;
+begin
+  Result := TStringList.Create;
+  with DM1.cdsModules do
+  begin
+    First;
+    while not Eof do
+    begin
+      if FieldByName('PackageType_ID').AsInteger = -1
+        then Result.Add(FieldByName('FileName').AsString);
+      Next;
+    end;
+  end;
+end;
+
+function TfrmParse.TaskCreateFormattedStackTraceView: boolean;
+var
+  i: integer;
+begin
+  Result := false;
+  if not frmMain.tsStackTraceFile.TabVisible then
+  begin
+    SkipTask();
+    Exit(true);
+  end;
+  if parseCanceled then Exit;
+  StartTask('Copy modules to DB');
+  FModules3rdPartyList := GetModules3rdPartyList();
+  FModulesUnknownList := GetModulesUnknownList();
+  try
+    with frmMain do
+    begin
+      SetCurrentTaskPositionsMinMax(0, memoStackTrace.Lines.Count - 1);
+      reStackTrace.Clear;
+      for I := 0 to memoStackTrace.Lines.Count - 1 do
+      begin
+        AddStackTraceFormattedLine(memoStackTrace.Lines[i]);
+        SetCurrentTaskPosition(i);
+        if parseCanceled then Break;
+      end;
+      pcStackTrace.ActivePage := tsStackTraceFormatted;
+    end;
+    EndTask();
+  finally
+    FModules3rdPartyList.Free;
+    FModulesUnknownList.Free;
+  end;
+  Result := true;
 end;
 
 function TfrmParse.TaskCreateModulesDB: boolean;
@@ -382,6 +514,26 @@ begin
   Result := true;
 end;
 
+
+procedure TfrmParse.SkipTask();
+begin
+  SetCurrentTaskPositionsMinMax(0, 100);
+  SetCurrentTaskPosition(100);
+  Logger.AddToLog('Task #' + FTaskNum.ToString + ': ' + FTaskName + '. Skipped.');
+  inc(FTaskNum);
+end;
+
+procedure TfrmParse.EndAllTasks;
+begin
+  SWAll.Stop;
+  if not parseCanceled
+    then Logger.AddToLog('Parse module list file. Success. [' + format('%f', [SWAll.Elapsed.TotalSeconds]) + ' sec]')
+    else Logger.AddToLog('Parse module list file. Canceled.');
+
+  frmMain.actParseCancel.Enabled := false;
+  parseSuccess := true;
+end;
+
 procedure TfrmParse.EndTask();
 begin
   SW.Stop;
@@ -396,6 +548,11 @@ var
   id: integer;
 begin
   Result := false;
+  if not GlobalModulesCompareLevel3 then
+    begin
+      SkipTask();
+      Exit(true);
+    end;
   if parseCanceled then Exit;
   StartTask('Find known modules in DB (RegExp method)');
 

@@ -3152,27 +3152,72 @@ object frmMain: TfrmMain
           Text = ''
         end
       end
-      object memoStackTrace: TMemo
-        AlignWithMargins = True
-        Left = 5
-        Top = 46
-        Width = 976
-        Height = 378
-        Margins.Left = 5
-        Margins.Top = 5
-        Margins.Right = 5
-        Margins.Bottom = 5
+      object pcStackTrace: TPageControl
+        Left = 0
+        Top = 41
+        Width = 986
+        Height = 388
+        ActivePage = tsStackTraceFormatted
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -13
-        Font.Name = 'Monoid'
-        Font.Pitch = fpFixed
+        Font.Name = 'Segoe UI'
         Font.Style = []
         ParentFont = False
-        ReadOnly = True
-        ScrollBars = ssBoth
         TabOrder = 1
+        object tsStackTraceUnformatted: TTabSheet
+          Caption = 'Stack Trace (file)'
+          object memoStackTrace: TMemo
+            AlignWithMargins = True
+            Left = 5
+            Top = 5
+            Width = 968
+            Height = 346
+            Margins.Left = 5
+            Margins.Top = 5
+            Margins.Right = 5
+            Margins.Bottom = 5
+            Align = alClient
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Monoid'
+            Font.Pitch = fpFixed
+            Font.Style = []
+            ParentFont = False
+            ReadOnly = True
+            ScrollBars = ssBoth
+            TabOrder = 0
+          end
+        end
+        object tsStackTraceFormatted: TTabSheet
+          Caption = 'Stack Trace (formatted)'
+          ImageIndex = 1
+          object reStackTrace: TRichEdit
+            AlignWithMargins = True
+            Left = 5
+            Top = 5
+            Width = 968
+            Height = 346
+            Margins.Left = 5
+            Margins.Top = 5
+            Margins.Right = 5
+            Margins.Bottom = 5
+            Align = alClient
+            Font.Charset = ANSI_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Monoid'
+            Font.Pitch = fpFixed
+            Font.Style = []
+            Lines.Strings = (
+              'reStackTrace')
+            ParentFont = False
+            ScrollBars = ssBoth
+            TabOrder = 0
+          end
+        end
       end
     end
     object tsScreenshots: TTabSheet
@@ -3234,7 +3279,7 @@ object frmMain: TfrmMain
           Left = 4
           Top = 4
           Width = 163
-          Height = 92
+          Height = -8
           Cursor = crHandPoint
           Margins.Left = 4
           Margins.Top = 4
@@ -3248,6 +3293,7 @@ object frmMain: TfrmMain
           ImageName = 'MusicNote'
           OnClick = VirtualImage1Click
           ExplicitTop = 8
+          ExplicitHeight = 92
         end
         object lblImageDimensions: TLabel
           AlignWithMargins = True
