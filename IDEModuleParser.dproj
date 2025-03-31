@@ -199,6 +199,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <Form>frmCopyVersionInfo</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="UnitFormatStackTrace.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -241,7 +242,19 @@ $(PostBuildEvent)]]></PostBuildEvent>
                 </DeployFile>
                 <DeployFile LocalName="Win32\Debug\IDEModuleParser.exe" Configuration="Debug" Class="ProjectOutput"/>
                 <DeployFile LocalName="Win64\Debug\IDEModuleParser.exe" Configuration="Debug" Class="ProjectOutput"/>
+                <DeployFile LocalName="Win64\Debug\IDEModuleParser.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win64">
+                        <RemoteName>IDEModuleParser.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win64\Debug\IDEModuleParser.rsm" Configuration="Debug" Class="DebugSymbols"/>
+                <DeployFile LocalName="Win64\Debug\IDEModuleParser.rsm" Configuration="Debug" Class="DebugSymbols">
+                    <Platform Name="Win64">
+                        <RemoteName>IDEModuleParser.rsm</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win64\Release\IDEModuleParser.exe" Configuration="Release" Class="ProjectOutput"/>
                 <DeployClass Name="AdditionalDebugSymbols">
                     <Platform Name="iOSSimulator">

@@ -13,6 +13,7 @@ uses
   , FireDAC.Stan.Param
   , System.Generics.Collections
   , System.Diagnostics
+  , UnitFormatStackTrace
   ;
 
 type
@@ -43,8 +44,6 @@ type
     FTaskName: string;
     FTaskNum: Integer;
     FTasksCount: Integer;
-    FModules3rdPartyList: TStringList;
-    FModulesUnknownList: TStringList;
     function GetOverallTaskPosition(): Integer;
     function DetermineCurrentModule: boolean;
     function GetKnownModulesForFileName: boolean;
@@ -59,12 +58,8 @@ type
     function TaskCreateFormattedStackTraceView: boolean;
     function DetermineModulesByFileNameRegExp: boolean;
     procedure SkipTask;
-    function AddStackTraceFormattedLine(Atext: string): string;
     function GetModules3rdPartyList: TStringList;
     function GetModulesUnknownList: TStringList;
-    function GetStackTraceLineRegExp: string;
-    function FindModuleIn3rdPartyList(Atext: string): boolean;
-    function FindModuleInUnknownList(Atext: string): boolean;
   public
     { Public declarations }
     parseCanceled: boolean;
@@ -113,15 +108,6 @@ begin
   pBarOverall.Position := 0;
   if FTasksCount < 3 then FTasksCount := 3;
   if FTaskNum < 1 then FTaskNum := 1;
-end;
-
-function TfrmParse.GetStackTraceLineRegExp: string;
-begin
-  Result := '\[(.*)\]' +                  // Groups[1] - Address
-    '\s*' +
-    '\{(.*?)\s*\}' +                       // Groups[2] - file name
-    '\s*' +
-    '(.*)';                             // Groups[3] - Function
 end;
 
 function TfrmParse.GetModuleLineRegExp: string;
@@ -222,60 +208,6 @@ begin
   FTaskNum := 0;
 end;
 
-function TfrmParse.FindModuleIn3rdPartyList(Atext: string): boolean;
-var
-  ModuleName: string;
-begin
-  Result := false;
-  if (FModules3rdPartyList = nil) then Exit;
-  for ModuleName in FModules3rdPartyList do
-    if ModuleName = Atext then Exit(true);
-end;
-
-function TfrmParse.FindModuleInUnknownList(Atext: string): boolean;
-var
-  ModuleName: string;
-begin
-  Result := false;
-  if (FModulesUnknownList = nil) then Exit;
-  for ModuleName in FModulesUnknownList do
-    if ModuleName = Atext then Exit(true);
-end;
-
-function TfrmParse.AddStackTraceFormattedLine(Atext: string): string;
-var
-  regexp: TPerlRegEx;
-begin
-  with frmMain do
-  begin
-    regexp := TPerlRegEx.Create;
-    try
-      with regexp do begin
-        RegEx := GetStackTraceLineRegExp();
-        Subject := Atext;
-        if Match
-          then
-            begin
-              REStackTraceAddFormattedText('[' + Groups[1] + ']', [], clBlack);
-              REStackTraceAddFormattedText('{', [], clBlack);
-              if FindModuleIn3rdPartyList(Groups[2])
-                then REStackTraceAddFormattedText(Groups[2], [], clRed)
-                else
-                  if FindModuleInUnknownList(Groups[2])
-                    then REStackTraceAddFormattedText(Groups[2], [], clFuchsia)
-                    else REStackTraceAddFormattedText(Groups[2], [], clBlue);
-              REStackTraceAddFormattedText('}', [], clBlack);
-              REStackTraceAddFormattedText(' ' + Groups[3] + sLineBreak, [], clGray);
-            end
-        else
-          REStackTraceAddFormattedText(Atext + sLineBreak, [], clBlack);
-      end;
-    finally
-      regexp.Free;
-    end;
-  end;
-end;
-
 function TfrmParse.GetModules3rdPartyList(): TStringList;
 begin
   Result := TStringList.Create;
@@ -309,6 +241,7 @@ end;
 function TfrmParse.TaskCreateFormattedStackTraceView: boolean;
 var
   i: integer;
+  FSTView: TFormattedStackTraceView;
 begin
   Result := false;
   if not frmMain.tsStackTraceFile.TabVisible then
@@ -318,25 +251,25 @@ begin
   end;
   if parseCanceled then Exit;
   StartTask('Copy modules to DB');
-  FModules3rdPartyList := GetModules3rdPartyList();
-  FModulesUnknownList := GetModulesUnknownList();
+  FSTView := TFormattedStackTraceView.Create(frmMain.reStackTrace);
   try
+    FSTView.Clear;
+    FSTView.FModules3rdPartyList := GetModules3rdPartyList();
+    FSTView.FModulesUnknownList := GetModulesUnknownList();
     with frmMain do
     begin
       SetCurrentTaskPositionsMinMax(0, memoStackTrace.Lines.Count - 1);
-      reStackTrace.Clear;
       for I := 0 to memoStackTrace.Lines.Count - 1 do
       begin
-        AddStackTraceFormattedLine(memoStackTrace.Lines[i]);
+        FSTView.AddLine(memoStackTrace.Lines[i]);
         SetCurrentTaskPosition(i);
         if parseCanceled then Break;
       end;
-      pcStackTrace.ActivePage := tsStackTraceFormatted;
+      if not parseCanceled then FSTView.Activate;
     end;
     EndTask();
   finally
-    FModules3rdPartyList.Free;
-    FModulesUnknownList.Free;
+    FSTView.Free;
   end;
   Result := true;
 end;

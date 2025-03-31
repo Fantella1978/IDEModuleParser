@@ -25,6 +25,7 @@ uses
   , UnitStaticFunctions
   , UnitEnableAdminMode
   , UnitDisplayPackagesList
+  , UnitFormatStackTrace
   ;
 
   // Some changes
@@ -34,7 +35,7 @@ type
 
   TModulesPackagesArray = TArray<TModulesPackage>;
 
-  TDBGrid=Class(Vcl.DBGrids.TDBGrid)
+  TDBGrid = Class(Vcl.DBGrids.TDBGrid)
   private
     FOnSelectionChanged: TNotifyEvent;
   protected
@@ -389,8 +390,6 @@ type
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
-    procedure REStackTraceAddFormattedText(const AText: string; AStyle: TFontStyles); overload;
-    procedure REStackTraceAddFormattedText(const AText: string; AStyle: TFontStyles; AColor: TColor); overload;
     // FModulesPackages : TList;
   end;
 
@@ -754,21 +753,6 @@ begin
     zip.Free;
   end;
   Result := true;
-end;
-
-procedure TfrmMain.REStackTraceAddFormattedText(const AText: string; AStyle: TFontStyles);
-begin
-  reStackTrace.SelStart := reStackTrace.GetTextLen;
-  reStackTrace.SelLength := 0;
-  reStackTrace.SelAttributes.Style := AStyle;
-  reStackTrace.SelText := AText;
-end;
-
-procedure TfrmMain.REStackTraceAddFormattedText(const AText: string; AStyle: TFontStyles;
-  AColor: TColor);
-begin
-  reStackTrace.SelAttributes.Color := AColor;
-  REStackTraceAddFormattedText(AText, AStyle);
 end;
 
 procedure TfrmMain.ApplyAllFiltres();

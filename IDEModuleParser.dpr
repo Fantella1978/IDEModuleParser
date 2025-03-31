@@ -21,7 +21,8 @@ uses
   UnitPackageEditor in 'UnitPackageEditor.pas' {frmPackageEditor},
   UnitProgressWindow in 'UnitProgressWindow.pas' {frmProgress},
   UnitDisplayPackagesList in 'UnitDisplayPackagesList.pas' {frmPackagesList},
-  UnitCopyVersionInfo in 'UnitCopyVersionInfo.pas' {frmCopyVersionInfo};
+  UnitCopyVersionInfo in 'UnitCopyVersionInfo.pas' {frmCopyVersionInfo},
+  UnitFormatStackTrace in 'UnitFormatStackTrace.pas';
 
 {$R *.res}
 
