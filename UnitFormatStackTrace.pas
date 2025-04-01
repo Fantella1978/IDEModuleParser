@@ -5,6 +5,7 @@ interface
 uses
   System.RegularExpressionsCore
   , System.Classes
+  , System.StrUtils
   , Vcl.Graphics
   , Vcl.ComCtrls
   ;
@@ -112,7 +113,10 @@ begin
     if Match
       then
         begin
+          // Groups[1]
           AddFormattedText('[' + Groups[1] + ']', [], clBlack);
+
+          // Groups[2]
           AddFormattedText('{', [], clBlack);
           if FindModuleIn3rdPartyList(Groups[2])
             then AddFormattedText(Groups[2], [], clRed)
@@ -121,7 +125,18 @@ begin
                 then AddFormattedText(Groups[2], [], clFuchsia)
                 else AddFormattedText(Groups[2], [], clBlue);
           AddFormattedText('}', [], clBlack);
-          AddFormattedText(' ' + Groups[3] + sLineBreak, [], clGray);
+
+          // Groups[3]
+          var ufs := 'Unknown function';
+          var ufp := Pos(ufs, Groups[3], 1);
+          if ufp > 0                          // Unknown function check
+          then
+            begin
+              AddFormattedText(' ' + ufs, [], clWebCoral);
+              AddFormattedText(Copy(Groups[3], ufp + length(ufs), length(Groups[3]) - length(ufs)) + sLineBreak, [], clGray);
+            end
+          else
+            AddFormattedText(' ' + Groups[3] + sLineBreak, [], clGray);
         end
     else
       AddFormattedText(Atext + sLineBreak, [], clBlack);
