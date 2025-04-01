@@ -277,6 +277,7 @@ end;
 function TfrmParse.TaskCreateModulesDB: boolean;
 var
   tempIDEModule : TIDEModule;
+  i: integer;
 begin
   Result := false;
   if parseCanceled then Exit;
@@ -284,7 +285,7 @@ begin
   SetCurrentTaskPositionsMinMax(0, Length(ModulesArray) - 1);
   DM1.cdsModules.DisableControls;
   DM1.ClearModulesDB;
-  for var i := 0 to Length(ModulesArray) - 1 do
+  for i := 0 to Length(ModulesArray) - 1 do
     begin
       tempIDEModule := @ModulesArray[i]^;
       with DM1.cdsModules do
@@ -357,12 +358,8 @@ end;
 
 function TfrmParse.SaveCurrentModuleData() : boolean;
 begin
-  if (FCurrentModulePackage_ID = -1) AND (FCurrentModulePackageName = '')
-  then
-    begin
-      Result := false;
-      Exit;
-    end;
+  if (FCurrentModulePackage_ID = -1) AND (FCurrentModulePackageName = '') then
+    Exit(false);
 
   DM1.cdsModules.Edit;
   DM1.cdsModules.FieldByName('Package_ID').AsInteger := FCurrentModulePackage_ID;
@@ -404,8 +401,10 @@ begin
   FCurrentModulePackageType_ID := -1;
 
   GetKnownModulesForFileName();
-  if GlobalModulesCompareLevel2 then DetermineCurrentModuleLevel2();
-  if FCurrentModulePackage_ID = -1 then DetermineCurrentModuleLevel1();
+  if GlobalModulesCompareLevel2 then
+    DetermineCurrentModuleLevel2();
+  if FCurrentModulePackage_ID = -1 then
+    DetermineCurrentModuleLevel1();
   SaveCurrentModuleData();
 
   Result := true;
@@ -415,11 +414,8 @@ function TfrmParse.DetermineModulesByFileNameRegExp() : boolean;
 begin
   Result := false;
   if parseCanceled then Exit;
-
-  // var count1 := DM1.cdsModules.RecordCount;
-  DM1.cdsModules.First;
-  // var count2 := DM1.cdsModules.RecordCount;
   if DM1.cdsModules.RecordCount = 0 then Exit;
+  DM1.cdsModules.First;
   with Fregexp do
   begin
     Options := [preCaseLess, preNoAutoCapture];
@@ -436,7 +432,6 @@ begin
           DM1.cdsModulesPackage_ID.AsInteger := DM1.fdqModulesFromQuery.FieldByName('Package_ID').AsInteger;
           DM1.cdsModulesPackageName.AsString := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
           DM1.cdsModulesPackageType_ID.AsInteger := DM1.fdqModulesFromQuery.FieldByName('PackageType_ID').AsInteger;
-
           // ShowMessage('Found module ' + Subject + ' by RegExp: ' + RegEx);
           Logger.AddToLog('Module found by FileNameRegExp: ' + Subject);
         end;
@@ -512,28 +507,25 @@ begin
         ';');
       }
       Open;
-
       Last;
       SetCurrentTaskPositionsMinMax(0, RecordCount - 1);
       First;
-
-      // var count1 := RecordCount;
-
       id := -1;
       while not Eof do
       begin
         inc(id);
         SetCurrentTaskPosition(id);
-        if not DetermineModulesByFileNameRegExp() or parseCanceled then Break;
+        if not DetermineModulesByFileNameRegExp() or parseCanceled then
+          Break;
         Next;
       end;
+      Close;
     end;
 
     DM1.cdsModules.Filter := '';
     DM1.cdsModules.Filtered := false;
     DM1.cdsModules.First;
     DM1.cdsModules.EnableControls;
-    DM1.fdqModulesFromQuery.Close;
 
   finally
     Fregexp.Free;
@@ -623,7 +615,6 @@ var
   err : Integer;
   s : string;
   tempIDEModule : TIDEModule;
-  regexp : TPerlRegEx;
 begin
   Result := false;
   if parseCanceled then Exit;
@@ -632,9 +623,9 @@ begin
   cl := frmMain.MemoTxtModuleFile.Lines.Count;
   SetCurrentTaskPositionsMinMax(0, cl);
   frmMain.ModulesArrayClear;
-  regexp := TPerlRegEx.Create;
+  Fregexp := TPerlRegEx.Create;
   try
-    with regexp do begin
+    with Fregexp do begin
       RegEx := GetModuleLineRegExp();
       for i := 0 to cl - 1 do
         begin
@@ -662,7 +653,7 @@ begin
               }
               tempIDEModule := TIDEModule.Create;
               tempIDEModule.isVIList := MFListIsVIList;
-              tempIDEModule.AssignFromRegExpGroups(regexp);
+              tempIDEModule.AssignFromRegExpGroups(Fregexp);
               SetLength(ModulesArray, Length(ModulesArray) + 1);
               ModulesArray[Length(ModulesArray) - 1] := Pointer(tempIDEModule);
               Logger.AddToLog('Parse line #' + IntToStr(i) + '. Found module: ' + tempIDEModule.FileName );
@@ -682,7 +673,7 @@ begin
         end;
     end;
   finally
-    regexp.Free;
+    Fregexp.Free;
   end;
 
   if err <> 0
