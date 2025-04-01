@@ -365,6 +365,8 @@ type
     procedure VirtualImage1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure clbViewInExplorerClick(Sender: TObject);
+    procedure reStackTraceContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -1469,6 +1471,13 @@ procedure TfrmMain.PageControl1Change(Sender: TObject);
 begin
   if PageControl1.ActivePage = tsModulesList
     then AutoStretchDBGridColumns(DBGridModules, DBGridModulesColumnsWidth);
+end;
+
+procedure TfrmMain.reStackTraceContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+  RichEditPopupMenu(TRichEdit(Sender));
+  Handled := True;
 end;
 
 procedure TfrmMain.SetDBGridModulesDefaultColumnsWidth(Sender: TObject);
