@@ -367,6 +367,8 @@ type
     procedure clbViewInExplorerClick(Sender: TObject);
     procedure reStackTraceContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure reStackTraceLinkClick(Sender: TCustomRichEdit; const URL: string;
+      Button: TMouseButton);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -1478,6 +1480,19 @@ procedure TfrmMain.reStackTraceContextPopup(Sender: TObject; MousePos: TPoint;
 begin
   RichEditPopupMenu(TRichEdit(Sender));
   Handled := True;
+end;
+
+procedure TfrmMain.reStackTraceLinkClick(Sender: TCustomRichEdit;
+  const URL: string; Button: TMouseButton);
+var
+  LFileName: string;
+begin
+  LFileName := copy(URL, 8, length(URL) - 7);
+  // ShowMessage(LFileName);
+  PageControl1.ActivePage := tsModulesList;
+  actFilterPackagesSelectOnly3rdParty.Execute();
+  actFilterPackagesTypesSelectOnly3rdParty.Execute();
+  lbedFilterFileName.Text := LFileName;
 end;
 
 procedure TfrmMain.SetDBGridModulesDefaultColumnsWidth(Sender: TObject);

@@ -3216,7 +3216,9 @@ object frmMain: TfrmMain
             ParentFont = False
             ScrollBars = ssBoth
             TabOrder = 0
+            WordWrap = False
             OnContextPopup = reStackTraceContextPopup
+            OnLinkClick = reStackTraceLinkClick
           end
         end
       end

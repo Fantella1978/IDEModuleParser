@@ -267,6 +267,7 @@ begin
       end;
       if not parseCanceled then FSTView.Activate;
     end;
+    FSTView.MakeLinksRed();
     EndTask();
   finally
     FSTView.Free;
