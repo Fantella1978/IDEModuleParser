@@ -1490,8 +1490,8 @@ begin
   LFileName := copy(URL, 8, length(URL) - 7);
   // ShowMessage(LFileName);
   PageControl1.ActivePage := tsModulesList;
-  actFilterPackagesSelectOnly3rdParty.Execute();
-  actFilterPackagesTypesSelectOnly3rdParty.Execute();
+  actFilterPackagesSelectAll.Execute();
+  actFilterPackagesTypesSelectAll.Execute();
   lbedFilterFileName.Text := LFileName;
 end;
 

@@ -43,6 +43,7 @@ type
     procedure AddFormattedText(const AText: string; AStyle: TFontStyles); overload;
     procedure AddFormattedText(const AText: string; AStyle: TFontStyles; AColor: TColor); overload;
     procedure AddHyperLink(const AURL: string; const AText: string = '');
+    procedure AddColorHyperLink(const AURL: string; const AText: string; AColor: TColor);
     procedure MakeLinksRed();
   end;
 
@@ -264,6 +265,30 @@ begin
   end;
 end;
 
+procedure TFormattedStackTraceView.AddColorHyperLink(const AURL: string; const AText: string; AColor: TColor);
+var
+  StartLink, EndLink: Integer;
+  SetFmt: CHARFORMAT2W; // Use CHARFORMAT2W for Unicode support
+begin
+  FEdit.SelStart := FEdit.GetTextLen;
+  StartLink := FEdit.SelStart;
+  FEdit.SetSelTextToFriendlyURL(AText, AURL);
+  EndLink := FEdit.SelStart;
+
+  FEdit.SelStart := StartLink;
+  FEdit.SelLength := EndLink - StartLink;
+
+  // --- Prepare format to set: ONLY change color ---
+  FillChar(SetFmt, SizeOf(SetFmt), 0);
+  SetFmt.cbSize := SizeOf(SetFmt);
+  SetFmt.dwMask := CFM_COLOR;   // We only want to change the color
+  SetFmt.crTextColor := AColor; // Set color
+  FEdit.Perform(EM_SETCHARFORMAT, SCF_SELECTION, LPARAM(@SetFmt));
+
+  FEdit.SelStart := EndLink;
+  FEdit.SelLength := 0;
+end;
+
 procedure TFormattedStackTraceView.AddHyperLink(const AURL: string; const AText: string = '');
 begin
   if AText = '' then
@@ -293,11 +318,15 @@ begin
           // Groups[2]
           AddFormattedText('{', [], clBlack);
           if FindModuleIn3rdPartyList(Groups[2])
-            then AddHyperLink('file://' + Groups[2], Groups[2])
+            then
+              begin
+                // AddHyperLink('file://' + Groups[2], Groups[2]);
+                AddColorHyperLink('file://' + Groups[2], Groups[2], clRed);
+              end
             else
               if FindModuleInUnknownList(Groups[2])
-                then AddFormattedText(Groups[2], [], clFuchsia)
-                else AddFormattedText(Groups[2], [], clBlue);
+                then AddColorHyperLink('file://' + Groups[2], Groups[2], clFuchsia)
+                else AddColorHyperLink('file://' + Groups[2], Groups[2], clBlue);
           AddFormattedText('}', [], clBlack);
 
           // Groups[3]
