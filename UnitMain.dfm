@@ -84,7 +84,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsStackTraceFile
+    ActivePage = tsModulesList
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -354,6 +354,16 @@ object frmMain: TfrmMain
             Constraints.MinWidth = 200
             ReadOnly = True
             TabOrder = 3
+          end
+          object eIDEbittness: TEdit
+            Left = 534
+            Top = 15
+            Width = 74
+            Height = 25
+            Alignment = taCenter
+            ReadOnly = True
+            TabOrder = 4
+            Text = '32-bit IDE'
           end
         end
       end

@@ -19,6 +19,7 @@ type
     clbURL: TControlListButton;
     lblDescr: TLabel;
     lblGetIt: TLabel;
+    lbl3rdParty: TLabel;
     procedure FormShow(Sender: TObject);
     procedure ControlList1BeforeDrawItem(AIndex: Integer; ACanvas: TCanvas;
       ARect: TRect; AState: TOwnerDrawState);
@@ -49,6 +50,8 @@ uses
 
 procedure TfrmPackagesList.ControlList1BeforeDrawItem(AIndex: Integer;
   ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
+var
+  linePos: integer;
 begin
   FPackagesQuery.RecNo := AIndex + 1;
   lblName.Caption := FPackagesQuery.FieldByName('Name').AsString;
@@ -56,6 +59,8 @@ begin
     then lblName.Caption := lblName.Caption + ' ' + FPackagesQuery.FieldByName('SubName').AsString;
   if GlobalModulesCompareLevel2 AND (FPackagesQuery.FieldByName('Version').AsString <> '')
     then lblName.Caption := lblName.Caption  + ' ' + FPackagesQuery.FieldByName('Version').AsString;
+
+  linePos := lblName.Left + lblName.Width + 10;
 
   if FPackagesQuery.FieldByName('URL').AsString <> ''
     then
@@ -72,11 +77,23 @@ begin
         lblDescr.Top := lblName.Top + lblName.Height + 5; // 24
       end;
 
+  if FPackagesQuery.FieldByName('Type_ID').AsInteger in [THIRDPARTY_PACKAGES_TYPE_ID, THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID] then
+    begin
+      lbl3rdParty.Visible := true;
+      lbl3rdParty.Left := linePos;
+      linePos := lbl3rdParty.Left + lbl3rdParty.Width + 10;
+    end
+  else
+    begin
+     lbl3rdParty.Visible := false;
+    end;
+
   lblGetIt.Visible := FPackagesQuery.FieldByName('InGetIt').AsBoolean;
-  lblGetIt.Left := lblName.Left + lblName.Width + 10;
-  if FPackagesQuery.FieldByName('InGetIt').AsBoolean = true
+  if lblGetIt.Visible
     then
       begin
+        lblGetIt.Left := linePos;
+        // linePos := lblGetIt.Left + lblGetIt.Width + 10;
         lblDescr.Height := 15;
       end
     else

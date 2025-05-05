@@ -123,13 +123,27 @@ object frmPackagesList: TfrmPackagesList
       StyleElements = [seClient, seBorder]
     end
     object lblGetIt: TLabel
-      Left = 50
+      Left = 114
       Top = 5
       Width = 107
       Height = 17
       Caption = 'Available in GetIt'
       Font.Charset = DEFAULT_CHARSET
-      Font.Color = clLime
+      Font.Color = clDeepskyblue
+      Font.Height = -13
+      Font.Name = 'Segoe UI'
+      Font.Style = [fsBold]
+      ParentFont = False
+      StyleElements = [seClient, seBorder]
+    end
+    object lbl3rdParty: TLabel
+      Left = 51
+      Top = 5
+      Width = 57
+      Height = 17
+      Caption = '3rd-Party'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clLawngreen
       Font.Height = -13
       Font.Name = 'Segoe UI'
       Font.Style = [fsBold]

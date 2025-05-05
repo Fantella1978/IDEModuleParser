@@ -70,7 +70,7 @@ begin
           with DateTimeRegexp do begin
             RegEx := '(\d{1,4})[\/\-\.](\d{1,2}|[A-Z,a-z]{3})[\/\-\.](\d{1,4})\s*' +         // date
               '' +
-              '(' +                                                                             // time
+              '(' +                                                                          // time
                 '(?:\s*[\S]{2}\s*)?' +
                 '(?:' +
                 '\d{1,2}[\:\.]\d{2}[\:\.]\d{2}' +
@@ -141,9 +141,8 @@ begin
                       ASecond := StrToInt(Groups[6]);
                       if (Groups[7] = 'PM') AND (AHour < 12)
                         then AHour := AHour + 12;
-                      //
+
                       if AHour >= 24 then AHour := AHour - 24;
-                      //
 
                       }
                       AHour := 0;

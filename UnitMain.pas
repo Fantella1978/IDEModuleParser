@@ -225,6 +225,7 @@ type
     tsStackTraceFormatted: TTabSheet;
     memoStackTrace: TMemo;
     reStackTrace: TRichEdit;
+    eIDEbittness: TEdit;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -391,6 +392,7 @@ type
     function TryOpenScreenshotFilesInReport: boolean;
     function TryOpenScreenshotFile(FileName: string): boolean;
     procedure LoadScreenshotFilesSuccess;
+    procedure DisplayRSBuildInfo();
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
@@ -1490,9 +1492,12 @@ begin
   LFileName := copy(URL, 8, length(URL) - 7);
   // ShowMessage(LFileName);
   PageControl1.ActivePage := tsModulesList;
-  actFilterPackagesSelectAll.Execute();
-  actFilterPackagesTypesSelectAll.Execute();
   lbedFilterFileName.Text := LFileName;
+  if DM1.cdsModules.RecordCount = 0 then
+  begin
+    actFilterPackagesSelectAll.Execute();
+    actFilterPackagesTypesSelectAll.Execute();
+  end;
 end;
 
 procedure TfrmMain.SetDBGridModulesDefaultColumnsWidth(Sender: TObject);
@@ -1536,15 +1541,7 @@ begin
   if frmParse.parseSuccess
   then
     begin
-      if FindBDSIDEModule(BDSIDEModule) = true
-      then
-        begin
-          ledtBDSPath.Text := BDSIDEModule.Path;
-          ledtBDSBuild.Text := BDSIDEModule.Version;
-          ledtBDSInstDate.Text := DateTimeToStr(BDSIDEModule.DateTime);
-          DisplayRSBuild(BDSIDEModule);
-        end
-      else BDSIDEModule := nil;
+      DisplayRSBuildInfo();
 
       // Restore IndexName
       if oldIndex = ''
@@ -1767,8 +1764,37 @@ procedure TfrmMain.DisplayRSBuild(module: TIDEModule);
 begin
   edRSBuild.Text := FindRSBuildName(module.Version);
   if edRSBuild.Text <> ''
-  then edRSBuild.Visible := true
-  else edRSBuild.Visible := false;
+    then edRSBuild.Visible := true
+    else edRSBuild.Visible := false;
+  if pos('\bin64\', module.Path) <> 0
+    then
+      begin
+        eIDEbittness.Text := '64-bit IDE';
+        eIDEbittness.Font.Style := [fsBold];
+        eIDEbittness.Font.Color := clRed;
+        eIDEbittness.StyleElements := [seClient, seBorder];
+      end;
+  if pos('\bin\', module.Path) <> 0
+    then
+      begin
+        eIDEbittness.Text := '32-bit IDE';
+        eIDEbittness.Font.Style := [];
+        eIDEbittness.Font.Color := clWindowText;
+        eIDEbittness.StyleElements := [seClient, seBorder, seFont];
+      end;
+end;
+
+procedure TfrmMain.DisplayRSBuildInfo;
+begin
+  if FindBDSIDEModule(BDSIDEModule) = true
+  then
+    begin
+      ledtBDSPath.Text := BDSIDEModule.Path;
+      ledtBDSBuild.Text := BDSIDEModule.Version;
+      ledtBDSInstDate.Text := DateTimeToStr(BDSIDEModule.DateTime);
+      DisplayRSBuild(BDSIDEModule);
+    end
+  else BDSIDEModule := nil;
 end;
 
 procedure TfrmMain.EnableFontSizeChange;
@@ -1972,9 +1998,12 @@ end;
 
 function TfrmMain.GetKnownReportFiles: TArray<string>;
 begin
-  Result := TArray<string>.Create('desc.txt',
-        'dxdiag_log.txt', 'modulelist.txt',
-        'reportdata.xml', 'stacktrace.txt',
+  Result := TArray<string>.Create(
+        'desc.txt',
+        'dxdiag_log.txt',
+        'modulelist.txt',
+        'reportdata.xml',
+        'stacktrace.txt',
         'step.txt'
         );
 end;
@@ -2112,7 +2141,6 @@ end;
 
 function TfrmMain.TryOpenScreenshotFilesInReport: boolean;
 var
-  // i : integer;
   tempFileName : string;
   tempFilePath: string;
   ScreenshotFound : boolean;

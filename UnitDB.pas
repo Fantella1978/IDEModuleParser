@@ -79,7 +79,7 @@ type
   public
     { Public declarations }
     procedure ClearModulesDB;
-    function FindPackageType_IDByName(name: string): integer;
+    function FindPackageType_IDByName(AName: string): integer;
   end;
 
   PModulesPackage = ^TModulesPackage;
@@ -88,7 +88,7 @@ type
     PackageName : string;
     PackageType_ID : integer;
     PackageVersion : string;
-    class function FindSame(const value: TModulesPackage; const MyArr: array of TModulesPackage): boolean; static;
+    class function FindSame(const value: TModulesPackage; const APackagesArray: array of TModulesPackage): boolean; static;
     // class function IndexOfArray<T:Class>(const value: T; const Things: array of T): Integer; static;
   private
   end;
@@ -117,13 +117,13 @@ uses
 
 { TModulesPackage }
 
-class function TModulesPackage.FindSame(const value: TModulesPackage; const MyArr: array of TModulesPackage): boolean;
+class function TModulesPackage.FindSame(const value: TModulesPackage; const APackagesArray: array of TModulesPackage): boolean;
 var
   i: Integer;
 begin
-  for i := 0 to High(MyArr) do
-    if // (value.Package_ID = MyArr[i].Package_ID) AND
-       (value.PackageName = MyArr[i].PackageName)
+  for i := 0 to High(APackagesArray) do
+    if value.PackageName = APackagesArray[i].PackageName
+      // (value.Package_ID = APackagesArray[i].Package_ID)
       then Exit(true);
   Result := false;
 end;
@@ -159,10 +159,7 @@ begin
   DM1.cdsModules.IndexName := 'cdsModulesModule_IDIndexUNIQ';
   DM1.cdsModules.Filtered := false;
   cdsModules.First;
-  while not cdsModules.Eof do
-  begin
-    cdsModules.Delete;
-  end;
+  while not cdsModules.Eof do cdsModules.Delete;
   cdsModules.Close;
   cdsModules.Open;
   DM1.cdsModules.IndexName := oldIndex;
@@ -179,12 +176,12 @@ begin
   UpdatePackagesActions();
 end;
 
-function TDM1.FindPackageType_IDByName(name : string) : integer;
+function TDM1.FindPackageType_IDByName(AName : string) : integer;
 begin
   fdtPackageTypes.First;
   while not fdtPackageTypes.Eof do
   begin
-    if fdtPackageTypes.FieldByName('Name').AsString = name
+    if fdtPackageTypes.FieldByName('Name').AsString = AName
       then
         begin
           Result := fdtPackageTypes.FieldByName('Type_ID').AsInteger;

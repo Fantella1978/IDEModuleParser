@@ -55,7 +55,7 @@ type
     function TaskFindAllKnowModules(): boolean;
     function TaskFindAllUsedPackages: boolean;
     function TaskFindModulesByFileNameRegExp: boolean;
-    function TaskCreateFormattedStackTraceView: boolean;
+    function TaskCreateFormattedStackTraceView(AMemo: TMemo): boolean;
     function DetermineModulesByFileNameRegExp: boolean;
     procedure SkipTask;
     function GetModules3rdPartyList: TStringList;
@@ -162,7 +162,7 @@ begin
   TaskFindAllKnowModules();             // Task #3
   TaskFindModulesByFileNameRegExp();    // Task #4 - can be skipped
   TaskFindAllUsedPackages();            // Task #5
-  TaskCreateFormattedStackTraceView();  // Task #6
+  TaskCreateFormattedStackTraceView(frmMain.memoStackTrace);  // Task #6
   EndAllTasks;
 
   frmParse.Close;
@@ -238,7 +238,7 @@ begin
   end;
 end;
 
-function TfrmParse.TaskCreateFormattedStackTraceView: boolean;
+function TfrmParse.TaskCreateFormattedStackTraceView(AMemo: TMemo): boolean;
 var
   i: integer;
   FSTView: TFormattedStackTraceView;
@@ -256,18 +256,14 @@ begin
     FSTView.Clear;
     FSTView.FModules3rdPartyList := GetModules3rdPartyList();
     FSTView.FModulesUnknownList := GetModulesUnknownList();
-    with frmMain do
+    SetCurrentTaskPositionsMinMax(0, AMemo.Lines.Count - 1);
+    for I := 0 to AMemo.Lines.Count - 1 do
     begin
-      SetCurrentTaskPositionsMinMax(0, memoStackTrace.Lines.Count - 1);
-      for I := 0 to memoStackTrace.Lines.Count - 1 do
-      begin
-        FSTView.AddLine(memoStackTrace.Lines[i]);
-        SetCurrentTaskPosition(i);
-        if parseCanceled then Break;
-      end;
-      if not parseCanceled then FSTView.Activate;
+      FSTView.AddLine(AMemo.Lines[i]);
+      SetCurrentTaskPosition(i);
+      if parseCanceled then Break;
     end;
-    // FSTView.MakeLinksRed();
+    if not parseCanceled then FSTView.Activate;
     EndTask();
   finally
     FSTView.Free;
