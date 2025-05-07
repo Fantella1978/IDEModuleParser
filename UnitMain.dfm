@@ -356,8 +356,8 @@ object frmMain: TfrmMain
             TabOrder = 3
           end
           object eIDEbittness: TEdit
-            Left = 534
-            Top = 15
+            Left = 535
+            Top = 14
             Width = 74
             Height = 25
             Alignment = taCenter

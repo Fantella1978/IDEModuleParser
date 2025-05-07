@@ -29,7 +29,7 @@ object frmModulesEditor: TfrmModulesEditor
     DesignSize = (
       869
       37)
-    object Button1: TButton
+    object btnOK: TButton
       Left = 778
       Top = 6
       Width = 75
@@ -39,14 +39,14 @@ object frmModulesEditor: TfrmModulesEditor
       Default = True
       ModalResult = 1
       TabOrder = 0
-      OnClick = Button1Click
+      OnClick = btnOKClick
     end
   end
   object dbgModules: TDBGrid
     Left = 0
-    Top = 73
+    Top = 121
     Width = 869
-    Height = 372
+    Height = 324
     Align = alClient
     DataSource = DM1.dsModules
     TabOrder = 1
@@ -109,12 +109,12 @@ object frmModulesEditor: TfrmModulesEditor
     Left = 0
     Top = 0
     Width = 869
-    Height = 73
+    Height = 121
     Align = alTop
     TabOrder = 2
     DesignSize = (
       869
-      73)
+      121)
     object SpeedButton1: TSpeedButton
       Left = 646
       Top = 11
@@ -130,13 +130,14 @@ object frmModulesEditor: TfrmModulesEditor
       Left = 1
       Top = 1
       Width = 366
-      Height = 71
+      Height = 119
       Align = alLeft
       Caption = 'Filter'
       TabOrder = 0
+      ExplicitHeight = 71
       object Label1: TLabel
-        Left = 151
-        Top = 19
+        Left = 7
+        Top = 66
         Width = 44
         Height = 15
         Caption = 'Package'
@@ -154,9 +155,9 @@ object frmModulesEditor: TfrmModulesEditor
         OnChange = lbedFilterFileNameChange
       end
       object cbFilterPackages: TComboBox
-        Left = 151
-        Top = 37
-        Width = 202
+        Left = 7
+        Top = 87
+        Width = 346
         Height = 23
         TabOrder = 1
         OnChange = cbFilterPackagesChange
@@ -164,12 +165,13 @@ object frmModulesEditor: TfrmModulesEditor
     end
     object DBNavigator1: TDBNavigator
       Left = 613
-      Top = 39
+      Top = 87
       Width = 240
       Height = 25
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
+      ExplicitTop = 39
     end
     object Button2: TButton
       Left = 373

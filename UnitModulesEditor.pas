@@ -12,7 +12,7 @@ uses
 
 type
   TfrmModulesEditor = class(TForm)
-    Button1: TButton;
+    btnOK: TButton;
     pnlBottom: TPanel;
     dbgModules: TDBGrid;
     DBNavigator1: TDBNavigator;
@@ -32,7 +32,7 @@ type
     Label1: TLabel;
     procedure dbgModulesDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure Button1Click(Sender: TObject);
+    procedure btnOKClick(Sender: TObject);
     procedure lbedFilterFileNameChange(Sender: TObject);
     procedure actFindDuplicatesExecute(Sender: TObject);
     procedure actFindDuplicatesNextExecute(Sender: TObject);
@@ -45,15 +45,18 @@ type
     procedure UpdatePackagesInfo();
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure cbFilterPackagesChange(Sender: TObject);
+    procedure SetCBFilterPackages(AName: string);
+    procedure ResetFilters;
   private
     FFindNext : boolean;
     FFindNextModule_ID: integer;
     FFindNextBookmark : TBookmark;
     FFilterFileNameStr: string;
     FFilterPackageStr: string;
+    FFilterPackageNameStr: string;
     dbgModulesColumnsWidth : TDBGridColumnsWidthArray;
     dbgModules_PrevIndexColumn : integer;
-    Package_IDs : TStringList;
+    // Package_IDs : TStringList;
     function FindModuleDuplicate() : integer;
     function FindModuleFullDuplicates(id : integer) : integer;
     procedure ApplyAllFiltres();
@@ -61,6 +64,10 @@ type
     { Private declarations }
   public
     { Public declarations }
+    procedure SetFilterPackage(APackage_ID: integer);
+    procedure SetFilterPackageStr(AStr: string);
+  published
+    { Published declarations }
   end;
 
 var
@@ -78,6 +85,15 @@ uses
   , System.UITypes
   ;
 
+procedure TfrmModulesEditor.SetCBFilterPackages(AName: string);
+var
+  i: integer;
+begin
+  for i := 0 to cbFilterPackages.Items.Count - 1 do
+    if cbFilterPackages.Items[i] = AName then
+      cbFilterPackages.ItemIndex := i;
+end;
+
 procedure TfrmModulesEditor.SetDBGridModulesDefaultColumnsWidth(Sender: TObject);
 begin
   // Set DBGridModules Default Columns Width
@@ -85,6 +101,26 @@ begin
   dbgModulesColumnsWidth := [45, 150, 80, 120, 80, 100, 50, 105];
   for var i := 0 to dbgModules.Columns.Count - 1 do
     dbgModules.Columns[i].Width := dbgModulesColumnsWidth[i];
+end;
+
+procedure TfrmModulesEditor.SetFilterPackage(APackage_ID: integer);
+var
+  i: integer;
+begin
+  UpdatePackagesInfo;
+  if cbFilterPackages.Items.Count > 0 then
+    for i := 0 to cbFilterPackages.Items.Count - 1 do
+      if Integer(cbFilterPackages.Items.Objects[i]) = APackage_ID then
+        begin
+          cbFilterPackages.ItemIndex := i;
+          FFilterPackageNameStr := cbFilterPackages.Items[i];
+          SetFilterPackageStr(Integer(cbFilterPackages.Items.Objects[i]).ToString);
+        end;
+end;
+
+procedure TfrmModulesEditor.SetFilterPackageStr(AStr: string);
+begin
+  FFilterPackageStr := 'Package_ID = ' + AStr;
 end;
 
 function TfrmModulesEditor.FindModuleDuplicate() : integer;
@@ -151,10 +187,9 @@ begin
       SQL.Add(sqlStr);
       Open;
       // var s := SQL.Text;
-      Result := FieldByName('CountModule_ID').AsInteger;
-      Exit;
+      Exit(FieldByName('CountModule_ID').AsInteger);
     except
-      // Result := -1;
+      //
     end;
   end;
   Result := -1;
@@ -163,7 +198,7 @@ end;
 procedure TfrmModulesEditor.FormClose(Sender: TObject;
   var Action: TCloseAction);
 begin
-  FreeAndNil(Package_IDs);
+  // FreeAndNil(Package_IDs);
   lbedFilterFileName.Text := '';
   FFilterPackageStr := '';
 end;
@@ -172,6 +207,7 @@ procedure TfrmModulesEditor.FormCreate(Sender: TObject);
 begin
   FFindNext := false;
   FFindNextModule_ID := 0;
+  ResetFilters();
 end;
 
 procedure TfrmModulesEditor.FormResize(Sender: TObject);
@@ -193,7 +229,8 @@ begin
   if DM1.fdtModules.Active then DM1.fdtModules.Refresh;
   DM1.fdtModules.First;
   UpdatePackagesInfo();
-  if cbFilterPackages.ItemIndex = 0 then FFilterPackageStr := '';
+  if FFilterPackageNameStr <> '' then SetCBFilterPackages(FFilterPackageNameStr);
+  // if cbFilterPackages.ItemIndex = 0 then FFilterPackageStr := '';
   ApplyAllFiltres();
   if DM1.fdtModules.RecordCount > 2
     then frmModulesEditor.actFindDuplicates.Enabled := true
@@ -429,25 +466,30 @@ begin
 
 end;
 
-procedure TfrmModulesEditor.Button1Click(Sender: TObject);
+procedure TfrmModulesEditor.btnOKClick(Sender: TObject);
 begin
   Close;
 end;
 
 procedure TfrmModulesEditor.cbFilterPackagesChange(Sender: TObject);
 var
-  // FilterPackage_ID : integer;
-  FilterPackage_IDStr : string;
+  Idx : integer;
+  IDStr : string;
 begin
   //
   if cbFilterPackages.ItemIndex >= 0
   then
     begin
-      FilterPackage_IDStr := Package_IDs[cbFilterPackages.ItemIndex];
-      // FilterPackage_ID := StrToInt(FilterPackage_IDStr);
-      FFilterPackageStr := 'Package_ID = ' + FilterPackage_IDStr;
+      Idx := cbFilterPackages.ItemIndex;
+      IDStr := Integer(cbFilterPackages.Items.Objects[Idx]).ToString;
+      FFilterPackageNameStr := cbFilterPackages.Items[Idx];
+      SetFilterPackageStr(IDStr);
     end
-  else FFilterPackageStr := '';
+  else
+    begin
+      FFilterPackageStr := '';
+      FFilterPackageNameStr := '';
+    end;
 
   ApplyAllFiltres();
 end;
@@ -519,36 +561,33 @@ begin
   ApplyAllFiltres();
 end;
 
+procedure TfrmModulesEditor.ResetFilters;
+begin
+  FFilterFileNameStr := '';
+  FFilterPackageNameStr := '';
+  FFilterPackageStr := '';
+end;
+
 procedure TfrmModulesEditor.UpdatePackagesInfo;
 var
   i : integer;
-  PackageName : string;
 begin
-  if Package_IDs = nil
-    then Package_IDs := TStringList.Create;
-  Package_IDs.Clear;
   cbFilterPackages.Clear;
-  DM1.fdtPackages.DisableControls;
-  DM1.fdtPackages.Filtered := false;
-  DM1.fdtPackages.Filter := '';
-  DM1.fdtPackages.IndexName := 'NameSubNameIndex';
-  if DM1.fdtPackages.Active then DM1.fdtPackages.Refresh;
-  DM1.fdtPackages.First;
-  for i := 0 to DM1.fdtPackages.RecordCount - 1 do
+  with DM1.fdtPackages do
   begin
-    if DM1.fdtPackages.FieldByName('SubName').AsString = ''
-      then PackageName := DM1.fdtPackages.FieldByName('Name').AsString
-      else PackageName := DM1.fdtPackages.FieldByName('Name').AsString + ' ' +
-        DM1.fdtPackages.FieldByName('SubName').AsString;
-    if DM1.fdtPackages.FieldByName('Version').AsString <> ''
-      then PackageName := PackageName + ' ' + DM1.fdtPackages.FieldByName('Version').AsString;
-    cbFilterPackages.Items.Add(PackageName);
-    Package_IDs.Add(DM1.fdtPackages.FieldByName('Package_ID').AsString);
-    DM1.fdtPackages.Next;
+    DisableControls;
+    Filtered := false;
+    Filter := '';
+    IndexName := 'NameSubNameIndex';
+    if Active then Refresh;
+    First;
+    for i := 0 to DM1.fdtPackages.RecordCount - 1 do
+    begin
+      cbFilterPackages.AddItem(DM1.GetFullPackageName(), TObject(FieldByName('Package_ID').AsInteger));
+      Next;
+    end;
+    EnableControls;
   end;
-  // if cbFilterPackages.Items.Count > 0 then cbFilterPackages.ItemIndex := 0;
-
-  DM1.fdtPackages.EnableControls;
 end;
 
 end.

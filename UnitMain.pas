@@ -1255,6 +1255,7 @@ begin
   if frmMain.WindowState = wsMaximized
     then frmModulesEditor.WindowState := TWindowState.wsMaximized
     else frmModulesEditor.WindowState := TWindowState.wsNormal;
+  frmModulesEditor.ResetFilters;
   frmModulesEditor.ShowModal;
 end;
 

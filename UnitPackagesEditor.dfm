@@ -184,6 +184,10 @@ object frmPackagesEditor: TfrmPackagesEditor
       Caption = 'Edit'
       OnExecute = actPackageEditExecute
     end
+    object actDisplayPackageModules: TAction
+      Caption = 'Display package modules'
+      OnExecute = actDisplayPackageModulesExecute
+    end
   end
   object ppmPackagesEditor: TPopupMenu
     Left = 552
@@ -195,6 +199,9 @@ object frmPackagesEditor: TfrmPackagesEditor
     object Edit1: TMenuItem
       Action = actPackageEdit
       Caption = 'Edit package'
+    end
+    object actDisplayPackageModules1: TMenuItem
+      Action = actDisplayPackageModules
     end
     object N1: TMenuItem
       Caption = '-'

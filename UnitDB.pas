@@ -80,6 +80,8 @@ type
     { Public declarations }
     procedure ClearModulesDB;
     function FindPackageType_IDByName(AName: string): integer;
+    function GetModulesCountByPackage(APackageID : integer) : integer;
+    function GetFullPackageName: string;
   end;
 
   PModulesPackage = ^TModulesPackage;
@@ -188,6 +190,39 @@ begin
           Exit;
         end;
     fdtPackageTypes.Next;
+  end;
+  Result := -1;
+end;
+
+function TDM1.GetFullPackageName: string;
+begin
+  Result := '';
+  if DM1.fdtPackages.FieldByName('SubName').AsString = ''
+    then Result := DM1.fdtPackages.FieldByName('Name').AsString
+    else Result := DM1.fdtPackages.FieldByName('Name').AsString + ' ' +
+      DM1.fdtPackages.FieldByName('SubName').AsString;
+  if DM1.fdtPackages.FieldByName('Version').AsString <> ''
+    then Result := Result + ' ' + DM1.fdtPackages.FieldByName('Version').AsString;
+end;
+
+function TDM1.GetModulesCountByPackage(APackageID : integer) : integer;
+begin
+  with fdqModulesFromQuery do
+  begin
+    if Active then Close;
+    SQL.Clear;
+    SQL.Add('' +
+      'SELECT count(Module_ID) ' +
+      'FROM Modules ' +
+      'WHERE Package_ID=' + APackageID.ToString +
+      ';'
+    );
+    try
+      Open;
+      if RecordCount = 1
+        then Exit(FieldByName('count(Module_ID)').AsInteger);
+    except
+    end;
   end;
   Result := -1;
 end;

@@ -8,6 +8,7 @@ uses
   Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls, Vcl.Mask, System.Actions,
   Vcl.ActnList, Vcl.Menus
   , UnitStaticFunctions, Vcl.Buttons
+
   ;
 
 type
@@ -30,6 +31,8 @@ type
     Delete1: TMenuItem;
     Edit1: TMenuItem;
     N1: TMenuItem;
+    actDisplayPackageModules: TAction;
+    actDisplayPackageModules1: TMenuItem;
     procedure ButtonOKClick(Sender: TObject);
     procedure dbgPackagesDrawColumnCell(Sender: TObject; const Rect: TRect;
       DataCol: Integer; Column: TColumn; State: TGridDrawState);
@@ -44,10 +47,12 @@ type
     procedure lbedFilterFileNameChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure dbgPackagesTitleClick(Column: TColumn);
+    procedure actDisplayPackageModulesExecute(Sender: TObject);
   private
     dbgPackagesColumnsWidth: TDBGridColumnsWidthArray;
     dbgPackages_PrevIndexColumn : integer;
     procedure SetdbgPackagesDefaultColumnsWidth(Sender: TObject);
+    procedure DeletePackage;
     { Private declarations }
   public
     { Public declarations }
@@ -62,6 +67,9 @@ uses
     UnitDB
   , System.UITypes
   , UnitPackageEditor
+  , UnitModulesEditor
+  , UnitLogger
+  , UnitMain
   ;
 
 {$R *.dfm}
@@ -75,6 +83,40 @@ begin
     dbgPackages.Columns[i].Width := dbgPackagesColumnsWidth[i];
 end;
 
+procedure TfrmPackagesEditor.actDisplayPackageModulesExecute(Sender: TObject);
+var
+  APackageID: integer;
+  ABookMark: TBookmark;
+  AFiltered: boolean;
+  AFilter: string;
+  AIndexName: string;
+  AIndexFieldNames: string;
+begin
+  with DM1.fdtPackages do
+  begin
+    DisableControls;
+    ABookMark := GetBookmark;
+    AFiltered := Filtered;
+    AFilter := Filter;
+    AIndexName := IndexName;
+    AIndexFieldNames := IndexFieldNames;
+    APackageID := FieldByName('Package_ID').AsInteger;
+
+    frmModulesEditor.SetFilterPackage(APackageID);
+    frmModulesEditor.ShowModal;
+
+    IndexName := AIndexName;
+    IndexFieldNames := AIndexFieldNames;
+    Close;
+    Open;
+    Filter := AFilter;
+    Filtered := AFiltered;
+    GotoBookmark(ABookMark);
+    FreeBookmark(ABookMark);
+    EnableControls;
+  end;
+end;
+
 procedure TfrmPackagesEditor.actPackageAddExecute(Sender: TObject);
 begin
   // Package Add
@@ -82,12 +124,36 @@ begin
   frmPackageEditor.ShowModal;
 end;
 
+procedure TfrmPackagesEditor.DeletePackage;
+var
+  AName : string;
+begin
+  AName := DM1.fdtPackages.FieldByName('Name').AsString;
+  try
+    DM1.fdtPackages.Delete;
+    Logger.Add('Package "' + AName + '" was deleted successfully.');
+  except
+    on E: Exception do
+      Logger.Add('Can''t delete package "' + AName +'": ' + E.Message);
+  end;
+end;
+
 procedure TfrmPackagesEditor.actPackageDeleteExecute(Sender: TObject);
+var
+  APackageID: integer;
 begin
   // Package Delete
-  if MessageDlg('Delete package "' + DM1.fdtPackages.FieldByName('Name').AsString + '"?',
+  APackageID := DM1.fdtPackages.FieldByName('Package_ID').AsInteger;
+  if DM1.GetModulesCountByPackage(APackageID) <> 0 then
+    begin
+      if MessageDlg('The selected package is associated with multiple known modules and cannot be removed. Display these modules?',
+        TMsgDlgType.mtInformation, [mbYes, mbNo], 0) = mrYes
+        then actDisplayPackageModulesExecute(Sender);
+    end
+  else
+    if MessageDlg('Delete package "' + DM1.fdtPackages.FieldByName('Name').AsString + '"?',
        TMsgDlgType.mtConfirmation, [mbOk, mbCancel], 0) = mrOk
-    then DM1.fdtPackages.Delete;
+    then DeletePackage();
 end;
 
 procedure TfrmPackagesEditor.actPackageEditExecute(Sender: TObject);
