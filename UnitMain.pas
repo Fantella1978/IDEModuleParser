@@ -30,8 +30,6 @@ uses
 
   // Some changes
 
-  // Some changes 2
-
 type
   TModulesArray = array of PIDEModule;
 
