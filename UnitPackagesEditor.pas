@@ -94,7 +94,7 @@ var
 begin
   with DM1.fdtPackages do
   begin
-    DisableControls;
+    // DisableControls;
     ABookMark := GetBookmark;
     AFiltered := Filtered;
     AFilter := Filter;
@@ -113,7 +113,7 @@ begin
     Filtered := AFiltered;
     GotoBookmark(ABookMark);
     FreeBookmark(ABookMark);
-    EnableControls;
+    // EnableControls;
   end;
 end;
 

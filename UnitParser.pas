@@ -17,6 +17,12 @@ uses
   ;
 
 type
+  TCurrentModulePackageInfo = record
+    ID: Integer;
+    Name: string;
+    Type_ID: Integer;
+  end;
+
   TfrmParse = class(TForm)
     Panel1: TPanel;
     pBarOverall: TProgressBar;
@@ -37,16 +43,14 @@ type
     procedure SetCurrentTaskPositionsMinMax(PosMin, PosMax : integer);
   private
     { Private declarations }
-    FCurrentModulePackage_ID: Integer;
-    FCurrentModulePackageName: string;
-    FCurrentModulePackageType_ID: Integer;
+    FCurrentModulePackage: TCurrentModulePackageInfo;
     Fregexp: TPerlRegEx;
     FTaskName: string;
     FTaskNum: Integer;
     FTasksCount: Integer;
     function GetOverallTaskPosition(): Integer;
     function DetermineCurrentModule: boolean;
-    function GetKnownModulesForFileName: boolean;
+    function GetKnownModulesForFileName(AFileName: string): boolean;
     function DetermineCurrentModuleLevel1() : boolean;
     function DetermineCurrentModuleLevel2() : boolean;
     function SaveCurrentModuleData : boolean;
@@ -172,7 +176,8 @@ procedure TfrmParse.SetCurrentTaskPosition(Position: integer);
 begin
   pBarCurrentTask.Position := Position;
   pBarOverall.Position := GetOverallTaskPosition();
-  Application.ProcessMessages;
+  if ((Position mod 10) = 0) or (Position = pBarCurrentTask.Max) then
+    Application.ProcessMessages;
 end;
 
 procedure TfrmParse.SetCurrentTaskPositionsMinMax(PosMin, PosMax: integer);
@@ -289,10 +294,9 @@ begin
       begin
         Append;
         FieldByName('Module_ID').AsInteger := i;
-        FieldByName('FileName').AsString :=
+        FieldByName('FileName').AsString := tempIDEModule.FileName;
           // UpperCase(TPath.GetFileNameWithoutExtension(tempIDEModule.FileName)) +
           // LowerCase(TPath.GetExtension(tempIDEModule.FileName));
-          tempIDEModule.FileName;
         if Length(tempIDEModule.Path) < 255
           then FieldByName('Path').AsString := LowerCase(tempIDEModule.Path)
           else FieldByName('Path').AsString := LowerCase(copy(tempIDEModule.Path, 1, 255));
@@ -314,7 +318,7 @@ begin
   Result := true;
 end;
 
-function TfrmParse.GetKnownModulesForFileName() : boolean;
+function TfrmParse.GetKnownModulesForFileName(AFileName: string) : boolean;
 begin
   {
     SELECT m.*, p.Package_ID AS Package_ID, p.Name AS PackageName
@@ -333,7 +337,7 @@ begin
       'LEFT JOIN PackageTypes AS pt ON p.Type_ID=pt.Type_ID ' +
       'WHERE lower(m.FileName)= :FileName' +
       ';');
-    ParamByName('FileName').AsString := LowerCase(DM1.cdsModules.FieldByName('FileName').AsString);
+    ParamByName('FileName').AsString := AFileName;
     Open;
   end;
 
@@ -342,66 +346,72 @@ end;
 
 function TfrmParse.DetermineCurrentModuleLevel1() : boolean;
 begin
-  if DM1.fdqModulesFromQuery.RecordCount > 0
-  then
-    begin
-      FCurrentModulePackage_ID := DM1.fdqModulesFromQuery.FieldByName('Package_ID').AsInteger;
-      FCurrentModulePackageName := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
-      FCurrentModulePackageType_ID := DM1.fdqModulesFromQuery.FieldByName('PackageType_ID').AsInteger;
-    end;
-
+  with DM1.fdqModulesFromQuery do
+    if RecordCount > 0
+    then
+      begin
+        FCurrentModulePackage.ID := FieldByName('Package_ID').AsInteger;
+        FCurrentModulePackage.Name := FieldByName('PackageName').AsString;
+        FCurrentModulePackage.Type_ID := FieldByName('PackageType_ID').AsInteger;
+      end;
   Result := true;
 end;
 
 function TfrmParse.SaveCurrentModuleData() : boolean;
 begin
-  if (FCurrentModulePackage_ID = -1) AND (FCurrentModulePackageName = '') then
+  if (FCurrentModulePackage.ID = -1) AND (FCurrentModulePackage.Name = '') then
     Exit(false);
-
-  DM1.cdsModules.Edit;
-  DM1.cdsModules.FieldByName('Package_ID').AsInteger := FCurrentModulePackage_ID;
-  DM1.cdsModules.FieldByName('PackageName').AsString := FCurrentModulePackageName;
-  DM1.cdsModules.FieldByName('PackageType_ID').AsInteger := FCurrentModulePackageType_ID;
-
+  with DM1.cdsModules do
+  begin
+    Edit;
+    FieldByName('Package_ID').AsInteger := FCurrentModulePackage.ID;
+    FieldByName('PackageName').AsString := FCurrentModulePackage.Name;
+    FieldByName('PackageType_ID').AsInteger := FCurrentModulePackage.Type_ID;
+  end;
   Result := true;
 end;
 
 function TfrmParse.DetermineCurrentModuleLevel2() : boolean;
-var i : integer;
+var
+  i : integer;
+  AVersion : string;
 begin
-  if DM1.fdqModulesFromQuery.RecordCount = 0 then Exit(false);
-
-  DM1.fdqModulesFromQuery.First;
-  for i := 0 to DM1.fdqModulesFromQuery.RecordCount - 1 do
+  with DM1.fdqModulesFromQuery do
   begin
-    if DM1.cdsModules.FieldByName('Version').AsString = DM1.fdqModulesFromQuery.FieldByName('Version').AsString
+    if RecordCount = 0 then Exit(false);
+    AVersion := DM1.cdsModules.FieldByName('Version').AsString;
+    First;
+    for i := 0 to RecordCount - 1 do
+    begin
+      if parseCanceled then Exit(false);
+      if AVersion = FieldByName('Version').AsString
       then
         begin
-          FCurrentModulePackage_ID := DM1.fdqModulesFromQuery.FieldByName('Package_ID').AsInteger;
-          FCurrentModulePackageType_ID := DM1.fdqModulesFromQuery.FieldByName('PackageType_ID').AsInteger;
-          FCurrentModulePackageName := DM1.fdqModulesFromQuery.FieldByName('PackageName').AsString;
-          if DM1.fdqModulesFromQuery.FieldByName('PackageSubName').AsString <> ''
-            then FCurrentModulePackageName := FCurrentModulePackageName + ' ' +
-              DM1.fdqModulesFromQuery.FieldByName('PackageSubName').AsString;
+          FCurrentModulePackage.ID := FieldByName('Package_ID').AsInteger;
+          FCurrentModulePackage.Type_ID := FieldByName('PackageType_ID').AsInteger;
+          FCurrentModulePackage.Name := FieldByName('PackageName').AsString;
+          if FieldByName('PackageSubName').AsString <> ''
+            then FCurrentModulePackage.Name := FCurrentModulePackage.Name + ' ' + FieldByName('PackageSubName').AsString;
           Break;
         end;
-    DM1.fdqModulesFromQuery.Next;
+      Next;
+    end;
   end;
-
   Result := true;
 end;
 
 function TfrmParse.DetermineCurrentModule() : boolean;
 begin
-  FCurrentModulePackage_ID := -1;
-  FCurrentModulePackageName := '';
-  FCurrentModulePackageType_ID := -1;
+  FCurrentModulePackage.ID := -1;
+  FCurrentModulePackage.Name := '';
+  FCurrentModulePackage.Type_ID := -1;
 
-  GetKnownModulesForFileName();
-  if GlobalModulesCompareLevel2 then
-    DetermineCurrentModuleLevel2();
-  if FCurrentModulePackage_ID = -1 then
-    DetermineCurrentModuleLevel1();
+  GetKnownModulesForFileName(LowerCase(DM1.cdsModules.FieldByName('FileName').AsString));
+  // Determine Module Level 2
+  if GlobalModulesCompareLevel2 then DetermineCurrentModuleLevel2();
+  // Determine Module Level 1
+  if FCurrentModulePackage.ID = -1 then DetermineCurrentModuleLevel1();
+  // Save Module
   SaveCurrentModuleData();
 
   Result := true;
@@ -409,9 +419,8 @@ end;
 
 function TfrmParse.DetermineModulesByFileNameRegExp() : boolean;
 begin
-  Result := false;
-  if parseCanceled then Exit;
-  if DM1.cdsModules.RecordCount = 0 then Exit;
+  if parseCanceled then Exit(false);
+  if DM1.cdsModules.RecordCount = 0 then Exit(false);
   DM1.cdsModules.First;
   with Fregexp do
   begin
@@ -419,7 +428,7 @@ begin
     RegEx := '^' + DM1.fdqModulesFromQuery.FieldByName('FileNameRegExp').AsString + '$';
     while not DM1.cdsModules.Eof do
     begin
-      if parseCanceled then Break;
+      if parseCanceled then Exit(false);
       Subject := DM1.cdsModulesFileName.AsString;
       if Match
       then
@@ -431,11 +440,11 @@ begin
           DM1.cdsModulesPackageType_ID.AsInteger := DM1.fdqModulesFromQuery.FieldByName('PackageType_ID').AsInteger;
           // ShowMessage('Found module ' + Subject + ' by RegExp: ' + RegEx);
           Logger.AddToLog('Module found by FileNameRegExp: ' + Subject);
+          Break;
         end;
       DM1.cdsModules.Next;
     end;
   end;
-
   Result := true;
 end;
 
@@ -605,18 +614,24 @@ begin
   Result := true;
 end;
 
+procedure AddModuleToModulesArray(AModule : TIDEModule);
+begin
+  SetLength(ModulesArray, Length(ModulesArray) + 1);
+  ModulesArray[Length(ModulesArray) - 1] := Pointer(AModule);
+end;
+
 function TfrmParse.TaskModuleFileParse: boolean;
 var
   i : Integer;
   cl : Integer;
-  err : Integer;
+  Errors : Integer;
   s : string;
   tempIDEModule : TIDEModule;
 begin
   Result := false;
   if parseCanceled then Exit;
   StartTask('Module file parsing');
-  err := 0;
+  Errors := 0;
   cl := frmMain.MemoTxtModuleFile.Lines.Count;
   SetCurrentTaskPositionsMinMax(0, cl);
   frmMain.ModulesArrayClear;
@@ -651,14 +666,13 @@ begin
               tempIDEModule := TIDEModule.Create;
               tempIDEModule.isVIList := MFListIsVIList;
               tempIDEModule.AssignFromRegExpGroups(Fregexp);
-              SetLength(ModulesArray, Length(ModulesArray) + 1);
-              ModulesArray[Length(ModulesArray) - 1] := Pointer(tempIDEModule);
-              Logger.AddToLog('Parse line #' + IntToStr(i) + '. Found module: ' + tempIDEModule.FileName );
+              AddModuleToModulesArray(tempIDEModule);
+              Logger.AddToLog('Parse line #' + i.ToString + '. Found module: ' + tempIDEModule.FileName );
             end
           else
             begin
-              inc(err);
-              Logger.AddToLog('Parse line #' + IntToStr(i) + '. Module not found in line: ' + Subject );
+              inc(Errors);
+              Logger.AddToLog('Parse line #' + i.ToString + '. Module not found in line: ' + Subject );
             end;
 
           if parseCanceled
@@ -673,11 +687,11 @@ begin
     Fregexp.Free;
   end;
 
-  if err <> 0
+  if Errors <> 0
   then
     begin
-      s := FTaskName + '. Can''t parse ' + IntToStr(err) + ' line';
-      if err > 1 then s := s + 's';
+      s := FTaskName + '. Can''t parse ' + Errors.ToString + ' line';
+      if Errors > 1 then s := s + 's';
       s := s + '.';
       Logger.AddToLog(s);
       ShowMessage(s);

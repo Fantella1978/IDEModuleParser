@@ -61,6 +61,7 @@ type
     function FindModuleFullDuplicates(id : integer) : integer;
     procedure ApplyAllFiltres();
     procedure SetDBGridModulesDefaultColumnsWidth(Sender: TObject);
+    procedure SetFilterFileNameStr(AStr: string);
     { Private declarations }
   public
     { Public declarations }
@@ -122,6 +123,14 @@ procedure TfrmModulesEditor.SetFilterPackageStr(AStr: string);
 begin
   FFilterPackageStr := 'Package_ID = ' + AStr;
 end;
+
+procedure TfrmModulesEditor.SetFilterFileNameStr(AStr: string);
+begin
+  if AStr <> ''
+    then FFilterFileNameStr := 'FileName LIKE ''' + AStr + '%'''
+    else FFilterFileNameStr := '';
+end;
+
 
 function TfrmModulesEditor.FindModuleDuplicate() : integer;
 var
@@ -554,10 +563,7 @@ end;
 
 procedure TfrmModulesEditor.lbedFilterFileNameChange(Sender: TObject);
 begin
-  if lbedFilterFileName.Text <> ''
-    then FFilterFileNameStr := 'FileName LIKE ''' + lbedFilterFileName.Text + '%'''
-    else FFilterFileNameStr := '';
-
+  SetFilterFileNameStr(lbedFilterFileName.Text);
   ApplyAllFiltres();
 end;
 

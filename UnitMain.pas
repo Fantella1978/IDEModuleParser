@@ -24,11 +24,11 @@ uses
   , UnitCopyVersionInfo
   , UnitStaticFunctions
   , UnitEnableAdminMode
-  , UnitDisplayPackagesList
   , UnitFormatStackTrace
+  , UnitDisplayPackagesList
   ;
 
-  // Some changes
+  // Some changes 2
 
 type
   TModulesArray = array of PIDEModule;
@@ -226,6 +226,8 @@ type
     memoStackTrace: TMemo;
     reStackTrace: TRichEdit;
     eIDEbittness: TEdit;
+    GroupBox9: TGroupBox;
+    LinkLabel1: TLinkLabel;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -370,6 +372,8 @@ type
       var Handled: Boolean);
     procedure reStackTraceLinkClick(Sender: TCustomRichEdit; const URL: string;
       Button: TMouseButton);
+    procedure LinkLabel1LinkClick(Sender: TObject; const Link: string;
+      LinkType: TSysLinkType);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -396,7 +400,6 @@ type
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
-    // FModulesPackages : TList;
   end;
 
 var
@@ -1918,6 +1921,7 @@ begin
   SetLength(DBGridModulesColumnsWidth, DBGridModules.Columns.Count);
   for var i := 0 to DBGridModules.Columns.Count - 1 do
     DBGridModulesColumnsWidth[i] := DBGridModules.Columns[i].Width;
+
   {
   for var i := 0 to DBGridModules.Columns.Count - 1 do
     Memo1.Lines.Add(IntToStr(i) + ' > ' + IntToStr(DBGridModulesColumnsWidth[i]));
@@ -2023,6 +2027,12 @@ begin
   tsDescriptionFile.TabVisible := true;
   PageControl1.ActivePage := tsDescriptionFile;
   Logger.AddToLog('New Description file opened: ' + defFileName);
+end;
+
+procedure TfrmMain.LinkLabel1LinkClick(Sender: TObject; const Link: string;
+  LinkType: TSysLinkType);
+begin
+  ShellExecute(0, nil, PChar(Link), nil, nil, SW_SHOWNOACTIVATE);
 end;
 
 procedure TfrmMain.LoadScreenshotFilesSuccess;

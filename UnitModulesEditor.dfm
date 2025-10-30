@@ -134,7 +134,6 @@ object frmModulesEditor: TfrmModulesEditor
       Align = alLeft
       Caption = 'Filter'
       TabOrder = 0
-      ExplicitHeight = 71
       object Label1: TLabel
         Left = 7
         Top = 66
@@ -171,7 +170,6 @@ object frmModulesEditor: TfrmModulesEditor
       DataSource = DM1.dsModules
       Anchors = [akRight, akBottom]
       TabOrder = 1
-      ExplicitTop = 39
     end
     object Button2: TButton
       Left = 373

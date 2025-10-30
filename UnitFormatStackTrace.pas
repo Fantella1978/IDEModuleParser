@@ -44,7 +44,7 @@ type
     procedure AddFormattedText(const AText: string; AStyle: TFontStyles; AColor: TColor); overload;
     procedure AddHyperLink(const AURL: string; const AText: string = '');
     procedure AddColorHyperLink(const AURL: string; const AText: string; AColor: TColor);
-    procedure MakeLinksRed();
+    (* procedure MakeLinksRed(); *)
   end;
 
 implementation
@@ -183,6 +183,7 @@ begin
 end;
 }
 
+(*
 procedure TFormattedStackTraceView.MakeLinksRed();
 var
   i: Integer;
@@ -264,6 +265,7 @@ begin
     FEdit.Lines.EndUpdate;
   end;
 end;
+*)
 
 procedure TFormattedStackTraceView.AddColorHyperLink(const AURL: string; const AText: string; AColor: TColor);
 var

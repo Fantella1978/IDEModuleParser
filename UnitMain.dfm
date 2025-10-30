@@ -33,14 +33,13 @@ object frmMain: TfrmMain
       994
       37)
     object Button1: TButton
-      Left = 4
+      Left = 292
       Top = 6
       Width = 157
       Height = 25
       Action = actOpenModuleFile
-      Default = True
       ModalResult = 1
-      TabOrder = 0
+      TabOrder = 2
     end
     object Button2: TButton
       Left = 911
@@ -51,7 +50,7 @@ object frmMain: TfrmMain
       Anchors = [akRight, akBottom]
       Cancel = True
       ModalResult = 2
-      TabOrder = 3
+      TabOrder = 4
     end
     object Button3: TButton
       Left = 455
@@ -59,24 +58,25 @@ object frmMain: TfrmMain
       Width = 75
       Height = 25
       Action = actParseModuleFile
-      TabOrder = 2
+      TabOrder = 3
     end
     object Button4: TButton
-      Left = 167
+      Left = 4
       Top = 6
       Width = 126
       Height = 25
       Action = actOpenReportZipFile
       Caption = 'Open Report in Zip'
-      TabOrder = 1
+      Default = True
+      TabOrder = 0
     end
     object Button9: TButton
-      Left = 299
+      Left = 136
       Top = 6
       Width = 150
       Height = 25
       Action = actCopyFromVersionInfo
-      TabOrder = 4
+      TabOrder = 1
     end
   end
   object PageControl1: TPageControl
@@ -84,7 +84,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsModulesList
+    ActivePage = tsSettings
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -3292,7 +3292,7 @@ object frmMain: TfrmMain
           Left = 4
           Top = 4
           Width = 163
-          Height = -8
+          Height = 92
           Cursor = crHandPoint
           Margins.Left = 4
           Margins.Top = 4
@@ -3306,7 +3306,6 @@ object frmMain: TfrmMain
           ImageName = 'MusicNote'
           OnClick = VirtualImage1Click
           ExplicitTop = 8
-          ExplicitHeight = 92
         end
         object lblImageDimensions: TLabel
           AlignWithMargins = True
@@ -3686,7 +3685,7 @@ object frmMain: TfrmMain
         Top = 199
         Width = 258
         Height = 65
-        Caption = 'VCL Style'
+        Caption = 'Style'
         TabOrder = 6
         object cbxStyles: TComboBox
           Left = 12
@@ -3697,6 +3696,29 @@ object frmMain: TfrmMain
           Sorted = True
           TabOrder = 0
           OnChange = cbxStylesChange
+        end
+      end
+      object GroupBox9: TGroupBox
+        Left = 3
+        Top = 332
+        Width = 542
+        Height = 53
+        Caption = 'GitHub'
+        TabOrder = 7
+        object LinkLabel1: TLinkLabel
+          Left = 14
+          Top = 24
+          Width = 271
+          Height = 19
+          Hint = 'GitHub: https://github.com/Fantella1978/IDEModuleParser'
+          Caption = 
+            '<a href="https://github.com/Fantella1978/IDEModuleParser">https:' +
+            '//github.com/Fantella1978/IDEModuleParser</a>'
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 0
+          UseVisualStyle = True
+          OnLinkClick = LinkLabel1LinkClick
         end
       end
     end
@@ -3760,7 +3782,10 @@ object frmMain: TfrmMain
     Top = 501
     Width = 994
     Height = 19
-    Panels = <>
+    Panels = <
+      item
+        Width = 50
+      end>
   end
   object ActionList1: TActionList
     Left = 352
