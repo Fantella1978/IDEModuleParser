@@ -16,6 +16,9 @@ uses
   ;
 
 type
+
+  IDEbittness = (ibUnknown, ib32bit, ib64bit);
+
   TDBGridColumnsWidthArray = array of integer;
 
   function GetFileVersionStr(const AFileName: string): string;

@@ -255,7 +255,7 @@ begin
     Exit(true);
   end;
   if parseCanceled then Exit;
-  StartTask('Copy modules to DB');
+  StartTask('Stack Trace formatting');
   FSTView := TFormattedStackTraceView.Create(frmMain.reStackTrace);
   try
     FSTView.Clear;
@@ -521,8 +521,8 @@ begin
       begin
         inc(id);
         SetCurrentTaskPosition(id);
-        if not DetermineModulesByFileNameRegExp() or parseCanceled then
-          Break;
+        if not DetermineModulesByFileNameRegExp() or parseCanceled
+          then Break;
         Next;
       end;
       Close;

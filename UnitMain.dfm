@@ -84,7 +84,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsSettings
+    ActivePage = tsModulesList
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -3167,7 +3167,7 @@ object frmMain: TfrmMain
         Top = 41
         Width = 986
         Height = 388
-        ActivePage = tsStackTraceFormatted
+        ActivePage = tsStackTraceUnformatted
         Align = alClient
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
@@ -3491,6 +3491,34 @@ object frmMain: TfrmMain
         TabOrder = 1
       end
     end
+    object tsReport: TTabSheet
+      Caption = 'Report'
+      ImageIndex = 10
+      object memoReport: TMemo
+        AlignWithMargins = True
+        Left = 5
+        Top = 5
+        Width = 976
+        Height = 419
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Monoid'
+        Font.Pitch = fpFixed
+        Font.Style = []
+        Lines.Strings = (
+          'memoReport')
+        ParentFont = False
+        ScrollBars = ssBoth
+        TabOrder = 0
+        WordWrap = False
+      end
+    end
     object tsSettings: TTabSheet
       Caption = 'Settings'
       ImageIndex = 7
@@ -3540,7 +3568,7 @@ object frmMain: TfrmMain
         Left = 3
         Top = 72
         Width = 278
-        Height = 161
+        Height = 192
         Caption = 'Settings'
         TabOrder = 1
         object cbCreateLog: TCheckBox
@@ -3596,6 +3624,15 @@ object frmMain: TfrmMain
             '3rd-party & <Empty>'
             'All')
         end
+        object cbCreateReportForJIRA: TCheckBox
+          Left = 14
+          Top = 150
+          Width = 155
+          Height = 17
+          Caption = 'Create report for JIRA'
+          TabOrder = 5
+          OnClick = cbCreateReportForJIRAClick
+        end
       end
       object GroupBox3: TGroupBox
         Left = 287
@@ -3631,8 +3668,8 @@ object frmMain: TfrmMain
         TabOrder = 3
       end
       object GroupBox6: TGroupBox
-        Left = 3
-        Top = 239
+        Left = 551
+        Top = 3
         Width = 278
         Height = 90
         Caption = 'ModulesList file parse Level'

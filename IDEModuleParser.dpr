@@ -22,7 +22,8 @@ uses
   UnitProgressWindow in 'UnitProgressWindow.pas' {frmProgress},
   UnitDisplayPackagesList in 'UnitDisplayPackagesList.pas' {frmPackagesList},
   UnitCopyVersionInfo in 'UnitCopyVersionInfo.pas' {frmCopyVersionInfo},
-  UnitFormatStackTrace in 'UnitFormatStackTrace.pas';
+  UnitFormatStackTrace in 'UnitFormatStackTrace.pas',
+  UnitJIRAReport in 'UnitJIRAReport.pas';
 
 {$R *.res}
 

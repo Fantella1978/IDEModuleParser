@@ -19,6 +19,7 @@ uses
   , UnitIDEModule
   , UnitAddModules
   , UnitCopyAsText
+  , UnitJIRAReport
   , UnitModulesEditor
   , UnitPackagesEditor
   , UnitCopyVersionInfo
@@ -228,6 +229,9 @@ type
     eIDEbittness: TEdit;
     GroupBox9: TGroupBox;
     LinkLabel1: TLinkLabel;
+    tsReport: TTabSheet;
+    cbCreateReportForJIRA: TCheckBox;
+    memoReport: TMemo;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -272,7 +276,7 @@ type
     function ConfirmNewStepsFileLoad(AskForAll: boolean): boolean;
 
     procedure OpenTextStackTraceFile(FileName: string);
-    procedure OpenTextModuleListFile(FileName: string);
+    function OpenTextModuleListFile(FileName: string): boolean;
     procedure OpenTextDxDiagLogFile(FileName: string);
     procedure OpenTextDescriptionFile(FileName: string);
     procedure OpenTextStepsFile(FileName: string);
@@ -299,6 +303,7 @@ type
     function DeleteTempReportFolder(): boolean;
 
     function GetKnownReportFiles: TArray<string>;
+    function GetIDEBittness(module: TIDEModule): IDEbittness;
 
     function TryOpenDescFileInReport(): boolean;
     function TryOpenDXDiagFileInReport(): boolean;
@@ -374,6 +379,7 @@ type
       Button: TMouseButton);
     procedure LinkLabel1LinkClick(Sender: TObject; const Link: string;
       LinkType: TSysLinkType);
+    procedure cbCreateReportForJIRAClick(Sender: TObject);
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -392,6 +398,7 @@ type
     function GetPackageType_IDByName(name: string): integer;
     function DeleteTempFolder: boolean;
     procedure AfterParsingView(Sender: TObject);
+    procedure AfterParsingCreateReportForJIRA(Sender: TObject);
     procedure SetFileName(const FileName: String);
     function TryOpenScreenshotFilesInReport: boolean;
     function TryOpenScreenshotFile(FileName: string): boolean;
@@ -400,6 +407,9 @@ type
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
+    function Get3rdPartyPackagesCount: integer;
+    function Get3rdPartyPackagesList: TStringList;
+    function GetUnknownBPLPackagesCount: integer;
   end;
 
 var
@@ -544,6 +554,62 @@ begin
   Result := -1;
 end;
 
+function TfrmMain.Get3rdPartyPackagesList: TStringList;
+var
+  i: integer;
+  tempPackage_ID: integer;
+begin
+  Result := TStringList.Create;
+  for i := 0 to clbVisiblePackages.Items.Count - 1 do
+    begin
+      tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
+      if tempPackage_ID in [THIRDPARTY_PACKAGES_TYPE_ID, THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID]
+        then Result.Add(clbVisiblePackages.Items[i]);
+    end;
+end;
+
+function TfrmMain.GetUnknownBPLPackagesCount: integer;
+var
+  CurrentBookMark : TBookmark;
+begin
+  if not tsModulesList.TabVisible then Exit(0);
+  // Count Unknown <Empty> BPL Packages
+  Result := 0;
+
+  DM1.cdsModules.DisableControls;
+  CurrentBookMark := DM1.cdsModules.GetBookmark;
+  DM1.cdsModules.Filter := 'Package_ID = -1';
+  DM1.cdsModules.Filtered := true;
+  DM1.cdsModules.First;
+  while not DM1.cdsModules.Eof do
+  begin
+    if TPath.GetExtension(DM1.cdsModules.FieldByName('FileName').AsString) = '.bpl' then
+      inc(Result);
+    DM1.cdsModules.Next;
+  end;
+  DM1.cdsModules.Filter := '';
+  DM1.cdsModules.Filtered := false;
+  DM1.cdsModules.GotoBookmark(CurrentBookMark);
+  DM1.cdsModules.FreeBookMark(CurrentBookMark);
+  DM1.cdsModules.EnableControls;
+end;
+
+function TfrmMain.Get3rdPartyPackagesCount: integer;
+var
+  i: integer;
+  tempPackage_ID: integer;
+begin
+  if not tsModulesList.TabVisible then Exit(0);
+  // Count 3rd-Party packages
+  Result := 0;
+  for i := 0 to clbVisiblePackages.Items.Count - 1 do
+    begin
+      tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
+      if tempPackage_ID in [THIRDPARTY_PACKAGES_TYPE_ID, THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID]
+        then inc(Result);
+    end;
+end;
+
 function TfrmMain.FilterPackagesSelectOnly3rdParty : boolean;
 var
   ThirdPartyPackagesFound: boolean;
@@ -672,8 +738,8 @@ begin
     Logger.AddToLog('The ' + vifFileName + ' file created.');
 
     // Open saved Version Info text file as a Module List file
-    OpenTextModuleListFile(vifFileName);
-    ModulesFileListIsVersionInfoList := true;
+    if OpenTextModuleListFile(vifFileName)
+      then ModulesFileListIsVersionInfoList := true;
   finally
 
   end;
@@ -1158,9 +1224,10 @@ begin
   LoadTxtDxDiagLogFile();
 end;
 
-procedure TfrmMain.OpenTextModuleListFile(FileName: string);
+function TfrmMain.OpenTextModuleListFile(FileName: string): boolean;
 begin
   // Open new text ModuleFile.txt file
+  Result := false;
   if not FileExists(FileName) OR not ConfirmNewModuleListFileLoad(AskConfirmOpenForAll) then Exit;
   mtfFileName := FileName;
   HideStartMessage;
@@ -1168,6 +1235,7 @@ begin
   PageControl1.ActivePage := tsModuleListFile;
   UpdateDisplayModuleListFileName();
   LoadTxtModuleFile();
+  Result := true;
 end;
 
 procedure TfrmMain.OpenTextStackTraceFile(FileName: string);
@@ -1561,12 +1629,30 @@ begin
       PackagesFilterCreate(Sender);
 
       if GlobalAfterParsingView then AfterParsingView(Sender);
+      if GlobalCreateReportForJIRA then AfterParsingCreateReportForJIRA(Sender);
 
       DBGridModules.SelectedRows.Clear;
       DM1.cdsModules.EnableControls;
       DM1.cdsModules.First;
     end;
 
+end;
+
+procedure TfrmMain.AfterParsingCreateReportForJIRA(Sender: TObject);
+var
+  JIRAReport: TJIRAReport;
+begin
+  // Create Report For JIRA
+  tsReport.TabVisible := true;
+  memoReport.Lines.Clear;
+  JIRAReport := TJIRAReport.Create;
+  try
+    JIRAReport.Logger := Logger;
+    JIRAReport.CreateReport;
+    memoReport.Lines := JIRAReport;
+  finally
+    JIRAReport.Free;
+  end;
 end;
 
 procedure TfrmMain.AfterParsingView(Sender: TObject);
@@ -1651,6 +1737,11 @@ begin
     end;
   GlobalLogCreate := cbCreateLog.Checked;
   actSettingsRestoreDefaults.Enabled := true;
+end;
+
+procedure TfrmMain.cbCreateReportForJIRAClick(Sender: TObject);
+begin
+  GlobalCreateReportForJIRA := cbCreateReportForJIRA.Checked;
 end;
 
 procedure TfrmMain.cbMaximizeOnStartupClick(Sender: TObject);
@@ -1764,28 +1855,37 @@ begin
   edtFontSize.Enabled := false;
 end;
 
+function TfrmMain.GetIDEBittness(module: TIDEModule): IDEbittness;
+begin
+  Result := ibUnknown;
+  if pos('\bin\', LowerCase(module.Path)) <> 0
+    then Result := ib32bit;
+  if pos('\bin64\', LowerCase(module.Path)) <> 0
+    then Result := ib64bit;
+end;
+
 procedure TfrmMain.DisplayRSBuild(module: TIDEModule);
 begin
   edRSBuild.Text := FindRSBuildName(module.Version);
   if edRSBuild.Text <> ''
     then edRSBuild.Visible := true
     else edRSBuild.Visible := false;
-  if pos('\bin64\', module.Path) <> 0
-    then
-      begin
-        eIDEbittness.Text := '64-bit IDE';
-        eIDEbittness.Font.Style := [fsBold];
-        eIDEbittness.Font.Color := clRed;
-        eIDEbittness.StyleElements := [seClient, seBorder];
-      end;
-  if pos('\bin\', module.Path) <> 0
-    then
+  case GetIDEBittness(module) of
+     ib32bit:
       begin
         eIDEbittness.Text := '32-bit IDE';
         eIDEbittness.Font.Style := [];
         eIDEbittness.Font.Color := clWindowText;
         eIDEbittness.StyleElements := [seClient, seBorder, seFont];
       end;
+     ib64bit:
+      begin
+        eIDEbittness.Text := '64-bit IDE';
+        eIDEbittness.Font.Style := [fsBold];
+        eIDEbittness.Font.Color := clRed;
+        eIDEbittness.StyleElements := [seClient, seBorder];
+      end;
+  end;
 end;
 
 procedure TfrmMain.DisplayRSBuildInfo;
@@ -1971,6 +2071,7 @@ begin
   tsStackTraceFile.TabVisible := false;
   tsStepsFile.TabVisible := false;
   tsDescriptionFile.TabVisible := false;
+  tsReport.TabVisible := false;
   PageControl1.ActivePage := tsHome;
 
   // Disable Font Size Change
@@ -2128,6 +2229,7 @@ begin
   memoDXDiagLog.Font.Size := GlobalFontSize;
   memoSteps.Font.Size := GlobalFontSize;
   memoLog.Font.Size := GlobalFontSize;
+  memoReport.Font.Size := GlobalFontSize;
   DBGridModules.Font.Size := GlobalFontSize;
   reStackTrace.Font.Size := GlobalFontSize;
   if Assigned(frmCopyVersionInfo)
@@ -2354,6 +2456,7 @@ begin
       combobAfterParsing.ItemIndex := 0;
       GlobalAfterParsingViewOption := 0;
     end;
+  cbCreateReportForJIRA.Checked := GlobalCreateReportForJIRA;
   cbParseLevel2.Checked := GlobalModulesCompareLevel2;
   cbParseLevel3.Checked := GlobalModulesCompareLevel3;
   if cbxStyles.Items.Count <= 1

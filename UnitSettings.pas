@@ -20,6 +20,7 @@ var
   GlobalParseOnFileOpen: boolean; // Parse on ModulesList file open
   GlobalAfterParsingView: boolean; // After Parsing View enabled
   GlobalAfterParsingViewOption: integer; // After Parsing View active option
+  GlobalCreateReportForJIRA: boolean; // Create Report For JIRA
   GlobalVCLStyle: string; // Application VCL Style
 
   GlobalModulesCompareLevel2: boolean;
@@ -43,6 +44,7 @@ const
   Def_ParseOnFileOpen = true; // default value for ParseOnFileOpen
   Def_AfterParsingView = true; // default value for AfterParsingView
   Def_AfterParsingViewOption = 0; // default value for AfterParsingViewOption
+  Def_CreateReportForJIRA = true; // default value for CreateReportForJIRA
   Def_ModulesCompareLevel2 = false; // default value for ModulesCompareLevel2
   Def_ModulesCompareLevel3 = true; // default value for ModulesCompareLevel3
   Def_VCLStyle = 'Amethyst Kamri'; // default value (constant) for VCLStyle
@@ -102,6 +104,7 @@ begin
       reg.WriteBool('MaximizeOnStartup', GlobalMaximizeOnStartup);
       reg.WriteBool('ParseOnFileOpen', GlobalParseOnFileOpen);
       reg.WriteBool('AfterParsingView', GlobalAfterParsingView);
+      reg.WriteBool('CreateReportForJIRA', GlobalCreateReportForJIRA);
       reg.WriteBool('ModulesCompareLevel2', GlobalModulesCompareLevel2);
       reg.WriteBool('ModulesCompareLevel3', GlobalModulesCompareLevel3);
       reg.WriteString('VCLStyle', GlobalVCLStyle);
@@ -134,6 +137,8 @@ begin
         Def_ParseOnFileOpen);
       GlobalAfterParsingView := LoadBooleanValue('AfterParsingView',
         Def_AfterParsingView);
+      GlobalCreateReportForJIRA := LoadBooleanValue('CreateReportForJIRA',
+        Def_CreateReportForJIRA);
       GlobalModulesCompareLevel2 := LoadBooleanValue('ModulesCompareLevel2',
         Def_ModulesCompareLevel2);
       GlobalModulesCompareLevel3 := LoadBooleanValue('ModulesCompareLevel3',
@@ -163,6 +168,7 @@ begin
   GlobalParseOnFileOpen := Def_ParseOnFileOpen;
   GlobalAfterParsingView := Def_AfterParsingView;
   GlobalAfterParsingViewOption := Def_AfterParsingViewOption;
+  GlobalCreateReportForJIRA := Def_CreateReportForJIRA;
   GlobalModulesCompareLevel2 := Def_ModulesCompareLevel2;
   GlobalModulesCompareLevel3 := Def_ModulesCompareLevel3;
   {
