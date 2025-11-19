@@ -589,6 +589,7 @@ begin
   end;
   DM1.cdsModules.Filter := '';
   DM1.cdsModules.Filtered := false;
+  ApplyAllFiltres();
   DM1.cdsModules.GotoBookmark(CurrentBookMark);
   DM1.cdsModules.FreeBookMark(CurrentBookMark);
   DM1.cdsModules.EnableControls;
