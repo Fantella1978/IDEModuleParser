@@ -84,7 +84,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsModulesList
+    ActivePage = tsSettings
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -3670,8 +3670,8 @@ object frmMain: TfrmMain
       object GroupBox6: TGroupBox
         Left = 551
         Top = 3
-        Width = 278
-        Height = 90
+        Width = 218
+        Height = 94
         Caption = 'ModulesList file parse Level'
         TabOrder = 4
         object cbParseLevel2: TCheckBox
@@ -3737,7 +3737,7 @@ object frmMain: TfrmMain
       end
       object GroupBox9: TGroupBox
         Left = 3
-        Top = 332
+        Top = 270
         Width = 542
         Height = 53
         Caption = 'GitHub'

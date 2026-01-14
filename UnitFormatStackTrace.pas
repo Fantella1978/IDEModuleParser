@@ -25,7 +25,7 @@ type
     { Private declarations }
     FEdit: TRichEdit;
     Fregexp: TPerlRegEx;
-    FLinkList: TList<TLinkInfo>;
+    // FLinkList: TList<TLinkInfo>;
     function GetStackTraceLineRegExp: string;
     function FindModuleIn3rdPartyList(Atext: string): boolean;
     function FindModuleInUnknownList(Atext: string): boolean;
@@ -91,7 +91,7 @@ constructor TFormattedStackTraceView.Create(AEdit: TRichEdit);
 begin
   FEdit := AEdit;
   Fregexp := TPerlRegEx.Create;
-  FLinkList := TList<TLinkInfo>.Create;
+  // FLinkList := TList<TLinkInfo>.Create;
 end;
 
 destructor TFormattedStackTraceView.Destroy;
@@ -99,7 +99,7 @@ begin
   FModulesUnknownList.Free;
   FModules3rdPartyList.Free;
   Fregexp.Free;
-  FLinkList.Free;
+  // FLinkList.Free;
   inherited;
 end;
 

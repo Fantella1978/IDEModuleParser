@@ -88,7 +88,10 @@ begin
      lbl3rdParty.Visible := false;
     end;
 
-  lblGetIt.Visible := FPackagesQuery.FieldByName('InGetIt').AsBoolean;
+  lblGetIt.Visible := if (FPackagesQuery.FieldByName('InGetIt').AsBoolean OR
+    (FPackagesQuery.FieldByName('Type_ID').AsInteger in [THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID]))
+    then true
+    else false;
   if lblGetIt.Visible
     then
       begin

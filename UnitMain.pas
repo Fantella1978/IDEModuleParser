@@ -422,14 +422,14 @@ var
   mzfFileName : TFileName;  // QPInfo-XXXXXXXX-XXXX.zip filename
   vifFileName : TFileName;  // Version Info temp filename (for Version Information parse)
   Logger : TMyLogger;       // Logger
-  ModulesArray : TModulesArray;   // IDE Modules Array
+  ModulesArray : TModulesArray;     // IDE Modules Array
   ModulesFileListIsVersionInfoList : boolean;
-  BDSIDEModule : TIDEModule;      // BDS IDE Module
-  ReportFolder : string;          // Report folder for unpack Report Zip
+  BDSIDEModule : TIDEModule;        // BDS IDE Module
+  ReportFolder : string;            // Report folder for unpack Report Zip
   ReportFilesInZip: TArray<string>;
-  TempFolder : string;          // Temp folder for paste Version Info text
-  ConfirmOpenForAll: TModalResult;   // Confirm Open for All files
-  AskConfirmOpenForAll: boolean;     // Ask confirm Open for All files
+  TempFolder : string;              // Temp folder for paste Version Info text
+  ConfirmOpenForAll: TModalResult;  // Confirm Open for All files
+  AskConfirmOpenForAll: boolean;    // Ask confirm Open for All files
 
 implementation
 
