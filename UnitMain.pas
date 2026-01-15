@@ -280,7 +280,7 @@ type
     procedure OpenTextDxDiagLogFile(FileName: string);
     procedure OpenTextDescriptionFile(FileName: string);
     procedure OpenTextStepsFile(FileName: string);
-    procedure OpenZipReportFile(Sender: TObject);
+    function OpenZipReportFile(Sender: TObject): integer;
     /// <summary>Load new text ModuleList file</summary>
     procedure LoadTxtModuleFile();
     /// <summary>Load new text StackTrace file</summary>
@@ -1261,14 +1261,25 @@ begin
   LoadTxtStepsFile();
 end;
 
-procedure TfrmMain.OpenZipReportFile(Sender: TObject);
+function TfrmMain.OpenZipReportFile(Sender: TObject): integer;
 var
   zip : TZipFile;
+  ErrorCode: integer;
 begin
   // Open Report Zip file (QPInfo-XXXXXXXX-XXXX.zip)
-  if not FileExists(mzfFileName) then Exit;
+  ErrorCode := 0;
 
-  if not CheckZipReportFile(Sender) then Exit;
+  if not FileExists(mzfFileName) then
+  begin
+    ErrorCode := 1;
+    Exit(ErrorCode);
+  end;
+
+  if not CheckZipReportFile(Sender) then
+  begin
+    ErrorCode := 2;
+    Exit(ErrorCode);
+  end;
 
   // Unpack Report Zip file in temp folder
   zip := TZipFile.Create;
@@ -1297,12 +1308,20 @@ begin
         Logger.AddToLog('The ' + ReportFilesInZip[i] + ' file unpacked form Zip.');
       end;
     }
-    zip.ExtractAll(ReportFolder);
-    Logger.AddToLog('All files unpacked from Zip file ' + mzfFileName + '.');
+    try
+      zip.ExtractAll(ReportFolder);
+      Logger.AddToLog('All files unpacked from Zip file ' + mzfFileName + '.');
+    except
+      ShowMessage('Can''t unpack all files from Zip file ' + mzfFileName + '.');
+      Logger.AddToLog('Can''t unpack all files from Zip file ' + mzfFileName + '.');
+      ErrorCode := 3;
+    end;
     SetFileName(mzfFileName);
   finally
     zip.Free;
   end;
+
+  if ErrorCode<>0 then Exit(ErrorCode);
 
   ConfirmOpenForAll := -1;
   AskConfirmOpenForAll := true;
