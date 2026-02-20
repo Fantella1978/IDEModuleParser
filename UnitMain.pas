@@ -497,17 +497,17 @@ begin
   try
     for i := 0 to clbVisiblePackages.Items.Count - 1 do
     begin
-      if clbVisiblePackages.Checked[i]
-        then
-          begin
-            if clbVisiblePackages.Items[i] <> '<Empty>'
-              then pl.Add(clbVisiblePackages.Items[i]);
-          end;
+      if clbVisiblePackages.Checked[i] then
+      begin
+        if clbVisiblePackages.Items[i] <> '<Empty>' then
+          pl.Add(clbVisiblePackages.Items[i]);
+      end;
     end;
     cl := TClipboard.Create;
     try
       cl.AsText := pl.Text;
-      if pl.Text <> '' then ShowMessage('Packages list copied to clipboard');
+      if pl.Text <> '' then
+        ShowMessage('Packages list copied to clipboard');
     finally
       cl.Free;
     end;
@@ -518,23 +518,25 @@ end;
 
 procedure TfrmMain.actFilterPackagesSelect3rdPartyAndEmptyExecute(
   Sender: TObject);
+var
+  tempPackage_ID: integer;
 begin
   // Select 3rd-party and Empty packages
   clbVisiblePackages.CheckAll(cbUnchecked, false, false);
   for var i := 0 to clbVisiblePackages.Items.Count - 1 do
+  begin
+    tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
+    if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
+       (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID) then
     begin
-      var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
-      if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
-        (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
-      then
-         begin
-           clbVisiblePackages.Checked[i] := true;
-         end
+     clbVisiblePackages.Checked[i] := true;
+    end
+    else
+      if clbVisiblePackages.Items[i] = '<Empty>' then
+        clbVisiblePackages.Checked[i] := true
       else
-      if clbVisiblePackages.Items[i] = '<Empty>'
-        then clbVisiblePackages.Checked[i] := true
-        else clbVisiblePackages.Checked[i] := false;
-    end;
+        clbVisiblePackages.Checked[i] := false;
+  end;
   clbVisiblePackagesClickCheck(Sender);
 end;
 
@@ -549,8 +551,8 @@ end;
 function TfrmMain.GetPackageType_IDByName(name: string): integer;
 begin
   for var i := 0 to Length(FModulesPackages) - 1 do
-    if FModulesPackages[i].PackageName = name
-      then Exit(FModulesPackages[i].PackageType_ID);
+    if FModulesPackages[i].PackageName = name then
+      Exit(FModulesPackages[i].PackageType_ID);
   Result := -1;
 end;
 
@@ -561,18 +563,19 @@ var
 begin
   Result := TStringList.Create;
   for i := 0 to clbVisiblePackages.Items.Count - 1 do
-    begin
-      tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
-      if tempPackage_ID in [THIRDPARTY_PACKAGES_TYPE_ID, THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID]
-        then Result.Add(clbVisiblePackages.Items[i]);
-    end;
+  begin
+    tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
+    if tempPackage_ID in [THIRDPARTY_PACKAGES_TYPE_ID, THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID] then
+      Result.Add(clbVisiblePackages.Items[i]);
+  end;
 end;
 
 function TfrmMain.GetUnknownBPLPackagesCount: integer;
 var
   CurrentBookMark : TBookmark;
 begin
-  if not tsModulesList.TabVisible then Exit(0);
+  if not tsModulesList.TabVisible then
+    Exit(0);
   // Count Unknown <Empty> BPL Packages
   Result := 0;
 
@@ -600,15 +603,16 @@ var
   i: integer;
   tempPackage_ID: integer;
 begin
-  if not tsModulesList.TabVisible then Exit(0);
+  if not tsModulesList.TabVisible then
+    Exit(0);
   // Count 3rd-Party packages
   Result := 0;
   for i := 0 to clbVisiblePackages.Items.Count - 1 do
-    begin
-      tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
-      if tempPackage_ID in [THIRDPARTY_PACKAGES_TYPE_ID, THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID]
-        then inc(Result);
-    end;
+  begin
+    tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
+    if tempPackage_ID in [THIRDPARTY_PACKAGES_TYPE_ID, THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID] then
+      inc(Result);
+  end;
 end;
 
 function TfrmMain.FilterPackagesSelectOnly3rdParty : boolean;
@@ -619,53 +623,51 @@ begin
   // Select only 3rd-party packages
   ThirdPartyPackagesFound := false;
   for i := 0 to clbVisiblePackages.Items.Count - 1 do
+  begin
+    var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
+    if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
+      (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID) then
     begin
-      var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
-      if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
-        (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
-      then
-         begin
-           clbVisiblePackages.Checked[i] := true;
-           ThirdPartyPackagesFound := true;
-         end
-      else clbVisiblePackages.Checked[i] := false;
-    end;
+      clbVisiblePackages.Checked[i] := true;
+      ThirdPartyPackagesFound := true;
+    end
+    else
+      clbVisiblePackages.Checked[i] := false;
+  end;
   for i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
   begin
     var PackageType_ID := DM1.FindPackageType_IDByName(clbVisiblePackagesTypes.Items[i]);
     if (PackageType_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
-      (PackageType_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
-      then clbVisiblePackagesTypes.Checked[i] := true;
+       (PackageType_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID) then
+      clbVisiblePackagesTypes.Checked[i] := true;
   end;
   clbVisiblePackagesTypesClickCheck(frmMain);
 
-  if ThirdPartyPackagesFound
-    then
-      begin
-        result := true;
-        clbVisiblePackagesClickCheck(frmMain);
-      end
-    else result := false;
+  if ThirdPartyPackagesFound then
+  begin
+    result := true;
+    clbVisiblePackagesClickCheck(frmMain);
+  end
+  else
+    result := false;
 
   if GlobalAfterParsingView and not ThirdPartyPackagesFound then
+  begin
+    if MessageDlg('No 3rd-party packages found. Show <Empty> packages?', TMsgDlgType.mtConfirmation, [mbYes, mbNo], 0) = mrYes then
     begin
-      if MessageDlg('No 3rd-party packages found. Show <Empty> packages?', TMsgDlgType.mtConfirmation, [mbYes, mbNo], 0) = mrYes
-      then
-        begin
-          actFilterPackagesSelectOnlyEmptyExecute(frmMain);
-          actFilterPackagesTypesSelectOnlyEmptyExecute(frmMain);
-        end
-      else
-        begin
-          actFilterPackagesSelectAllExecute(frmMain);
-          actFilterPackagesTypesSelectAllExecute(frmMain);
-        end;
+      actFilterPackagesSelectOnlyEmptyExecute(frmMain);
+      actFilterPackagesTypesSelectOnlyEmptyExecute(frmMain);
+    end
+    else
+    begin
+      actFilterPackagesSelectAllExecute(frmMain);
+      actFilterPackagesTypesSelectAllExecute(frmMain);
     end;
+  end;
 end;
 
 procedure TfrmMain.actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
 begin
-  //
   FilterPackagesSelectOnly3rdParty();
 end;
 
@@ -673,14 +675,13 @@ procedure TfrmMain.actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
 var
   i: integer;
 begin
-  //
   clbVisiblePackages.CheckAll(cbUnchecked, false, false);
   for i := 0 to clbVisiblePackages.Items.Count - 1 do
-    if clbVisiblePackages.Items[i] = '<Empty>'
-      then clbVisiblePackages.Checked[i] := true;
+    if clbVisiblePackages.Items[i] = '<Empty>' then
+      clbVisiblePackages.Checked[i] := true;
   for i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
-    if clbVisiblePackagesTypes.Items[i] = '<Empty>'
-      then clbVisiblePackagesTypes.Checked[i] := true;
+    if clbVisiblePackagesTypes.Items[i] = '<Empty>' then
+      clbVisiblePackagesTypes.Checked[i] := true;
   clbVisiblePackagesClickCheck(Sender);
   clbVisiblePackagesTypesClickCheck(Sender);
 end;
@@ -702,17 +703,16 @@ end;
 function TfrmMain.DeleteTempFolder: boolean;
 begin
   // Delete temp Report folder
-  if (TempFolder <> '') and TDirectory.Exists(TempFolder, true)
-  then
-    begin
-      try
-        TDirectory.Delete(TempFolder, true);
-        Logger.AddToLog('Temp folder deleted: ' + TempFolder);
-      except
-        Logger.AddToLog('[Error] Can''t delete temp folder: ' + TempFolder);
-        Exit(false);
-      end;
+  if (TempFolder <> '') and TDirectory.Exists(TempFolder, true) then
+  begin
+    try
+      TDirectory.Delete(TempFolder, true);
+      Logger.AddToLog('Temp folder deleted: ' + TempFolder);
+    except
+      Logger.AddToLog('[Error] Can''t delete temp folder: ' + TempFolder);
+      Exit(false);
     end;
+  end;
   Result := true;
 end;
 
@@ -725,12 +725,11 @@ begin
     vifFileName := TempFolder + TPath.DirectorySeparatorChar + 'VersionInfo.txt';
 
     // Create a new temp folder
-    if not TDirectory.Exists(TempFolder, true)
-    then
-      begin
-        TDirectory.CreateDirectory(TempFolder);
-        Logger.AddToLog('Create temp folder: ' + TempFolder);
-      end
+    if not TDirectory.Exists(TempFolder, true) then
+    begin
+      TDirectory.CreateDirectory(TempFolder);
+      Logger.AddToLog('Create temp folder: ' + TempFolder);
+    end
     else
       Logger.AddToLog('Temp folder already exists: ' + TempFolder);
 
@@ -739,8 +738,8 @@ begin
     Logger.AddToLog('The ' + vifFileName + ' file created.');
 
     // Open saved Version Info text file as a Module List file
-    if OpenTextModuleListFile(vifFileName)
-      then ModulesFileListIsVersionInfoList := true;
+    if OpenTextModuleListFile(vifFileName) then
+      ModulesFileListIsVersionInfoList := true;
   finally
 
   end;
@@ -749,16 +748,15 @@ end;
 procedure TfrmMain.actCopyFromVersionInfoExecute(Sender: TObject);
 begin
   // Copy modules information from RS Version Information
-  if frmCopyVersionInfo.ShowModal = mrOk
-  then
-    begin
-      if frmCopyVersionInfo.memVersionInformation.Text <> ''
-        then GetMemoTxtModuleFileFromVersionInfo(Sender);
-      PageControl1.ActivePage := tsModuleListFile;
-      SetFileName(vifFileName);
-      if actParseModuleFile.Enabled
-        then actParseModuleFileExecute(Sender);
-    end;
+  if frmCopyVersionInfo.ShowModal = mrOk then
+  begin
+    if frmCopyVersionInfo.memVersionInformation.Text <> '' then
+      GetMemoTxtModuleFileFromVersionInfo(Sender);
+    PageControl1.ActivePage := tsModuleListFile;
+    SetFileName(vifFileName);
+    if actParseModuleFile.Enabled then
+      actParseModuleFileExecute(Sender);
+  end;
 end;
 
 procedure TfrmMain.actModulesFindSelectedInKnownDBExecute(Sender: TObject);
@@ -766,7 +764,8 @@ begin
   // Find current Module in In Known Modules DB
   frmModulesEditor.lbedFilterFileName.Text := DM1.cdsModules.FieldByName('FileName').AsString;
   frmModulesEditor.WindowState := TWindowState.wsNormal;
-  if IsAdminModeEnabled then frmModulesEditor.ShowModal;
+  if IsAdminModeEnabled then
+    frmModulesEditor.ShowModal;
 end;
 
 procedure TfrmMain.cbParseFileOnOpenClick(Sender: TObject);
@@ -786,15 +785,16 @@ end;
 
 procedure TfrmMain.cbxStylesChange(Sender: TObject);
 begin
-  if GlobalVCLStyle <> cbxStyles.Text then StylesChange();
+  if GlobalVCLStyle <> cbxStyles.Text then
+    StylesChange();
 end;
 
 procedure TfrmMain.StylesChange();
 begin
   TStyleManager.TrySetStyle(cbxStyles.Text);
   GlobalVCLStyle := TStyleManager.ActiveStyle.Name;
-  if TStyleManager.ActiveStyle.Name = cbxStyles.Text
-    then Logger.AddToLog('Application VCL Style applied: ' + TStyleManager.ActiveStyle.Name);
+  if TStyleManager.ActiveStyle.Name = cbxStyles.Text then
+    Logger.AddToLog('Application VCL Style applied: ' + TStyleManager.ActiveStyle.Name);
 end;
 
 function TfrmMain.CheckZipReportFile(Sender: TObject): boolean;
@@ -804,7 +804,8 @@ var
 begin
   // Check ZIP file
   Result := false;
-  if not FileExists(mzfFileName) then Exit;
+  if not FileExists(mzfFileName) then
+    Exit;
   zip := TZipFile.Create;
   try
     zip.Open(mzfFileName, zmRead);
@@ -812,19 +813,17 @@ begin
     ReportFilesInZip := TArray<string>.Create();
     for i := 0 to zip.FileCount - 1 do
     begin
-      if MatchStr(LowerCase(zip.FileName[i]), knowReportFiles)
-      then
-        begin
-          SetLength(ReportFilesInZip, Length(ReportFilesInZip) + 1);
-          ReportFilesInZip[Length(ReportFilesInZip) - 1] := zip.FileName[i];
-        end;
-    end;
-    if Length(ReportFilesInZip) = 0
-    then
+      if MatchStr(LowerCase(zip.FileName[i]), knowReportFiles) then
       begin
-        Logger.AddToLog('[Error] Can''t find the necessary files inside the Zip archive.');
-        Exit;
+        SetLength(ReportFilesInZip, Length(ReportFilesInZip) + 1);
+        ReportFilesInZip[Length(ReportFilesInZip) - 1] := zip.FileName[i];
       end;
+    end;
+    if Length(ReportFilesInZip) = 0 then
+    begin
+      Logger.AddToLog('[Error] Can''t find the necessary files inside the Zip archive.');
+      Exit;
+    end;
   finally
     zip.Free;
   end;
@@ -835,30 +834,28 @@ procedure TfrmMain.ApplyAllFiltres();
 var
   FilterString : string;
 begin
-  if FModulesFilterFileNameString <> ''
-    then FilterString := FModulesFilterFileNameString;
-  if FModulesFilterPackagesString <> ''
-    then
-      begin
-        if FilterString <> ''
-          then FilterString := FilterString + ' AND ';
-        FilterString := FilterString + FModulesFilterPackagesString;
-      end;
-  if FModulesFilterPackagesTypesString <> ''
-    then
-      begin
-        if FilterString <> ''
-          then FilterString := FilterString + ' AND ';
-        FilterString := FilterString + FModulesFilterPackagesTypesString;
-      end;
-  if FilterString <> ''
-    then
-      begin
-        DM1.cdsModules.Filter := FilterString;
-        DM1.cdsModules.FilterOptions := [foCaseInsensitive];
-        DM1.cdsModules.Filtered := true;
-      end
-    else DM1.cdsModules.Filtered := false;
+  if FModulesFilterFileNameString <> '' then
+    FilterString := FModulesFilterFileNameString;
+  if FModulesFilterPackagesString <> '' then
+  begin
+    if FilterString <> '' then
+      FilterString := FilterString + ' AND ';
+    FilterString := FilterString + FModulesFilterPackagesString;
+  end;
+  if FModulesFilterPackagesTypesString <> '' then
+  begin
+    if FilterString <> '' then
+      FilterString := FilterString + ' AND ';
+    FilterString := FilterString + FModulesFilterPackagesTypesString;
+  end;
+  if FilterString <> '' then
+  begin
+    DM1.cdsModules.Filter := FilterString;
+    DM1.cdsModules.FilterOptions := [foCaseInsensitive];
+    DM1.cdsModules.Filtered := true;
+  end
+  else
+    DM1.cdsModules.Filtered := false;
   DBGridModules.SelectedRows.Clear;
   ModulesFilteredCountDisplay();
   ModulesSelectedCountDisplay();
@@ -868,30 +865,36 @@ procedure TfrmMain.clbVisiblePackagesClickCheck(Sender: TObject);
 var
   FilterString : string;
   checkedCount : integer;
+  i : integer;
 begin
   FilterString := '';
   checkedCount := 0;
-  for var i := 0 to clbVisiblePackages.Items.Count - 1 do
+  for i := 0 to clbVisiblePackages.Items.Count - 1 do
+  begin
+    if not clbVisiblePackages.Checked[i] then
     begin
-      if not clbVisiblePackages.Checked[i]
-        then
-          begin
-            if FilterString <> '' then FilterString := FilterString + ', ';
-            if clbVisiblePackages.Items[i] = '<Empty>'
-              then FilterString := FilterString + QuotedStr('')
-              else FilterString := FilterString + QuotedStr(clbVisiblePackages.Items[i]);
-          end
-        else inc(checkedCount);
-    end;
-  if FilterString <> ''
-    then FModulesFilterPackagesString := 'NOT PackageName IN (' + FilterString + ')'
-    else FModulesFilterPackagesString := '';
-  if checkedCount = clbVisiblePackages.Items.Count
-    then actFilterPackagesSelectAll.Enabled := false
-    else actFilterPackagesSelectAll.Enabled := true;
-  if checkedCount = 0
-    then actFilterPackagesUnSelectAll.Enabled := false
-    else actFilterPackagesUnSelectAll.Enabled := true;
+      if FilterString <> '' then
+        FilterString := FilterString + ', ';
+      if clbVisiblePackages.Items[i] = '<Empty>' then
+        FilterString := FilterString + QuotedStr('')
+      else
+        FilterString := FilterString + QuotedStr(clbVisiblePackages.Items[i]);
+    end
+    else
+      inc(checkedCount);
+  end;
+  if FilterString <> '' then
+    FModulesFilterPackagesString := 'NOT PackageName IN (' + FilterString + ')'
+  else
+    FModulesFilterPackagesString := '';
+  if checkedCount = clbVisiblePackages.Items.Count then
+    actFilterPackagesSelectAll.Enabled := false
+  else
+    actFilterPackagesSelectAll.Enabled := true;
+  if checkedCount = 0 then
+    actFilterPackagesUnSelectAll.Enabled := false
+  else
+    actFilterPackagesUnSelectAll.Enabled := true;
 
   ApplyAllFiltres();
 end;
@@ -900,35 +903,41 @@ procedure TfrmMain.clbVisiblePackagesTypesClickCheck(Sender: TObject);
 var
   tempFilterString : string;
   checkedCount : integer;
+  i : integer;
+  PackageType_ID: integer;
 begin
   tempFilterString := '';
   checkedCount := 0;
-  for var i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
+  for i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
+  begin
+    if not clbVisiblePackagesTypes.Checked[i] then
     begin
-      if not clbVisiblePackagesTypes.Checked[i]
-        then
-          begin
-            if tempFilterString <> '' then tempFilterString := tempFilterString + ', ';
-            if clbVisiblePackagesTypes.Items[i] = '<Empty>'
-              then tempFilterString := tempFilterString + '-1'
-              else
-                begin
-                  var PackageType_ID := DM1.FindPackageType_IDByName(clbVisiblePackagesTypes.Items[i]);
-                  if PackageType_ID >= 0
-                    then tempFilterString := tempFilterString + IntToStr(PackageType_ID);
-                end;
-          end
-        else inc(checkedCount);
-    end;
-  if tempFilterString <> ''
-    then FModulesFilterPackagesTypesString := 'NOT PackageType_ID IN (' + tempFilterString + ')'
-    else FModulesFilterPackagesTypesString := '';
-  if checkedCount = clbVisiblePackagesTypes.Items.Count
-    then actFilterPackagesTypesSelectAll.Enabled := false
-    else actFilterPackagesTypesSelectAll.Enabled := true;
-  if checkedCount = 0
-    then actFilterPackagesTypesUnSelectAll.Enabled := false
-    else actFilterPackagesTypesUnSelectAll.Enabled := true;
+      if tempFilterString <> '' then
+        tempFilterString := tempFilterString + ', ';
+      if clbVisiblePackagesTypes.Items[i] = '<Empty>' then
+        tempFilterString := tempFilterString + '-1'
+      else
+      begin
+        PackageType_ID := DM1.FindPackageType_IDByName(clbVisiblePackagesTypes.Items[i]);
+        if PackageType_ID >= 0 then
+          tempFilterString := tempFilterString + IntToStr(PackageType_ID);
+      end;
+    end
+    else
+      inc(checkedCount);
+  end;
+  if tempFilterString <> '' then
+    FModulesFilterPackagesTypesString := 'NOT PackageType_ID IN (' + tempFilterString + ')'
+  else
+    FModulesFilterPackagesTypesString := '';
+  if checkedCount = clbVisiblePackagesTypes.Items.Count then
+    actFilterPackagesTypesSelectAll.Enabled := false
+  else
+    actFilterPackagesTypesSelectAll.Enabled := true;
+  if checkedCount = 0 then
+    actFilterPackagesTypesUnSelectAll.Enabled := false
+  else
+    actFilterPackagesTypesUnSelectAll.Enabled := true;
 
   ApplyAllFiltres();
 end;
@@ -943,31 +952,30 @@ var
   res: TModalResult;
 begin
   Result := true;
-  if (memoStackTrace.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
-  if ConfirmOpenForAll in [mrNo, mrNoToAll]
-  then Exit(false);
+  if (memoStackTrace.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then
+    Exit;
+  if ConfirmOpenForAll in [mrNo, mrNoToAll] then
+    Exit(false);
 
-  if PageControl1.ActivePage <> tsStackTraceFile then PageControl1.ActivePage := tsStackTraceFile;
-  if (not AskForAll)
-  then
+  if PageControl1.ActivePage <> tsStackTraceFile then
+    PageControl1.ActivePage := tsStackTraceFile;
+  if (not AskForAll) then
     res := MessageDlg('The StackTrace file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
   else
+  begin
+    res := MessageDlg('The StackTrace file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+    if res in [mrYesToAll, mrNoToAll] then
     begin
-      res := MessageDlg('The StackTrace file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
-      if res in [mrYesToAll, mrNoToAll]
-      then
-        begin
-          ConfirmOpenForAll := res;
-          AskConfirmOpenForAll := false;
-        end;
+      ConfirmOpenForAll := res;
+      AskConfirmOpenForAll := false;
     end;
+  end;
 
-  if res in [mrNo, mrNoToAll, mrCancel]
-  then
-    begin
-      Logger.AddToLog('The opening of a new StackTrace file has not been confirmed.');
-      Exit(false);
-    end;
+  if res in [mrNo, mrNoToAll, mrCancel] then
+  begin
+    Logger.AddToLog('The opening of a new StackTrace file has not been confirmed.');
+    Exit(false);
+  end;
 end;
 
 function TfrmMain.ConfirmNewStepsFileLoad(AskForAll: boolean): boolean;
@@ -975,31 +983,30 @@ var
   res: TModalResult;
 begin
   Result := true;
-  if (memoSteps.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
-  if ConfirmOpenForAll in [mrNo, mrNoToAll]
-    then Exit(false);
+  if (memoSteps.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then
+    Exit;
+  if ConfirmOpenForAll in [mrNo, mrNoToAll] then
+    Exit(false);
 
-  if PageControl1.ActivePage <> tsStepsFile then PageControl1.ActivePage := tsStepsFile;
-  if (not AskForAll)
-  then
+  if PageControl1.ActivePage <> tsStepsFile then
+    PageControl1.ActivePage := tsStepsFile;
+  if not AskForAll then
     res := MessageDlg('The Steps file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
   else
+  begin
+    res := MessageDlg('The Steps file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+    if res in [mrYesToAll, mrNoToAll] then
     begin
-      res := MessageDlg('The Steps file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
-      if res in [mrYesToAll, mrNoToAll]
-      then
-        begin
-          ConfirmOpenForAll := res;
-          AskConfirmOpenForAll := false;
-        end;
+      ConfirmOpenForAll := res;
+      AskConfirmOpenForAll := false;
     end;
+  end;
 
-  if res in [mrNo, mrNoToAll, mrCancel]
-  then
-    begin
-      Logger.AddToLog('The opening of a new Steps file has not been confirmed.');
-      Exit(false);
-    end;
+  if res in [mrNo, mrNoToAll, mrCancel] then
+  begin
+    Logger.AddToLog('The opening of a new Steps file has not been confirmed.');
+    Exit(false);
+  end;
 end;
 
 function TfrmMain.ConnectToDB : boolean;
@@ -1014,25 +1021,23 @@ begin
     var DBFileName := 'IDEModuleParser.db3';
     var DBFileNameWithPath := TPath.GetDirectoryName(Application.ExeName) +
       TPath.DirectorySeparatorChar + DBFileName;
-    if FileExists(DBFileNameWithPath)
-      then DM1.fdcSQLite.Params.Database := DBFileNameWithPath
-      else
+    if FileExists(DBFileNameWithPath) then
+      DM1.fdcSQLite.Params.Database := DBFileNameWithPath
+    else
+    begin
+      var DBDirectory := TPath.GetFullPath(TPath.GetDirectoryName(Application.ExeName) + '\..\..');
+      if TDirectory.Exists(DBDirectory) then
+      begin
+        DBFileNameWithPath := DBDirectory + TPath.DirectorySeparatorChar + DBFileName;
+        if FileExists(DBFileNameWithPath) then
+          DM1.fdcSQLite.Params.Database := DBFileNameWithPath
+        else
         begin
-          var DBDirectory := TPath.GetFullPath(TPath.GetDirectoryName(Application.ExeName) + '\..\..');
-          if TDirectory.Exists(DBDirectory)
-            then
-              begin
-                DBFileNameWithPath := DBDirectory + TPath.DirectorySeparatorChar + DBFileName;
-                if FileExists(DBFileNameWithPath)
-                then DM1.fdcSQLite.Params.Database := DBFileNameWithPath
-                else
-                  begin
-                    ShowMessage('DB file ' + DBFileNameWithPath +' not found.');
-                    Exit(false);
-                  end;
-              end
-            else
+          ShowMessage('DB file ' + DBFileNameWithPath +' not found.');
+          Exit(false);
         end;
+      end
+    end;
     DM1.fdcSQLite.Connected := true;
     DM1.fdtPackages.Active := true;
     DM1.fdtPackageTypes.Active := true;
@@ -1066,12 +1071,11 @@ var
 begin
   DM1.cdsScreenshots.RecNo := ControlListScreenshots.ItemIndex + 1;
   FilePath := DM1.cdsScreenshots.FieldByName('FilePath').AsString;
-  if FilePath <> ''
-    then
-      begin
-        ShellExecute(0, nil, PChar(FilePath), nil, nil, SW_SHOWNOACTIVATE);
-        Logger.AddToLog('Open screenshot in external browser: ' + FilePath);
-      end;
+  if FilePath <> '' then
+  begin
+    ShellExecute(0, nil, PChar(FilePath), nil, nil, SW_SHOWNOACTIVATE);
+    Logger.AddToLog('Open screenshot in external browser: ' + FilePath);
+  end;
 end;
 
 procedure TfrmMain.clbViewInExplorerClick(Sender: TObject);
@@ -1080,12 +1084,11 @@ var
 begin
   DM1.cdsScreenshots.RecNo := ControlListScreenshots.ItemIndex + 1;
   FilePath := DM1.cdsScreenshots.FieldByName('FilePath').AsString;
-  if FilePath <> ''
-    then
-      begin
-        ShellExecute(Application.Handle, 'open', 'explorer.exe', PChar('/select,"' + FilePath + '"'), nil, SW_NORMAL);
-        Logger.AddToLog('Open explorer and select screenshot file: ' + FilePath);
-      end;
+  if FilePath <> '' then
+  begin
+    ShellExecute(Application.Handle, 'open', 'explorer.exe', PChar('/select,"' + FilePath + '"'), nil, SW_NORMAL);
+    Logger.AddToLog('Open explorer and select screenshot file: ' + FilePath);
+  end;
 end;
 
 function TfrmMain.ConfirmNewDxDiagLogFileLoad(AskForAll: boolean): boolean;
@@ -1094,30 +1097,28 @@ var
 begin
   Result := true;
   if (memoDxDiagLog.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
-  if ConfirmOpenForAll in [mrNo, mrNoToAll]
-    then Exit(false);
+  if ConfirmOpenForAll in [mrNo, mrNoToAll] then
+    Exit(false);
 
-  if PageControl1.ActivePage <> tsDxDiagLogFile then PageControl1.ActivePage := tsDxDiagLogFile;
-  if (not AskForAll)
-  then
+  if PageControl1.ActivePage <> tsDxDiagLogFile then
+    PageControl1.ActivePage := tsDxDiagLogFile;
+  if not AskForAll then
     res := MessageDlg('The DxDiag_Log file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
   else
+  begin
+    res := MessageDlg('The DxDiag_Log file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+    if res in [mrYesToAll, mrNoToAll] then
     begin
-      res := MessageDlg('The DxDiag_Log file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
-      if res in [mrYesToAll, mrNoToAll]
-      then
-        begin
-          ConfirmOpenForAll := res;
-          AskConfirmOpenForAll := false;
-        end;
+      ConfirmOpenForAll := res;
+      AskConfirmOpenForAll := false;
     end;
+  end;
 
-  if res in [mrNo, mrNoToAll, mrCancel]
-  then
-    begin
-      Logger.AddToLog('The opening of a new DxDiag_Log file has not been confirmed.');
-      Exit(false);
-    end;
+  if res in [mrNo, mrNoToAll, mrCancel] then
+  begin
+    Logger.AddToLog('The opening of a new DxDiag_Log file has not been confirmed.');
+    Exit(false);
+  end;
 end;
 
 function TfrmMain.ConfirmNewDescriptionFileLoad(AskForAll: boolean): boolean;
@@ -1125,31 +1126,30 @@ var
   res: TModalResult;
 begin
   Result := true;
-  if (memoDescription.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
-  if ConfirmOpenForAll in [mrNo, mrNoToAll]
-    then Exit(false);
+  if (memoDescription.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then
+    Exit;
+  if ConfirmOpenForAll in [mrNo, mrNoToAll] then
+    Exit(false);
 
-  if PageControl1.ActivePage <> tsDescriptionFile then PageControl1.ActivePage := tsDescriptionFile;
-  if (not AskForAll)
-  then
+  if PageControl1.ActivePage <> tsDescriptionFile then
+    PageControl1.ActivePage := tsDescriptionFile;
+  if not AskForAll then
     res := MessageDlg('The Description file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
   else
+  begin
+    res := MessageDlg('The Description file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+    if res in [mrYesToAll, mrNoToAll] then
     begin
-      res := MessageDlg('The Description file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
-      if res in [mrYesToAll, mrNoToAll]
-      then
-        begin
-          ConfirmOpenForAll := res;
-          AskConfirmOpenForAll := false;
-        end;
+      ConfirmOpenForAll := res;
+      AskConfirmOpenForAll := false;
     end;
+  end;
 
-  if res in [mrNo, mrNoToAll, mrCancel]
-  then
-    begin
-      Logger.AddToLog('The opening of a new Description file has not been confirmed.');
-      Exit(false);
-    end;
+  if res in [mrNo, mrNoToAll, mrCancel] then
+  begin
+    Logger.AddToLog('The opening of a new Description file has not been confirmed.');
+    Exit(false);
+  end;
 end;
 
 function TfrmMain.ConfirmNewModuleListFileLoad(AskForAll: boolean) : boolean;
@@ -1157,38 +1157,38 @@ var
   res: TModalResult;
 begin
   Result := true;
-  if (MemoTxtModuleFile.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then Exit;
-  if ConfirmOpenForAll in [mrNo, mrNoToAll]
-  then Exit(false);
+  if (MemoTxtModuleFile.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then
+    Exit;
+  if ConfirmOpenForAll in [mrNo, mrNoToAll] then
+    Exit(false);
 
-  if PageControl1.ActivePage <> tsModuleListFile then PageControl1.ActivePage := tsModuleListFile;
-  if (not AskForAll)
-  then
+  if PageControl1.ActivePage <> tsModuleListFile then
+    PageControl1.ActivePage := tsModuleListFile;
+  if not AskForAll then
     res := MessageDlg('The ModuleList file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
   else
+  begin
+    res := MessageDlg('The ModuleList file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+    if res in [mrYesToAll, mrNoToAll] then
     begin
-      res := MessageDlg('The ModuleList file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
-      if res in [mrYesToAll, mrNoToAll]
-      then
-        begin
-          ConfirmOpenForAll := res;
-          AskConfirmOpenForAll := false;
-        end;
+      ConfirmOpenForAll := res;
+      AskConfirmOpenForAll := false;
     end;
+  end;
 
-  if res in [mrNo, mrNoToAll, mrCancel]
-  then
-    begin
-      Logger.AddToLog('The opening of a new ModuleList file has not been confirmed.');
-      Exit(false);
-    end;
+  if res in [mrNo, mrNoToAll, mrCancel] then
+  begin
+    Logger.AddToLog('The opening of a new ModuleList file has not been confirmed.');
+    Exit(false);
+  end;
 end;
 
 
 procedure TfrmMain.OpenTextDescriptionFile(FileName: string);
 begin
   // Open new text DxDiag_Log.txt file
-  if not FileExists(FileName) OR not ConfirmNewDescriptionFileLoad(AskConfirmOpenForAll) then Exit;
+  if not FileExists(FileName) OR not ConfirmNewDescriptionFileLoad(AskConfirmOpenForAll) then
+    Exit;
   HideStartMessage;
   defFileName := FileName;
   PageControl1.ActivePage := tsDescriptionFile;
@@ -1204,7 +1204,8 @@ begin
   Result := false;
   // if not FileExists(FileName) OR not ConfirmNewDxDiagLogFileLoad(AskConfirmOpenForAll) then Exit;
   FilePath := ReportFolder + TPath.DirectorySeparatorChar + FileName;
-  if not FileExists(FilePath) then Exit;
+  if not FileExists(FilePath) then
+    Exit;
   ImageCollectionScreenshots.Add(FileName, FilePath);
   DM1.cdsScreenshots.Append;
   DM1.cdsScreenshots.FieldByName('FileName').AsString := FileName;
@@ -1217,7 +1218,8 @@ end;
 procedure TfrmMain.OpenTextDxDiagLogFile(FileName: string);
 begin
   // Open new text DxDiag_Log.txt file
-  if not FileExists(FileName) OR not ConfirmNewDxDiagLogFileLoad(AskConfirmOpenForAll) then Exit;
+  if not FileExists(FileName) OR not ConfirmNewDxDiagLogFileLoad(AskConfirmOpenForAll) then
+    Exit;
   HideStartMessage;
   ddfFileName := FileName;
   PageControl1.ActivePage := tsDXDiagLogFile;
@@ -1229,7 +1231,8 @@ function TfrmMain.OpenTextModuleListFile(FileName: string): boolean;
 begin
   // Open new text ModuleFile.txt file
   Result := false;
-  if not FileExists(FileName) OR not ConfirmNewModuleListFileLoad(AskConfirmOpenForAll) then Exit;
+  if not FileExists(FileName) OR not ConfirmNewModuleListFileLoad(AskConfirmOpenForAll) then
+    Exit;
   mtfFileName := FileName;
   HideStartMessage;
   tsModuleListFile.TabVisible := true;
@@ -1242,7 +1245,8 @@ end;
 procedure TfrmMain.OpenTextStackTraceFile(FileName: string);
 begin
   // Open new text StackTrace.txt file
-  if not FileExists(FileName) OR not ConfirmNewStackTraceFileLoad(AskConfirmOpenForAll) then Exit;
+  if not FileExists(FileName) OR not ConfirmNewStackTraceFileLoad(AskConfirmOpenForAll) then
+    Exit;
   HideStartMessage;
   stfFileName := FileName;
   PageControl1.ActivePage := tsStackTraceFile;
@@ -1253,7 +1257,8 @@ end;
 procedure TfrmMain.OpenTextStepsFile(FileName: string);
 begin
   // Open new text StackTrace.txt file
-  if not FileExists(FileName) OR not ConfirmNewStepsFileLoad(AskConfirmOpenForAll) then Exit;
+  if not FileExists(FileName) OR not ConfirmNewStepsFileLoad(AskConfirmOpenForAll) then
+    Exit;
   HideStartMessage;
   spfFileName := FileName;
   PageControl1.ActivePage := tsStepsFile;
@@ -1293,12 +1298,11 @@ begin
       // TPath.DirectorySeparatorChar +
       TPath.GetFileNameWithoutExtension(mzfFileName) + '_' +
       TPath.GetGUIDFileName(false);
-    if not TDirectory.Exists(ReportFolder, true)
-    then
-      begin
-        TDirectory.CreateDirectory(ReportFolder);
-        Logger.AddToLog('Create temp Report folder: ' + ReportFolder);
-      end
+    if not TDirectory.Exists(ReportFolder, true) then
+    begin
+      TDirectory.CreateDirectory(ReportFolder);
+      Logger.AddToLog('Create temp Report folder: ' + ReportFolder);
+    end
     else
       Logger.AddToLog('Temp Report folder already exists: ' + ReportFolder);
     {
@@ -1321,7 +1325,8 @@ begin
     zip.Free;
   end;
 
-  if ErrorCode<>0 then Exit(ErrorCode);
+  if ErrorCode<>0 then
+    Exit(ErrorCode);
 
   ConfirmOpenForAll := -1;
   AskConfirmOpenForAll := true;
@@ -1334,18 +1339,21 @@ begin
   TryOpenModuleListFileInReport();
   ConfirmOpenForAll := -1;
 
-  if actParseModuleFile.Enabled
-    then actParseModuleFileExecute(Sender);
+  if actParseModuleFile.Enabled then
+    actParseModuleFileExecute(Sender);
 
+  Result := ErrorCode;
 end;
 
 procedure TfrmMain.actModulesEditorExecute(Sender: TObject);
 begin
   // Show Modules Editor
-  if not IsAdminModeEnabled then Exit;
-  if frmMain.WindowState = wsMaximized
-    then frmModulesEditor.WindowState := TWindowState.wsMaximized
-    else frmModulesEditor.WindowState := TWindowState.wsNormal;
+  if not IsAdminModeEnabled then
+    Exit;
+  if frmMain.WindowState = wsMaximized then
+    frmModulesEditor.WindowState := TWindowState.wsMaximized
+  else
+    frmModulesEditor.WindowState := TWindowState.wsNormal;
   frmModulesEditor.ResetFilters;
   frmModulesEditor.ShowModal;
 end;
@@ -1390,19 +1398,17 @@ end;
 procedure TfrmMain.actOpenModuleFileExecute(Sender: TObject);
 begin
   // Open Module file (ModuleList.txt)
-  if OpenTextFileDialog1.InitialDir = ''
-    then OpenTextFileDialog1.InitialDir := TPath.GetDirectoryName(Application.ExeName);
-  if OpenTextFileDialog1.Execute
-     // AND ConfirmNewModuleListFileLoad(false)
-    then
-      begin
-        OpenTextModuleListFile(OpenTextFileDialog1.FileName);
-        SetFileName(OpenTextFileDialog1.FileName);
-        ModulesFileListIsVersionInfoList := false;
-        PageControl1.ActivePage := tsModuleListFile;
-        if actParseModuleFile.Enabled
-          then actParseModuleFileExecute(Sender);
-      end;
+  if OpenTextFileDialog1.InitialDir = '' then
+    OpenTextFileDialog1.InitialDir := TPath.GetDirectoryName(Application.ExeName);
+  if OpenTextFileDialog1.Execute then
+  begin
+    OpenTextModuleListFile(OpenTextFileDialog1.FileName);
+    SetFileName(OpenTextFileDialog1.FileName);
+    ModulesFileListIsVersionInfoList := false;
+    PageControl1.ActivePage := tsModuleListFile;
+    if actParseModuleFile.Enabled then
+      actParseModuleFileExecute(Sender);
+  end;
 end;
 
 procedure TfrmMain.actOpenReportZipFileExecute(Sender: TObject);
@@ -1410,62 +1416,65 @@ begin
   // Open Repot Zip file (QPInfo-XXXXXXXX-XXXX.zip) via Open File Dialog
   if OpenDialog1.InitialDir = '' then
     OpenDialog1.InitialDir := TPath.GetDirectoryName(Application.ExeName);
-  if OpenDialog1.Execute
-    then
-      begin
-        mzfFileName := OpenDialog1.FileName;
-        OpenZipReportFile(Sender);
-      end;
+  if OpenDialog1.Execute then
+  begin
+    mzfFileName := OpenDialog1.FileName;
+    OpenZipReportFile(Sender);
+  end;
 end;
 
 function TfrmMain.IsAdminModeEnabled() : boolean;
 begin
-  if not GlobalAdminMode
-  then
+  if not GlobalAdminMode then
+  begin
+    if PageControl1.ActivePage = tsSettings then
+      ShowMessage('This action requires Administrator Mode to be enabled. Enable Administrator Mode first.')
+    else
     begin
-      if PageControl1.ActivePage = tsSettings
-        then ShowMessage('This action requires Administrator Mode to be enabled. Enable Administrator Mode first.')
-        else
-          begin
-            if MessageDlg('This action requires Administrator Mode to be enabled. Go to settings and enable this mode.',
-            TMsgDlgType.mtInformation, [mbOk, mbCancel], 0) = mrOk
-            then PageControl1.ActivePage := tsSettings;
-          end;
-      Exit(false);
+      if MessageDlg('This action requires Administrator Mode to be enabled. Go to settings and enable this mode.',
+         TMsgDlgType.mtInformation, [mbOk, mbCancel], 0) = mrOk then
+       PageControl1.ActivePage := tsSettings;
     end;
+    Exit(false);
+  end;
   Result := true;
 end;
 
 procedure TfrmMain.lbedFilterFileNameChange(Sender: TObject);
 begin
-  if lbedFilterFileName.Text <> ''
-    then FModulesFilterFileNameString := 'FileName LIKE ''' + lbedFilterFileName.Text + '%'''
-    else FModulesFilterFileNameString := '';
+  if lbedFilterFileName.Text <> '' then
+    FModulesFilterFileNameString := 'FileName LIKE ''' + lbedFilterFileName.Text + '%'''
+  else
+    FModulesFilterFileNameString := '';
   ApplyAllFiltres();
 end;
 
 procedure TfrmMain.actPackagesEditorExecute(Sender: TObject);
 begin
   // Show Packages Editor
-  if not IsAdminModeEnabled then Exit;
+  if not IsAdminModeEnabled then
+    Exit;
   frmPackagesEditor.ShowModal;
 end;
 
 procedure TfrmMain.actFilterPackagesTypesSelect3rdPartyAndEmptyExecute(
   Sender: TObject);
+var
+  i, PackageType_ID: integer;
 begin
   // Select 3rd-party and Empty packages types
   clbVisiblePackagesTypes.CheckAll(cbUnchecked, false, false);
-  for var i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
+  for i := 0 to clbVisiblePackagesTypes.Items.Count - 1 do
   begin
-    var PackageType_ID := DM1.FindPackageType_IDByName(clbVisiblePackagesTypes.Items[i]);
+    PackageType_ID := DM1.FindPackageType_IDByName(clbVisiblePackagesTypes.Items[i]);
     if (PackageType_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
-      (PackageType_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
-      then clbVisiblePackagesTypes.Checked[i] := true
+       (PackageType_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID) then
+      clbVisiblePackagesTypes.Checked[i] := true
+    else
+      if clbVisiblePackagesTypes.Items[i] = '<Empty>' then
+        clbVisiblePackagesTypes.Checked[i] := true
       else
-        if clbVisiblePackagesTypes.Items[i] = '<Empty>'
-          then clbVisiblePackagesTypes.Checked[i] := true
-          else clbVisiblePackagesTypes.Checked[i] := false;
+        clbVisiblePackagesTypes.Checked[i] := false;
   end;
   clbVisiblePackagesTypesClickCheck(Sender);
 end;
@@ -1492,12 +1501,12 @@ begin
       else clbVisiblePackagesTypes.Checked[i] := false;
   end;
   for i := 0 to clbVisiblePackages.Items.Count - 1 do
-    begin
-      var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
-      if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
-        (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
-      then clbVisiblePackages.Checked[i] := true;
-    end;
+  begin
+    var tempPackage_ID := GetPackageType_IDByName(clbVisiblePackages.Items[i]);
+    if (tempPackage_ID = THIRDPARTY_PACKAGES_TYPE_ID) OR
+      (tempPackage_ID = THIRDPARTY_PACKAGES_WITH_GETIT_TYPE_ID)
+    then clbVisiblePackages.Checked[i] := true;
+  end;
   clbVisiblePackagesTypesClickCheck(Sender);
   clbVisiblePackagesClickCheck(frmMain);
 end;

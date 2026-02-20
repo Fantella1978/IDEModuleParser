@@ -462,7 +462,7 @@ begin
       begin
         FFindNextBookmark := [];
         DM1.fdtModules.Filtered := false;
-        if FFindNext AND not DM1.fdtModules.Eof
+        if (FFindNext) and (not DM1.fdtModules.Eof)
           then actFindDuplicatesNext.Visible := true
           else
             begin

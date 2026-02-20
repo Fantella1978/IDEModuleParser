@@ -68,7 +68,7 @@ begin
         DateTimeRegexp := TPerlRegEx.Create;
         try
           with DateTimeRegexp do begin
-            RegEx := '(\d{1,4})[\/\-\.](\d{1,2}|[A-Z,a-z]{3})[\/\-\.](\d{1,4})\s*' +         // date
+            RegEx := '(\d{4}|\d{2}|\d{1})[\/\-\.](\d{1,2}|[A-Z,a-z]{3})[\/\-\.](\d{4}|\d{2}|\d{1})\.?\s*' +         // date
               '' +
               '(' +                                                                          // time
                 '(?:\s*[\S]{2}\s*)?' +

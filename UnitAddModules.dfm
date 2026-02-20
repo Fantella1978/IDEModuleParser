@@ -200,6 +200,7 @@ object frmAddModules: TfrmAddModules
         Height = 112
         Align = alClient
         Color = clBtnFace
+        ItemHeight = 15
         Items.Strings = (
           'File Name'
           'Version'

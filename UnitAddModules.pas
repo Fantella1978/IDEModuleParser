@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.DBCtrls,
-  Vcl.CheckLst, System.Actions, Vcl.ActnList, Vcl.ComCtrls;
+  Vcl.CheckLst, System.Actions, Vcl.ActnList, Vcl.ComCtrls, System.UITypes, Data.DB
+  ;
 
 type
   TfrmAddModules = class(TForm)
@@ -36,6 +37,7 @@ type
     procedure clbFieldsClickCheck(Sender: TObject);
     function AddAllSelectedModulesToDB() : boolean;
     function AddCurrentModuleToKnown() : boolean;
+    procedure SelectPackage(AId: integer);
     procedure actPackagesEditorExecute(Sender: TObject);
     function UpdatePackagesInfo() : boolean;
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
@@ -51,38 +53,33 @@ type
 
 var
   frmAddModules: TfrmAddModules;
-  Package_IDs : TStringList;
 
 implementation
 
 {$R *.dfm}
 
 uses
-    UnitMain
-  , UnitDB
-  , Data.DB
+    UnitDB
+  , UnitMain
   , UnitSettings
   , UnitPackagesEditor
-  , System.UITypes
   ;
 
 procedure TfrmAddModules.btnAddClick(Sender: TObject);
 begin
   //
-  if cbPackages.ItemIndex = -1
-    then
-      begin
-        frmAddModules.SetFocusedControl(cbPackages);
-        Exit
-      end;
+  if cbPackages.ItemIndex = -1 then
+  begin
+    frmAddModules.SetFocusedControl(cbPackages);
+    Exit
+  end;
   AddAllSelectedModulesToDB();
   Close;
-  if MessageDlg('ReParse recomended. ReParse ModulesList file?', mtConfirmation, [mbYes, mbNo], 0) in [mrYes]
-    then
-      begin
-        DM1.ClearModulesDB();
-        frmMain.actParseModuleFileExecute(Sender);
-      end;
+  if MessageDlg('ReParse recomended. ReParse ModulesList file?', mtConfirmation, [mbYes, mbNo], 0) in [mrYes] then
+  begin
+    DM1.ClearModulesDB();
+    frmMain.actParseModuleFileExecute(Sender);
+  end;
 end;
 
 procedure TfrmAddModules.cbPackagesCloseUp(Sender: TObject);
@@ -94,58 +91,59 @@ procedure TfrmAddModules.clbFieldsAllCheck;
 var
   i : integer;
 begin
-  for i := 0 to clbFields.Items.Count - 1 do clbFields.Checked[i] := true;
+  for i := 0 to clbFields.Items.Count - 1 do
+    clbFields.Checked[i] := true;
 end;
 
 procedure TfrmAddModules.clbFieldsClickCheck(Sender: TObject);
 begin
-  if (clbFields.Items.Count > 0) AND (clbFields.ItemIndex < 0)
-    then clbFields.ItemIndex := 0;
-  if clbFields.Items[clbFields.ItemIndex] = 'File Name'
-    then clbFields.Checked[clbFields.ItemIndex] := true;
+  if (clbFields.Items.Count > 0) AND (clbFields.ItemIndex < 0) then
+    clbFields.ItemIndex := 0;
+  if clbFields.Items[clbFields.ItemIndex] = 'File Name' then
+    clbFields.Checked[clbFields.ItemIndex] := true;
   GetModulesListItems();
   {
-  if lbxModules.Items.Count = 0
-    then btnAdd.Enabled := false
-    else btnAdd.Enabled := true;
-    }
+  if lbxModules.Items.Count = 0 then
+    btnAdd.Enabled := false
+  else
+    btnAdd.Enabled := true;
+  }
+end;
+
+procedure TfrmAddModules.SelectPackage(AId: integer);
+var
+  i : integer;
+begin
+  for i := 0 to cbPackages.Items.Count - 1 do
+    if Integer(cbPackages.Items.Objects[i]) = AId then
+    begin
+      cbPackages.ItemIndex := i;
+      Break;
+    end;
 end;
 
 procedure TfrmAddModules.actPackagesEditorExecute(Sender: TObject);
 var
   Package_ID : integer;
-  i : integer;
 begin
   // Run Packages Editor
   frmPackagesEditor.ShowModal;
   // Set Packages ComboBox item index
   Package_ID := DM1.fdtPackages.FieldByName('Package_ID').AsInteger;
   UpdatePackagesInfo();
-  for i := 0 to Package_IDs.Count - 1 do
-    if Package_IDs[i].ToInteger = Package_ID
-      then
-        begin
-          cbPackages.ItemIndex := i;
-          Break;
-        end;
+  SelectPackage(Package_ID);
 end;
 
 function TfrmAddModules.FindModuleInDB(AFileName: string; AVersion: string): boolean;
 begin
-
   { DONE : DO Module Search }
-
   with DM1.fdtModules do
   begin
     Filter := 'FileName = ' + QuotedStr(AFileName);
-    if clbFields.Checked[1]
-      then Filter := Filter + ' and Version = ' + QuotedStr(AVersion);
-    if FindFirst
-      then
-        begin
-          result := true;
-          exit;
-        end;
+    if clbFields.Checked[1] then
+      Filter := Filter + ' and Version = ' + QuotedStr(AVersion);
+    if FindFirst then
+      exit(true);
   end;
   result := false;
 end;
@@ -154,11 +152,12 @@ procedure TfrmAddModules.FillModuleFields();
 begin
   with DM1.fdtModules do
   begin
-    FieldByName('Package_ID').AsInteger := StrToInt(Package_IDs[cbPackages.ItemIndex]);
+    FieldByName('Package_ID').AsInteger := Integer(cbPackages.Items.Objects[cbPackages.ItemIndex]);
     FieldByName('FileName').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
-    if clbFields.Checked[1]
-      then FieldByName('Version').AsString := DM1.cdsModules.FieldByName('Version').AsString
-      else FieldByName('Version').AsString := '';
+    if clbFields.Checked[1] then
+      FieldByName('Version').AsString := DM1.cdsModules.FieldByName('Version').AsString
+    else
+      FieldByName('Version').AsString := '';
     {
     if clbFields.Checked[3]
       then FieldByName('DateAndTime').AsDateTime := DM1.cdsModules.FieldByName('DateAndTime').AsDateTime
@@ -167,11 +166,12 @@ begin
       then FieldByName('Path').AsString := DM1.cdsModules.FieldByName('Path').AsString
       else FieldByName('Path').AsString := '';
     }
-    if clbFields.Checked[2]
-      then FieldByName('Hash').AsString := DM1.cdsModules.FieldByName('Hash').AsString
-      else FieldByName('Hash').AsString := '';
-    if cbOptionsFileNameRegExp.Checked
-      then FieldByName('FileNameRegExp').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
+    if clbFields.Checked[2] then
+      FieldByName('Hash').AsString := DM1.cdsModules.FieldByName('Hash').AsString
+    else
+      FieldByName('Hash').AsString := '';
+    if cbOptionsFileNameRegExp.Checked then
+      FieldByName('FileNameRegExp').AsString := DM1.cdsModules.FieldByName('FileName').AsString;
   end;
 end;
 
@@ -181,9 +181,10 @@ var
   AVersion : string;
 begin
   AFileName := DM1.cdsModules.FieldByName('FileName').AsString;
-  if clbFields.Checked[1]
-    then AVersion := DM1.cdsModules.FieldByName('Version').AsString
-    else AVersion := '';
+  if clbFields.Checked[1] then
+    AVersion := DM1.cdsModules.FieldByName('Version').AsString
+  else
+    AVersion := '';
   with DM1.fdtModules do
   begin
     Edit;
@@ -193,7 +194,7 @@ begin
   Logger.AddToLog('Module "' + AFileName + '" replaced in DB.');
   ProgressBarAddModules.Position := ProgressBarAddModules.Position + 1;
   Application.ProcessMessages;
-  result := true;
+  Result := true;
 end;
 
 function TfrmAddModules.AddAllSelectedModulesToDB: boolean;
@@ -217,12 +218,14 @@ begin
     begin
       GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
       AFileName := FieldByName('FileName').AsString;
-      if clbFields.Checked[1]
-        then AVersion := FieldByName('Version').AsString
-        else AVersion := '';
-      if cbReplaceModule.Checked and FindModuleInDB(AFileName, AVersion)
-        then ReplaceModuleInKnown()
-        else AddCurrentModuleToKnown();
+      if clbFields.Checked[1] then
+        AVersion := FieldByName('Version').AsString
+      else
+        AVersion := '';
+      if cbReplaceModule.Checked and FindModuleInDB(AFileName, AVersion) then
+        ReplaceModuleInKnown()
+      else
+        AddCurrentModuleToKnown();
     end;
     EnableControls;
     GotoBookmark(CurrentBookMark);
@@ -238,9 +241,10 @@ var
   AVersion : string;
 begin
   AFileName := DM1.cdsModules.FieldByName('FileName').AsString;
-  if clbFields.Checked[1]
-    then AVersion := DM1.cdsModules.FieldByName('Version').AsString
-    else AVersion := '';
+  if clbFields.Checked[1] then
+    AVersion := DM1.cdsModules.FieldByName('Version').AsString
+  else
+    AVersion := '';
   with DM1.fdtModules do
   begin
     Append;
@@ -261,7 +265,6 @@ end;
 procedure TfrmAddModules.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
   ProgressBarAddModules.Visible := false;
-  FreeAndNil(Package_IDs);
 end;
 
 procedure TfrmAddModules.FormShow(Sender: TObject);
@@ -293,14 +296,15 @@ begin
            ((Columns[k].FieldName = 'Version') AND clbFields.Checked[1]) OR
           { ((Columns[k].FieldName = 'DateAndTime') AND clbFields.Checked[3]) OR}
           { ((Columns[k].FieldName = 'Path') AND clbFields.Checked[4]) OR }
-           ((Columns[k].FieldName = 'Hash') AND clbFields.Checked[2])
-          then
-            begin
-              if s <> '' then s := s + #9;
-              s := s + Columns[k].Field.asString;
-            end;
+           ((Columns[k].FieldName = 'Hash') AND clbFields.Checked[2]) then
+        begin
+          if s <> '' then
+            s := s + #9;
+          s := s + Columns[k].Field.asString;
+        end;
       end;
-      if s <> '' then lbxModules.Items.Add(s);
+      if s <> '' then
+        lbxModules.Items.Add(s);
     end;
   end;
   DM1.cdsModules.EnableControls;
@@ -311,11 +315,9 @@ end;
 
 function TfrmAddModules.UpdatePackagesInfo: boolean;
 var
-  i : integer;
-  // PackageName : string;
+  Package_ID: integer;
+  Package_Name: string;
 begin
-  if not Assigned(Package_IDs) then Package_IDs := TStringList.Create;
-  Package_IDs.Clear;
   cbPackages.Clear;
   with DM1.fdtPackages do
   begin
@@ -325,23 +327,18 @@ begin
     IndexName := 'NameSubNameIndex';
     IndexFieldNames := '';
     Refresh;
-    // Close;
-    // Open;
     First;
-    for i := 0 to RecordCount - 1 do
+    cbPackages.Items.BeginUpdate;
+    while not Eof do
     begin
-      {
-      PackageName := FieldByName('Name').AsString;
-      if FieldByName('SubName').AsString <> ''
-        then PackageName := PackageName + ' ' + FieldByName('SubName').AsString;
-      if FieldByName('Version').AsString <> ''
-        then PackageName := PackageName + ' ' + FieldByName('Version').AsString;
-      }
-      cbPackages.Items.Add(FieldByName('FullName').AsString);
-      Package_IDs.Add(FieldByName('Package_ID').AsString);
+      Package_ID := FieldByName('Package_ID').AsInteger;
+      Package_Name := FieldByName('FullName').AsString;
+      cbPackages.Items.AddObject(Package_Name, TObject(Package_ID));
       Next;
     end;
-    if cbPackages.Items.Count > 0 then cbPackages.ItemIndex := 0;
+    cbPackages.Items.EndUpdate;
+    if cbPackages.Items.Count > 0 then
+      SelectPackage(Integer(cbPackages.Items.Objects[0]));
     EnableControls;
   end;
 

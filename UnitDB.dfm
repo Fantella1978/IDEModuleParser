@@ -249,7 +249,6 @@ object DM1: TDM1
       LookupKeyFields = 'Package_ID'
       LookupResultField = 'FullName'
       KeyFields = 'Package_ID'
-      LookupCache = True
       Size = 60
       Lookup = True
     end

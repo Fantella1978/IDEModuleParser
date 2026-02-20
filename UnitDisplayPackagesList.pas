@@ -4,9 +4,7 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.ExtCtrls,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ControlList
-  , FireDAC.Comp.Client
+  Vcl.ExtCtrls, Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ControlList, FireDAC.Comp.Client
   ;
 
 type
@@ -42,10 +40,10 @@ implementation
 {$R *.dfm}
 
 uses
-    UnitMain
-  , UnitDB
-  , Winapi.ShellAPI
+    Winapi.ShellAPI
   , UnitSettings
+  , UnitMain
+  , UnitDB
   ;
 
 procedure TfrmPackagesList.ControlList1BeforeDrawItem(AIndex: Integer;

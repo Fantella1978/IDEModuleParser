@@ -38,14 +38,13 @@ implementation
 
 uses
   Clipbrd
-    , UnitMain
-    , UnitDB
-    , Data.DB
-    ;
+  , UnitMain
+  , UnitDB
+  , Data.DB
+  ;
 
 procedure TfrmCopyAsText.btnCancelClick(Sender: TObject);
 begin
-  // ShowMessage('Canceled');
   Close;
 end;
 
@@ -80,29 +79,26 @@ begin
   CheckListBox1.Clear;
   Memo1.Clear;
   for i := 0 to frmMain.DBGridModules.Columns.Count - 1 do
+  begin
+    if frmMain.DBGridModules.Columns[i].Visible then
     begin
-      if frmMain.DBGridModules.Columns[i].Visible
-        then
-          begin
-            colCaption := frmMain.DBGridModules.Columns[i].Title.Caption;
-            if (pos(' ˅', colCaption, Length(colCaption) - 2) <> 0) or
-              (pos(' ˄', colCaption, Length(colCaption) - 2) <> 0)
-            then
-              colCaption := copy(colCaption, 1, Length(colCaption) - 2);
-
-            CheckListBox1.Items.Add(colCaption);
-          end;
+      colCaption := frmMain.DBGridModules.Columns[i].Title.Caption;
+      if (pos(' ˅', colCaption, Length(colCaption) - 2) <> 0) or
+         (pos(' ˄', colCaption, Length(colCaption) - 2) <> 0) then
+        colCaption := copy(colCaption, 1, Length(colCaption) - 2);
+      CheckListBox1.Items.Add(colCaption);
     end;
-  if CheckListBox1.Items.Count > 0
-    then CheckListBox1.Checked[0] := true;
+  end;
+  if CheckListBox1.Items.Count > 0 then
+    CheckListBox1.Checked[0] := true;
 
   Memo1.Text := ModulesGetText();
-  if Memo1.Text = ''
-    then btnOk.Enabled := false
-    else btnOk.Enabled := true;
+  if Memo1.Text = '' then
+    btnOk.Enabled := false
+  else
+    btnOk.Enabled := true;
 end;
 
-//function TfrmCopyAsText.ModulesGetText: PWideChar;
 function TfrmCopyAsText.ModulesGetText: string;
 var
   i, k, kc: integer;
@@ -119,21 +115,19 @@ begin
       kc := 0;
       frmMain.DBGridModules.DataSource.DataSet.GotoBookmark(Tbookmark(frmMain.DBGridModules.SelectedRows[i]));
       for k := 0 to frmMain.DBGridModules.Columns.Count - 1 do
-      begin
-        if not frmMain.DBGridModules.Columns[k].Visible
-          then continue;
-        if frmMain.DBGridModules.Columns[k].Visible and CheckListBox1.Checked[kc]
-          then
-            begin
-              if s <> ''
-                then s := s + #9;
-              s := s + frmMain.DBGridModules.Columns[k].Field.asString;
-            end;
-        if frmMain.DBGridModules.Columns[k].Visible
-          then inc(kc);
-      end;
-      if s <> ''
-        then ml.Add(s);
+        if frmMain.DBGridModules.Columns[k].Visible then
+        begin
+          if CheckListBox1.Checked[kc] then
+          begin
+            if s <> ''
+              then s := s + #9;
+            s := s + frmMain.DBGridModules.Columns[k].Field.asString;
+          end;
+          inc(kc);
+        end
+        else continue;
+      if s <> '' then
+        ml.Add(s);
     end;
     DM1.cdsModules.EnableControls;
 

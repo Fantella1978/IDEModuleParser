@@ -9,9 +9,6 @@ uses
   , Data.DB
   ;
 
-
-
 implementation
-
 
 end.
