@@ -38,6 +38,7 @@
 *.map
 *.dres
 *.rsm
+*.pdb
 *.tds
 *.dcu
 *.lib
@@ -76,3 +77,4 @@ IDEModuleParser.log
 !dll/x64/*
 
 Images/Thumbs.db
+Thumbs.db
