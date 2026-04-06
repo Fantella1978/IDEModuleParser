@@ -45,6 +45,7 @@ var
   Index: integer;
 begin
   if not frmMain.tsModulesList.TabVisible then Exit;
+  if BDSIDEModule = nil then Exit;
   Add('');
   FUnknownBPLPackagesCount := frmMain.GetUnknownBPLPackagesCount;
   FKnownThirdPartyPackagesCount := frmMain.Get3rdPartyPackagesCount;

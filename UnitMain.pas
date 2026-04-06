@@ -29,7 +29,7 @@ uses
   , UnitDisplayPackagesList
   ;
 
-  // Some changes 2
+  // Some changes 2-2-2
 
 type
   TModulesArray = array of PIDEModule;
@@ -387,6 +387,7 @@ type
     FModulesFilterPackagesString : string;
     FModulesFilterPackagesTypesString: string;
     FFileName : TFileName;
+    FExitAttempt: integer;
     DBGridModulesColumnsWidth: TDBGridColumnsWidthArray;
     procedure ModulesCountDisplay;
     function IsAdminModeEnabled: boolean;
@@ -471,7 +472,28 @@ end;
 
 procedure TfrmMain.actExitExecute(Sender: TObject);
 begin
-  Close;
+  if ((tsModulesList.TabVisible or
+      tsModuleListFile.TabVisible or
+      tsScreenshots.TabVisible or
+      tsDXDiagLogFile.TabVisible or
+      tsStackTraceFile.TabVisible or
+      tsStepsFile.TabVisible or
+      tsDescriptionFile.TabVisible) OR
+    ( not tsModulesList.TabVisible and
+      not tsModuleListFile.TabVisible and
+      not tsScreenshots.TabVisible and
+      not tsDXDiagLogFile.TabVisible and
+      not tsStackTraceFile.TabVisible and
+      not tsStepsFile.TabVisible and
+      not tsDescriptionFile.TabVisible))
+  then inc(FExitAttempt, 2)
+  else inc(FExitAttempt);
+
+  if FExitAttempt = 2 then
+  begin
+    FExitAttempt := 0;
+    Close;
+  end;
 end;
 
 procedure TfrmMain.actExploreHereExecute(Sender: TObject);
