@@ -387,7 +387,6 @@ type
     FModulesFilterPackagesString : string;
     FModulesFilterPackagesTypesString: string;
     FFileName : TFileName;
-    FExitAttempt: integer;
     DBGridModulesColumnsWidth: TDBGridColumnsWidthArray;
     procedure ModulesCountDisplay;
     function IsAdminModeEnabled: boolean;
@@ -470,30 +469,14 @@ begin
     end;
 end;
 
+//procedure TfrmMain.AvoidUnwantedExitAttempts;
+//begin
+//
+//end;
+
 procedure TfrmMain.actExitExecute(Sender: TObject);
 begin
-  if ((tsModulesList.TabVisible or
-      tsModuleListFile.TabVisible or
-      tsScreenshots.TabVisible or
-      tsDXDiagLogFile.TabVisible or
-      tsStackTraceFile.TabVisible or
-      tsStepsFile.TabVisible or
-      tsDescriptionFile.TabVisible) OR
-    ( not tsModulesList.TabVisible and
-      not tsModuleListFile.TabVisible and
-      not tsScreenshots.TabVisible and
-      not tsDXDiagLogFile.TabVisible and
-      not tsStackTraceFile.TabVisible and
-      not tsStepsFile.TabVisible and
-      not tsDescriptionFile.TabVisible))
-  then inc(FExitAttempt, 2)
-  else inc(FExitAttempt);
-
-  if FExitAttempt = 2 then
-  begin
-    FExitAttempt := 0;
-    Close;
-  end;
+  Close;
 end;
 
 procedure TfrmMain.actExploreHereExecute(Sender: TObject);
@@ -1095,7 +1078,7 @@ begin
   FilePath := DM1.cdsScreenshots.FieldByName('FilePath').AsString;
   if FilePath <> '' then
   begin
-    ShellExecute(0, nil, PChar(FilePath), nil, nil, SW_SHOWNOACTIVATE);
+    ShellExecute(0, nil, PChar(FilePath), nil, nil, SW_SHOWNORMAL);
     Logger.AddToLog('Open screenshot in external browser: ' + FilePath);
   end;
 end;
