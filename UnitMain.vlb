@@ -406,9 +406,6 @@ Coordinates=1107,10,79,58
 [clbVisiblePackagesTypes]
 Coordinates=10,660,161,36
 
-[combobAfterParsing]
-Coordinates=495,10,131,124
-
 [reStackTrace]
 Coordinates=1432,592,91,36
 
@@ -579,4 +576,7 @@ Coordinates=529,592,96,36
 
 []
 Coordinates=1905,716,91,36
+
+[cbAfterParsing]
+Coordinates=495,10,131,124
 

@@ -11,6 +11,7 @@ uses
   , System.StrUtils, Data.DB, Vcl.DBGrids, Winapi.ShellAPI, Generics.Defaults
   , Vcl.Themes, Vcl.Menus, Vcl.CheckLst, System.Types, Vcl.ControlList
   , Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.VirtualImage
+  , Xml.XMLIntf, Xml.XMLDoc
   , UnitDB
   , UnitDBGrid
   , UnitLogger
@@ -209,7 +210,7 @@ type
     actExploreHere: TAction;
     actExploreHere1: TMenuItem;
     cbAfterParsingView: TCheckBox;
-    combobAfterParsing: TComboBox;
+    cbAfterParsing: TComboBox;
     actFilterPackagesSelect3rdPartyAndEmpty: TAction;
     actFilterPackagesTypesSelect3rdPartyAndEmpty: TAction;
     tsScreenshots: TTabSheet;
@@ -232,6 +233,10 @@ type
     tsReport: TTabSheet;
     cbCreateReportForJIRA: TCheckBox;
     memoReport: TMemo;
+    tsReportData: TTabSheet;
+    memoReportData: TMemo;
+    Panel3: TPanel;
+    lbedReportDataFile: TLabeledEdit;
     procedure FormCreate(Sender: TObject);
     /// <summary>Connect to Data Base</summary>
     function ConnectToDB : boolean;
@@ -274,13 +279,16 @@ type
     function ConfirmNewDescriptionFileLoad(AskForAll: boolean): boolean;
     /// <summary>Confirm new text Steps file load</summary>
     function ConfirmNewStepsFileLoad(AskForAll: boolean): boolean;
+    /// <summary>Confirm new ReportData file load</summary>
+    function ConfirmNewReportDataFileLoad(AskForAll: boolean): boolean;
 
     procedure OpenTextStackTraceFile(FileName: string);
-    function OpenTextModuleListFile(FileName: string): boolean;
     procedure OpenTextDxDiagLogFile(FileName: string);
     procedure OpenTextDescriptionFile(FileName: string);
     procedure OpenTextStepsFile(FileName: string);
+    function OpenTextModuleListFile(FileName: string): boolean;
     function OpenZipReportFile(Sender: TObject): integer;
+
     /// <summary>Load new text ModuleList file</summary>
     procedure LoadTxtModuleFile();
     /// <summary>Load new text StackTrace file</summary>
@@ -293,7 +301,33 @@ type
     procedure LoadTxtStepsFile();
     /// <summary>Check Zip Report file before extract</summary>
     function CheckZipReportFile(Sender: TObject): boolean;
+
     procedure actParseCancelExecute(Sender: TObject);
+    procedure actPackagesEditorExecute(Sender: TObject);
+    procedure actModulesEditorExecute(Sender: TObject);
+    procedure actModulesCopySelectedAsTextExecute(Sender: TObject);
+    procedure actModulesSelectAllExecute(Sender: TObject);
+    procedure actModulesUnSelectAllExecute(Sender: TObject);
+    procedure actSettingsRestoreDefaultsExecute(Sender: TObject);
+    procedure actModulesAddSelectedToDBExecute(Sender: TObject);
+    procedure actEnableAdminModeExecute(Sender: TObject);
+    procedure actDisableAdminModeExecute(Sender: TObject);
+    procedure actFilterPackagesTypesSelectAllExecute(Sender: TObject);
+    procedure actFilterPackagesTypesUnselectAllExecute(Sender: TObject);
+    procedure actFilterPackagesSelectAllExecute(Sender: TObject);
+    procedure actFilterPackagesUnSelectAllExecute(Sender: TObject);
+    procedure actFiltersClearExecute(Sender: TObject);
+    procedure actFilterPackagesCopyToClipboardExecute(Sender: TObject);
+    procedure actFilterPackagesTypesSelectOnly3rdPartyExecute(Sender: TObject);
+    procedure actFilterPackagesTypesSelectOnlyEmptyExecute(Sender: TObject);
+    procedure actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
+    procedure actFilterPackagesSelect3rdPartyAndEmptyExecute(Sender: TObject);
+    procedure actFilterPackagesTypesSelect3rdPartyAndEmptyExecute(Sender: TObject);
+    procedure actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
+    procedure actExploreHereExecute(Sender: TObject);
+    procedure actModulesFindSelectedInKnownDBExecute(Sender: TObject);
+    procedure actCopyFromVersionInfoExecute(Sender: TObject);
+    procedure actDisplayPackagesListExecute(Sender: TObject);
 
     /// <summary>Clear the ModulesArray</summary>
     procedure ModulesArrayClear();
@@ -313,66 +347,38 @@ type
     function TryOpenStepsFileInReport(): boolean;
 
     function FileExistsInReport(var FileName: string): boolean;
-    procedure cbCreateLogClick(Sender: TObject);
     procedure DBGridModulesTitleClick(Column: TColumn);
-    procedure DBGridModulesDrawColumnCell(Sender: TObject; const Rect: TRect;
-      DataCol: Integer; Column: TColumn; State: TGridDrawState);
-    procedure actPackagesEditorExecute(Sender: TObject);
-    procedure actModulesEditorExecute(Sender: TObject);
-    procedure actModulesCopySelectedAsTextExecute(Sender: TObject);
-    procedure actModulesSelectAllExecute(Sender: TObject);
+    procedure DBGridModulesDrawColumnCell(Sender: TObject; const Rect: TRect; DataCol: Integer;
+      Column: TColumn; State: TGridDrawState);
     procedure ModelsGridSelectRange;
-    procedure actModulesUnSelectAllExecute(Sender: TObject);
     procedure ModulesSelectedCountDisplay();
     procedure UpdateActionsWithSelectedModels();
     procedure UpdateObjectsAccordingSettings();
-    procedure actSettingsRestoreDefaultsExecute(Sender: TObject);
     procedure FormResize(Sender: TObject);
-    procedure actModulesAddSelectedToDBExecute(Sender: TObject);
+    procedure cbAfterParsingViewClick(Sender: TObject);
+    procedure cbCreateLogClick(Sender: TObject);
     procedure cbMaximizeOnStartupClick(Sender: TObject);
     procedure cbParseFileOnOpenClick(Sender: TObject);
     procedure cbParseLevel2Click(Sender: TObject);
-    procedure actEnableAdminModeExecute(Sender: TObject);
-    procedure actDisableAdminModeExecute(Sender: TObject);
+    procedure cbxStylesChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbedFilterFileNameChange(Sender: TObject);
     procedure clbVisiblePackagesClickCheck(Sender: TObject);
     procedure clbVisiblePackagesTypesClickCheck(Sender: TObject);
-    procedure actFilterPackagesTypesSelectAllExecute(Sender: TObject);
-    procedure actFilterPackagesTypesUnselectAllExecute(Sender: TObject);
-    procedure actFilterPackagesSelectAllExecute(Sender: TObject);
-    procedure actFilterPackagesUnSelectAllExecute(Sender: TObject);
-    procedure actFiltersClearExecute(Sender: TObject);
-    procedure actModulesFindSelectedInKnownDBExecute(Sender: TObject);
-    procedure actFilterPackagesCopyToClipboardExecute(Sender: TObject);
+    procedure clbViewInExplorerClick(Sender: TObject);
     procedure cbParseLevel3Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure SetDBGridModulesDefaultColumnsWidth(Sender: TObject);
-    procedure actDisplayPackagesListExecute(Sender: TObject);
-    procedure actFilterPackagesTypesSelectOnlyEmptyExecute(Sender: TObject);
-    procedure actFilterPackagesSelectOnlyEmptyExecute(Sender: TObject);
     procedure FormActivate(Sender: TObject);
-    procedure cbxStylesChange(Sender: TObject);
-    procedure actFilterPackagesTypesSelectOnly3rdPartyExecute(Sender: TObject);
-    function FilterPackagesSelectOnly3rdParty : boolean;
     procedure DisplayRSBuild(module: TIDEModule);
-    function FindRSBuildName(build: string): string;
-    procedure actCopyFromVersionInfoExecute(Sender: TObject);
     procedure GetMemoTxtModuleFileFromVersionInfo(Sender: TObject);
-    procedure actExploreHereExecute(Sender: TObject);
     procedure DBGridModulesDblClick(Sender: TObject);
-    procedure cbAfterParsingViewClick(Sender: TObject);
-    procedure combobAfterParsingChange(Sender: TObject);
-    procedure actFilterPackagesSelect3rdPartyAndEmptyExecute(Sender: TObject);
-    procedure actFilterPackagesTypesSelect3rdPartyAndEmptyExecute(
-      Sender: TObject);
-    procedure actFilterPackagesSelectOnly3rdPartyExecute(Sender: TObject);
+    procedure cbAfterParsingChange(Sender: TObject);
     procedure clbViewImageClick(Sender: TObject);
-    procedure ControlListScreenshotsBeforeDrawItem(AIndex: Integer;
-      ACanvas: TCanvas; ARect: TRect; AState: TOwnerDrawState);
+    procedure ControlListScreenshotsBeforeDrawItem(AIndex: Integer; ACanvas: TCanvas;
+      ARect: TRect; AState: TOwnerDrawState);
     procedure VirtualImage1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-    procedure clbViewInExplorerClick(Sender: TObject);
     procedure reStackTraceContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
     procedure reStackTraceLinkClick(Sender: TCustomRichEdit; const URL: string;
@@ -380,6 +386,8 @@ type
     procedure LinkLabel1LinkClick(Sender: TObject; const Link: string;
       LinkType: TSysLinkType);
     procedure cbCreateReportForJIRAClick(Sender: TObject);
+    function FilterPackagesSelectOnly3rdParty : boolean;
+    function FindRSBuildName(build: string): string;
   private
     { Private declarations }
     DBGrid1_PrevCol : Integer;
@@ -404,6 +412,9 @@ type
     function TryOpenScreenshotFile(FileName: string): boolean;
     procedure LoadScreenshotFilesSuccess;
     procedure DisplayRSBuildInfo();
+    procedure OpenReportDataFile(FileName: string);
+    procedure UpdateDisplayReportDataFileName;
+    procedure LoadReportDataFile;
   public
     { Public declarations }
     FModulesPackages : TArray<TModulesPackage>;
@@ -417,6 +428,7 @@ var
   mtfFileName : TFileName;  // ModuleList.txt filename
   stfFileName : TFileName;  // StackTrace.txt filename
   ddfFileName : TFileName;  // DxDiag_Log.txt filename
+  rdfFileName : TFileName;  // ReportData.xml filename
   spfFileName : TFileName;  // Step.txt filename
   defFileName : TFileName;  // Desc.txt filename
   mzfFileName : TFileName;  // QPInfo-XXXXXXXX-XXXX.zip filename
@@ -947,9 +959,40 @@ begin
   ApplyAllFiltres();
 end;
 
-procedure TfrmMain.combobAfterParsingChange(Sender: TObject);
+procedure TfrmMain.cbAfterParsingChange(Sender: TObject);
 begin
-  GlobalAfterParsingViewOption := combobAfterParsing.ItemIndex;
+  GlobalAfterParsingViewOption := cbAfterParsing.ItemIndex;
+end;
+
+function TfrmMain.ConfirmNewReportDataFileLoad(AskForAll: boolean): boolean;
+var
+  res: TModalResult;
+begin
+  Result := true;
+  if (memoReportData.Lines.Text = '') OR (ConfirmOpenForAll in [mrYes, mrYesToAll]) then
+    Exit;
+  if ConfirmOpenForAll in [mrNo, mrNoToAll] then
+    Exit(false);
+
+  if PageControl1.ActivePage <> tsReportData then
+    PageControl1.ActivePage := tsReportData;
+  if not AskForAll then
+    res := MessageDlg('The Report Data file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
+  else
+  begin
+    res := MessageDlg('The Report Data file is opened. Open another file?', mtConfirmation, [mbYes, mbNo, mbYesToAll, mbNoToAll], 0);
+    if res in [mrYesToAll, mrNoToAll] then
+    begin
+      ConfirmOpenForAll := res;
+      AskConfirmOpenForAll := false;
+    end;
+  end;
+
+  if res in [mrNo, mrNoToAll, mrCancel] then
+  begin
+    Logger.AddToLog('The opening of a new Report Data file has not been confirmed.');
+    Exit(false);
+  end;
 end;
 
 function TfrmMain.ConfirmNewStackTraceFileLoad(AskForAll: boolean): boolean;
@@ -964,7 +1007,7 @@ begin
 
   if PageControl1.ActivePage <> tsStackTraceFile then
     PageControl1.ActivePage := tsStackTraceFile;
-  if (not AskForAll) then
+  if not AskForAll then
     res := MessageDlg('The StackTrace file is opened. Open another file?', mtConfirmation, mbYesNo, 0)
   else
   begin
@@ -1245,6 +1288,19 @@ begin
   UpdateDisplayModuleListFileName();
   LoadTxtModuleFile();
   Result := true;
+end;
+
+procedure TfrmMain.OpenReportDataFile(FileName: string);
+begin
+  // Open new text reportdata.xml file
+
+  if not FileExists(FileName) OR not ConfirmNewReportDataFileLoad(AskConfirmOpenForAll) then
+    Exit;
+  HideStartMessage;
+  rdfFileName := FileName;
+  PageControl1.ActivePage := tsReportData;
+  UpdateDisplayReportDataFileName();
+  LoadReportDataFile();
 end;
 
 procedure TfrmMain.OpenTextStackTraceFile(FileName: string);
@@ -1751,7 +1807,7 @@ end;
 procedure TfrmMain.cbAfterParsingViewClick(Sender: TObject);
 begin
   GlobalAfterParsingView := cbAfterParsingView.Checked;
-  combobAfterParsing.Enabled := cbAfterParsingView.Checked;
+  cbAfterParsing.Enabled := cbAfterParsingView.Checked;
 end;
 
 procedure TfrmMain.cbCreateLogClick(Sender: TObject);
@@ -2026,6 +2082,7 @@ begin
       tsModuleListFile.TabVisible or
       tsScreenshots.TabVisible or
       tsDXDiagLogFile.TabVisible or
+      tsReportData.TabVisible or
       tsStackTraceFile.TabVisible or
       tsStepsFile.TabVisible or
       tsDescriptionFile.TabVisible) AND
@@ -2034,6 +2091,7 @@ begin
       not tsModuleListFile.TabVisible and
       not tsScreenshots.TabVisible and
       not tsDXDiagLogFile.TabVisible and
+      not tsReportData.TabVisible and
       not tsStackTraceFile.TabVisible and
       not tsStepsFile.TabVisible and
       not tsDescriptionFile.TabVisible)
@@ -2102,6 +2160,7 @@ begin
   tsModuleListFile.TabVisible := false;
   tsScreenshots.TabVisible := false;
   tsDXDiagLogFile.TabVisible := false;
+  tsReportData.TabVisible := false;
   tsStackTraceFile.TabVisible := false;
   tsStepsFile.TabVisible := false;
   tsDescriptionFile.TabVisible := false;
@@ -2212,6 +2271,42 @@ begin
   Logger.AddToLog('Module List DB cleared.');
 end;
 
+procedure TfrmMain.LoadReportDataFile;
+var
+  LDocument: IXMLDocument;
+  LNodeElement, LNode: IXMLNode;
+  I: Integer;
+  LStrLine: string;
+begin
+  // Load new text Steps file
+  // memoReportData.Lines.LoadFromFile(rdfFileName, TEncoding.UTF8);
+  memoReportData.Clear;
+  LDocument := TXMLDocument.Create(nil);
+  LDocument.LoadFromFile(rdfFileName);
+  LNodeElement := LDocument.ChildNodes.FindNode('ReportData');
+  if (LNodeElement <> nil) then
+  begin
+    // ShowMessage('ReportData found');
+    for I := 0 to LNodeElement.ChildNodes.Count - 1 do
+    begin
+      LNode := LNodeElement.ChildNodes.Get(I);
+      LStrLine := '';
+      // if LNode.NodeType = ntText then
+      // begin
+        LStrLine := LStrLine + LNode.NodeName;
+        LStrLine := LStrLine + ' : ' + LNode.Text;
+      // end;
+      memoReportData.Lines.Add(LStrLine);
+    end;
+end;
+
+  // Enable Font Size Change
+  EnableFontSizeChange();
+  tsReportData.TabVisible := true;
+  PageControl1.ActivePage := tsReportData;
+  Logger.AddToLog('New Report Data file opened: ' + rdfFileName);
+end;
+
 procedure TfrmMain.LoadTxtStackTraceFile;
 begin
   // Load new text StackTrace file
@@ -2314,14 +2409,13 @@ end;
 
 function TfrmMain.TryOpenDXDiagFileInReport: boolean;
 begin
-  //
+  // Try open dxdiag_log.txt in Report folder
   var tempFileName := 'dxdiag_log.txt';
   if FileExistsInReport(tempFileName)
   then
     begin
-      // Open dxdiag_log.txt
       OpenTextDxDiagLogFile(tempFileName);
-      Result := true;
+      Exit(true);
     end
   else Result := false;
 end;
@@ -2335,48 +2429,47 @@ begin
     begin
       OpenTextModuleListFile(tempFileName);
       ModulesFileListIsVersionInfoList := false;
-      Result := true;
+      Exit(true);
     end
   else Result := false;
 end;
 
 function TfrmMain.TryOpenReportDataFileInReport: boolean;
 begin
-  //
+  // Try open reportdata.xml in Report folder
   var tempFileName := 'reportdata.xml';
   if FileExistsInReport(tempFileName)
   then
     begin
       // Open reportdata.xml
-      Result := true;
+      OpenReportDataFile(tempFileName);
+      Exit(true);
     end
   else Result := false;
 end;
 
 function TfrmMain.TryOpenStackTraceFileInReport: boolean;
 begin
-  //
+  // Try open stacktrace.txt in Report folder
   var tempFileName := 'stacktrace.txt';
   if FileExistsInReport(tempFileName)
   then
     begin
-      // Open stacktrace.txt
       OpenTextStackTraceFile(tempFileName);
-      Result := true;
+      Exit(true);
     end
   else Result := false;
 end;
 
 function TfrmMain.TryOpenStepsFileInReport: boolean;
 begin
-  //
+  // Try open step.txt in Report folder
   var tempFileName := 'step.txt';
   if FileExistsInReport(tempFileName)
   then
     begin
-      // Open step.txt
       OpenTextStepsFile(tempFileName);
-      Result := true;
+      Exit(true);
     end
   else Result := false;
 end;
@@ -2462,6 +2555,12 @@ begin
   lbedModuleFile.Text := mtfFileName;
 end;
 
+procedure TfrmMain.UpdateDisplayReportDataFileName;
+begin
+  //
+  lbedReportDataFile.Text := rdfFileName;
+end;
+
 procedure TfrmMain.UpdateDisplayStackTraceFileName;
 begin
   //
@@ -2483,11 +2582,11 @@ begin
   cbParseFileOnOpen.Checked := GlobalParseOnFileOpen;
   cbAfterParsingView.Checked := GlobalAfterParsingView;
   if (GlobalAfterParsingViewOption >= 0) AND
-    (GlobalAfterParsingViewOption <= combobAfterParsing.Items.Count - 1)
-  then combobAfterParsing.ItemIndex := GlobalAfterParsingViewOption
+    (GlobalAfterParsingViewOption <= cbAfterParsing.Items.Count - 1)
+  then cbAfterParsing.ItemIndex := GlobalAfterParsingViewOption
   else
     begin
-      combobAfterParsing.ItemIndex := 0;
+      cbAfterParsing.ItemIndex := 0;
       GlobalAfterParsingViewOption := 0;
     end;
   cbCreateReportForJIRA.Checked := GlobalCreateReportForJIRA;

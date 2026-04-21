@@ -84,7 +84,7 @@ object frmMain: TfrmMain
     Top = 37
     Width = 994
     Height = 464
-    ActivePage = tsScreenshots
+    ActivePage = tsReport
     Align = alClient
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -3385,6 +3385,62 @@ object frmMain: TfrmMain
         TabOrder = 1
       end
     end
+    object tsReportData: TTabSheet
+      Caption = 'Report Data'
+      ImageIndex = 11
+      object memoReportData: TMemo
+        AlignWithMargins = True
+        Left = 5
+        Top = 46
+        Width = 976
+        Height = 378
+        Margins.Left = 5
+        Margins.Top = 5
+        Margins.Right = 5
+        Margins.Bottom = 5
+        Align = alClient
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -13
+        Font.Name = 'Monoid'
+        Font.Pitch = fpFixed
+        Font.Style = []
+        ParentFont = False
+        ScrollBars = ssBoth
+        TabOrder = 0
+        WordWrap = False
+        ExplicitLeft = 10
+        ExplicitTop = 128
+        ExplicitHeight = 301
+      end
+      object Panel3: TPanel
+        Left = 0
+        Top = 0
+        Width = 986
+        Height = 41
+        Align = alTop
+        BevelOuter = bvNone
+        ParentBackground = False
+        TabOrder = 1
+        DesignSize = (
+          986
+          41)
+        object lbedReportDataFile: TLabeledEdit
+          Left = 112
+          Top = 10
+          Width = 867
+          Height = 25
+          Anchors = [akLeft, akTop, akRight, akBottom]
+          EditLabel.Width = 95
+          EditLabel.Height = 25
+          EditLabel.Caption = 'Report Data file:'
+          LabelPosition = lpLeft
+          ReadOnly = True
+          TabOrder = 0
+          Text = ''
+        end
+      end
+    end
     object tsDescriptionFile: TTabSheet
       Caption = 'Description file'
       ImageIndex = 5
@@ -3492,7 +3548,7 @@ object frmMain: TfrmMain
       end
     end
     object tsReport: TTabSheet
-      Caption = 'Report'
+      Caption = 'JIRA Report'
       ImageIndex = 10
       object memoReport: TMemo
         AlignWithMargins = True
@@ -3609,7 +3665,7 @@ object frmMain: TfrmMain
           TabOrder = 3
           OnClick = cbAfterParsingViewClick
         end
-        object combobAfterParsing: TComboBox
+        object cbAfterParsing: TComboBox
           Left = 32
           Top = 119
           Width = 233
@@ -3617,7 +3673,7 @@ object frmMain: TfrmMain
           Style = csDropDownList
           Enabled = False
           TabOrder = 4
-          OnChange = combobAfterParsingChange
+          OnChange = cbAfterParsingChange
           Items.Strings = (
             'Only 3rd-party'
             'Only <Empty>'
